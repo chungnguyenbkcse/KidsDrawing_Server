@@ -1,0 +1,86 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+
+### STUDENT REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-1",
+    "password": "123A@",
+    "email": "student1@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "roleNames": ["STUDENT_USER"]
+}
+
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345678aA@"
+}
+
+###
+
+# @name get_info_user
+GET {{rest}}/user/3
+Authorization: Bearer {{admin_access_token}}
+
+###
+
+# @name get_all_user
+GET {{rest}}/user?page=1&size=3
+Authorization: Bearer {{admin_access_token}}
+
+###
+
+# @name refresh_token_admin
+@admin_access_token_after = {{refresh_token_admin.response.body.accessToken}}
+POST  {{rest}}/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "{{admin_refresh_token}}"
+}
+
+###
+
+# @name get_all_user_after_refresh
+GET {{rest}}/user
+Authorization: Bearer {{admin_access_token_after}}
+
+### STUDENT ACTION ###
+
+# @name login_student
+@student_access_token = {{login_student.response.body.accessToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "student",
+    "password": "12345678aA@"
+}
+
+###
+
+# @name get_all_user_by_student
+GET {{rest}}/user
+Authorization: Bearer {{student_access_token}}
+
+
+
