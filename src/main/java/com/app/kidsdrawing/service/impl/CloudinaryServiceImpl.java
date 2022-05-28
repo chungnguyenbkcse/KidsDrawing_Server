@@ -25,12 +25,12 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         try {
             File uploadedFile = convertMultiPartToFile(gif);
             //Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
-            boolean isDeleted = uploadedFile.delete();
+/*             boolean isDeleted = uploadedFile.delete();
 
             if (isDeleted) {
                 System.out.println("File successfully deleted");
             } else
-                System.out.println("File doesn't exist");
+                System.out.println("File doesn't exist"); */
             return cloudinaryConfig.uploader().upload(uploadedFile, ObjectUtils.emptyMap()).get("url").toString();
         } catch (Exception e) {
             throw new RuntimeException(e);
