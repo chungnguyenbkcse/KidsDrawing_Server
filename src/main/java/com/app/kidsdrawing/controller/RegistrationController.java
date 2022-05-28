@@ -7,6 +7,7 @@ import com.app.kidsdrawing.service.UserService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +29,11 @@ public class RegistrationController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @GetMapping
+    public String getUser() {
+        return "Hello";
     }
 }
