@@ -19,6 +19,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
     private final AuthUtil authUtil;
 
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
         try {
@@ -62,6 +64,7 @@ public class AuthController {
         }
     }
 
+    @CrossOrigin
     @PostMapping(value = "/refresh")
     public ResponseEntity<AuthResponse> refreshToken(
             @RequestBody RefreshTokenRequest refreshTokenRequest) throws JWTValidationException {
