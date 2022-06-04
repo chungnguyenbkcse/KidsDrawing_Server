@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .firstName(user.getFirstName())
                     .lastName(user.getLastName())
                     .dateOfBirth(user.getDateOfBirth())
+                    .profile_image_url(user.getProfileImageUrl())
                     .sex(user.getSex())
                     .phone(user.getPhone())
                     .address(user.getAddress())
@@ -84,12 +85,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return GetUserInfoResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
+                .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .profile_image_url(user.getProfileImageUrl())
                 .dateOfBirth(user.getDateOfBirth())
                 .sex(user.getSex())
                 .phone(user.getPhone())
                 .address(user.getAddress())
+                .createTime(user.getCreateTime())
                 .build();
     }
 
@@ -101,6 +105,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         });
         return GetUserInfoResponse.builder()
                 .id(user.getId())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -108,6 +113,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .sex(user.getSex())
                 .phone(user.getPhone())
                 .address(user.getAddress())
+                .createTime(user.getCreateTime())
                 .build();
     }
 
