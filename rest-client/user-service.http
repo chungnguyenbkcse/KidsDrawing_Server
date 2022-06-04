@@ -1,7 +1,7 @@
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
 
 
-### STUDENT REGISTER ACTION ###
+### REGISTER ACTION ###
 
 # @name student_register
 
@@ -9,9 +9,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-1",
-    "password": "123A@",
-    "email": "student1@gmail.com",
+    "username": "student",
+    "password": "12345678aA@",
+    "email": "student@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -20,6 +20,47 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "roleNames": ["STUDENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name admin_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345678aA@",
+    "email": "admin@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "roleNames": ["ADMIN_USER"]
+}
+
+### REGISTER ACTION ###
+# @name teacher_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "teacher",
+    "password": "12345678aA@",
+    "email": "teacher@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "roleNames": ["TEACHER_USER"]
 }
 
 ### ADMIN ACTION ###
@@ -31,20 +72,20 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "super-admin",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
 ###
 
 # @name get_info_user
-GET {{rest}}/user/3
+GET {{rest}}/user/1
 Authorization: Bearer {{admin_access_token}}
 
 ###
 
 # @name get_all_user
-GET {{rest}}/user?page=2&size=3
+GET {{rest}}/user?page=0&size=3
 Authorization: Bearer {{admin_access_token}}
 
 ###
