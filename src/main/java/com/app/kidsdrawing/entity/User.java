@@ -91,4 +91,16 @@ public class User{
     @OneToMany(mappedBy="user")
     private Set<ArtType> artTypes;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinTable(name = "user_register_join_contest",
+            joinColumns = { @JoinColumn(name = "student_id") },
+            inverseJoinColumns = { @JoinColumn(name = "contest_id") })
+    private Set<Contest> student_contests;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinTable(name = "user_grade_contest",
+            joinColumns = { @JoinColumn(name = "teacher_id") },
+            inverseJoinColumns = { @JoinColumn(name = "contest_id") })
+    private Set<Contest> teacher_contests;
+
 }
