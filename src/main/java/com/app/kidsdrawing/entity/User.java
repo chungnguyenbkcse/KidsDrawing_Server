@@ -94,4 +94,7 @@ public class User{
     @OneToMany(mappedBy="user")
     private Set<UserRegisterJoinContest> user;
 
+    @OneToMany(mappedBy="teacherRegister")
+    private Set<TeacherQuailification> teacherQuailifications;
+
 }
