@@ -34,9 +34,9 @@ import lombok.Setter;
 @Table(name = "user")
 public class User{
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -91,16 +91,7 @@ public class User{
     @OneToMany(mappedBy="user")
     private Set<ArtType> artTypes;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinTable(name = "user_register_join_contest",
-            joinColumns = { @JoinColumn(name = "student_id") },
-            inverseJoinColumns = { @JoinColumn(name = "contest_id") })
-    private Set<Contest> student_contests;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinTable(name = "user_grade_contest",
-            joinColumns = { @JoinColumn(name = "teacher_id") },
-            inverseJoinColumns = { @JoinColumn(name = "contest_id") })
-    private Set<Contest> teacher_contests;
+    @OneToMany(mappedBy="user")
+    private Set<UserRegisterJoinContest> user;
 
 }

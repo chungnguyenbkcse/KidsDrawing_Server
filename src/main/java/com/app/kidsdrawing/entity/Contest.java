@@ -11,14 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -88,11 +86,7 @@ public class Contest {
     @JoinColumn(name = "art_type_id", referencedColumnName = "id")
     private ArtType artTypes;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "student_contests")
-    @JsonIgnore
-    private Set<User> users_1;
+    @OneToMany(mappedBy="contest")
+    private Set<UserRegisterJoinContest> userRegisterJoinContests;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "teacher_contests")
-    @JsonIgnore
-    private Set<User> users_2;
 }
