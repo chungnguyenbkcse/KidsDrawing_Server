@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/api/v1/user/teacher/**").hasAnyAuthority("SUPER_ADMIN_USER","ADMIN_USER","STAFF_USER")
                 .antMatchers("/api/v1/registration").permitAll()
                 .antMatchers("/api/v1/cloudinary/**").permitAll()
+                .antMatchers("/api/v1/art-type/**").permitAll()
                 // .antMatchers(HttpMethod.GET, "/admin/**")
                 // .hasAuthority("ADMIN_USER")
                 // .antMatchers(HttpMethod.GET, "/user/**")

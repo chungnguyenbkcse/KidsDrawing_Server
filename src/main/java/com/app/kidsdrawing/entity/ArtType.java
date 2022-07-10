@@ -47,6 +47,9 @@ public class ArtType {
     @OneToMany(mappedBy="artTypes")
     private Set<Contest> contests;
 
-    @OneToMany(mappedBy="artLevels")
-    private Set<TeacherQuailification> teacherQuailifications;
+    @OneToMany(mappedBy="artTypes")
+    private Set<Qualification> qualifications;
+
+    @OneToMany(mappedBy="artTypes")
+    private Set<Course> courses;
 }

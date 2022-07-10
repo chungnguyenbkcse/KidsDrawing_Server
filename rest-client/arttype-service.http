@@ -1,0 +1,38 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE ART TYPE ACTION ###
+# @name create_art_type
+
+POST {{rest}}/art-type
+Content-Type: application/json
+
+{
+    "name": "Sơn dầu",
+    "description": "Thể loại sơn dầu"
+}
+
+### UPDATE ART TYPE ACTION ###
+# @name update_art_type
+
+PUT {{rest}}/art-type/2
+Content-Type: application/json
+
+{
+    "name": "Sáp màu",
+    "description": "Thể loại sáp màu"
+}
+
+### REMOVE ART TYPE ACTION ###
+# @name update_art_type
+
+DELETE  {{rest}}/art-type/2
+
+### GET ART TYPE ACTION ###
+# @name get_art_type
+
+GET {{rest}}/art-type/2
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/art-type?page=0&size=2

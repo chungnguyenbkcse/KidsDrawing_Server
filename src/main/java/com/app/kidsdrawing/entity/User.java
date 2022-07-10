@@ -59,7 +59,6 @@ public class User{
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-
     @Column(name = "sex")
     private String sex;
 
@@ -92,9 +91,27 @@ public class User{
     private Set<ArtType> artTypes;
 
     @OneToMany(mappedBy="user")
+    private Set<Contest> contests;
+
+    @OneToMany(mappedBy="user")
+    private Set<Course> courses;
+
+    @OneToMany(mappedBy="user")
     private Set<UserRegisterJoinContest> user;
 
-    @OneToMany(mappedBy="teacherRegister")
-    private Set<TeacherQuailification> teacherQuailifications;
+    @OneToMany(mappedBy="teacher")
+    private Set<UserRegisterTeachCourse> teacherRegisterCourses;
+
+    @OneToMany(mappedBy="reviewer")
+    private Set<UserRegisterTeachCourse> adminReviewCourse;
+
+    @OneToMany(mappedBy="user")
+    private Set<Schedule> schedules;
+
+    @OneToMany(mappedBy="reviewer")
+    private Set<TeacherRegisterQuatification> admin_review_register_qutifications;
+
+    @OneToMany(mappedBy="teacher")
+    private Set<TeacherRegisterQuatification> teacher_register_qutifications;
 
 }

@@ -5,4 +5,5 @@ public class GlobalErrorCode {
     public static final Long ERROR_USER_ALREADY_REGISTERED = 1001L;
     public static final Long ERROR_JWT_VALIDATION_REGISTERED = 1002L;
     public static final Long ERROR_UNAUTHORIZED = 1003L;
+    public static final Long ERROR_ART_TYPE_ALREADY_CREATE = 1004L;
 }
