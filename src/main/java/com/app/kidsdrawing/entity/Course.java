@@ -77,6 +77,10 @@ public class Course {
     private ArtType artTypes;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "art_age_id", referencedColumnName = "id")
+    private ArtAge artAges;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User user;
 

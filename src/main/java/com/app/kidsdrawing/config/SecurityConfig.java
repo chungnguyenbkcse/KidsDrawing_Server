@@ -2,6 +2,7 @@ package com.app.kidsdrawing.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,7 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/api/v1/user/teacher/**").hasAnyAuthority("SUPER_ADMIN_USER","ADMIN_USER","STAFF_USER")
                 .antMatchers("/api/v1/registration").permitAll()
                 .antMatchers("/api/v1/cloudinary/**").permitAll()
-                .antMatchers("/api/v1/art-type/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/art-type/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/art-type/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers(HttpMethod.PUT, "/api/v1/art-type/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/art-type/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers(HttpMethod.GET, "/api/v1/art-level/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/art-level/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers(HttpMethod.PUT, "/api/v1/art-level/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/art-level/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers(HttpMethod.GET, "/api/v1/art-age/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/art-age/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers(HttpMethod.PUT, "/api/v1/art-age/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/art-age/**").hasAnyAuthority("ADMIN_USER")
                 // .antMatchers(HttpMethod.GET, "/admin/**")
                 // .hasAuthority("ADMIN_USER")
                 // .antMatchers(HttpMethod.GET, "/user/**")

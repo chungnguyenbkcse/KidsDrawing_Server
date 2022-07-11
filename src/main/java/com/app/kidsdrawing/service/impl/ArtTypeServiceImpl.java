@@ -86,7 +86,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     @Override
     public Long removeArtTypeById(Long id) {
         Optional<ArtType> artTypeOpt = artTypeRepository.findById(id);
-        ArtType artType = artTypeOpt.orElseThrow(() -> {
+        artTypeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtType.not_found");
         });
 
