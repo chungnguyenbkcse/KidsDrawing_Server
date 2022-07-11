@@ -13,4 +13,5 @@ public interface TeacherRegisterQualificationService {
     Long createTeacherRegisterQualification(CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest);
     Long removeTeacherRegisterQualificationById(Long id);
     Long updateTeacherRegisterQualificationById(Long id, CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest);
+    Long updateStatusTeacherRegisterQualificationById(Long id, Long admin_id);
 }
