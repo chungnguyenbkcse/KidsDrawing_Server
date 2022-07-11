@@ -23,22 +23,32 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "qualification")
-public class Qualification {
+@Table(name = "teacher_register_quatification")
+public class TeacherRegisterQualification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "degree_photo_url", nullable = false)
+    private String degree_photo_url;
+
+    @Column(name = "status")
+    private Boolean status;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "art_level_id", referencedColumnName = "id")
-    private ArtLevel artLevels;
+    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
+    private User reviewer;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private User teacher;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "art_age_id", referencedColumnName = "id")
+    private ArtAge artAges;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "art_type_id", referencedColumnName = "id")
     private ArtType artTypes;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "teacher_register_quatification_id", referencedColumnName = "id")
-    private TeacherRegisterQuatification teacher_register_quatification;
 }

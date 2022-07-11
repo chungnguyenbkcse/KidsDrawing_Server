@@ -109,9 +109,9 @@ public class User{
     private Set<Schedule> schedules;
 
     @OneToMany(mappedBy="reviewer")
-    private Set<TeacherRegisterQuatification> admin_review_register_qutifications;
+    private Set<TeacherRegisterQualification> admin_review_register_qutifications;
 
     @OneToMany(mappedBy="teacher")
-    private Set<TeacherRegisterQuatification> teacher_register_qutifications;
+    private Set<TeacherRegisterQualification> teacher_register_qutifications;
 
 }
