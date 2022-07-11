@@ -24,6 +24,27 @@ Content-Type: application/json
 
 ### REGISTER ACTION ###
 
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent",
+    "password": "12345678aA@",
+    "email": "parent@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "roleNames": ["PARENT_USER"]
+}
+
+### REGISTER ACTION ###
+
 # @name admin_register
 
 POST {{rest}}/registration
@@ -85,7 +106,17 @@ Authorization: Bearer {{admin_access_token}}
 ###
 
 # @name get_all_user
-GET {{rest}}/user?page=0&size=3
+GET {{rest}}/user/teacher?page=0&size=1
+Authorization: Bearer {{admin_access_token}}
+
+###
+# @name get_all_user
+GET {{rest}}/user/student?page=0&size=1
+Authorization: Bearer {{admin_access_token}}
+
+###
+# @name get_all_user
+GET {{rest}}/user/parent?page=0&size=1
 Authorization: Bearer {{admin_access_token}}
 
 ###

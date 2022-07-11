@@ -8,7 +8,7 @@ import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
-    ResponseEntity<Map<String, Object>> getAllUsers(int page, int size);
+    ResponseEntity<Map<String, Object>> getAllUsers(Long role_id);
 
     GetUserInfoResponse getUserInfoById(Long id);
 
@@ -17,4 +17,8 @@ public interface UserService {
     GetUserInfoResponse getUserInfo();
 
     Long createUser(CreateUserRequest createUserRequest);
+
+    Long updateUser(Long id, CreateUserRequest createUserRequest);
+
+    Long removeUser(Long id);
 }

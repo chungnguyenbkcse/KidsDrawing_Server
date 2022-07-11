@@ -9,9 +9,11 @@ import com.app.kidsdrawing.service.UserService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,15 +38,47 @@ public class UserController {
     }
 
     @CrossOrigin
-    @GetMapping
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUsers(@RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(userService.getAllUsers(page, size));
+    @GetMapping(value = "/teacher")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacher() {
+        Long x = (long) 4;
+        return ResponseEntity.ok().body(userService.getAllUsers(x));
+    } 
+
+    @CrossOrigin
+    @GetMapping(value = "/student")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudent() {
+        Long x = (long) 2;
+        return ResponseEntity.ok().body(userService.getAllUsers(x));
+    } 
+
+    @CrossOrigin
+    @GetMapping(value = "/parent")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllParent() {
+        Long x = (long) 3;
+        return ResponseEntity.ok().body(userService.getAllUsers(x));
     } 
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
     public ResponseEntity<GetUserInfoResponse> getUserInfoById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userService.getUserInfoById(id));
+    }
+
+    @CrossOrigin
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<String> updateUserInfoById(@PathVariable Long id, @RequestBody CreateUserRequest createUserRequest) {
+        Long userId = userService.updateUser(id, createUserRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(userId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable Long id){
+        Long userId = userService.removeUser(id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(userId).toUri();
+        return ResponseEntity.created(location).build();
     }
 }

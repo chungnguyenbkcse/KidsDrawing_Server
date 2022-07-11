@@ -22,9 +22,6 @@ import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.UserService;
 import com.app.kidsdrawing.util.AuthUtil;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -48,12 +45,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final AuthUtil authUtil;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUsers(int page, int size) {
+    public ResponseEntity<Map<String, Object>> getAllUsers(Long role_id) {
         List<GetUserResponse> allUserResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<User> pageUser = userRepository.findAll(paging);
-        pageUser.getContent().forEach(user -> {
-            GetUserResponse userResponse = GetUserResponse.builder()
+        List<User> pageUser = userRepository.findAll();
+        Optional<Role> roleOpt = roleRepository.findById(role_id);
+        Role role = roleOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.role.not_found");
+        });
+        pageUser.forEach(user -> {
+            if (user.getRoles().contains(role) == true){
+                GetUserResponse userResponse = GetUserResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
                     .email(user.getEmail())
@@ -66,13 +67,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .address(user.getAddress())
                     .createTime(user.getCreateTime())
                     .build();
-            allUserResponses.add(userResponse);
+                allUserResponses.add(userResponse);
+            }
         });
         Map<String, Object> response = new HashMap<>();
         response.put("users", allUserResponses);
-        response.put("currentPage", pageUser.getNumber());
-        response.put("totalItems", pageUser.getTotalElements());
-        response.put("totalPages", pageUser.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -174,5 +173,49 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Collection<SimpleGrantedAuthority> authorities = authUtil.parseAuthoritiesFromRoles(user.getRoles());
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 authorities);
+    }
+
+    @Override
+    public Long updateUser(Long id, CreateUserRequest createUserRequest) {
+        String encodedPassword = passwordEncoder.encode(createUserRequest.getPassword());
+        Optional<User> userOpt = userRepository.findById(id);
+        User user = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
+        });
+
+        List<Role> validRoles = new ArrayList<>();
+        createUserRequest.getRoleNames().forEach(roleName -> {
+            roleRepository.findByName(roleName).<Runnable>map(role -> () -> validRoles.add(role))
+                    .orElseThrow(() -> {
+                        throw new EntityNotFoundException(String.format("exception.role.invalid", roleName));
+                    })
+                    .run();
+        });
+        
+        user.setUsername(createUserRequest.getUsername());
+        user.setEmail(createUserRequest.getEmail());
+        user.setPassword(encodedPassword);
+        user.setFirstName(createUserRequest.getFirstName());
+        user.setLastName(createUserRequest.getLastName());
+        user.setAddress(createUserRequest.getAddress());
+        user.setDateOfBirth(createUserRequest.getDateOfBirth());
+        user.setProfileImageUrl(createUserRequest.getProfile_image_url());
+        user.setSex(createUserRequest.getSex());
+        user.setPhone(createUserRequest.getPhone());
+        user.setRoles(new HashSet<>(validRoles));
+
+        userRepository.save(user);
+        return user.getId();
+    }
+
+    @Override
+    public Long removeUser(Long id) {
+        Optional<User> userOpt = userRepository.findById(id);
+        userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
+        });
+
+        userRepository.deleteById(id);
+        return id;
     }
 }
