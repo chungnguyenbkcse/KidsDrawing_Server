@@ -30,6 +30,9 @@ public class UserRegisterJoinContest {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "status")
+    private Boolean status;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private User user;

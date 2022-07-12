@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -40,22 +39,22 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/teacher")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacher() {
-        Long x = (long) 4;
-        return ResponseEntity.ok().body(userService.getAllUsers(x));
+        Long role_id = (long) 4;
+        return ResponseEntity.ok().body(userService.getAllUsers(role_id));
     } 
 
     @CrossOrigin
     @GetMapping(value = "/student")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudent() {
-        Long x = (long) 2;
-        return ResponseEntity.ok().body(userService.getAllUsers(x));
+        Long role_id = (long) 2;
+        return ResponseEntity.ok().body(userService.getAllUsers(role_id));
     } 
 
     @CrossOrigin
     @GetMapping(value = "/parent")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllParent() {
-        Long x = (long) 3;
-        return ResponseEntity.ok().body(userService.getAllUsers(x));
+        Long role_id = (long) 3;
+        return ResponseEntity.ok().body(userService.getAllUsers(role_id));
     } 
 
     @CrossOrigin

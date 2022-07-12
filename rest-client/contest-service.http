@@ -1,0 +1,46 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/contest
+Content-Type: application/json
+
+{
+    "name": "Cuộc thi vẽ tranh gia đình",
+    "description": "Vẽ về những người thân trong gia đình",
+    "max_participant": 20,
+    "registration_time": "2022-07-12T12:59:11.332",
+    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
+    "start_time": "2022-08-12T12:59:11.332",
+    "end_time": "2022-09-12T12:59:11.332",
+    "is_enabled": true,
+    "creater_id": 3,
+    "art_age_id": 1,
+    "art_type_id": 1
+}
+
+### 
+# @name update_contest
+
+PUT {{rest}}/contest/3
+Content-Type: application/json
+
+{
+    "name": "Cuộc thi vẽ tranh gia đình",
+    "description": "Vẽ về những người thân trong gia đình",
+    "max_participant": 50,
+    "registration_time": "2022-07-12T12:59:11.332",
+    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
+    "start_time": "2022-08-12T12:59:11.332",
+    "end_time": "2022-09-12T12:59:11.332",
+    "is_enabled": true,
+    "creater_id": 3,
+    "art_age_id": 1,
+    "art_type_id": 1
+}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/contest/3

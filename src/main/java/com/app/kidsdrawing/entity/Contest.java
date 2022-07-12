@@ -79,8 +79,8 @@ public class Contest {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "art_level_id", referencedColumnName = "id")
-    private ArtLevel artLevels;
+    @JoinColumn(name = "art_age_id", referencedColumnName = "id")
+    private ArtAge artAges;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "art_type_id", referencedColumnName = "id")

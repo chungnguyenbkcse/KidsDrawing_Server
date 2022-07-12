@@ -35,6 +35,9 @@ public class ArtAge {
     private String description;
 
     @OneToMany(mappedBy="artAges")
+    private Set<Contest> contests;
+
+    @OneToMany(mappedBy="artAges")
     private Set<Course> courses;
 
     @OneToMany(mappedBy="artAges")

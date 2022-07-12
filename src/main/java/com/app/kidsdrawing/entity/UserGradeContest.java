@@ -30,6 +30,9 @@ public class UserGradeContest {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "status")
+    private Boolean status;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private User user;

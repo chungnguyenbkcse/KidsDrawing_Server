@@ -1,0 +1,38 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE ART AGE ACTION ###
+# @name create_art_age
+
+POST {{rest}}/art-age
+Content-Type: application/json
+
+{
+    "name": "4-6 tuổi",
+    "description": "Độ tuổi từ 4-6 tuổi"
+}
+
+### UPDATE ART TYPE ACTION ###
+# @name update_art_type
+
+PUT {{rest}}/art-age/2
+Content-Type: application/json
+
+{
+    "name": "Sáp màu",
+    "description": "Thể loại sáp màu"
+}
+
+### REMOVE ART TYPE ACTION ###
+# @name update_art_type
+
+DELETE  {{rest}}/art-age/2
+
+### GET ART TYPE ACTION ###
+# @name get_art_type
+
+GET {{rest}}/art-age/2
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/art-age?page=0&size=2
