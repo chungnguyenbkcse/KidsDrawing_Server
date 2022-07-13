@@ -1,13 +1,14 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalTime;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -36,6 +37,6 @@ public class LessonTime {
     @Column(name = "end_time")
     private LocalTime end_time;
 
-    @OneToOne(mappedBy="lessonTime")
-    private ScheduleItem scheduleItem;
+    @OneToMany(mappedBy="lessonTime")
+    private Set<ScheduleItem> scheduleItems;
 }
