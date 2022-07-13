@@ -1,0 +1,22 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE TEACHER GRADE CONTEST ACTION ###
+# @name create_teacher_grade_contest
+
+POST {{rest}}/user-grade-contest
+Content-Type: application/json
+
+{
+    "teacher_id": 4,
+    "contest_id": 1
+}
+
+### GET TEACHER GRADE CONTEST ACTION ###
+# @name get_teacher_grade_contest
+
+GET {{rest}}/user-grade-contest/2
+
+### GET USER GRADE CONTEST ACTION ###
+# @name get_all_user_grade_contest
+
+GET {{rest}}/user-grade-contest/teacher/4?page=0&size=1
