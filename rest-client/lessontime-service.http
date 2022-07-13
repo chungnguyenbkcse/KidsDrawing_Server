@@ -1,0 +1,49 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/lesson-time
+Content-Type: application/json
+
+{
+    "start_time": "20:00:00",
+    "end_time": "21:00:00"
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/lesson-time
+Content-Type: application/json
+
+{
+    "start_time": "22:00:00",
+    "end_time": "23:00:00"
+}
+
+### UPDATE ART TYPE ACTION ###
+# @name update_art_type
+
+PUT {{rest}}/lesson-time/1
+Content-Type: application/json
+
+{
+    "start_time": "20:00:00",
+    "end_time": "22:00:00"
+}
+
+### REMOVE ART TYPE ACTION ###
+# @name update_art_type
+
+DELETE  {{rest}}/lesson-time/2
+
+### GET ART TYPE ACTION ###
+# @name get_art_type
+
+GET {{rest}}/lesson-time/2
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/lesson-time?page=0&size=2
