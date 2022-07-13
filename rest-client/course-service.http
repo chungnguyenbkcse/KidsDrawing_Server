@@ -1,0 +1,51 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE COURSE ACTION ###
+# @name create_course
+
+POST {{rest}}/course
+Content-Type: application/json
+
+{
+    "name": "Khóa học mầm chì màu cơ bản",
+    "description": "xxxx",
+    "max_participant": 20,
+    "num_of_section": 10,
+    "price": 2000000,
+    "image_url": "",
+    "is_enabled": false,
+    "creator_id": 3,
+    "art_age_id": 1,
+    "art_type_id": 1,
+    "art_level_id": 2
+}
+
+### 
+# @name update_contest
+
+PUT {{rest}}/course/3
+Content-Type: application/json
+
+{
+    "name": "Khóa học mầm chì màu cơ bản",
+    "description": "xxxx",
+    "max_participant": 20,
+    "num_of_section": 10,
+    "price": 2000000,
+    "image_url": "",
+    "is_enabled": false,
+    "creator_id": 3,
+    "art_age_id": 1,
+    "art_type_id": 1,
+    "art_level_id": 2
+}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/course/id/4
+
+### GET USER GRADE CONTEST ACTION ###
+# @name get_all_user_grade_contest
+
+GET {{rest}}/course/art-level/1?page=0&size=10

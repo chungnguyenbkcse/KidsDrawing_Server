@@ -9,4 +9,5 @@ public class GlobalErrorCode {
     public static final Long ERROR_ART_LEVEL_ALREADY_CREATE = 1005L;
     public static final Long ERROR_ART_AGE_ALREADY_CREATE = 1006L;
     public static final Long ERROR_CONTEST_ALREADY_CREATE = 1007L;
+    public static final Long ERROR_COURSE_ALREADY_CREATE = 1008L;
 }
