@@ -39,6 +39,20 @@ public class ContestController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/art-type/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByArtTypeid(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
+    @RequestParam(defaultValue = "3") int size) {
+        return ResponseEntity.ok().body(contestService.getAllContestByArtTypeId(page, size, id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/art-age/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByArtAgeid(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
+    @RequestParam(defaultValue = "3") int size) {
+        return ResponseEntity.ok().body(contestService.getAllContestByArtAgeId(page, size, id));
+    }
+
+    @CrossOrigin
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateContest(@PathVariable Long id, @RequestBody CreateContestRequest createContestRequest) {
         Long contestId = contestService.updateContestById(id,createContestRequest);
@@ -55,9 +69,15 @@ public class ContestController {
     } 
 
     @CrossOrigin
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/id/{id}")
     public ResponseEntity<GetContestResponse> getContestById(@PathVariable Long id) {
         return ResponseEntity.ok().body(contestService.getContestById(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/name/{name}")
+    public ResponseEntity<GetContestResponse> getContestByName(@PathVariable String name) {
+        return ResponseEntity.ok().body(contestService.getContestByName(name));
     }
 
     @CrossOrigin

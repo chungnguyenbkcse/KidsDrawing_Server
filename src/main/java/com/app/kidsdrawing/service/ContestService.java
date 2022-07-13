@@ -9,6 +9,9 @@ import com.app.kidsdrawing.dto.GetContestResponse;
 
 public interface ContestService {
     ResponseEntity<Map<String, Object>> getAllContest(int page, int size);
+    ResponseEntity<Map<String, Object>> getAllContestByArtTypeId(int page, int size, Long id);
+    ResponseEntity<Map<String, Object>> getAllContestByArtAgeId(int page, int size, Long id);
+    GetContestResponse getContestByName(String name);
     GetContestResponse getContestById(Long id);
     Long createContest(CreateContestRequest createContestRequest);
     Long removeContestById(Long id);

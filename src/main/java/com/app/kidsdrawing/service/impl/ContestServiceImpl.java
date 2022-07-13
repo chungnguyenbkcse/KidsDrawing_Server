@@ -73,6 +73,95 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllContestByArtTypeId(int page, int size, Long id) {
+        List<GetContestResponse> allContestResponses = new ArrayList<>();
+        Pageable paging = PageRequest.of(page, size);
+        Page<Contest> pageContest = contestRepository.findAll(paging);
+        pageContest.getContent().forEach(contest -> {
+            if (contest.getArtTypes().getId() == id) {
+                GetContestResponse contestResponse = GetContestResponse.builder()
+                    .id(contest.getId())
+                    .name(contest.getName())
+                    .description(contest.getDescription())
+                    .max_participant(contest.getMax_participant())
+                    .registration_time(contest.getRegistration_time())
+                    .image_url(contest.getImage_url())
+                    .start_time(contest.getStart_time())
+                    .end_time(contest.getEnd_time())
+                    .is_enabled(contest.getIs_enabled())
+                    .art_age_id(contest.getArtAges().getId())
+                    .art_type_id(contest.getArtTypes().getId())
+                    .creater_id(contest.getUser().getId())
+                    .build();
+                allContestResponses.add(contestResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("art_age", allContestResponses);
+        response.put("currentPage", pageContest.getNumber());
+        response.put("totalItems", pageContest.getTotalElements());
+        response.put("totalPages", pageContest.getTotalPages());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllContestByArtAgeId(int page, int size, Long id) {
+        List<GetContestResponse> allContestResponses = new ArrayList<>();
+        Pageable paging = PageRequest.of(page, size);
+        Page<Contest> pageContest = contestRepository.findAll(paging);
+        pageContest.getContent().forEach(contest -> {
+            if (contest.getArtAges().getId() == id) {
+                GetContestResponse contestResponse = GetContestResponse.builder()
+                    .id(contest.getId())
+                    .name(contest.getName())
+                    .description(contest.getDescription())
+                    .max_participant(contest.getMax_participant())
+                    .registration_time(contest.getRegistration_time())
+                    .image_url(contest.getImage_url())
+                    .start_time(contest.getStart_time())
+                    .end_time(contest.getEnd_time())
+                    .is_enabled(contest.getIs_enabled())
+                    .art_age_id(contest.getArtAges().getId())
+                    .art_type_id(contest.getArtTypes().getId())
+                    .creater_id(contest.getUser().getId())
+                    .build();
+                allContestResponses.add(contestResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("art_age", allContestResponses);
+        response.put("currentPage", pageContest.getNumber());
+        response.put("totalItems", pageContest.getTotalElements());
+        response.put("totalPages", pageContest.getTotalPages());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public GetContestResponse getContestByName(String name) {
+        Optional<Contest> contestOpt = contestRepository.findByName(name);
+        Contest contest = contestOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Contest.not_found");
+        });
+
+        return GetContestResponse.builder()
+                .id(contest.getId())
+                .name(contest.getName())
+                .description(contest.getDescription())
+                .max_participant(contest.getMax_participant())
+                .registration_time(contest.getRegistration_time())
+                .image_url(contest.getImage_url())
+                .start_time(contest.getStart_time())
+                .end_time(contest.getEnd_time())
+                .is_enabled(contest.getIs_enabled())
+                .art_age_id(contest.getArtAges().getId())
+                .art_type_id(contest.getArtTypes().getId())
+                .creater_id(contest.getUser().getId())
+                .build();
+    }
+
+    @Override
     public GetContestResponse getContestById(Long id){
         Optional<Contest> contestOpt = contestRepository.findById(id);
         Contest contest = contestOpt.orElseThrow(() -> {
