@@ -43,6 +43,8 @@ public class ScheduleServiceImpl implements ScheduleService {
             GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
                     .id(schedule.getId())
                     .name(schedule.getName())
+                    .create_time(schedule.getCreate_time())
+                    .update_time(schedule.getUpdate_time())
                     .build();
             allScheduleResponses.add(scheduleResponse);
         });
@@ -65,6 +67,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         return GetScheduleResponse.builder()
                 .id(schedule.getId())
                 .name(schedule.getName())
+                .create_time(schedule.getCreate_time())
+                .update_time(schedule.getUpdate_time())
                 .build();
     }
 

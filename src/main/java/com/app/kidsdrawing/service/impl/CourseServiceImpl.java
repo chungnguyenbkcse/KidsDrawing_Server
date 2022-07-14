@@ -63,6 +63,8 @@ public class CourseServiceImpl implements CourseService {
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
                     .creator_id(course.getUser().getId())
+                    .create_time(course.getCreate_time())
+                    .update_time(course.getUpdate_time())
                     .build();
             allCourseResponses.add(courseResponse);
         });
@@ -95,6 +97,8 @@ public class CourseServiceImpl implements CourseService {
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
                 .creator_id(course.getUser().getId())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
                 .build();
             allCourseResponses.add(courseResponse);
             }
@@ -128,6 +132,8 @@ public class CourseServiceImpl implements CourseService {
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
                 .creator_id(course.getUser().getId())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
                 .build();
             allCourseResponses.add(courseResponse);
             }
@@ -161,6 +167,8 @@ public class CourseServiceImpl implements CourseService {
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
                 .creator_id(course.getUser().getId())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
                 .build();
             allCourseResponses.add(courseResponse);
             }
@@ -194,6 +202,8 @@ public class CourseServiceImpl implements CourseService {
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
                 .creator_id(course.getUser().getId())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
                 .build();
     }
 
@@ -217,6 +227,8 @@ public class CourseServiceImpl implements CourseService {
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
                 .creator_id(course.getUser().getId())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
                 .build();
     }
 

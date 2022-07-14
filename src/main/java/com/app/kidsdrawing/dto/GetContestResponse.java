@@ -24,4 +24,6 @@ public class GetContestResponse {
     private Long creater_id;
     private Long art_age_id;
     private Long art_type_id;
+    private LocalDateTime create_time;
+    private LocalDateTime update_time;
 }

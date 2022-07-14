@@ -1,5 +1,7 @@
 package com.app.kidsdrawing.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +24,6 @@ public class GetCourseResponse {
     private Long art_type_id;
     private Long art_level_id;
     private Long art_age_id;
+    private LocalDateTime create_time;
+    private LocalDateTime update_time;
 }

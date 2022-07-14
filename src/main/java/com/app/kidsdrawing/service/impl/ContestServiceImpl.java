@@ -60,6 +60,8 @@ public class ContestServiceImpl implements ContestService {
                     .art_age_id(contest.getArtAges().getId())
                     .art_type_id(contest.getArtTypes().getId())
                     .creater_id(contest.getUser().getId())
+                    .create_time(contest.getCreate_time())
+                    .update_time(contest.getUpdate_time())
                     .build();
             allContestResponses.add(contestResponse);
         });
@@ -92,6 +94,8 @@ public class ContestServiceImpl implements ContestService {
                     .art_age_id(contest.getArtAges().getId())
                     .art_type_id(contest.getArtTypes().getId())
                     .creater_id(contest.getUser().getId())
+                    .create_time(contest.getCreate_time())
+                    .update_time(contest.getUpdate_time())
                     .build();
                 allContestResponses.add(contestResponse);
             }
@@ -125,6 +129,8 @@ public class ContestServiceImpl implements ContestService {
                     .art_age_id(contest.getArtAges().getId())
                     .art_type_id(contest.getArtTypes().getId())
                     .creater_id(contest.getUser().getId())
+                    .create_time(contest.getCreate_time())
+                    .update_time(contest.getUpdate_time())
                     .build();
                 allContestResponses.add(contestResponse);
             }
@@ -158,6 +164,8 @@ public class ContestServiceImpl implements ContestService {
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
                 .creater_id(contest.getUser().getId())
+                .create_time(contest.getCreate_time())
+                .update_time(contest.getUpdate_time())
                 .build();
     }
 
@@ -181,6 +189,8 @@ public class ContestServiceImpl implements ContestService {
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
                 .creater_id(contest.getUser().getId())
+                .create_time(contest.getCreate_time())
+                .update_time(contest.getUpdate_time())
                 .build();
     }
 
