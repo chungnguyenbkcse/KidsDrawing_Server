@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,35 +27,26 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "User_Register_Teach_Course")
-public class UserRegisterTeachCourse {
+@Table(name = "teacher_teach_semester")
+public class TeacherTeachSemester {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private User teacher;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "course_id", referencedColumnName = "id")
-    private Course course;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
-    private User reviewer;
-
     @Column(name = "status")
     private Boolean status;
 
-    @Builder.Default()
-    @Column(name = "create_time")
-    @CreationTimestamp
-    private LocalDateTime createTime = LocalDateTime.now();
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "semester_course_id", referencedColumnName = "id")
+    private SemesterCourse semesterCourse;
 
     @Builder.Default()
-    @Column(name = "update_time")
-    @UpdateTimestamp
-    private LocalDateTime updateTime = LocalDateTime.now();
+    @Column(name = "time")
+    @CreationTimestamp
+    private LocalDateTime time = LocalDateTime.now();
 }

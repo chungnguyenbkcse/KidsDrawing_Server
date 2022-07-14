@@ -1,0 +1,52 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/schedule-item
+Content-Type: application/json
+
+{
+    "schedule_id": 8,
+    "lesson_time": 6,
+    "date_of_week": 2
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/schedule-item
+Content-Type: application/json
+
+{
+    "schedule_id": 10,
+    "lesson_time": 7,
+    "date_of_week": 4
+}
+
+### UPDATE ART TYPE ACTION ###
+# @name update_art_type
+
+PUT {{rest}}/schedule-item/12
+Content-Type: application/json
+
+{
+    "schedule_id": 10,
+    "lesson_time": 7,
+    "date_of_week": 5
+}
+
+### REMOVE ART TYPE ACTION ###
+# @name update_art_type
+
+DELETE  {{rest}}/schedule-item/12
+
+### GET ART TYPE ACTION ###
+# @name get_art_type
+
+GET {{rest}}/schedule-item/11
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/schedule-item?page=0&size=2

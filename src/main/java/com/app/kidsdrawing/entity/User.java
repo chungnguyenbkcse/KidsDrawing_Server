@@ -99,12 +99,6 @@ public class User{
     @OneToMany(mappedBy="user")
     private Set<UserRegisterJoinContest> user;
 
-    @OneToMany(mappedBy="teacher")
-    private Set<UserRegisterTeachCourse> teacherRegisterCourses;
-
-    @OneToMany(mappedBy="reviewer")
-    private Set<UserRegisterTeachCourse> adminReviewCourse;
-
     @OneToMany(mappedBy="user")
     private Set<Schedule> schedules;
 

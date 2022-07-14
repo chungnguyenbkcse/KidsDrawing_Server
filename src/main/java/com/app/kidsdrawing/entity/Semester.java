@@ -28,8 +28,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "course")
-public class Course {
+@Table(name = "semester")
+public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -41,17 +41,15 @@ public class Course {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "max_participant")
-    private Integer max_participant;
+    @Column(name =  "number")
+    private Integer number;
 
-    @Column(name = "num_of_section")
-    private Integer num_of_section;
+    @Column(name =  "year")
+    private Integer year;
 
-    @Column(name = "price")
-    private Float price;
-
-    @Column(name = "image_url")
-    private String image_url;
+    @Column(name =  "start_time")
+    @CreationTimestamp
+    private LocalDateTime start_time;
 
     @Builder.Default()
     @Column(name = "create_time")
@@ -62,21 +60,6 @@ public class Course {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
-
-    @Column(name = "is_enabled")
-    private Boolean is_enabled;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "art_level_id", referencedColumnName = "id")
-    private ArtLevel artLevels;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "art_type_id", referencedColumnName = "id")
-    private ArtType artTypes;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "art_age_id", referencedColumnName = "id")
-    private ArtAge artAges;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
