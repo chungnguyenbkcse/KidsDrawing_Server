@@ -1,0 +1,24 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST {{rest}}/user-register-join-semester
+Content-Type: application/json
+
+{
+    "student_id": 1,
+    "semester_course_id": 15,
+    "payer_id": 2,
+    "price": 2000000
+}
+
+### GET TEACHER GRADE semester ACTION ###
+# @name get_teacher_grade_semester
+
+GET {{rest}}/user-register-join-semester/16
+
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/user-register-join-semester
