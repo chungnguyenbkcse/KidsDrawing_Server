@@ -31,8 +31,8 @@ public class SemesterCourse {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "creation_id", referencedColumnName = "id")
+    private Semester semester;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
