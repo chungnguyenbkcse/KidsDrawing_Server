@@ -129,4 +129,7 @@ public class User{
     @OneToMany(mappedBy="reviewer")
     private Set<StudentLeave> studentLeaves_2;
 
+    @OneToMany(mappedBy="creator")
+    private Set<Tutorial> tutorials;
+
 }

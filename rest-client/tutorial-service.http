@@ -1,0 +1,47 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/tutorial/admin
+Content-Type: application/json
+
+{
+    "creator_id": 3,
+    "section_id": 1,
+    "name": "Giáo án buổi 3",
+    "description": ""
+}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/tutorial/teacher
+Content-Type: application/json
+
+{
+    "creator_id": 3,
+    "section_id": 1,
+    "name": "Giáo án buổi 1",
+    "description": ""
+}
+
+### 
+# @name update_contest
+
+PUT {{rest}}/tutorial/1
+Content-Type: application/json
+
+{
+    "name": "Học kì 1 năm học 2022",
+    "description": "xxx",
+    "number": 1,
+    "start_time": "2022-08-12T12:59:11.332",
+    "year": 2022,
+    "creator_id": 3
+}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/tutorial/4
