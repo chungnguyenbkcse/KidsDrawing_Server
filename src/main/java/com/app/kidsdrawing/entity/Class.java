@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,39 +23,41 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "teacher_teach_semester")
-public class TeacherTeachSemester {
+@Table(name = "class")
+public class Class {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "status")
-    private Boolean status;
-
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private User teacher;
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
-    private User reviewer;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "registration_id", referencedColumnName = "id")
+    private TeacherTeachSemester teachSemester;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "semester_course_id", referencedColumnName = "id")
-    private SemesterCourse semesterCourse;
+    @Column(name = "security_code", nullable = false, unique = true)
+    private String security_code;
 
-    @OneToOne(mappedBy = "teachSemester")
-    private Class class1;
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
     @Builder.Default()
-    @Column(name = "time")
+    @Column(name = "create_time")
     @CreationTimestamp
-    private LocalDateTime time = LocalDateTime.now();
+    private LocalDateTime create_time = LocalDateTime.now();
+
+    @Builder.Default()
+    @Column(name = "update_time")
+    @UpdateTimestamp
+    private LocalDateTime update_time = LocalDateTime.now();
 }

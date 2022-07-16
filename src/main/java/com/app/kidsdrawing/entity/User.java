@@ -108,4 +108,10 @@ public class User{
     @OneToMany(mappedBy="teacher")
     private Set<TeacherRegisterQualification> teacher_register_qutifications;
 
+    @OneToMany(mappedBy="reviewer")
+    private Set<TeacherTeachSemester> admin_teacher_teach_semester;
+
+    @OneToMany(mappedBy="teacher")
+    private Set<TeacherTeachSemester> teacher_teach_semester;
+
 }
