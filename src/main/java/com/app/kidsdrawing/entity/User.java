@@ -123,4 +123,10 @@ public class User{
     @OneToMany(mappedBy="substitute_teacher")
     private Set<TeacherLeave> teacherLeaves_3;
 
+    @OneToMany(mappedBy="student")
+    private Set<StudentLeave> studentLeaves_1;
+
+    @OneToMany(mappedBy="reviewer")
+    private Set<StudentLeave> studentLeaves_2;
+
 }

@@ -3,31 +3,30 @@
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
 
-POST {{rest}}/teacher-leave
+POST {{rest}}/student-leave
 Content-Type: application/json
 
 {
     "section_id": 1,
-    "teacher_id": 4,
+    "student_id": 1,
     "class_id": 18,
-    "substitute_teacher_id": 5,
     "description": ""
 }
 
-### GET TEACHER GRADE semester ACTION ###
-# @name get_teacher_grade_semester
+### GET student GRADE semester ACTION ###
+# @name get_student_grade_semester
 
-GET {{rest}}/teacher-leave/17
+GET {{rest}}/student-leave/1
 
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 
-GET {{rest}}/teacher-leave
+GET {{rest}}/student-leave
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
 
-PUT {{rest}}/teacher-leave/admin/1
+PUT {{rest}}/student-leave/admin/1
 Content-Type: application/json
 
 {
