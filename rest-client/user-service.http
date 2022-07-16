@@ -84,6 +84,26 @@ Content-Type: application/json
     "roleNames": ["TEACHER_USER"]
 }
 
+### REGISTER ACTION ###
+# @name teacher_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "teacher-1",
+    "password": "12345678aA@",
+    "email": "teacher-1@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "roleNames": ["TEACHER_USER"]
+}
+
 ### ADMIN ACTION ###
 
 # @name login_admin

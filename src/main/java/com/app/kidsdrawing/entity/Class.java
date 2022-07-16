@@ -73,4 +73,7 @@ public class Class {
 
     @OneToMany(mappedBy="class1")
     private Set<Section> sections;
+
+    @OneToMany(mappedBy="class1")
+    private Set<TeacherLeave> teacherLeaves;
 }

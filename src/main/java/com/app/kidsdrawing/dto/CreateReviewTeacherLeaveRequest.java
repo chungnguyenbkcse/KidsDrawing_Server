@@ -3,7 +3,7 @@ package com.app.kidsdrawing.dto;
 import lombok.Data;
 
 @Data
-public class CreateReviewTeacherTeachSemesterRequest {
+public class CreateReviewTeacherLeaveRequest {
     private Long reviewer_id;
     private Boolean status;
 }

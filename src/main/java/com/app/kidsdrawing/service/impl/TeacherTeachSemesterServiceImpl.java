@@ -135,23 +135,11 @@ public class TeacherTeachSemesterServiceImpl implements TeacherTeachSemesterServ
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
 
-        Optional <SemesterCourse> semester_courseOpt = semesterCourseRepository.findById(createReviewTeacherTeachSemesterRequest.getSemester_course_id());
-        SemesterCourse semesterCouse = semester_courseOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.semester_course.not_found");
-        });
-
-        Optional <User> teacherOpt = userRepository.findById(createReviewTeacherTeachSemesterRequest.getTeacher_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_teacher.not_found");
-        });
 
         Optional <User> reviewerOpt = userRepository.findById(createReviewTeacherTeachSemesterRequest.getReviewer_id());
         User reviewer = reviewerOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_reviewer.not_found");
         });
-
-        updatedTeacherTeachSemester.setSemesterCourse(semesterCouse);
-        updatedTeacherTeachSemester.setTeacher(teacher);
         updatedTeacherTeachSemester.setReviewer(reviewer);
         updatedTeacherTeachSemester.setStatus(createReviewTeacherTeachSemesterRequest.getStatus());
 

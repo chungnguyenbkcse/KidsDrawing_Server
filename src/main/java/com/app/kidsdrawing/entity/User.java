@@ -114,4 +114,13 @@ public class User{
     @OneToMany(mappedBy="teacher")
     private Set<TeacherTeachSemester> teacher_teach_semester;
 
+    @OneToMany(mappedBy="teacher")
+    private Set<TeacherLeave> teacherLeaves_1;
+
+    @OneToMany(mappedBy="reviewer")
+    private Set<TeacherLeave> teacherLeaves_2;
+
+    @OneToMany(mappedBy="substitute_teacher")
+    private Set<TeacherLeave> teacherLeaves_3;
+
 }
