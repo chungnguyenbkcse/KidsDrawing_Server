@@ -1,0 +1,46 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST {{rest}}/teacher-register-tutorial
+Content-Type: application/json
+
+{
+    "teacher_id": 4,
+    "tutorial_id": 1,
+    "reviewer_id": 3,
+    "status": false
+}
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+PUT {{rest}}/teacher-register-tutorial/admin/2
+Content-Type: application/json
+
+{
+    "reviewer_id": 3,
+    "status": true
+}
+
+### GET TEACHER GRADE semester ACTION ###
+# @name get_teacher_grade_semester
+
+GET {{rest}}/teacher-register-tutorial/17
+
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/teacher-register-tutorial
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+PUT {{rest}}/teacher-register-tutorial/admin/17
+Content-Type: application/json
+
+{
+    "reviewer_id": 3,
+    "status": true
+}

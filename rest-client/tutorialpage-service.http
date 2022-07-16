@@ -10,7 +10,7 @@ Content-Type: application/json
     "tutorial_id": 1,
     "name": "Trang 1",
     "description": "xxx",
-    "number": 1,
+    "number": 1
 }
 
 ### CREATE CONTEST ACTION ###

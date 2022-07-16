@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,11 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,43 +27,30 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tutorial")
-public class Tutorial {
+@Table(name = "teacher_register_tutorial")
+public class TeacherRegisterTutorial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "section_id", referencedColumnName = "id")
-    private Section section;
+    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
+    private User reviewer;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User creator;
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private User teacher;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "toturial_id", referencedColumnName = "id")
+    private Tutorial tutorial;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "is_tutorial_nomal")
-    private Boolean is_tutorial_nomal;
+    @Column(name = "status")
+    private Boolean status;
 
     @Builder.Default()
-    @Column(name = "create_time")
+    @Column(name = "time")
     @CreationTimestamp
-    private LocalDateTime create_time = LocalDateTime.now();
-
-    @Builder.Default()
-    @Column(name = "update_time")
-    @UpdateTimestamp
-    private LocalDateTime update_time = LocalDateTime.now();
-
-    @OneToMany(mappedBy="tutorial")
-    private Set<TutorialPage> tutorial_pages;
-
-    @OneToMany(mappedBy="tutorial")
-    private Set<TeacherRegisterTutorial> teacherRegisterTutorials;
+    private LocalDateTime time = LocalDateTime.now();
 }
