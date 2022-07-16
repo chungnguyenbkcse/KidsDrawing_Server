@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,31 +28,26 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "section")
-public class Section {
+@Table(name = "exercise")
+public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "class_id", referencedColumnName = "id")
-    private Class class1;
+    @JoinColumn(name = "section_id", referencedColumnName = "id")
+    private Section section;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "level_id", referencedColumnName = "id")
+    private ExerciseLevel exerciseLevel;
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "number")
-    private Integer number;
-
-    @Column(name = "recording")
-    private String recording;
-
-    @Column(name = "message")
-    private String message;
 
     @Builder.Default()
     @Column(name = "create_time")
@@ -65,13 +58,4 @@ public class Section {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
-
-    @OneToMany(mappedBy="section")
-    private Set<TeacherLeave> teacherLeaves;
-
-    @OneToMany(mappedBy="section")
-    private Set<StudentLeave> studentLeaves;
-
-    @OneToMany(mappedBy="section")
-    private Set<Exercise> exercises;
 }

@@ -1,0 +1,48 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/exercise-level
+Content-Type: application/json
+
+{
+    "name": "Kiểm tra 1 tiết",
+    "description": "",
+    "weight": 10
+}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/exercise-level
+Content-Type: application/json
+
+{
+    "name": "Học kì 2 năm học 2022",
+    "description": "",
+    "number": 2,
+    "start_time": "2022-12-12T12:59:11.332",
+    "year": 2022,
+    "creator_id": 3
+}
+
+### 
+# @name update_contest
+
+PUT {{rest}}/exercise-level/1
+Content-Type: application/json
+
+{
+    "name": "Học kì 1 năm học 2022",
+    "description": "xxx",
+    "number": 1,
+    "start_time": "2022-08-12T12:59:11.332",
+    "year": 2022,
+    "creator_id": 3
+}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercise-level/1

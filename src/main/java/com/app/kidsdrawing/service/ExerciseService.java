@@ -1,0 +1,17 @@
+package com.app.kidsdrawing.service;
+
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+
+import com.app.kidsdrawing.dto.CreateExerciseRequest;
+import com.app.kidsdrawing.dto.GetExerciseResponse;
+
+public interface ExerciseService {
+    ResponseEntity<Map<String, Object>> getAllExercise();
+    ResponseEntity<Map<String, Object>> getAllExerciseBySectionId(Long id);
+    GetExerciseResponse getExerciseById(Long id);
+    Long createExercise(CreateExerciseRequest createExerciseRequest);
+    Long removeExerciseById(Long id);
+    Long updateExerciseById(Long id, CreateExerciseRequest createExerciseRequest);
+}
