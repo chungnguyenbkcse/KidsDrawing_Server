@@ -89,4 +89,7 @@ public class Contest {
     @OneToMany(mappedBy="contest")
     private Set<UserRegisterJoinContest> userRegisterJoinContests;
 
+    @OneToMany(mappedBy="contest")
+    private Set<ContestSubmission> contestSubmissions;
+
 }

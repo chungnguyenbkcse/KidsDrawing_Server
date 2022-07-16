@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,26 +28,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "exercise")
-public class Exercise {
+@Table(name = "exercise_submission")
+public class ExerciseSubmission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "section_id", referencedColumnName = "id")
-    private Section section;
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    private User student;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "level_id", referencedColumnName = "id")
-    private ExerciseLevel exerciseLevel;
+    @JoinColumn(name = "exercise_id", referencedColumnName = "id")
+    private Exercise exercise;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "description")
-    private String description;
+    @Column(name = "image_url")
+    private String image_url;
 
     @Builder.Default()
     @Column(name = "create_time")
@@ -60,7 +55,4 @@ public class Exercise {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
-
-    @OneToMany(mappedBy="exercise")
-    private Set<ExerciseSubmission> exerciseSubmissions;
 }
