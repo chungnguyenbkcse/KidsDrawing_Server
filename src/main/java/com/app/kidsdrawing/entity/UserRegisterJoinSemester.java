@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,10 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,4 +57,8 @@ public class UserRegisterJoinSemester {
     @Column(name = "time")
     @CreationTimestamp
     private LocalDateTime time = LocalDateTime.now();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userRegisterJoinSemesters")
+    @JsonIgnore
+    private Set<Class> classes;
 }

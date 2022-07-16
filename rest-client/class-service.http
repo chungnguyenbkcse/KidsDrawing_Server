@@ -36,4 +36,4 @@ Content-Type: application/json
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/3
+GET  {{rest}}/classes

@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -60,4 +63,10 @@ public class Class {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinTable(name = "class_has_register_join_semester",
+            joinColumns = { @JoinColumn(name = "class_id") },
+            inverseJoinColumns = { @JoinColumn(name = "join_registration_id") })
+    private Set<UserRegisterJoinSemester> userRegisterJoinSemesters;
 }
