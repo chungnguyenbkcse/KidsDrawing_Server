@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -140,5 +141,11 @@ public class User{
 
     @OneToMany(mappedBy="student")
     private Set<ExerciseSubmission> exerciseSubmissions;
+
+    @OneToOne(mappedBy = "student")
+    private UserGradeExerciseSubmission userGradeExerciseSubmission;
+
+    @OneToMany(mappedBy = "student")
+    private Set<UserGradeContestSubmission> userGradeContestSubmissions;
 
 }

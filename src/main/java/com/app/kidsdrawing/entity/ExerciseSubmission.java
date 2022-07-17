@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -55,4 +57,7 @@ public class ExerciseSubmission {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "exerciseSubmission")
+    Set<UserGradeExerciseSubmission> userGradeExerciseSubmissions;
 }

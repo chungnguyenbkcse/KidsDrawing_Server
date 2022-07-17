@@ -1,0 +1,45 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/user-grade-contest-submission
+Content-Type: application/json
+
+{
+    "student_id": 1,
+    "contest_submission_id": 1,
+    "feedback": "",
+    "score": 1
+}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/user-grade-contest-submission
+Content-Type: application/json
+
+{
+    "student_id": 1,
+    "contest_submission_id": 1,
+    "feedback": "",
+    "score": 1
+}
+
+### 
+# @name update_contest
+
+PUT {{rest}}/user-grade-contest-submission/1/1
+Content-Type: application/json
+
+{
+    "student_id": 1,
+    "contest_submission_id": 1,
+    "feedback": "xx",
+    "score": 10
+}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-grade-contest-submission
