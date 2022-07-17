@@ -25,7 +25,7 @@ import lombok.Setter;
 @Entity
 public class Privilege {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     Long id;
     @Column(name = "name", nullable = false, unique = true)

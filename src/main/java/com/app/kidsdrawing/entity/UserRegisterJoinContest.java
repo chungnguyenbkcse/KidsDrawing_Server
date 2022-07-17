@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name = "User_Register_Join_Contest")
 public class UserRegisterJoinContest {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

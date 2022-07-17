@@ -33,7 +33,7 @@ import lombok.Setter;
 @Table(name = "Contest")
 public class Contest {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

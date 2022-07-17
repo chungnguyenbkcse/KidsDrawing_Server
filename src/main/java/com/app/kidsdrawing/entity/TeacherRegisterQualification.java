@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name = "teacher_register_quatification")
 public class TeacherRegisterQualification {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

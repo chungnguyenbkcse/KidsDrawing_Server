@@ -85,6 +85,13 @@ public class User{
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private Set<User> parents;
+
+    @ManyToMany(mappedBy="parents")
+    private Set<User> students;
+
     @OneToMany(mappedBy="user")
     private Set<ArtLevel> artLevels;
 

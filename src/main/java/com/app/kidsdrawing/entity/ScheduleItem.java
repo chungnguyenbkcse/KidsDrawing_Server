@@ -27,7 +27,7 @@ import lombok.Setter;
 @Table(name = "Schedule_Item")
 public class ScheduleItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
