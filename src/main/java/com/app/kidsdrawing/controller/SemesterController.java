@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -49,9 +48,8 @@ public class SemesterController {
 
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesters(@RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(semesterService.getAllSemester(page, size));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesters() {
+        return ResponseEntity.ok().body(semesterService.getAllSemester());
     } 
 
     @CrossOrigin

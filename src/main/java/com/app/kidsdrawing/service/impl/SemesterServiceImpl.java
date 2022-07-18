@@ -9,9 +9,6 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -35,11 +32,10 @@ public class SemesterServiceImpl implements SemesterService {
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemester(int page, int size) {
+    public ResponseEntity<Map<String, Object>> getAllSemester() {
         List<GetSemesterResponse> allSemesterResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<Semester> pageSemester = semesterRepository.findAll(paging);
-        pageSemester.getContent().forEach(semester -> {
+        List<Semester> pageSemester = semesterRepository.findAll();
+        pageSemester.forEach(semester -> {
             GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
                     .id(semester.getId())
                     .name(semester.getName())
@@ -56,9 +52,6 @@ public class SemesterServiceImpl implements SemesterService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("semesters", allSemesterResponses);
-        response.put("currentPage", pageSemester.getNumber());
-        response.put("totalItems", pageSemester.getTotalElements());
-        response.put("totalPages", pageSemester.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -4,6 +4,7 @@
 # @name create_contest
 
 POST {{rest}}/semester
+
 Content-Type: application/json
 
 {
@@ -12,7 +13,7 @@ Content-Type: application/json
     "number": 1,
     "start_time": "2022-08-12T12:59:11.332",
     "year": 2022,
-    "creator_id": 3
+    "creator_id": 1
 }
 
 ### CREATE CONTEST ACTION ###
@@ -48,4 +49,4 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/semester/13
+GET  {{rest}}/semester

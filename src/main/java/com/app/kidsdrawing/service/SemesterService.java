@@ -8,7 +8,7 @@ import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 
 public interface SemesterService {
-    ResponseEntity<Map<String, Object>> getAllSemester(int page, int size);
+    ResponseEntity<Map<String, Object>> getAllSemester();
     GetSemesterResponse getSemesterById(Long id);
     Long createSemester(CreateSemesterRequest createSemesterRequest);
     Long removeSemesterById(Long id);
