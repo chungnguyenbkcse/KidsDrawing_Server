@@ -11,8 +11,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.app.kidsdrawing.entity.Role;
+import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.RoleRepository;
+import com.app.kidsdrawing.repository.UserRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -40,11 +42,17 @@ public class AuthUtil {
     private long accessTokenDuration = 600000;
     private long refreshTokenDuration = 3600000;
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
     public String generateAccessToken(String username, List<String> role_privilege)
             throws IllegalArgumentException, JWTCreationException {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        User user = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
+        });
         return JWT.create()
                 .withSubject("User Details")
+                .withClaim("id", user.getId())
                 .withClaim("username", username)
                 .withClaim("role_privilege", role_privilege)
                 .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenDuration))
