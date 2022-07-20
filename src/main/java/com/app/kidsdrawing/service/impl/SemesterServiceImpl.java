@@ -86,7 +86,7 @@ public class SemesterServiceImpl implements SemesterService {
                 .name(createSemesterRequest.getName())
                 .description(createSemesterRequest.getDescription())
                 .number(createSemesterRequest.getNumber())
-                .year(createSemesterRequest.getNumber())
+                .year(createSemesterRequest.getYear())
                 .start_time(createSemesterRequest.getStart_time())
                 .user(user)
                 .build();
@@ -119,6 +119,10 @@ public class SemesterServiceImpl implements SemesterService {
         });
 
         updatedSemester.setName(createSemesterRequest.getName());
+        updatedSemester.setDescription(createSemesterRequest.getDescription());
+        updatedSemester.setNumber(createSemesterRequest.getNumber());
+        updatedSemester.setYear(createSemesterRequest.getYear());
+        updatedSemester.setStart_time(createSemesterRequest.getStart_time());
         updatedSemester.setUser(user);
         semesterRepository.save(updatedSemester);
 
