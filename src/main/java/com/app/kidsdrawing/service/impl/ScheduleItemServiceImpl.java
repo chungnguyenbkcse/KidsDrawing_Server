@@ -53,7 +53,32 @@ public class ScheduleItemServiceImpl implements ScheduleItemService {
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("lesson_times", allScheduleItemResponses);
+        response.put("schedule_items", allScheduleItemResponses);
+        response.put("currentPage", pageScheduleItem.getNumber());
+        response.put("totalItems", pageScheduleItem.getTotalElements());
+        response.put("totalPages", pageScheduleItem.getTotalPages());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllScheduleItemByScheduleId(int page, int size, Long id) {
+        List<GetScheduleItemResponse> allScheduleItemResponses = new ArrayList<>();
+        Pageable paging = PageRequest.of(page, size);
+        Page<ScheduleItem> pageScheduleItem = scheduleItemRepository.findAll(paging);
+        pageScheduleItem.getContent().forEach(schedule_item -> {
+            if (schedule_item.getSchedule().getId() == id) {
+                GetScheduleItemResponse scheduleItemResponse = GetScheduleItemResponse.builder()
+                    .id(schedule_item.getId())
+                    .schedule_id(schedule_item.getSchedule().getId())
+                    .lesson_time(schedule_item.getLessonTime().getId())
+                    .date_of_week(schedule_item.getDate_of_week())
+                    .build();
+                allScheduleItemResponses.add(scheduleItemResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("schedule_items", allScheduleItemResponses);
         response.put("currentPage", pageScheduleItem.getNumber());
         response.put("totalItems", pageScheduleItem.getTotalElements());
         response.put("totalPages", pageScheduleItem.getTotalPages());

@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [1,2],
+    "parent_ids": [2],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -41,7 +41,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [2],
+    "parent_ids": [3],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -169,7 +169,7 @@ Content-Type: application/json
 ###
 
 # @name get_info_user
-GET {{rest}}/user/3
+GET {{rest}}/user/1
 Authorization: Bearer {{admin_access_token}}
 
 ###

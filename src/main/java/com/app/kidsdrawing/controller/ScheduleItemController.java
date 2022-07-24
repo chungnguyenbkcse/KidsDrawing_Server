@@ -51,7 +51,14 @@ public class ScheduleItemController {
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllScheduleItems(@RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size) {
         return ResponseEntity.ok().body(scheduleItemService.getAllScheduleItem(page, size));
-    } 
+    }
+    
+    @CrossOrigin
+    @GetMapping(value = "/schedule/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllScheduleItemsByScheduleId(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
+    @RequestParam(defaultValue = "3") int size) {
+        return ResponseEntity.ok().body(scheduleItemService.getAllScheduleItemByScheduleId(page, size, id));
+    }
 
     @CrossOrigin
     @GetMapping(value = "/{id}")

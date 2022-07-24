@@ -9,6 +9,7 @@ import com.app.kidsdrawing.dto.GetScheduleItemResponse;
 
 public interface ScheduleItemService {
     ResponseEntity<Map<String, Object>> getAllScheduleItem(int page, int size);
+    ResponseEntity<Map<String, Object>> getAllScheduleItemByScheduleId(int page, int size, Long id);
     GetScheduleItemResponse getScheduleItemById(Long id);
     Long createScheduleItem(CreateScheduleItemRequest createScheduleItemRequest);
     Long removeScheduleItemById(Long id);

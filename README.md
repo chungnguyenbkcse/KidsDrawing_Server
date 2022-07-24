@@ -6,3 +6,6 @@
 - exception: used to handle the specific exceptions and sending the custom responses to the client.
 - repository:  a mechanism for encapsulating storage, retrieval, and search behavior which emulates a collection of objects.
 - service: business logic
+
+# TODO
+- getScheduleItemByScheduleId(Long id)
