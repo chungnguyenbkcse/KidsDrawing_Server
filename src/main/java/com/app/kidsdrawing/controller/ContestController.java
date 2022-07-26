@@ -31,11 +31,11 @@ public class ContestController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createContest(@RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) CreateContestRequest createContestRequest) {
+    public ResponseEntity<GetContestResponse> createContest(@RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) CreateContestRequest createContestRequest) {
         Long contestId = contestService.createContest(createContestRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{contestId}")
+        ServletUriComponentsBuilder.fromCurrentRequest().path("/{contestId}")
                 .buildAndExpand(contestId).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().body(contestService.getContestById(contestId));
     }
 
     @CrossOrigin

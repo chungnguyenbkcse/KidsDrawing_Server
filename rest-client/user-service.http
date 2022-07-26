@@ -169,6 +169,22 @@ Content-Type: application/json
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
+POST {{rest}}/section-template
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "creator_id": 1,
+    "course_id": 1,
+    "name": "Giaos an 1",
+    "description": "",
+    "number": 1,
+    "teaching_form": true
+}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
 POST {{rest}}/contest
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json

@@ -1,0 +1,33 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/section-template
+Content-Type: application/json
+
+{
+    "creator_id": 1,
+    "course_id": 1,
+    "name": "Giaos an 1",
+    "description": "",
+    "number": 1,
+    "teaching_form": true
+}
+
+PUT {{rest}}/section-template/1
+Content-Type: application/json
+
+{
+    "creator_id": 1,
+    "course_id": 1,
+    "name": "Giao an 2",
+    "description": "",
+    "number": 1,
+    "teaching_form": true
+}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/section-template/1
