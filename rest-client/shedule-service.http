@@ -36,12 +36,12 @@ Content-Type: application/json
 ### REMOVE ART TYPE ACTION ###
 # @name update_art_type
 
-DELETE  {{rest}}/lesson-time/2
+DELETE  {{rest}}/lesson-time/1
 
 ### GET ART TYPE ACTION ###
 # @name get_art_type
 
-GET {{rest}}/schedule/10
+GET {{rest}}/schedule/1
 
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type

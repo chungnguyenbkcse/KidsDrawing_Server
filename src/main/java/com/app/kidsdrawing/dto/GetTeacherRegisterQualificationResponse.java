@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetTeacherRegisterQualificationResponse {
     private Long id;
-    private Long art_type_id;
-    private Long art_age_id;
+    private Long teacher_id;
+    private Long reviewer_id;
+    private Long course_id;
     private String degree_photo_url;
     private Boolean status;
 }

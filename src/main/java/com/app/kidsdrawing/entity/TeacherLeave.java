@@ -10,10 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -56,6 +58,8 @@ public class TeacherLeave {
     private User substitute_teacher;
 
     @Column(name = "description")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String description;
 
     @Column(name = "status")

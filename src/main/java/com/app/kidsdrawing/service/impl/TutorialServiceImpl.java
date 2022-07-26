@@ -46,7 +46,6 @@ public class TutorialServiceImpl implements TutorialService{
                 .creator_id(content.getCreator().getId())
                 .name(content.getName())
                 .description(content.getDescription())
-                .is_tutorial_nomal(content.getIs_tutorial_nomal())
                 .create_time(content.getCreate_time())
                 .update_time(content.getUpdate_time())
                 .build();
@@ -70,7 +69,6 @@ public class TutorialServiceImpl implements TutorialService{
                     .creator_id(content.getCreator().getId())
                     .name(content.getName())
                     .description(content.getDescription())
-                    .is_tutorial_nomal(content.getIs_tutorial_nomal())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
                     .build();
@@ -88,14 +86,13 @@ public class TutorialServiceImpl implements TutorialService{
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
         List<Tutorial> listTutorial = tutorialRepository.findAll();
         listTutorial.forEach(content -> {
-            if (content.getSection().getId() == id && content.getIs_tutorial_nomal() == true){
+            if (content.getSection().getId() == id){
                 GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
                     .id(content.getId())
                     .section_id(content.getSection().getId())
                     .creator_id(content.getCreator().getId())
                     .name(content.getName())
                     .description(content.getDescription())
-                    .is_tutorial_nomal(content.getIs_tutorial_nomal())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
                     .build();
@@ -113,14 +110,13 @@ public class TutorialServiceImpl implements TutorialService{
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
         List<Tutorial> listTutorial = tutorialRepository.findAll();
         listTutorial.forEach(content -> {
-            if (content.getSection().getId() == id && content.getIs_tutorial_nomal() == false){
+            if (content.getSection().getId() == id){
                 GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
                     .id(content.getId())
                     .section_id(content.getSection().getId())
                     .creator_id(content.getCreator().getId())
                     .name(content.getName())
                     .description(content.getDescription())
-                    .is_tutorial_nomal(content.getIs_tutorial_nomal())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
                     .build();
@@ -145,7 +141,6 @@ public class TutorialServiceImpl implements TutorialService{
                     .creator_id(content.getCreator().getId())
                     .name(content.getName())
                     .description(content.getDescription())
-                    .is_tutorial_nomal(content.getIs_tutorial_nomal())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
                     .build();
@@ -171,7 +166,6 @@ public class TutorialServiceImpl implements TutorialService{
             .creator_id(tutorial.getCreator().getId())
             .name(tutorial.getName())
             .description(tutorial.getDescription())
-            .is_tutorial_nomal(tutorial.getIs_tutorial_nomal())
             .create_time(tutorial.getCreate_time())
             .update_time(tutorial.getUpdate_time())
             .build();
@@ -195,7 +189,6 @@ public class TutorialServiceImpl implements TutorialService{
                 .creator(creator)
                 .name(createTutorialRequest.getName())
                 .description(createTutorialRequest.getDescription())
-                .is_tutorial_nomal(createTutorialRequest.getIs_tutorial_nomal())
                 .build();
         tutorialRepository.save(savedTutorial);
 
@@ -219,7 +212,6 @@ public class TutorialServiceImpl implements TutorialService{
                 .creator(creator)
                 .name(createTutorialAdminRequest.getName())
                 .description(createTutorialAdminRequest.getDescription())
-                .is_tutorial_nomal(createTutorialAdminRequest.getIs_tutorial_nomal())
                 .build();
         tutorialRepository.save(savedTutorial);
 

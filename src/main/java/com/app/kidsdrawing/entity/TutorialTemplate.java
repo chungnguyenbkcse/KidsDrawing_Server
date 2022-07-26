@@ -30,16 +30,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tutorial")
-public class Tutorial {
+@Table(name = "tutorial_template")
+public class TutorialTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "section_id", referencedColumnName = "id")
-    private Section section;
+    @JoinColumn(name = "section_template_id", referencedColumnName = "id")
+    private SectionTemplate sectionTemplate;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
@@ -51,6 +51,9 @@ public class Tutorial {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "is_tutorial_nomal")
+    private Boolean is_tutorial_nomal;
+
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp
@@ -61,8 +64,8 @@ public class Tutorial {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @OneToMany(mappedBy="tutorial")
-    private Set<TutorialPage> tutorial_pages;
+    @OneToMany(mappedBy="tutorialTemplate")
+    private Set<TutorialTemplatePage> tutorialTemplatePages;
 
     @OneToMany(mappedBy="tutorial")
     private Set<TeacherRegisterTutorial> teacherRegisterTutorials;

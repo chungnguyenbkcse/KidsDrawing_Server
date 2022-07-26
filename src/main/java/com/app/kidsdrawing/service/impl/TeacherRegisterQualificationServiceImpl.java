@@ -17,13 +17,11 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateTeacherRegisterQualificationRequest;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
-import com.app.kidsdrawing.entity.ArtAge;
-import com.app.kidsdrawing.entity.ArtType;
+import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.ArtAgeRepository;
-import com.app.kidsdrawing.repository.ArtTypeRepository;
+import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.TeacherRegisterQualificationService;
@@ -36,8 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQualificationService{
     
     private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
-    private final ArtAgeRepository artAgeRepository;
-    private final ArtTypeRepository artTypeRepository;
+    private final CourseRepository courseRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -49,8 +46,9 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
             if (content.getTeacher().getId() == id){
                 GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                     .id(content.getId())
-                    .art_type_id(content.getArtTypes().getId())
-                    .art_age_id(content.getArtAges().getId())
+                    .teacher_id(content.getTeacher().getId())
+                    .reviewer_id(content.getReviewer().getId())
+                    .course_id(content.getCourse().getId())
                     .degree_photo_url(content.getDegree_photo_url())
                     .status(content.getStatus())
                     .build();
@@ -75,8 +73,9 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
         return GetTeacherRegisterQualificationResponse.builder()
                 .id(teacherRegisterQualification.getId())
-                .art_type_id(teacherRegisterQualification.getArtTypes().getId())
-                .art_age_id(teacherRegisterQualification.getArtAges().getId())
+                .teacher_id(teacherRegisterQualification.getTeacher().getId())
+                .reviewer_id(teacherRegisterQualification.getReviewer().getId())
+                .course_id(teacherRegisterQualification.getCourse().getId())
                 .degree_photo_url(teacherRegisterQualification.getDegree_photo_url())
                 .status(teacherRegisterQualification.getStatus())
                 .build();
@@ -84,15 +83,15 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
     @Override
     public Long createTeacherRegisterQualification(CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest) {
-        ArtType art_type = artTypeRepository.getById(createTeacherRegisterQualificationRequest.getArt_type_id());
-        ArtAge art_age = artAgeRepository.getById(createTeacherRegisterQualificationRequest.getArt_age_id());
+        Course course = courseRepository.getById(createTeacherRegisterQualificationRequest.getCourse_id());
         User teacher = userRepository.getById(createTeacherRegisterQualificationRequest.getTeacher_id());
+        User reviewer = userRepository.getById((long) 1);
         TeacherRegisterQualification savedTeacherRegisterQualification = TeacherRegisterQualification.builder()
-                .artTypes(art_type)
-                .artAges(art_age)
+                .teacher(teacher)
+                .reviewer(reviewer)
+                .course(course)
                 .status(createTeacherRegisterQualificationRequest.getStatus())
                 .degree_photo_url(createTeacherRegisterQualificationRequest.getDegree_photo_url())
-                .teacher(teacher)
                 .build();
         teacherRegisterQualificationRepository.save(savedTeacherRegisterQualification);
 
@@ -116,10 +115,12 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         TeacherRegisterQualification updatedTeacherRegisterQualification = teacherRegisterQualificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherRegisterQualification.not_found");
         });
-        ArtType art_type = artTypeRepository.getById(createTeacherRegisterQualificationRequest.getArt_type_id());
-        ArtAge art_age = artAgeRepository.getById(createTeacherRegisterQualificationRequest.getArt_age_id());
-        updatedTeacherRegisterQualification.setArtAges(art_age);
-        updatedTeacherRegisterQualification.setArtTypes(art_type);
+        Course course = courseRepository.getById(createTeacherRegisterQualificationRequest.getCourse_id());
+        User teacher = userRepository.getById(createTeacherRegisterQualificationRequest.getTeacher_id());
+        User reviewer = userRepository.getById((long) 1);
+        updatedTeacherRegisterQualification.setCourse(course);
+        updatedTeacherRegisterQualification.setTeacher(teacher);
+        updatedTeacherRegisterQualification.setReviewer(reviewer);
         updatedTeacherRegisterQualification.setDegree_photo_url(createTeacherRegisterQualificationRequest.getDegree_photo_url());
         teacherRegisterQualificationRepository.save(updatedTeacherRegisterQualification);
 

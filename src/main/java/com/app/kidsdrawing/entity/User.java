@@ -116,11 +116,8 @@ public class User{
     @OneToMany(mappedBy="teacher")
     private Set<TeacherRegisterQualification> teacher_register_qutifications;
 
-    @OneToMany(mappedBy="reviewer")
-    private Set<TeacherTeachSemester> admin_teacher_teach_semester;
-
     @OneToMany(mappedBy="teacher")
-    private Set<TeacherTeachSemester> teacher_teach_semester;
+    private Set<UserRegisterTeachSemester> teacher_teach_semester;
 
     @OneToMany(mappedBy="teacher")
     private Set<TeacherLeave> teacherLeaves_1;
@@ -154,5 +151,8 @@ public class User{
 
     @OneToMany(mappedBy = "student")
     private Set<UserGradeContestSubmission> userGradeContestSubmissions;
+
+    @OneToMany(mappedBy = "user")
+    private Set<SectionTemplate> sectionTemplates;
 
 }

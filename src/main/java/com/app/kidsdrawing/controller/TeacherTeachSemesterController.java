@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.app.kidsdrawing.dto.CreateReviewTeacherTeachSemesterRequest;
 import com.app.kidsdrawing.dto.CreateTeacherTeachSemesterRequest;
 import com.app.kidsdrawing.dto.GetTeacherTeachSemesterResponse;
-import com.app.kidsdrawing.service.TeacherTeachSemesterService;
+import com.app.kidsdrawing.service.UserRegisterTeachSemesterService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(value = "/api/v1/teacher-teach-semester")
 public class TeacherTeachSemesterController {
-    private final TeacherTeachSemesterService  teacherTeachSemesterService;
+    private final UserRegisterTeachSemesterService  teacherTeachSemesterService;
 
     @CrossOrigin
     @GetMapping
@@ -47,15 +46,6 @@ public class TeacherTeachSemesterController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateTeacherTeachSemester(@PathVariable Long id, @RequestBody CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
         Long teacherTeachSemesterId = teacherTeachSemesterService.updateTeacherTeachSemesterById(id,createTeacherTeachSemesterRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-                .buildAndExpand(teacherTeachSemesterId).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @CrossOrigin
-    @PutMapping(value = "/admin/{id}")
-    public ResponseEntity<String> updateStatusTeacherTeachSemester(@PathVariable Long id, @RequestBody CreateReviewTeacherTeachSemesterRequest createReviewTeacherTeachSemesterRequest) {
-        Long teacherTeachSemesterId = teacherTeachSemesterService.updateStatusTeacherTeachSemesterById(id,createReviewTeacherTeachSemesterRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(teacherTeachSemesterId).toUri();
         return ResponseEntity.created(location).build();

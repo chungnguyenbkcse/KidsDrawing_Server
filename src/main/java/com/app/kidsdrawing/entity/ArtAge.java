@@ -39,7 +39,4 @@ public class ArtAge {
 
     @OneToMany(mappedBy="artAges")
     private Set<Course> courses;
-
-    @OneToMany(mappedBy="artAges")
-    private Set<TeacherRegisterQualification> teacherRegisterQualifications;
 }

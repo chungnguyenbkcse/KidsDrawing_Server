@@ -6,11 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +42,8 @@ public class UserGradeContestSubmission {
     ContestSubmission contestSubmission;
 
     @Column(name = "feedback")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String feedback;
 
     @Column(name = "score")

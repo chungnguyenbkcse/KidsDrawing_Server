@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [2],
+    "parent_ids": [1],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -41,7 +41,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [3],
+    "parent_ids": [2],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -164,6 +164,65 @@ Content-Type: application/json
 {
     "username": "admin",
     "password": "12345678aA@"
+}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/contest
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Cuộc thi vẽ tranh gia đình",
+    "description": "Vẽ về những người thân trong gia đình",
+    "max_participant": 20,
+    "registration_time": "2022-07-12T12:59:11.332",
+    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
+    "start_time": "2022-08-12T12:59:11.332",
+    "end_time": "2022-09-12T12:59:11.332",
+    "is_enabled": true,
+    "creater_id": 3,
+    "art_age_id": 1,
+    "art_type_id": 1
+}
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/semester-course?page=0&size=2
+
+### CREATE COURSE ACTION ###
+# @name create_course
+
+POST {{rest}}/course
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Khóa học mầm sơn dầu cơ bản",
+    "description": "<p>hello nguyen van chung</p>",
+    "max_participant": 20,
+    "num_of_section": 10,
+    "price": 2000000,
+    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344893/lop-day-hoc-ve-tre-em-be-thieu-nhi-370x255_natvks.png",
+    "is_enabled": false,
+    "creator_id": 3,
+    "art_age_id": 1,
+    "art_type_id": 2,
+    "art_level_id": 1
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/schedule
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Lịch học 2",
+    "creator_id": 1
 }
 
 ###

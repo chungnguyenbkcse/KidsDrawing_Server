@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateClassRequest;
 import com.app.kidsdrawing.dto.GetClassResponse;
-import com.app.kidsdrawing.entity.TeacherTeachSemester;
+import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
@@ -76,8 +76,8 @@ public class ClassesServiceImpl implements ClassesService{
 
     @Override
     public Long createClass(CreateClassRequest createClassRequest) {
-        Optional <TeacherTeachSemester> teacherTeachSemesterOpt = teacherTeachSemesterRepository.findById(createClassRequest.getRegistration_id());
-        TeacherTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
+        Optional <UserRegisterTeachSemester> teacherTeachSemesterOpt = teacherTeachSemesterRepository.findById(createClassRequest.getRegistration_id());
+        UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.teacher_teach_semester.not_found");
         });
 
@@ -115,8 +115,8 @@ public class ClassesServiceImpl implements ClassesService{
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        Optional <TeacherTeachSemester> teacherTeachSemesterOpt = teacherTeachSemesterRepository.findById(createClassRequest.getRegistration_id());
-        TeacherTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
+        Optional <UserRegisterTeachSemester> teacherTeachSemesterOpt = teacherTeachSemesterRepository.findById(createClassRequest.getRegistration_id());
+        UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.teacher_teach_semester.not_found");
         });
 

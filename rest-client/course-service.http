@@ -27,8 +27,8 @@ PUT {{rest}}/course/3
 Content-Type: application/json
 
 {
-    "name": "Khóa học mầm chì màu cơ bản",
-    "description": "xxxx",
+    "name": "Khóa học mầm sơn dầu cơ bản",
+    "description": "<p>hello nguyen van chung</p>",
     "max_participant": 20,
     "num_of_section": 10,
     "price": 2000000,
@@ -36,8 +36,8 @@ Content-Type: application/json
     "is_enabled": false,
     "creator_id": 3,
     "art_age_id": 1,
-    "art_type_id": 1,
-    "art_level_id": 2
+    "art_type_id": 2,
+    "art_level_id": 1
 }
 
 ### GET CONTEST ACTION ###

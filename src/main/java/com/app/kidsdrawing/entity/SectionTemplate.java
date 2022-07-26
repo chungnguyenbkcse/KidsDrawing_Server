@@ -32,14 +32,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "course")
-public class Course {
+@Table(name = "section_template")
+public class SectionTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
+    private Course course;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description")
@@ -47,17 +55,11 @@ public class Course {
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
-    @Column(name = "max_participant")
-    private Integer max_participant;
+    @Column(name = "number")
+    private Integer number;
 
-    @Column(name = "num_of_section")
-    private Integer num_of_section;
-
-    @Column(name = "price")
-    private Float price;
-
-    @Column(name = "image_url")
-    private String image_url;
+    @Column(name = "teaching_form")
+    private Boolean teaching_form;
 
     @Builder.Default()
     @Column(name = "create_time")
@@ -69,25 +71,9 @@ public class Course {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @Column(name = "is_enabled")
-    private Boolean is_enabled;
+    @OneToMany(mappedBy="sectionTemplate")
+    private Set<ExerciseTemplate> exerciseTemplates;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "art_level_id", referencedColumnName = "id")
-    private ArtLevel artLevels;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "art_type_id", referencedColumnName = "id")
-    private ArtType artTypes;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "art_age_id", referencedColumnName = "id")
-    private ArtAge artAges;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
-
-    @OneToMany(mappedBy = "course")
-    private Set<SectionTemplate> sectionTemplates;
+    @OneToMany(mappedBy="sectionTemplate")
+    private Set<TutorialTemplate> tutorialTemplates;
 }

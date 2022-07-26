@@ -30,11 +30,9 @@ public class ScheduleController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createSchedule(@RequestBody CreateScheduleRequest createScheduleRequest) {
+    public ResponseEntity<GetScheduleResponse> createSchedule(@RequestBody CreateScheduleRequest createScheduleRequest) {
         Long scheduleId = scheduleService.createSchedule(createScheduleRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{scheduleId}")
-                .buildAndExpand(scheduleId).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().body(scheduleService.getScheduleById(scheduleId));
     }
 
     @CrossOrigin

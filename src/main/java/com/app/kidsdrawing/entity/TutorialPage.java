@@ -34,7 +34,6 @@ public class TutorialPage {
     @JoinColumn(name = "toturial_id", referencedColumnName = "id")
     private Tutorial tutorial;
 
-
     @Column(name = "name", nullable = false)
     private String name;
 

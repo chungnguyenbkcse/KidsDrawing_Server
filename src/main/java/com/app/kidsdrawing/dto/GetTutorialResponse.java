@@ -17,7 +17,6 @@ public class GetTutorialResponse {
     private Long creator_id;
     private String name;
     private String description;
-    private Boolean is_tutorial_nomal;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }
