@@ -39,7 +39,7 @@ public class UserGradeContestController {
     @GetMapping(value = "/contest/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByContestId(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(userGradeContestService.getAllUserGradeContestByTeacherId(page, size, id));
+        return ResponseEntity.ok().body(userGradeContestService.getAllUserGradeContestByContestId(page, size, id));
     }
 
     @CrossOrigin
