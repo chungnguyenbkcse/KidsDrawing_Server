@@ -37,11 +37,11 @@ public class ScheduleController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateSchedule(@PathVariable Long id, @RequestBody CreateScheduleRequest createScheduleRequest) {
+    public ResponseEntity<GetScheduleResponse> updateSchedule(@PathVariable Long id, @RequestBody CreateScheduleRequest createScheduleRequest) {
         Long scheduleId = scheduleService.updateScheduleById(id,createScheduleRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+        ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(scheduleId).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().body(scheduleService.getScheduleById(scheduleId));
     }
 
     @CrossOrigin

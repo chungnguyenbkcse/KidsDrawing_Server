@@ -50,11 +50,11 @@ public class SectionTemplateController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateSectionTemplate(@PathVariable Long id, @RequestBody CreateSectionTemplateRequest createSectionTemplateRequest) {
+    public ResponseEntity<GetSectionTemplateResponse> updateSectionTemplate(@PathVariable Long id, @RequestBody CreateSectionTemplateRequest createSectionTemplateRequest) {
         Long sectionTemplateId = sectionTemplateService.updateSectionTemplateById(id,createSectionTemplateRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+        ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(sectionTemplateId).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().body(sectionTemplateService.getSectionTemplateById(sectionTemplateId));
     }
 
     @CrossOrigin

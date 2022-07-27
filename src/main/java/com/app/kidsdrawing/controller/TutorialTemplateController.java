@@ -41,20 +41,20 @@ public class TutorialTemplateController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createTutorialTemplate(@RequestBody CreateTutorialTemplateRequest createTutorialTemplateRequest) {
+    public ResponseEntity<GetTutorialTemplateResponse> createTutorialTemplate(@RequestBody CreateTutorialTemplateRequest createTutorialTemplateRequest) {
         Long tutorialTemplateId = tutorialTemplateService.createTutorialTemplate(createTutorialTemplateRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{tutorialTemplateId}")
+        ServletUriComponentsBuilder.fromCurrentRequest().path("/{tutorialTemplateId}")
                 .buildAndExpand(tutorialTemplateId).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().body(tutorialTemplateService.getTutorialTemplateById(tutorialTemplateId));
     }
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateTutorialTemplate(@PathVariable Long id, @RequestBody CreateTutorialTemplateRequest createTutorialTemplateRequest) {
+    public ResponseEntity<GetTutorialTemplateResponse> updateTutorialTemplate(@PathVariable Long id, @RequestBody CreateTutorialTemplateRequest createTutorialTemplateRequest) {
         Long tutorialTemplateId = tutorialTemplateService.updateTutorialTemplateById(id,createTutorialTemplateRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+        ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(tutorialTemplateId).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().body(tutorialTemplateService.getTutorialTemplateById(tutorialTemplateId));
     }
 
     @CrossOrigin
