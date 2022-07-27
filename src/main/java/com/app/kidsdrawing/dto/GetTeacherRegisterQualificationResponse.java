@@ -15,5 +15,5 @@ public class GetTeacherRegisterQualificationResponse {
     private Long reviewer_id;
     private Long course_id;
     private String degree_photo_url;
-    private Boolean status;
+    private String status;
 }

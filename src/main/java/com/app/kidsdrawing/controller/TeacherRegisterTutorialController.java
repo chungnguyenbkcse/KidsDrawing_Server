@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.app.kidsdrawing.dto.CreateStatusTeacherRegisterTutorialRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRegisterTutorialRequest;
 import com.app.kidsdrawing.dto.GetTeacherRegisterTutorialResponse;
 import com.app.kidsdrawing.service.TeacherRegisterTutorialService;
@@ -59,15 +58,6 @@ public class TeacherRegisterTutorialController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateTeacherRegisterTutorial(@PathVariable Long id, @RequestBody CreateTeacherRegisterTutorialRequest createTeacherRegisterTutorialRequest) {
         Long teacherRegisterTutorialId = teacherRegisterTutorialService.updateTeacherRegisterTutorialById(id,createTeacherRegisterTutorialRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-                .buildAndExpand(teacherRegisterTutorialId).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @CrossOrigin
-    @PutMapping(value = "/admin/{id}")
-    public ResponseEntity<String> updateStatusTeacherRegisterTutorial(@PathVariable Long id, @RequestBody CreateStatusTeacherRegisterTutorialRequest createReviewTeacherRegisterTutorialRequest) {
-        Long teacherRegisterTutorialId = teacherRegisterTutorialService.updateStatusTeacherRegisterTutorialById(id,createReviewTeacherRegisterTutorialRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(teacherRegisterTutorialId).toUri();
         return ResponseEntity.created(location).build();

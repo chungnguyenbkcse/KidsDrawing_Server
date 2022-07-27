@@ -16,6 +16,7 @@ public class GetTeacherRegisterTutorialResponse {
     private Long reviewer_id;
     private Long teacher_id;
     private Long tutorial_id;
-    private Boolean status;
+    private Long tutorial_template_id;
+    private String status;
     private LocalDateTime time;
 }

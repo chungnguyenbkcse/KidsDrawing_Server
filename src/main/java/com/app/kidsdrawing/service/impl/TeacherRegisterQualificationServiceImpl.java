@@ -126,20 +126,4 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
         return updatedTeacherRegisterQualification.getId();
     }
-
-    @Override
-    public Long updateStatusTeacherRegisterQualificationById(Long id, Long admin_id) {
-        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById(id);
-        User reviewer = userRepository.getById(admin_id);
-        
-        TeacherRegisterQualification updatedTeacherRegisterQualification = teacherRegisterQualificationOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.TeacherRegisterQualification.not_found");
-        });
-
-        updatedTeacherRegisterQualification.setStatus(true);
-        updatedTeacherRegisterQualification.setReviewer(reviewer);
-        teacherRegisterQualificationRepository.save(updatedTeacherRegisterQualification);
-
-        return updatedTeacherRegisterQualification.getId();
-    }
 }

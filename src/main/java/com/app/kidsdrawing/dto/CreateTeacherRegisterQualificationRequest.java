@@ -7,5 +7,5 @@ public class CreateTeacherRegisterQualificationRequest {
     private Long teacher_id;
     private Long course_id;
     private String degree_photo_url;
-    private Boolean status;
+    private String status;
 }

@@ -46,8 +46,12 @@ public class TeacherRegisterTutorial {
     @JoinColumn(name = "toturial_id", referencedColumnName = "id")
     private Tutorial tutorial;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "toturial_template_id", referencedColumnName = "id")
+    private TutorialTemplate tutorialTemplate;
+
     @Column(name = "status")
-    private Boolean status;
+    private String status;
 
     @Builder.Default()
     @Column(name = "time")

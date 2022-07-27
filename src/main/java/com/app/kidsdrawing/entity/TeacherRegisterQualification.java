@@ -34,7 +34,7 @@ public class TeacherRegisterQualification {
     private String degree_photo_url;
 
     @Column(name = "status")
-    private Boolean status;
+    private String status;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "reviewer_id", referencedColumnName = "id")

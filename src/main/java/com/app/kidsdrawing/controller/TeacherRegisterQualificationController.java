@@ -54,15 +54,6 @@ public class TeacherRegisterQualificationController {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/admin/{id}/{admin_id}")
-    public ResponseEntity<String> updateStatusTeacherRegisterQualification(@PathVariable Long id, @PathVariable Long admin_id) {
-        Long teacherRegisterQualificationId = teacherRegisterQualificationService.updateStatusTeacherRegisterQualificationById(id,admin_id);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-                .buildAndExpand(teacherRegisterQualificationId).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @CrossOrigin
     @GetMapping(value = "/{id}")
     public ResponseEntity<GetTeacherRegisterQualificationResponse> getTeacherRegisterQualificationById(@PathVariable Long id) {
         return ResponseEntity.ok().body(teacherRegisterQualificationService.getTeacherRegisterQualificationById(id));

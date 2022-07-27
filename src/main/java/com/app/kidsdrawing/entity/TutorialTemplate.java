@@ -67,6 +67,9 @@ public class TutorialTemplate {
     @OneToMany(mappedBy="tutorialTemplate")
     private Set<TutorialTemplatePage> tutorialTemplatePages;
 
+    @OneToMany(mappedBy="tutorialTemplate")
+    private Set<TeacherRegisterTutorial> teacherRegisterTutorials2;
+
     @OneToMany(mappedBy="tutorial")
     private Set<TeacherRegisterTutorial> teacherRegisterTutorials;
 }

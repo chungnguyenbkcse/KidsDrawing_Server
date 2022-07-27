@@ -12,15 +12,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.app.kidsdrawing.dto.CreateStatusTeacherRegisterTutorialRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRegisterTutorialRequest;
 import com.app.kidsdrawing.dto.GetTeacherRegisterTutorialResponse;
 import com.app.kidsdrawing.entity.TeacherRegisterTutorial;
 import com.app.kidsdrawing.entity.Tutorial;
+import com.app.kidsdrawing.entity.TutorialTemplate;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.TeacherRegisterTutorialRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
+import com.app.kidsdrawing.repository.TutorialTemplateRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.TeacherRegisterTutorialService;
 
@@ -33,6 +34,7 @@ public class TeacherRegisterTutorialServiceImpl implements TeacherRegisterTutori
     
     private final TeacherRegisterTutorialRepository teacherRegisterTutorialRepository;
     private final TutorialRepository tutorialRepository;
+    private final TutorialTemplateRepository tutorialTemplateRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -45,6 +47,7 @@ public class TeacherRegisterTutorialServiceImpl implements TeacherRegisterTutori
                 .teacher_id(content.getTeacher().getId())
                 .reviewer_id(content.getReviewer().getId())
                 .tutorial_id(content.getTutorial().getId())
+                .tutorial_template_id(content.getTutorialTemplate().getId())
                 .status(content.getStatus())
                 .time(content.getTime())
                 .build();
@@ -67,6 +70,7 @@ public class TeacherRegisterTutorialServiceImpl implements TeacherRegisterTutori
                     .teacher_id(content.getTeacher().getId())
                     .reviewer_id(content.getReviewer().getId())
                     .tutorial_id(content.getTutorial().getId())
+                    .tutorial_template_id(content.getTutorialTemplate().getId())
                     .status(content.getStatus())
                     .time(content.getTime())
                     .build();
@@ -115,6 +119,7 @@ public class TeacherRegisterTutorialServiceImpl implements TeacherRegisterTutori
             .teacher_id(teacherRegisterTutorial.getTeacher().getId())
             .reviewer_id(teacherRegisterTutorial.getReviewer().getId())
             .tutorial_id(teacherRegisterTutorial.getTutorial().getId())
+            .tutorial_template_id(teacherRegisterTutorial.getTutorialTemplate().getId())
             .status(teacherRegisterTutorial.getStatus())
             .time(teacherRegisterTutorial.getTime())
             .build();
@@ -133,6 +138,11 @@ public class TeacherRegisterTutorialServiceImpl implements TeacherRegisterTutori
             throw new EntityNotFoundException("exception.tutorial.not_found");
         });
 
+        Optional <TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById(createTeacherRegisterTutorialRequest.getTutorial_template_id());
+        TutorialTemplate tutorialTemplate= tutorialTemplateOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.tutorial_template.not_found");
+        });
+
         Optional <User> reviewerOpt = userRepository.findById(createTeacherRegisterTutorialRequest.getReviewer_id());
         User reviewer = reviewerOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_reviewer.not_found");
@@ -143,6 +153,7 @@ public class TeacherRegisterTutorialServiceImpl implements TeacherRegisterTutori
                 .teacher(teacher)
                 .reviewer(reviewer)
                 .tutorial(tutorial)
+                .tutorialTemplate(tutorialTemplate)
                 .status(createTeacherRegisterTutorialRequest.getStatus())
                 .build();
         teacherRegisterTutorialRepository.save(savedTeacherRegisterTutorial);
@@ -168,6 +179,11 @@ public class TeacherRegisterTutorialServiceImpl implements TeacherRegisterTutori
             throw new EntityNotFoundException("exception.TeacherRegisterTutorial.not_found");
         });
 
+        Optional <TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById(createTeacherRegisterTutorialRequest.getTutorial_template_id());
+        TutorialTemplate tutorialTemplate= tutorialTemplateOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.tutorial_template.not_found");
+        });
+
         Optional <User> teacherOpt = userRepository.findById(createTeacherRegisterTutorialRequest.getTeacher_id());
         User teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
@@ -180,25 +196,8 @@ public class TeacherRegisterTutorialServiceImpl implements TeacherRegisterTutori
 
         updatedTeacherRegisterTutorial.setTeacher(teacher);
         updatedTeacherRegisterTutorial.setTutorial(tutorial);
+        updatedTeacherRegisterTutorial.setTutorialTemplate(tutorialTemplate);
         updatedTeacherRegisterTutorial.setStatus(createTeacherRegisterTutorialRequest.getStatus());
-
-        return updatedTeacherRegisterTutorial.getId();
-    }
-
-    @Override
-    public Long updateStatusTeacherRegisterTutorialById(Long id, CreateStatusTeacherRegisterTutorialRequest createReviewTeacherRegisterTutorialRequest) {
-        Optional<TeacherRegisterTutorial> teacherRegisterTutorialOpt = teacherRegisterTutorialRepository.findById(id);
-        TeacherRegisterTutorial updatedTeacherRegisterTutorial = teacherRegisterTutorialOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.TeacherRegisterTutorial.not_found");
-        });
-
-        Optional <User> reviewerOpt = userRepository.findById(createReviewTeacherRegisterTutorialRequest.getReviewer_id());
-        User reviewer = reviewerOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_reviewer.not_found");
-        });
-
-        updatedTeacherRegisterTutorial.setStatus(createReviewTeacherRegisterTutorialRequest.getStatus());
-        updatedTeacherRegisterTutorial.setReviewer(reviewer);
 
         return updatedTeacherRegisterTutorial.getId();
     }
