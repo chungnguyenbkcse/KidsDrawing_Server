@@ -41,11 +41,11 @@ public class SectionTemplateController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createSectionTemplate(@RequestBody CreateSectionTemplateRequest createSectionTemplateRequest) {
+    public ResponseEntity<GetSectionTemplateResponse> createSectionTemplate(@RequestBody CreateSectionTemplateRequest createSectionTemplateRequest) {
         Long sectionTemplateId = sectionTemplateService.createSectionTemplate(createSectionTemplateRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{sectionTemplateId}")
+        ServletUriComponentsBuilder.fromCurrentRequest().path("/{sectionTemplateId}")
                 .buildAndExpand(sectionTemplateId).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().body(sectionTemplateService.getSectionTemplateById(sectionTemplateId));
     }
 
     @CrossOrigin
