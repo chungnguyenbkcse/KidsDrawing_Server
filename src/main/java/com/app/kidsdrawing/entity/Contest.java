@@ -51,18 +51,15 @@ public class Contest {
     private Integer max_participant;
 
     @Column(name = "registration_time")
-    @CreationTimestamp
     private LocalDateTime registration_time;
 
     @Column(name = "image_url")
     private String image_url;
 
     @Column(name =  "start_time")
-    @CreationTimestamp
     private LocalDateTime start_time;
 
     @Column(name =  "end_time")
-    @CreationTimestamp
     private LocalDateTime end_time;
 
     @Builder.Default()
