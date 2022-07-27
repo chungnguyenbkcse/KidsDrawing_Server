@@ -34,7 +34,7 @@ public class SectionTemplateController {
     }
     
     @CrossOrigin
-    @GetMapping(value = "/class/{id}")
+    @GetMapping(value = "/course/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionTemplateByCourseId(@PathVariable Long id) {
         return ResponseEntity.ok().body(sectionTemplateService.getAllSectionTemplateByCourseId(id));
     }
