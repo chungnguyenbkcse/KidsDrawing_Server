@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.app.kidsdrawing.dto.CreateTutorialAdminRequest;
 import com.app.kidsdrawing.dto.CreateTutorialRequest;
 import com.app.kidsdrawing.dto.GetTutorialResponse;
 import com.app.kidsdrawing.service.TutorialService;
@@ -41,10 +40,11 @@ public class TutorialController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/section/admin/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialByAdminSection(@PathVariable Long id) {
-        return ResponseEntity.ok().body(tutorialService.getAllTutorialByAdminSection(id));
+    @GetMapping(value = "/teacher/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialByCreatorId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(tutorialService.getAllTutorialByCreator(id));
     }
+
 
     @CrossOrigin
     @GetMapping(value = "/section/teacher/{section_id}/{creator_id}")
@@ -53,18 +53,9 @@ public class TutorialController {
     }
 
     @CrossOrigin
-    @PostMapping(value = "/teacher")
+    @PostMapping
     public ResponseEntity<String> createTutorial(@RequestBody CreateTutorialRequest createTutorialRequest) {
         Long tutorialId = tutorialService.createTutorial(createTutorialRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{tutorialId}")
-                .buildAndExpand(tutorialId).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @CrossOrigin
-    @PostMapping(value = "/admin")
-    public ResponseEntity<String> createTutorial(@RequestBody CreateTutorialAdminRequest createTutorialAdminRequest) {
-        Long tutorialId = tutorialService.createTutorial(createTutorialAdminRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{tutorialId}")
                 .buildAndExpand(tutorialId).toUri();
         return ResponseEntity.created(location).build();

@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.app.kidsdrawing.dto.CreateTutorialAdminRequest;
 import com.app.kidsdrawing.dto.CreateTutorialRequest;
 import com.app.kidsdrawing.dto.GetTutorialResponse;
 import com.app.kidsdrawing.entity.Tutorial;
@@ -82,35 +81,11 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialByAdminSection(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllTutorialByCreator(Long id) {
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
         List<Tutorial> listTutorial = tutorialRepository.findAll();
         listTutorial.forEach(content -> {
-            if (content.getSection().getId() == id){
-                GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
-                    .id(content.getId())
-                    .section_id(content.getSection().getId())
-                    .creator_id(content.getCreator().getId())
-                    .name(content.getName())
-                    .description(content.getDescription())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allTutorialResponses.add(tutorialResponse);
-            }
-        });
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("Tutorial", allTutorialResponses);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialByTeacherSection(Long id) {
-        List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
-        List<Tutorial> listTutorial = tutorialRepository.findAll();
-        listTutorial.forEach(content -> {
-            if (content.getSection().getId() == id){
+            if (content.getCreator().getId() == id){
                 GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
                     .id(content.getId())
                     .section_id(content.getSection().getId())
@@ -195,29 +170,7 @@ public class TutorialServiceImpl implements TutorialService{
         return savedTutorial.getId();
     }
 
-    @Override 
-    public Long createTutorial(CreateTutorialAdminRequest createTutorialAdminRequest) {
-        Optional <Section> sectionOpt = sectionRepository.findById(createTutorialAdminRequest.getSection_id());
-        Section section = sectionOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.section.not_found");
-        });
-
-        Optional <User> userOpt = userRepository.findById(createTutorialAdminRequest.getCreator_id());
-        User creator = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_creator.not_found");
-        });
-        
-        Tutorial savedTutorial = Tutorial.builder()
-                .section(section)
-                .creator(creator)
-                .name(createTutorialAdminRequest.getName())
-                .description(createTutorialAdminRequest.getDescription())
-                .build();
-        tutorialRepository.save(savedTutorial);
-
-        return savedTutorial.getId();
-    }
-
+    
     @Override
     public Long removeTutorialById(Long id) {
         Optional<Tutorial> tutorialOpt = tutorialRepository.findById(id);
