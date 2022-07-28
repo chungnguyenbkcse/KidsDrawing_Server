@@ -152,7 +152,7 @@ public class User{
     @OneToMany(mappedBy = "student")
     private Set<UserGradeContestSubmission> userGradeContestSubmissions;
 
-    @OneToMany(mappedBy = "user")
-    private Set<SectionTemplate> sectionTemplates;
+    @OneToOne(mappedBy = "user")
+    private SectionTemplate sectionTemplates;
 
 }
