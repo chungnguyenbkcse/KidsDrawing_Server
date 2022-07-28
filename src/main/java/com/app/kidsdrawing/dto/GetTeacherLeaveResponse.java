@@ -19,7 +19,7 @@ public class GetTeacherLeaveResponse {
     private Long reviewer_id;
     private Long substitute_teacher_id;
     private String description;
-    private Boolean status;
+    private String status;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

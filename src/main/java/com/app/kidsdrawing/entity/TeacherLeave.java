@@ -63,7 +63,7 @@ public class TeacherLeave {
     private String description;
 
     @Column(name = "status")
-    private Boolean status;
+    private String status;
 
     @Builder.Default()
     @Column(name = "create_time")
