@@ -79,6 +79,56 @@ public class SemesterCourseServiceImpl implements SemesterCourseService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterCourseBySemester(int page, int size, Long id) {
+        List<GetSemesterCourseResponse> allSemesterCourseResponses = new ArrayList<>();
+        Pageable paging = PageRequest.of(page, size);
+        Page<SemesterCourse> pageSemesterCourse = semesterCourseRepository.findAll(paging);
+        pageSemesterCourse.getContent().forEach(semesterCourse -> {
+            if (semesterCourse.getSemester().getId() == id){
+                GetSemesterCourseResponse semesterCourseResponse = GetSemesterCourseResponse.builder()
+                    .id(semesterCourse.getId())
+                    .creation_id(semesterCourse.getSemester().getId())
+                    .course_id(semesterCourse.getCourse().getId())
+                    .schedule_id(semesterCourse.getSchedule().getId())
+                    .build();
+                allSemesterCourseResponses.add(semesterCourseResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_courses", allSemesterCourseResponses);
+        response.put("currentPage", pageSemesterCourse.getNumber());
+        response.put("totalItems", pageSemesterCourse.getTotalElements());
+        response.put("totalPages", pageSemesterCourse.getTotalPages());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterCourseByCourse(int page, int size, Long id){
+        List<GetSemesterCourseResponse> allSemesterCourseResponses = new ArrayList<>();
+        Pageable paging = PageRequest.of(page, size);
+        Page<SemesterCourse> pageSemesterCourse = semesterCourseRepository.findAll(paging);
+        pageSemesterCourse.getContent().forEach(semesterCourse -> {
+            if (semesterCourse.getCourse().getId() == id){
+                GetSemesterCourseResponse semesterCourseResponse = GetSemesterCourseResponse.builder()
+                    .id(semesterCourse.getId())
+                    .creation_id(semesterCourse.getSemester().getId())
+                    .course_id(semesterCourse.getCourse().getId())
+                    .schedule_id(semesterCourse.getSchedule().getId())
+                    .build();
+                allSemesterCourseResponses.add(semesterCourseResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_courses", allSemesterCourseResponses);
+        response.put("currentPage", pageSemesterCourse.getNumber());
+        response.put("totalItems", pageSemesterCourse.getTotalElements());
+        response.put("totalPages", pageSemesterCourse.getTotalPages());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public Long createSemesterCourse(CreateSemesterCourseRequest createSemesterCourseRequest) {
         Optional<Semester> semesterOpt = semesterRepository.findById(createSemesterCourseRequest.getCreation_id());
         Semester semester = semesterOpt.orElseThrow(() -> {

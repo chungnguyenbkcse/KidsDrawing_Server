@@ -9,6 +9,8 @@ import com.app.kidsdrawing.dto.GetSemesterCourseResponse;
 
 public interface SemesterCourseService {
     ResponseEntity<Map<String, Object>> getAllSemesterCourse(int page, int size);
+    ResponseEntity<Map<String, Object>> getAllSemesterCourseBySemester(int page, int size, Long id);
+    ResponseEntity<Map<String, Object>> getAllSemesterCourseByCourse(int page, int size, Long id);
     GetSemesterCourseResponse getSemesterCourseById(Long id);
     Long createSemesterCourse(CreateSemesterCourseRequest createSemesterCourseRequest);
     Long removeSemesterCourseById(Long id);

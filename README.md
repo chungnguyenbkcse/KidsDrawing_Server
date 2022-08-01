@@ -9,3 +9,4 @@
 
 # TODO
 - getScheduleItemByScheduleId(Long id)
+- getTutorialTemplatePageBySectionTemplateId(Long id)

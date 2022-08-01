@@ -45,13 +45,27 @@ public class SemesterCourseController {
                 .buildAndExpand(semesterCourseId).toUri();
         return ResponseEntity.created(location).build();
     }
-
+    
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterCourses(@RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterCoursesBySemester(@RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size) {
         return ResponseEntity.ok().body(semesterCourseService.getAllSemesterCourse(page, size));
-    } 
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/semester/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterCoursesBySemesterBySemester(@RequestParam(defaultValue = "1") int page,
+    @RequestParam(defaultValue = "3") int size, @PathVariable Long id) {
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterCourseBySemester(page, size, id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/course/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterCoursesBySemesterByCourse(@RequestParam(defaultValue = "1") int page,
+    @RequestParam(defaultValue = "3") int size, @PathVariable Long id) {
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterCourseByCourse(page, size, id));
+    }
 
     @CrossOrigin
     @GetMapping(value = "/{id}")

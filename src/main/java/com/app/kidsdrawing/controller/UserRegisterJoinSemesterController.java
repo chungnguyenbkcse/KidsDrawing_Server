@@ -26,12 +26,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/api/v1/user-register-join-semester")
 public class UserRegisterJoinSemesterController {
     private final UserRegisterJoinSemesterService  userRegisterJoinSemesterService;
-
+    
     @CrossOrigin
     @GetMapping
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemester() {
         return ResponseEntity.ok().body(userRegisterJoinSemesterService.getAllUserRegisterJoinSemester());
-    } 
+    }
 
     @CrossOrigin
     @PostMapping

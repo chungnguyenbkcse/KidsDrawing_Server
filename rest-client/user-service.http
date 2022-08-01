@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [4],
+    "parent_ids": [2],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -41,7 +41,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [5],
+    "parent_ids": [3],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -78,6 +78,186 @@ Content-Type: application/json
     "username": "parent_2",
     "password": "12345678aA@",
     "email": "parent_2@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["PARENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent_3",
+    "password": "12345678aA@",
+    "email": "parent_3@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["PARENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent_4",
+    "password": "12345678aA@",
+    "email": "parent_4@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["PARENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent_5",
+    "password": "12345678aA@",
+    "email": "parent_5@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["PARENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent_6",
+    "password": "12345678aA@",
+    "email": "parent_6@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["PARENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent_7",
+    "password": "12345678aA@",
+    "email": "parent_7@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["PARENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent_8",
+    "password": "12345678aA@",
+    "email": "parent_8@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["PARENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent_9",
+    "password": "12345678aA@",
+    "email": "parent_9@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["PARENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name parent_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "parent_10",
+    "password": "12345678aA@",
+    "email": "parent_10@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -166,8 +346,119 @@ Content-Type: application/json
     "password": "12345678aA@"
 }
 
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST {{rest}}/teacher-teach-semester
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "teacher_id": 6,
+    "semester_course_id": 1
+}
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+POST {{rest}}/classes
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Lớp CM-1",
+    "creator_id": 1,
+    "registration_id": 1,
+    "security_code": "CM-1HK2022",
+    "user_register_join_semester": [1,2,3,4,5,6]
+
+}
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST {{rest}}/user-register-join-semester
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "student_id": 14,
+    "semester_course_id": 1,
+    "payer_id": 15,
+    "price": 2000000
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/schedule
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Lịch học 1",
+    "creator_id": 1
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/schedule-item
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "schedule_id": 1,
+    "lesson_time": 6,
+    "date_of_week": 2
+}
+
 ### CREATE CONTEST ACTION ###
 # @name create_contest
+
+POST {{rest}}/semester
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Học kì 1 năm học 2022",
+    "description": "",
+    "number": 1,
+    "start_time": "2022-08-12T12:59:11.332",
+    "year": 2022,
+    "creator_id": 1
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/semester-course
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "creation_id": 1,
+    "course_id": 1,
+    "schedule_id": 1
+
+}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST {{rest}}/teacher-leave
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "section_id": 1,
+    "teacher_id": 4,
+    "class_id": 1,
+    "substitute_teacher_id": 5,
+    "description": ""
+}
 
 POST {{rest}}/section-template
 Authorization: Bearer {{admin_access_token}}
@@ -211,6 +502,82 @@ GET {{rest}}/semester-course?page=0&size=2
 ### CREATE COURSE ACTION ###
 # @name create_course
 
+### CREATE ART AGE ACTION ###
+# @name create_art_age
+
+POST {{rest}}/art-age
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "4-6 tuổi",
+    "description": "Độ tuổi từ 4-6 tuổi"
+}
+
+### CREATE ART AGE ACTION ###
+# @name create_art_age
+
+POST {{rest}}/art-age
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "5-10 tuổi",
+    "description": "Độ tuổi từ 5-10 tuổi"
+}
+
+
+### CREATE ART AGE ACTION ###
+# @name create_art_age
+
+POST {{rest}}/art-level
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Cơ bản",
+    "description": "Dành cho bạn mới bắt đầu"
+}
+
+### CREATE ART AGE ACTION ###
+# @name create_art_age
+
+POST {{rest}}/art-level
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Nâng cao",
+    "description": "Dành cho bạn mới bắt đầu"
+}
+
+### CREATE ART TYPE ACTION ###
+# @name create_art_type
+
+POST {{rest}}/art-type
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Sơn dầu",
+    "description": "Thể loại sơn dầu"
+}
+
+### CREATE ART TYPE ACTION ###
+# @name create_art_type
+
+POST {{rest}}/art-type
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "name": "Chì màu",
+    "description": "Thể loại chì màu"
+}
+
+### CREATE ART TYPE ACTION ###
+# @name create_art_type
+
 POST {{rest}}/course
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
@@ -223,9 +590,9 @@ Content-Type: application/json
     "price": 2000000,
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344893/lop-day-hoc-ve-tre-em-be-thieu-nhi-370x255_natvks.png",
     "is_enabled": false,
-    "creator_id": 3,
+    "creator_id": 1,
     "art_age_id": 1,
-    "art_type_id": 2,
+    "art_type_id": 1,
     "art_level_id": 1
 }
 
