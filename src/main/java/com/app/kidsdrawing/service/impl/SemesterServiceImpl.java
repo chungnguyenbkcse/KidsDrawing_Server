@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +44,7 @@ public class SemesterServiceImpl implements SemesterService {
     private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
     private final ClassRepository classRepository;
     private final UserRepository userRepository;
+    private static int counter = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemester() {
@@ -144,15 +146,18 @@ public class SemesterServiceImpl implements SemesterService {
             }
         });
 
+        List<Class> listClass = classRepository.findAll();
+
+
         Optional<User> userOpt = userRepository.findByUsernameOrEmail("admin", "admin");
 
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
-        // Danh sách học sinh đăng kí trong 1 học kì
+        // Danh sách học sinh đăng kí học
         List<UserRegisterJoinSemester> pageUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findAll();
-        // Danh sách giáo viên đăng kí trong 1 học kì
+        // Danh sách giáo viên đăng kí dạy
         List<UserRegisterTeachSemester> pageUserRegisterTeachSemesters = teacherTeachSemesterRepository.findAll();
         allSemesterCourseResponses.forEach(semester_course -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
@@ -170,6 +175,30 @@ public class SemesterServiceImpl implements SemesterService {
                     allUserRegisterTeachSemesters.add(user_register_teach_semester);
                 }
             });
+
+            List<Integer> list_total_register_of_teacher = new ArrayList<>();
+            allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
+                counter = 0;
+                listClass.forEach(class_x -> {
+                    if (teacher_register_teach_semester.getTeacher().getId() == class_x.getTeachSemester().getId()){
+                        counter += 1;
+                    }
+                });
+                list_total_register_of_teacher.add(counter);
+            });
+
+            for (int i = 0; i < list_total_register_of_teacher.size(); i++) {
+                // Inner nested loop pointing 1 index ahead
+                for (int j = i + 1; j < list_total_register_of_teacher.size(); j++) {
+                    // Checking elements
+                    if (list_total_register_of_teacher.get(j) < list_total_register_of_teacher.get(i)) {
+                        Collections.swap(list_total_register_of_teacher, i, j);
+                        Collections.swap(allUserRegisterTeachSemesters, i, j);
+                    }
+                }
+                // Printing sorted array elements
+                //System.out.print(arr[i] + " ");
+            }
 
             // Lấy các group có thể chia được
             int[][] list_group = foo(allUserRegisterJoinSemesters.size(), partion, min, max);
