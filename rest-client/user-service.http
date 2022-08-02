@@ -9,9 +9,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student_1",
+    "username": "student-1",
     "password": "12345678aA@",
-    "email": "student_1@gmail.com",
+    "email": "student-1@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [2],
+    "parent_ids": [4],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -31,9 +31,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student_2",
+    "username": "student-2",
     "password": "12345678aA@",
-    "email": "student_2@gmail.com",
+    "email": "student-2@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -41,7 +41,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [3],
+    "parent_ids": [5],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -53,9 +53,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "parent_1",
+    "username": "parent-1",
     "password": "12345678aA@",
-    "email": "parent@gmail.com",
+    "email": "parent-1@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -75,9 +75,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "parent_2",
+    "username": "parent-2",
     "password": "12345678aA@",
-    "email": "parent_2@gmail.com",
+    "email": "parent-2@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -346,6 +346,14 @@ Content-Type: application/json
     "password": "12345678aA@"
 }
 
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/semester/schedule-class/1
+Authorization: Bearer {{admin_access_token}}
+
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
 
@@ -354,7 +362,35 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 6,
+    "teacher_id": 2,
+    "semester_course_id": 1
+}
+
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST {{rest}}/user-register-join-semester
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "student_id": 7,
+    "semester_course_id": 1,
+    "payer_id": 4,
+    "price": 2000000
+}
+
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST {{rest}}/teacher-teach-semester
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "teacher_id": 3,
     "semester_course_id": 1
 }
 
@@ -371,20 +407,6 @@ Content-Type: application/json
     "security_code": "CM-1HK2022",
     "user_register_join_semester": [1,2,3,4,5,6]
 
-}
-
-### CREATE STUDENT REGISTER JOIN semester ACTION ###
-# @name create_student_register_join_semester
-
-POST {{rest}}/user-register-join-semester
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "student_id": 14,
-    "semester_course_id": 1,
-    "payer_id": 15,
-    "price": 2000000
 }
 
 ### CREATE LESSON TIME ACTION ###
@@ -489,7 +511,7 @@ Content-Type: application/json
     "start_time": "2022-08-12T12:59:11.332",
     "end_time": "2022-09-12T12:59:11.332",
     "is_enabled": true,
-    "creater_id": 3,
+    "creater_id": 1,
     "art_age_id": 1,
     "art_type_id": 1
 }
@@ -583,7 +605,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "name": "Khóa học mầm sơn dầu cơ bản",
+    "name": "Khóa học mầm chì màu cơ bản",
     "description": "<p>hello nguyen van chung</p>",
     "max_participant": 20,
     "num_of_section": 10,
@@ -604,7 +626,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "name": "Lịch học 2",
+    "name": "Lịch học 1",
     "creator_id": 1
 }
 

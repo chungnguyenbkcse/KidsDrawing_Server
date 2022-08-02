@@ -185,8 +185,8 @@ public class SemesterServiceImpl implements SemesterService {
                 Class savedClass = Class.builder()
                     .user(user)
                     .teachSemester(allUserRegisterTeachSemesters.get(i))
-                    .security_code("")
-                    .name("")
+                    .security_code(String.valueOf(i))
+                    .name(String.valueOf(i))
                     .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
                     .build();
                 classRepository.save(savedClass);
