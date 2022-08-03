@@ -45,6 +45,12 @@ public class ScheduleController {
     }
 
     @CrossOrigin
+    @GetMapping(value="/info")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllScheduleItemOfSchedule() {
+        return ResponseEntity.ok().body(scheduleService.getAllScheduleItemOfSchedule());
+    }
+
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSchedules(@RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size) {

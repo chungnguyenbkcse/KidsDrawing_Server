@@ -354,6 +354,11 @@ Content-Type: application/json
 POST {{rest}}/semester/schedule-class/1
 Authorization: Bearer {{admin_access_token}}
 
+### CREATE CONTEST ACTION ###
+# @name get_info_user
+GET {{rest}}/classes/info
+Authorization: Bearer {{admin_access_token}}
+
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
 
