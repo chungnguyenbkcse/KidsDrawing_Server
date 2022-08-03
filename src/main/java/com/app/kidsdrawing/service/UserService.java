@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
     ResponseEntity<Map<String, Object>> getAllUsers(Long role_id);
 
+    ResponseEntity<Map<String, Object>> getAllTeacher();
+
     GetUserInfoResponse getUserInfoById(Long id);
 
     GetUserInfoResponse getUserInfoByUsername(String username);

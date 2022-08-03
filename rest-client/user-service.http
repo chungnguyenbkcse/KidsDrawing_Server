@@ -356,7 +356,7 @@ Authorization: Bearer {{admin_access_token}}
 
 ### CREATE CONTEST ACTION ###
 # @name get_info_user
-GET {{rest}}/classes/info
+GET {{rest}}/classes/info/5
 Authorization: Bearer {{admin_access_token}}
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###

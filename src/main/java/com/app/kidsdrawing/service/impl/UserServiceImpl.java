@@ -12,12 +12,15 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import com.app.kidsdrawing.dto.CreateUserRequest;
+import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
 import com.app.kidsdrawing.entity.Role;
+import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.UserAlreadyRegisteredException;
 import com.app.kidsdrawing.repository.RoleRepository;
+import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.UserService;
 import com.app.kidsdrawing.util.AuthUtil;
@@ -43,6 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthUtil authUtil;
+    private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllUsers(Long role_id) {
@@ -78,6 +82,89 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         });
         Map<String, Object> response = new HashMap<>();
         response.put("users", allUserResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllTeacher() {
+        List<GetUserResponse> allUserResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findAll();
+        Optional<Role> roleOpt = roleRepository.findById((long) 4);
+        Role role = roleOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.role.not_found");
+        });
+        List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationResponses = new ArrayList<>();
+        List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationDoingResponses = new ArrayList<>();
+        List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationNotAcceptResponses = new ArrayList<>();
+        List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
+        Map<String, Object> response = new HashMap<>();
+        pageUser.forEach(user -> {
+            if (user.getRoles().contains(role) == true){
+                List<String> parent_names = new ArrayList<>();
+                user.getParents().forEach(parent -> {
+                    String parent_name = parent.getUsername();
+                    parent_names.add(parent_name);
+                });
+                GetUserResponse userResponse = GetUserResponse.builder()
+                    .id(user.getId())
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .dateOfBirth(user.getDateOfBirth())
+                    .profile_image_url(user.getProfileImageUrl())
+                    .sex(user.getSex())
+                    .phone(user.getPhone())
+                    .address(user.getAddress())
+                    .parents(parent_names)
+                    .createTime(user.getCreateTime())
+                    .build();
+                allUserResponses.add(userResponse);
+                List<GetTeacherRegisterQualificationResponse> teacherRegisterQualificationResponses = new ArrayList<>();
+                List<GetTeacherRegisterQualificationResponse> teacherRegisterQualificationDoingResponses = new ArrayList<>();
+                List<GetTeacherRegisterQualificationResponse> teacherRegisterQualificationNotAcceptResponses = new ArrayList<>();
+                pageTeacherRegisterQualification.forEach(content -> {
+                    if (content.getTeacher().getId() == user.getId() && content.getStatus() == "Accept"){
+                        GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
+                            .id(content.getId())
+                            .teacher_id(content.getTeacher().getId())
+                            .reviewer_id(content.getReviewer().getId())
+                            .course_id(content.getCourse().getId())
+                            .degree_photo_url(content.getDegree_photo_url())
+                            .status(content.getStatus())
+                            .build();
+                        teacherRegisterQualificationResponses.add(teacherRegisterQualificationResponse);
+                    }
+                    else if (content.getTeacher().getId() == user.getId() && content.getStatus() == "Doing"){
+                        GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
+                            .id(content.getId())
+                            .teacher_id(content.getTeacher().getId())
+                            .reviewer_id(content.getReviewer().getId())
+                            .course_id(content.getCourse().getId())
+                            .degree_photo_url(content.getDegree_photo_url())
+                            .status(content.getStatus())
+                            .build();
+                        teacherRegisterQualificationDoingResponses.add(teacherRegisterQualificationResponse);
+                    }
+                    else {
+                        GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
+                            .id(content.getId())
+                            .teacher_id(content.getTeacher().getId())
+                            .reviewer_id(content.getReviewer().getId())
+                            .course_id(content.getCourse().getId())
+                            .degree_photo_url(content.getDegree_photo_url())
+                            .status(content.getStatus())
+                            .build();
+                        teacherRegisterQualificationNotAcceptResponses.add(teacherRegisterQualificationResponse);
+                    }
+                });
+                allTeacherRegisterQualificationResponses.add(teacherRegisterQualificationResponses);
+            }
+        });
+        response.put("users", allUserResponses);
+        response.put("teacher_register_qualifications", allTeacherRegisterQualificationResponses);
+        response.put("teacher_register_doing_qualifications", allTeacherRegisterQualificationDoingResponses);
+        response.put("teacher_register_not_accept_qualifications", allTeacherRegisterQualificationNotAcceptResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
