@@ -188,6 +188,109 @@ public class ClassesServiceImpl implements ClassesService{
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getInforDetailOfClass(Long id) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<Class> classOpt = classRepository.findById(id);
+        Class classes = classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Class.not_found");
+        });
+        response.put("classes", GetClassResponse.builder()
+            .id(classes.getId())
+            .creator_id(classes.getUser().getId())
+            .registration_id(classes.getTeachSemester().getId())
+            .security_code(classes.getSecurity_code())
+            .name(classes.getName())
+            .create_time(classes.getCreate_time())
+            .update_time(classes.getUpdate_time())
+            .build()
+        );
+
+        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = teacherTeachSemesterRepository.findById(classes.getTeachSemester().getId());
+        UserRegisterTeachSemester userRegisterTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
+        });
+
+        List<String> parent_names = new ArrayList<>();
+        userRegisterTeachSemester.getTeacher().getParents().forEach(parent -> {
+            String parent_name = parent.getUsername();
+            parent_names.add(parent_name);
+        });
+
+        response.put("teacher", GetUserResponse.builder()
+            .id(userRegisterTeachSemester.getTeacher().getId())
+            .username(userRegisterTeachSemester.getTeacher().getUsername())
+            .email(userRegisterTeachSemester.getTeacher().getEmail())
+            .firstName(userRegisterTeachSemester.getTeacher().getFirstName())
+            .lastName(userRegisterTeachSemester.getTeacher().getLastName())
+            .dateOfBirth(userRegisterTeachSemester.getTeacher().getDateOfBirth())
+            .profile_image_url(userRegisterTeachSemester.getTeacher().getProfileImageUrl())
+            .sex(userRegisterTeachSemester.getTeacher().getSex())
+            .phone(userRegisterTeachSemester.getTeacher().getPhone())
+            .address(userRegisterTeachSemester.getTeacher().getAddress())
+            .parents(parent_names)
+            .createTime(userRegisterTeachSemester.getTeacher().getCreateTime())
+            .build()
+        );
+
+        Optional <SemesterCourse> semester_courseOpt = semesterCourseRepository.findById(userRegisterTeachSemester.getSemesterCourse().getId());
+        SemesterCourse semesterCouse = semester_courseOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.semester_course.not_found");
+        });
+
+        response.put("course", GetCourseResponse.builder()
+            .id(semesterCouse.getCourse().getId())
+            .name(semesterCouse.getCourse().getName())
+            .description(semesterCouse.getCourse().getDescription())
+            .max_participant(semesterCouse.getCourse().getMax_participant())
+            .num_of_section(semesterCouse.getCourse().getNum_of_section())
+            .image_url(semesterCouse.getCourse().getImage_url())
+            .price(semesterCouse.getCourse().getPrice())
+            .is_enabled(semesterCouse.getCourse().getIs_enabled())
+            .art_age_id(semesterCouse.getCourse().getArtAges().getId())
+            .art_type_id(semesterCouse.getCourse().getArtTypes().getId())
+            .art_level_id(semesterCouse.getCourse().getArtLevels().getId())
+            .creator_id(semesterCouse.getCourse().getUser().getId())
+            .create_time(semesterCouse.getCourse().getCreate_time())
+            .update_time(semesterCouse.getCourse().getUpdate_time())
+            .build());
+        
+        response.put("semester", GetSemesterResponse.builder()
+            .id(semesterCouse.getSemester().getId())
+            .name(semesterCouse.getSemester().getName())
+            .description(semesterCouse.getSemester().getDescription())
+            .start_time(semesterCouse.getSemester().getStart_time())
+            .number(semesterCouse.getSemester().getNumber())
+            .year(semesterCouse.getSemester().getYear())
+            .create_time(semesterCouse.getSemester().getCreate_time())
+            .update_time(semesterCouse.getSemester().getUpdate_time())
+            .creator_id(semesterCouse.getSemester().getUser().getId())
+            .build());
+        
+        Optional<Schedule> scheduleOpt = scheduleRepository.findById(semesterCouse.getSchedule().getId());
+        Schedule schedule = scheduleOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Schedule.not_found");
+        });
+        
+        List<GetScheduleItemResponse> allScheduleItemResponses = new ArrayList<>();
+        List<ScheduleItem> pageScheduleItem = scheduleItemRepository.findAll();
+        pageScheduleItem.forEach(schedule_item -> {
+            if (schedule_item.getSchedule().getId() == schedule.getId()) {
+                GetScheduleItemResponse scheduleItemResponse = GetScheduleItemResponse.builder()
+                    .id(schedule_item.getId())
+                    .schedule_id(schedule_item.getSchedule().getId())
+                    .lesson_time(schedule_item.getLessonTime().getId())
+                    .date_of_week(schedule_item.getDate_of_week())
+                    .build();
+                allScheduleItemResponses.add(scheduleItemResponse);
+            }
+        });
+
+        response.put("schedule", allScheduleItemResponses);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public GetClassResponse getClassById(Long id) {
         Optional<Class> classOpt = classRepository.findById(id);
         Class classes = classOpt.orElseThrow(() -> {
