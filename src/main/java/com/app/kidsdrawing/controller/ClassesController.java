@@ -46,6 +46,12 @@ public class ClassesController {
     }
 
     @CrossOrigin
+    @GetMapping(value="/info")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforDetailAllClass() {
+        return ResponseEntity.ok().body(classService.getInforDetailAllClass());
+    }
+
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllClasss() {
         return ResponseEntity.ok().body(classService.getAllClass());

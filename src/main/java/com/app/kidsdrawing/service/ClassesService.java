@@ -9,6 +9,7 @@ import com.app.kidsdrawing.dto.GetClassResponse;
 
 public interface ClassesService {
     ResponseEntity<Map<String, Object>> getAllClass();
+    ResponseEntity<Map<String, Object>> getInforDetailAllClass();
     GetClassResponse getClassById(Long id);
     Long createClass(CreateClassRequest createClassRequest);
     Long removeClassById(Long id);
