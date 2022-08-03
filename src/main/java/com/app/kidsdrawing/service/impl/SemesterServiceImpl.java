@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,6 +64,33 @@ public class SemesterServiceImpl implements SemesterService {
                     .creator_id(semester.getUser().getId())
                     .build();
             allSemesterResponses.add(semesterResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("semesters", allSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterNext() {
+        List<GetSemesterResponse> allSemesterResponses = new ArrayList<>();
+        List<Semester> pageSemester = semesterRepository.findAll();
+        LocalDateTime now = LocalDateTime.now();
+        pageSemester.forEach(semester -> {
+            if (now.isBefore(semester.getStart_time())) {
+                GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
+                    .id(semester.getId())
+                    .name(semester.getName())
+                    .description(semester.getDescription())
+                    .start_time(semester.getStart_time())
+                    .number(semester.getNumber())
+                    .year(semester.getYear())
+                    .create_time(semester.getCreate_time())
+                    .update_time(semester.getUpdate_time())
+                    .creator_id(semester.getUser().getId())
+                    .build();
+                allSemesterResponses.add(semesterResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();

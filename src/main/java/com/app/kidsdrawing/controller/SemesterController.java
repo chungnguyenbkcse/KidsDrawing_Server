@@ -58,6 +58,12 @@ public class SemesterController {
     }
 
     @CrossOrigin
+    @GetMapping(value="/next")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemestersNext() {
+        return ResponseEntity.ok().body(semesterService.getAllSemesterNext());
+    }
+
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesters() {
         return ResponseEntity.ok().body(semesterService.getAllSemester());
