@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateClassRequest;
+import com.app.kidsdrawing.dto.GetArtAgeResponse;
+import com.app.kidsdrawing.dto.GetArtLevelResponse;
+import com.app.kidsdrawing.dto.GetArtTypeResponse;
 import com.app.kidsdrawing.dto.GetClassResponse;
 import com.app.kidsdrawing.dto.GetCourseResponse;
 import com.app.kidsdrawing.dto.GetScheduleItemResponse;
@@ -270,6 +273,30 @@ public class ClassesServiceImpl implements ClassesService{
         Schedule schedule = scheduleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Schedule.not_found");
         });
+
+        List<GetUserResponse> listStudents = new ArrayList<>();
+        classes.getUserRegisterJoinSemesters().forEach(content -> {
+            List<String> parent_namess = new ArrayList<>();
+            content.getStudent().getParents().forEach(parent -> {
+                String parent_name = parent.getUsername();
+                parent_names.add(parent_name);
+            });
+            GetUserResponse student = GetUserResponse.builder()
+            .id(content.getStudent().getId())
+            .username(content.getStudent().getUsername())
+            .email(content.getStudent().getEmail())
+            .firstName(content.getStudent().getFirstName())
+            .lastName(content.getStudent().getLastName())
+            .dateOfBirth(content.getStudent().getDateOfBirth())
+            .profile_image_url(content.getStudent().getProfileImageUrl())
+            .sex(content.getStudent().getSex())
+            .phone(content.getStudent().getPhone())
+            .address(content.getStudent().getAddress())
+            .parents(parent_namess)
+            .createTime(content.getStudent().getCreateTime())
+            .build();
+            listStudents.add(student);
+        });
         
         List<GetScheduleItemResponse> allScheduleItemResponses = new ArrayList<>();
         List<ScheduleItem> pageScheduleItem = scheduleItemRepository.findAll();
@@ -286,6 +313,22 @@ public class ClassesServiceImpl implements ClassesService{
         });
 
         response.put("schedule", allScheduleItemResponses);
+        response.put("art_type", GetArtTypeResponse.builder()
+            .id(semesterCouse.getCourse().getArtTypes().getId())
+            .name(semesterCouse.getCourse().getArtTypes().getName())
+            .description(semesterCouse.getCourse().getArtTypes().getDescription())
+            .build());
+        response.put("art_level", GetArtLevelResponse.builder()
+            .id(semesterCouse.getCourse().getArtLevels().getId())
+            .name(semesterCouse.getCourse().getArtLevels().getName())
+            .description(semesterCouse.getCourse().getArtLevels().getDescription())
+            .build());
+        response.put("art_age", GetArtAgeResponse.builder()
+            .id(semesterCouse.getCourse().getArtAges().getId())
+            .name(semesterCouse.getCourse().getArtAges().getName())
+            .description(semesterCouse.getCourse().getArtAges().getDescription())
+            .build());
+        response.put("students", listStudents);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
