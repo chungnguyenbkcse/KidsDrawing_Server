@@ -1,7 +1,9 @@
 package com.app.kidsdrawing.service.impl;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -155,13 +157,15 @@ public class SemesterServiceImpl implements SemesterService {
             allLessonTimeResponses.add(lessonTimeResponses);
         }); 
 
-        List<List<LocalDateTime>> allCalendarForSemesterCourse = new ArrayList<>();
+        List<List<Map <LocalDateTime, LocalDateTime>>> allCalendarForSemesterCourse = new ArrayList<>();
         for (int index = 0; index < allScheduleItemResponses.size(); index++) {
-            List<LocalDateTime> calendarForSemesterCourse = new ArrayList<>();
+            List<Map <LocalDateTime, LocalDateTime>> calendarForSemesterCourse = new ArrayList<>();
             for (int idx = 0; idx < allScheduleItemResponses.get(index).size(); idx++) {
                 Integer total_section = allCourseResponses.get(index).getNum_of_section();
                 LocalDateTime start_time = semester.getStart_time();
                 Integer dayOfWeek = allScheduleItemResponses.get(index).get(idx).getDate_of_week();
+                LocalTime start_lessontime = allLessonTimeResponses.get(index).get(idx).getStart_time();
+                LocalTime end_lessontime = allLessonTimeResponses.get(index).get(idx).getEnd_time();
                 if (dayOfWeek == 2){
                     while (start_time.getDayOfWeek() != DayOfWeek.MONDAY){
                         System.out.print(start_time.getDayOfWeek());
@@ -172,7 +176,10 @@ public class SemesterServiceImpl implements SemesterService {
                         /* if (startDate.equals(holiday) == false){
                             System.out.println(startDate);
                         } */
-                        calendarForSemesterCourse.add(start_time);
+                        Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
+                        LocalDate  start_date = start_time.toLocalDate();
+                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        calendarForSemesterCourse.add(hm);
                         start_time = start_time.plusWeeks(1);
                     }
                 }
@@ -186,7 +193,10 @@ public class SemesterServiceImpl implements SemesterService {
                         /* if (startDate.equals(holiday) == false){
                             System.out.println(startDate);
                         } */
-                        calendarForSemesterCourse.add(start_time);
+                        Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
+                        LocalDate  start_date = start_time.toLocalDate();
+                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        calendarForSemesterCourse.add(hm);
                         start_time = start_time.plusWeeks(1);
                     }
                 }
@@ -201,7 +211,10 @@ public class SemesterServiceImpl implements SemesterService {
                         /* if (startDate.equals(holiday) == false){
                             System.out.println(startDate);
                         } */
-                        calendarForSemesterCourse.add(start_time);
+                        Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
+                        LocalDate  start_date = start_time.toLocalDate();
+                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        calendarForSemesterCourse.add(hm);
                         start_time = start_time.plusWeeks(1);
                     }
                 }
@@ -216,7 +229,10 @@ public class SemesterServiceImpl implements SemesterService {
                         /* if (startDate.equals(holiday) == false){
                             System.out.println(startDate);
                         } */
-                        calendarForSemesterCourse.add(start_time);
+                        Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
+                        LocalDate  start_date = start_time.toLocalDate();
+                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        calendarForSemesterCourse.add(hm);
                         start_time = start_time.plusWeeks(1);
                     }
                 }
@@ -231,7 +247,10 @@ public class SemesterServiceImpl implements SemesterService {
                         /* if (startDate.equals(holiday) == false){
                             System.out.println(startDate);
                         } */
-                        calendarForSemesterCourse.add(start_time);
+                        Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
+                        LocalDate  start_date = start_time.toLocalDate();
+                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        calendarForSemesterCourse.add(hm);
                         start_time = start_time.plusWeeks(1);
                     }
                 }
@@ -246,7 +265,10 @@ public class SemesterServiceImpl implements SemesterService {
                         /* if (startDate.equals(holiday) == false){
                             System.out.println(startDate);
                         } */
-                        calendarForSemesterCourse.add(start_time);
+                        Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
+                        LocalDate  start_date = start_time.toLocalDate();
+                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        calendarForSemesterCourse.add(hm);
                         start_time = start_time.plusWeeks(1);
                     }
                 }
@@ -261,7 +283,10 @@ public class SemesterServiceImpl implements SemesterService {
                         /* if (startDate.equals(holiday) == false){
                             System.out.println(startDate);
                         } */
-                        calendarForSemesterCourse.add(start_time);
+                        Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
+                        LocalDate  start_date = start_time.toLocalDate();
+                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        calendarForSemesterCourse.add(hm);
                         start_time = start_time.plusWeeks(1);
                     }
                 }
