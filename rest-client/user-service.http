@@ -526,6 +526,12 @@ Content-Type: application/json
 
 GET {{rest}}/semester-course?page=0&size=2
 
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/semester/calender/1
+
 ### CREATE COURSE ACTION ###
 # @name create_course
 
