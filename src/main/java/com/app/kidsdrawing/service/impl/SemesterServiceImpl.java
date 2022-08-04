@@ -270,7 +270,6 @@ public class SemesterServiceImpl implements SemesterService {
             allCalendarForSemesterCourse.add(calendarForSemesterCourse);
         }
         Map<String, Object> response = new HashMap<>();
-        response.put("semester_courses", allSemesterCourseResponses);
         response.put("calendar_semester_course", allCalendarForSemesterCourse);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

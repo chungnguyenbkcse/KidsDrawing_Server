@@ -351,7 +351,7 @@ Content-Type: application/json
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/semester/schedule-class/1
+POST {{rest}}/semester/schedule-class/2
 Authorization: Bearer {{admin_access_token}}
 
 ### CREATE CONTEST ACTION ###
@@ -524,13 +524,13 @@ Content-Type: application/json
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/semester-course?page=0&size=2
+GET {{rest}}/semester-course?page=0&size=10
 
 
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/semester/calender/1
+GET {{rest}}/semester/calender/2
 
 ### CREATE COURSE ACTION ###
 # @name create_course
