@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,10 +22,18 @@ import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterCourse;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.Class;
+import com.app.kidsdrawing.entity.Course;
+import com.app.kidsdrawing.entity.LessonTime;
+import com.app.kidsdrawing.entity.Schedule;
+import com.app.kidsdrawing.entity.ScheduleItem;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassRepository;
+//import com.app.kidsdrawing.repository.CourseRepository;
+//import com.app.kidsdrawing.repository.LessonTimeRepository;
+import com.app.kidsdrawing.repository.ScheduleItemRepository;
+//import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterCourseRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
@@ -45,6 +54,10 @@ public class SemesterServiceImpl implements SemesterService {
     private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
     private final ClassRepository classRepository;
     private final UserRepository userRepository;
+    //private final ScheduleRepository scheduleRepository;
+    private final ScheduleItemRepository scheduleItemRepository;
+    //private final LessonTimeRepository lessonTimeRepository;
+    //private final CourseRepository courseRepository;
     private static int counter = 0;
 
     @Override
@@ -95,6 +108,169 @@ public class SemesterServiceImpl implements SemesterService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("semesters", allSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> setCalenderForSemester(Long id) {
+        Optional<Semester> semesterOpt = semesterRepository.findById(id);
+        Semester semester = semesterOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Semester.not_found");
+        });
+
+        List<Course> allCourseResponses = new ArrayList<>();
+        //List<Course> pageCourse = courseRepository.findAll();
+        List<SemesterCourse> allSemesterCourseResponses = new ArrayList<>();
+        List<SemesterCourse> pageSemesterCourse = semesterCourseRepository.findAll();
+        List<Schedule> allScheduleResponses = new ArrayList<>();
+        //List<Schedule> pageSchedule = scheduleRepository.findAll();
+        List<ScheduleItem> pageScheduleItem = scheduleItemRepository.findAll();
+        //List<LessonTime> pageLessonTime = lessonTimeRepository.findAll();
+        pageSemesterCourse.forEach(semester_course -> {
+            if (semester_course.getSemester().getId() == id){
+                allSemesterCourseResponses.add(semester_course);
+                allScheduleResponses.add(semester_course.getSchedule());
+                allCourseResponses.add(semester_course.getCourse());
+            }
+        });
+
+
+        List<List<ScheduleItem>> allScheduleItemResponses = new ArrayList<>();;
+        allScheduleResponses.forEach(schedule -> {
+            List<ScheduleItem> scheduleItemResponses = new ArrayList<>();
+            pageScheduleItem.forEach(schedule_item -> {
+                if (schedule_item.getSchedule().getId() == schedule.getId()){
+                    scheduleItemResponses.add(schedule_item);
+                }
+            });
+            allScheduleItemResponses.add(scheduleItemResponses);
+        });
+
+        List<List<LessonTime>> allLessonTimeResponses = new ArrayList<>();
+        allScheduleItemResponses.forEach(schedule_items -> {
+            List<LessonTime> lessonTimeResponses = new ArrayList<>();
+            schedule_items.forEach(schedule_item -> {
+                lessonTimeResponses.add(schedule_item.getLessonTime());
+            });
+            allLessonTimeResponses.add(lessonTimeResponses);
+        }); 
+
+        List<List<LocalDateTime>> allCalendarForSemesterCourse = new ArrayList<>();
+        for (int index = 0; index < allScheduleItemResponses.size(); index++) {
+            List<LocalDateTime> calendarForSemesterCourse = new ArrayList<>();
+            for (int idx = 0; idx < allScheduleItemResponses.get(index).size(); idx++) {
+                Integer total_section = allCourseResponses.get(index).getNum_of_section();
+                LocalDateTime start_time = semester.getStart_time();
+                Integer dayOfWeek = allScheduleItemResponses.get(index).get(idx).getDate_of_week();
+                if (dayOfWeek == 2){
+                    while (start_time.getDayOfWeek() != DayOfWeek.MONDAY){
+                        System.out.print(start_time.getDayOfWeek());
+                        start_time = start_time.minusDays(1);
+                    }
+                    LocalDateTime end_time = semester.getStart_time().plusWeeks(total_section);
+                    while (start_time.isBefore(end_time)) {
+                        /* if (startDate.equals(holiday) == false){
+                            System.out.println(startDate);
+                        } */
+                        calendarForSemesterCourse.add(start_time);
+                        start_time = start_time.plusWeeks(1);
+                    }
+                }
+                else if (dayOfWeek == 3){
+                    while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY){
+                        System.out.print(start_time.getDayOfWeek());
+                        start_time = start_time.minusDays(1);
+                    }
+                    LocalDateTime end_time = semester.getStart_time().plusWeeks(total_section);
+                    while (start_time.isBefore(end_time)) {
+                        /* if (startDate.equals(holiday) == false){
+                            System.out.println(startDate);
+                        } */
+                        calendarForSemesterCourse.add(start_time);
+                        start_time = start_time.plusWeeks(1);
+                    }
+                }
+
+                else if (dayOfWeek == 4){
+                    while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY){
+                        System.out.print(start_time.getDayOfWeek());
+                        start_time = start_time.minusDays(1);
+                    }
+                    LocalDateTime end_time = semester.getStart_time().plusWeeks(total_section);
+                    while (start_time.isBefore(end_time)) {
+                        /* if (startDate.equals(holiday) == false){
+                            System.out.println(startDate);
+                        } */
+                        calendarForSemesterCourse.add(start_time);
+                        start_time = start_time.plusWeeks(1);
+                    }
+                }
+
+                else if (dayOfWeek == 5){
+                    while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY){
+                        System.out.print(start_time.getDayOfWeek());
+                        start_time = start_time.minusDays(1);
+                    }
+                    LocalDateTime end_time = semester.getStart_time().plusWeeks(total_section);
+                    while (start_time.isBefore(end_time)) {
+                        /* if (startDate.equals(holiday) == false){
+                            System.out.println(startDate);
+                        } */
+                        calendarForSemesterCourse.add(start_time);
+                        start_time = start_time.plusWeeks(1);
+                    }
+                }
+
+                else if (dayOfWeek == 6){
+                    while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY){
+                        System.out.print(start_time.getDayOfWeek());
+                        start_time = start_time.minusDays(1);
+                    }
+                    LocalDateTime end_time = semester.getStart_time().plusWeeks(total_section);
+                    while (start_time.isBefore(end_time)) {
+                        /* if (startDate.equals(holiday) == false){
+                            System.out.println(startDate);
+                        } */
+                        calendarForSemesterCourse.add(start_time);
+                        start_time = start_time.plusWeeks(1);
+                    }
+                }
+
+                else if (dayOfWeek == 7){
+                    while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY){
+                        System.out.print(start_time.getDayOfWeek());
+                        start_time = start_time.minusDays(1);
+                    }
+                    LocalDateTime end_time = semester.getStart_time().plusWeeks(total_section);
+                    while (start_time.isBefore(end_time)) {
+                        /* if (startDate.equals(holiday) == false){
+                            System.out.println(startDate);
+                        } */
+                        calendarForSemesterCourse.add(start_time);
+                        start_time = start_time.plusWeeks(1);
+                    }
+                }
+
+                else {
+                    while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY){
+                        System.out.print(start_time.getDayOfWeek());
+                        start_time = start_time.minusDays(1);
+                    }
+                    LocalDateTime end_time = semester.getStart_time().plusWeeks(total_section);
+                    while (start_time.isBefore(end_time)) {
+                        /* if (startDate.equals(holiday) == false){
+                            System.out.println(startDate);
+                        } */
+                        calendarForSemesterCourse.add(start_time);
+                        start_time = start_time.plusWeeks(1);
+                    }
+                }
+                
+            }
+            allCalendarForSemesterCourse.add(calendarForSemesterCourse);
+        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("calendar_semester_course", allCalendarForSemesterCourse);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

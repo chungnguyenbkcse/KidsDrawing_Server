@@ -10,6 +10,7 @@ import com.app.kidsdrawing.dto.GetSemesterResponse;
 public interface SemesterService {
     ResponseEntity<Map<String, Object>> getAllSemester();
     ResponseEntity<Map<String, Object>> getAllSemesterNext();
+    ResponseEntity<Map<String, Object>> setCalenderForSemester(Long id);
     Long setClassForSemester(Long id, int partion, int min, int max);
     GetSemesterResponse getSemesterById(Long id);
     Long createSemester(CreateSemesterRequest createSemesterRequest);
