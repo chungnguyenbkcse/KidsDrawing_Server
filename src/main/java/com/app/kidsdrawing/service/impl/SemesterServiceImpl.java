@@ -147,8 +147,8 @@ public class SemesterServiceImpl implements SemesterService {
             pageScheduleItem.forEach(schedule_item -> {
                 if (schedule_item.getSchedule().getId() == schedule.getId()){
                     scheduleItemResponses.add(schedule_item);
+                    total_count ++;
                 }
-                total_count ++;
             });
             allScheduleItemResponses.add(scheduleItemResponses);
             totalDayOfWeek.add(total_count);
@@ -223,7 +223,7 @@ public class SemesterServiceImpl implements SemesterService {
                         start_time = start_time.plusDays(1);
                     }
                 }
-                while (counter <= 5) {
+                while (counter <= total_week) {
                     /* if (startDate.equals(holiday) == false){
                         System.out.println(startDate);
                     } */
