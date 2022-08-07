@@ -168,8 +168,8 @@ public class SemesterServiceImpl implements SemesterService {
             Integer total_section = allCourseResponses.get(index).getNum_of_section();
             List<Map <LocalDateTime, LocalDateTime>> calendarForSemesterCourse = new ArrayList<>();
             Integer total_week = (int) Math.ceil( total_section / totalDayOfWeek.get(index));
-            counter = 0;
             for (int idx = 0; idx < allScheduleItemResponses.get(index).size(); idx++) {
+                counter = 0;
                 LocalDateTime start_time = semester.getStart_time();
                 Integer dayOfWeek = allScheduleItemResponses.get(index).get(idx).getDate_of_week();
                 LocalTime start_lessontime = allLessonTimeResponses.get(index).get(idx).getStart_time();
@@ -222,7 +222,7 @@ public class SemesterServiceImpl implements SemesterService {
                         start_time = start_time.plusDays(1);
                     }
                 }
-                while (start_time.isBefore(end_time) && counter < total_section) {
+                while (counter <= total_week) {
                     /* if (startDate.equals(holiday) == false){
                         System.out.println(startDate);
                     } */
@@ -231,7 +231,7 @@ public class SemesterServiceImpl implements SemesterService {
                     hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
                     calendarForSemesterCourse.add(hm);
                     start_time = start_time.plusWeeks(1);
-                    counter ++;
+                    counter++;
                 }
                 
             }
