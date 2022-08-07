@@ -530,7 +530,14 @@ GET {{rest}}/semester-course?page=0&size=10
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/semester/calender/1
+POST {{rest}}/semester/calender/1
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "time": ["2022-08-03", "2022-08-10"]
+}
+
 
 ### CREATE COURSE ACTION ###
 # @name create_course
