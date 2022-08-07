@@ -178,48 +178,48 @@ public class SemesterServiceImpl implements SemesterService {
                 if (dayOfWeek == 2){
                     while (start_time.getDayOfWeek() != DayOfWeek.MONDAY){
                         System.out.print(start_time.getDayOfWeek());
-                        start_time = start_time.minusDays(1);
+                        start_time = start_time.plusDays(1);
                     }
                 }
                 else if (dayOfWeek == 3){
                     while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY){
                         System.out.print(start_time.getDayOfWeek());
-                        start_time = start_time.minusDays(1);
+                        start_time = start_time.plusDays(1);
                     }
                 }
 
                 else if (dayOfWeek == 4){
                     while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY){
                         System.out.print(start_time.getDayOfWeek());
-                        start_time = start_time.minusDays(1);
+                        start_time = start_time.plusDays(1);
                     }
                 }
 
                 else if (dayOfWeek == 5){
                     while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY){
                         System.out.print(start_time.getDayOfWeek());
-                        start_time = start_time.minusDays(1);
+                        start_time = start_time.plusDays(1);
                     }
                 }
 
                 else if (dayOfWeek == 6){
                     while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY){
                         System.out.print(start_time.getDayOfWeek());
-                        start_time = start_time.minusDays(1);
+                        start_time = start_time.plusDays(1);
                     }
                 }
 
                 else if (dayOfWeek == 7){
                     while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY){
                         System.out.print(start_time.getDayOfWeek());
-                        start_time = start_time.minusDays(1);
+                        start_time = start_time.plusDays(1);
                     }
                 }
 
                 else {
                     while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY){
                         System.out.print(start_time.getDayOfWeek());
-                        start_time = start_time.minusDays(1);
+                        start_time = start_time.plusDays(1);
                     }
                 }
                 while (start_time.isBefore(end_time) && counter < total_section) {
