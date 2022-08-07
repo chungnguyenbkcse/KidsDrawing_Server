@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.app.kidsdrawing.dto.CreateHolidayResquest;
 import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.entity.Semester;
@@ -116,7 +117,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> setCalenderForSemester(Long id) {
+    public ResponseEntity<Map<String, Object>> setCalenderForSemester(Long id, CreateHolidayResquest createHolidayResquest) {
         // Lấy học kì
         Optional<Semester> semesterOpt = semesterRepository.findById(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
@@ -177,7 +178,7 @@ public class SemesterServiceImpl implements SemesterService {
                 Integer dayOfWeek = allScheduleItemResponses.get(index).get(idx).getDate_of_week();
                 LocalTime start_lessontime = allLessonTimeResponses.get(index).get(idx).getStart_time();
                 LocalTime end_lessontime = allLessonTimeResponses.get(index).get(idx).getEnd_time();
-                LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                //LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                 if (dayOfWeek == 2){
                     while (start_time.getDayOfWeek() != DayOfWeek.MONDAY){
                         System.out.print(start_time.getDayOfWeek());
@@ -231,11 +232,13 @@ public class SemesterServiceImpl implements SemesterService {
                     } */
                     Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
                     LocalDate  start_date = start_time.toLocalDate();
-                    hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
-                    calendarForSemesterCourse.add(hm);
+                    if (createHolidayResquest.getTime().contains(start_date) == false){
+                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        calendarForSemesterCourse.add(hm);
+                        counter++;
+                        total_section_count ++;
+                    }
                     start_time = start_time.plusWeeks(1);
-                    counter++;
-                    total_section_count ++;
                 }
                 
             }
