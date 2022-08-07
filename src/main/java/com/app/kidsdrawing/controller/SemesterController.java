@@ -65,7 +65,7 @@ public class SemesterController {
     }
 
     @CrossOrigin
-    @GetMapping(value="/calender/{id}")
+    @PostMapping(value="/calender/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getCalendarForSemster(@PathVariable Long id, @RequestBody CreateHolidayResquest createHolidayResquest) {
         return ResponseEntity.ok().body(semesterService.setCalenderForSemester(id, createHolidayResquest));
     }
