@@ -62,6 +62,7 @@ public class SemesterServiceImpl implements SemesterService {
     //private final CourseRepository courseRepository;
     private static int counter = 0;
     private static int total_count = 0;
+    private static int total_section_count = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemester() {
@@ -169,6 +170,7 @@ public class SemesterServiceImpl implements SemesterService {
             List<Map <LocalDateTime, LocalDateTime>> calendarForSemesterCourse = new ArrayList<>();
             Integer total_week = (int) Math.ceil( total_section / totalDayOfWeek.get(index));
             System.out.printf("total_week: %d\n", total_week);
+            total_section_count = 0;
             for (int idx = 0; idx < allScheduleItemResponses.get(index).size(); idx++) {
                 counter = 0;
                 LocalDateTime start_time = semester.getStart_time();
@@ -223,7 +225,7 @@ public class SemesterServiceImpl implements SemesterService {
                         start_time = start_time.plusDays(1);
                     }
                 }
-                while (counter <= total_week) {
+                while (counter <= total_week && total_section_count < total_section) {
                     /* if (startDate.equals(holiday) == false){
                         System.out.println(startDate);
                     } */
@@ -233,6 +235,7 @@ public class SemesterServiceImpl implements SemesterService {
                     calendarForSemesterCourse.add(hm);
                     start_time = start_time.plusWeeks(1);
                     counter++;
+                    total_section_count ++;
                 }
                 
             }
