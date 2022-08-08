@@ -29,6 +29,8 @@ import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.Schedule;
 import com.app.kidsdrawing.entity.ScheduleItem;
+import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
@@ -36,6 +38,8 @@ import com.app.kidsdrawing.repository.ClassRepository;
 //import com.app.kidsdrawing.repository.CourseRepository;
 //import com.app.kidsdrawing.repository.LessonTimeRepository;
 import com.app.kidsdrawing.repository.ScheduleItemRepository;
+import com.app.kidsdrawing.repository.SectionRepository;
+import com.app.kidsdrawing.repository.SectionTemplateRepository;
 //import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterCourseRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
@@ -59,6 +63,8 @@ public class SemesterServiceImpl implements SemesterService {
     private final UserRepository userRepository;
     //private final ScheduleRepository scheduleRepository;
     private final ScheduleItemRepository scheduleItemRepository;
+    private final SectionTemplateRepository sectionTemplateRepository;
+    private final SectionRepository sectionRepository;
     //private final LessonTimeRepository lessonTimeRepository;
     //private final CourseRepository courseRepository;
     private static int counter = 0;
@@ -132,6 +138,7 @@ public class SemesterServiceImpl implements SemesterService {
         //List<Schedule> pageSchedule = scheduleRepository.findAll();
         List<ScheduleItem> pageScheduleItem = scheduleItemRepository.findAll();
         //List<LessonTime> pageLessonTime = lessonTimeRepository.findAll();
+
         pageSemesterCourse.forEach(semester_course -> {
             if (semester_course.getSemester().getId() == id){
                 allSemesterCourseResponses.add(semester_course);
@@ -140,6 +147,17 @@ public class SemesterServiceImpl implements SemesterService {
             }
         });
 
+        List<Class> listClass = classRepository.findAll();
+        List<List<Class>> allClassOfSemesterCourseResponses = new ArrayList<>();        
+        allSemesterCourseResponses.forEach(semester_course -> {
+            List<Class> list_class = new ArrayList<>();
+            listClass.forEach(ele_class -> {
+                if (ele_class.getTeachSemester().getSemesterCourse().getId() == semester_course.getId()){
+                    list_class.add(ele_class);
+                }
+            });
+            allClassOfSemesterCourseResponses.add(list_class);
+        });
 
         List<List<ScheduleItem>> allScheduleItemResponses = new ArrayList<>();
         List<Integer> totalDayOfWeek = new ArrayList<>();
@@ -247,6 +265,32 @@ public class SemesterServiceImpl implements SemesterService {
             }
             allCalendarForSemesterCourse.add(calendarForSemesterCourse);
         }
+
+        allClassOfSemesterCourseResponses.forEach( list_class -> {
+            List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
+            List<SectionTemplate> allSectionTemplate = new ArrayList<>();
+            total_section_count = 0;
+            listSectionTemplate.forEach(section_template -> {
+                if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterCourse().getCourse().getId()){
+                    allSectionTemplate.add(section_template);
+                    total_section_count = section_template.getCourse().getNum_of_section();
+                }
+            });
+            list_class.forEach(ele -> {
+                allSectionTemplate.forEach(ele_section_tmp -> {
+                    Section savedSection = Section.builder()
+                        .class1(ele)
+                        .name(ele_section_tmp.getName())
+                        .description(ele_section_tmp.getDescription())
+                        .number(ele_section_tmp.getNumber())
+                        .teaching_form(ele_section_tmp.getTeaching_form())
+                        .build();
+                    sectionRepository.save(savedSection);
+                });
+            });
+        }); 
+
+
         Map<String, Object> response = new HashMap<>();
         response.put("calendar_semester_course", allCalendarForSemesterCourse);
         return new ResponseEntity<>(response, HttpStatus.OK);
