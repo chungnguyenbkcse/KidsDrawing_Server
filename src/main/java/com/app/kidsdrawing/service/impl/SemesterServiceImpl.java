@@ -165,10 +165,10 @@ public class SemesterServiceImpl implements SemesterService {
             allLessonTimeResponses.add(lessonTimeResponses);
         }); 
 
-        List<List<Map <LocalDateTime, LocalDateTime>>> allCalendarForSemesterCourse = new ArrayList<>();
+        List<List<Map <String, List<LocalDateTime>>>> allCalendarForSemesterCourse = new ArrayList<>();
         for (int index = 0; index < allScheduleItemResponses.size(); index++) {
             Integer total_section = allCourseResponses.get(index).getNum_of_section();
-            List<Map <LocalDateTime, LocalDateTime>> calendarForSemesterCourse = new ArrayList<>();
+            List<Map <String, List<LocalDateTime>>> calendarForSemesterCourse = new ArrayList<>();
             Integer total_week = (int) Math.ceil( total_section / totalDayOfWeek.get(index));
             System.out.printf("total_week: %d\n", total_week);
             total_section_count = 0;
@@ -230,10 +230,13 @@ public class SemesterServiceImpl implements SemesterService {
                     /* if (startDate.equals(holiday) == false){
                         System.out.println(startDate);
                     } */
-                    Map<LocalDateTime, LocalDateTime> hm = new HashMap<LocalDateTime, LocalDateTime>();
+                    Map<String, List<LocalDateTime>> hm = new HashMap<String, List<LocalDateTime>>();
                     LocalDate  start_date = start_time.toLocalDate();
                     if (createHolidayResquest.getTime().contains(start_date) == false){
-                        hm.put(start_lessontime.atDate(start_date), end_lessontime.atDate(start_date));
+                        List <LocalDateTime> ele_day = new ArrayList<>();
+                        ele_day.add(start_lessontime.atDate(start_date));
+                        ele_day.add(end_lessontime.atDate(start_date));
+                        hm.put("Time", ele_day);
                         calendarForSemesterCourse.add(hm);
                         counter++;
                         total_section_count ++;
