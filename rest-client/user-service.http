@@ -342,7 +342,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "teacher-1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -351,7 +351,7 @@ Content-Type: application/json
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/teacher-register-level/teacher/3?page=0&size=2
+GET {{rest}}/teacher-register-level/teacher/3
 Authorization: Bearer {{admin_access_token}}
 
 ### CREATE ART TYPE ACTION ###
@@ -727,17 +727,17 @@ Authorization: Bearer {{admin_access_token}}
 ###
 
 # @name get_all_user
-GET {{rest}}/user/teacher?page=0&size=5
+GET {{rest}}/user/teacher
 Authorization: Bearer {{admin_access_token}}
 
 ###
 # @name get_all_user
-GET {{rest}}/user/student?page=0&size=5
+GET {{rest}}/user/student
 Authorization: Bearer {{admin_access_token}}
 
 ###
 # @name get_all_user
-GET {{rest}}/user/parent?page=0&size=5
+GET {{rest}}/user/parent
 Authorization: Bearer {{admin_access_token}}
 
 ###

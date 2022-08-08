@@ -35,6 +35,27 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
     private final UserRepository userRepository;
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualification() {
+        List<GetTeacherRegisterQualificationResponse> allTeacherRegisterQualificationResponses = new ArrayList<>();
+        List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
+        pageTeacherRegisterQualification.forEach(content -> {
+            GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
+                .id(content.getId())
+                .teacher_id(content.getTeacher().getId())
+                .reviewer_id(content.getReviewer().getId())
+                .course_id(content.getCourse().getId())
+                .degree_photo_url(content.getDegree_photo_url())
+                .status(content.getStatus())
+                .build();
+                allTeacherRegisterQualificationResponses.add(teacherRegisterQualificationResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("teacher_register_qualification", allTeacherRegisterQualificationResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationByTeacherId(Long id) {
         List<GetTeacherRegisterQualificationResponse> allTeacherRegisterQualificationResponses = new ArrayList<>();
         List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
