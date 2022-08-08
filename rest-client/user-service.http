@@ -319,9 +319,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "teacher-2",
+    "username": "teacher-3",
     "password": "12345678aA@",
-    "email": "teacher-2@gmail.com",
+    "email": "teacher-3@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -348,15 +348,27 @@ Content-Type: application/json
 
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
 
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+POST {{rest}}/semester/calender/1
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "time": ["2022-08-08", "2022-08-10", "2022-08-12"]
+}
+
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/semester/schedule-class/2
+POST {{rest}}/semester/schedule-class/1
 Authorization: Bearer {{admin_access_token}}
 
 ### CREATE CONTEST ACTION ###
 # @name get_info_user
-GET {{rest}}/classes/info/5
+GET {{rest}}/classes/info/1
 Authorization: Bearer {{admin_access_token}}
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
@@ -367,7 +379,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 2,
+    "teacher_id": 16,
     "semester_course_id": 1
 }
 
@@ -380,9 +392,9 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 7,
+    "student_id": 15,
     "semester_course_id": 1,
-    "payer_id": 4,
+    "payer_id": 15,
     "price": 2000000
 }
 
@@ -395,7 +407,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 3,
+    "teacher_id": 2,
     "semester_course_id": 1
 }
 
@@ -435,8 +447,58 @@ Content-Type: application/json
 
 {
     "schedule_id": 1,
-    "lesson_time": 6,
+    "lesson_time": 1,
     "date_of_week": 2
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/schedule-item
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "schedule_id": 1,
+    "lesson_time": 2,
+    "date_of_week": 4
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/schedule-item
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "schedule_id": 1,
+    "lesson_time": 1,
+    "date_of_week": 6
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/lesson-time
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "start_time": "07:00:00",
+    "end_time": "08:00:00"
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/lesson-time
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "start_time": "10:00:00",
+    "end_time": "11:00:00"
 }
 
 ### CREATE CONTEST ACTION ###
@@ -469,9 +531,6 @@ Content-Type: application/json
 
 }
 
-### CREATE CONTEST ACTION ###
-# @name create_contest
-
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
 
@@ -487,6 +546,9 @@ Content-Type: application/json
     "description": ""
 }
 
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
 POST {{rest}}/section-template
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
@@ -494,9 +556,9 @@ Content-Type: application/json
 {
     "creator_id": 1,
     "course_id": 1,
-    "name": "Giaos an 1",
+    "name": "Giao an 10",
     "description": "",
-    "number": 1,
+    "number": 10,
     "teaching_form": true
 }
 
@@ -526,17 +588,6 @@ Content-Type: application/json
 
 GET {{rest}}/semester-course?page=0&size=10
 
-
-### GET ART TYPE ACTION ###
-# @name get_all_art_type
-
-POST {{rest}}/semester/calender/1
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "time": ["2022-08-03", "2022-08-10"]
-}
 
 
 ### CREATE COURSE ACTION ###
