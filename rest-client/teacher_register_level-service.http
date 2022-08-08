@@ -8,10 +8,9 @@ Content-Type: application/json
 
 {
     "teacher_id": 3,
-    "art_type_id": 1,
-    "art_age_id": 1,
+    "course_id": 1,
     "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
-    "status": false
+    "status": "Approved"
 }
 
 ### CREATE ART TYPE ACTION ###
@@ -36,4 +35,4 @@ PUT {{rest}}/teacher-register-level/admin/2/2
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/teacher-register-level/teacher/3?page=0&size=1
+GET {{rest}}/teacher-register-level/teacher/2?page=0&size=1

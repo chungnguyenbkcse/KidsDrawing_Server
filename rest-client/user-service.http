@@ -342,12 +342,31 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "admin",
+    "username": "teacher-1",
     "password": "12345678aA@"
 }
 
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
 
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/teacher-register-level/teacher/3?page=0&size=2
+Authorization: Bearer {{admin_access_token}}
+
+### CREATE ART TYPE ACTION ###
+# @name create_art_type
+
+POST {{rest}}/teacher-register-level
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "teacher_id": 3,
+    "course_id": 1,
+    "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
+    "status": "Not approved yet"
+}
 
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type

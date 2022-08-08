@@ -8,7 +8,7 @@ import com.app.kidsdrawing.dto.CreateTeacherRegisterQualificationRequest;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 
 public interface TeacherRegisterQualificationService {
-    ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationByTeacherId(int page, int size, Long id);
+    ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationByTeacherId(Long id);
     GetTeacherRegisterQualificationResponse getTeacherRegisterQualificationById(Long id);
     Long createTeacherRegisterQualification(CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest);
     Long removeTeacherRegisterQualificationById(Long id);

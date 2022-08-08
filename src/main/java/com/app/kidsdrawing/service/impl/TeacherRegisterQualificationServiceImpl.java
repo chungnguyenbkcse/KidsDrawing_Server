@@ -8,9 +8,6 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,11 +35,10 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationByTeacherId(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationByTeacherId(Long id) {
         List<GetTeacherRegisterQualificationResponse> allTeacherRegisterQualificationResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll(paging);
-        pageTeacherRegisterQualification.getContent().forEach(content -> {
+        List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
+        pageTeacherRegisterQualification.forEach(content -> {
             if (content.getTeacher().getId() == id){
                 GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                     .id(content.getId())
@@ -58,9 +54,6 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
         Map<String, Object> response = new HashMap<>();
         response.put("teacher_register_qualification", allTeacherRegisterQualificationResponses);
-        response.put("currentPage", pageTeacherRegisterQualification.getNumber());
-        response.put("totalItems", pageTeacherRegisterQualification.getTotalElements());
-        response.put("totalPages", pageTeacherRegisterQualification.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
