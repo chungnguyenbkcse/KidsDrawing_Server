@@ -63,12 +63,6 @@ public class Section {
     @Column(name = "message")
     private String message;
 
-    @Column(name = "start_time")
-    private LocalDateTime start_time;
-
-    @Column(name = "end_time")
-    private LocalDateTime end_time;
-
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp
