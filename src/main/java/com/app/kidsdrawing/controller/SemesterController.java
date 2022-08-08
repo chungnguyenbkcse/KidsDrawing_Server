@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.app.kidsdrawing.dto.CreateHolidayResquest;
+import com.app.kidsdrawing.dto.CreateHolidayRequest;
 import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.service.SemesterService;
@@ -66,8 +66,11 @@ public class SemesterController {
 
     @CrossOrigin
     @PostMapping(value="/calender/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getCalendarForSemster(@PathVariable Long id, @RequestBody CreateHolidayResquest createHolidayResquest) {
-        return ResponseEntity.ok().body(semesterService.setCalenderForSemester(id, createHolidayResquest));
+    public ResponseEntity<String> getCalendarForSemster(@PathVariable Long id, @RequestBody CreateHolidayRequest createHolidayResquest) {
+        Long semesterId = semesterService.setCalenderForSemester(id, createHolidayResquest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{semesterId}")
+                .buildAndExpand(semesterId).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @CrossOrigin
