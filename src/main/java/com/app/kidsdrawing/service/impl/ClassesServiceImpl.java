@@ -416,7 +416,7 @@ public class ClassesServiceImpl implements ClassesService {
             String name = "week_" + week_count;
             schedule_in_week.put(name, lesson_time_in_week);
             allCalendarForSemesterCourse.add(schedule_in_week);
-            start_time = start_time.plusWeeks(1);
+            //start_time = start_time.plusWeeks(1);
             week_count ++;
         }
 
