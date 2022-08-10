@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeHttpRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/user/**").hasAnyAuthority("ADMIN_USER")
+                .antMatchers("/api/v1/user/**").permitAll()
                 //.antMatchers("/api/v1/user/admin/**").hasAnyAuthority("SUPER_ADMIN_USER")
                 //.antMatchers("/api/v1/user/staff/**").hasAnyAuthority("SUPER_ADMIN_USER","ADMIN_USER")
                 //.antMatchers("/api/v1/user/teacher/**").hasAnyAuthority("SUPER_ADMIN_USER","ADMIN_USER","STAFF_USER")

@@ -571,6 +571,11 @@ Authorization: Bearer {{admin_access_token}}
 GET {{rest}}/classes/info/3
 Authorization: Bearer {{admin_access_token}}
 
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/classes/info
+
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
 
