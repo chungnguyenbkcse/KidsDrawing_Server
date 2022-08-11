@@ -91,6 +91,8 @@ public class ClassesServiceImpl implements ClassesService {
         List<GetInfoClassTeacherResponse> allInfoClassTeacherDoingResponses = new ArrayList<>();
         List<GetInfoClassTeacherResponse> allInfoClassTeacherDoneResponses = new ArrayList<>();
         List<List<Map<String, List<List<LocalDateTime>>>>> allScheduleTime = new ArrayList<>();
+        List<List<GetUserResponse>> allStudentDoneResponses = new ArrayList<>();
+        List<List<GetUserResponse>> allStudentDoingResponses = new ArrayList<>();
         List<Class> listClass = classRepository.findAll();
         LocalDateTime time_now = LocalDateTime.now();
         listClass.forEach(ele -> {
@@ -126,6 +128,31 @@ public class ClassesServiceImpl implements ClassesService {
                         .schedule(schedule)
                         .build();
                     allInfoClassTeacherDoingResponses.add(infoClassTeacherResponse);
+                    
+                    List<GetUserResponse> listStudents = new ArrayList<>();
+                    ele.getUserRegisterJoinSemesters().forEach(content -> {
+                        List<String> parent_names = new ArrayList<>();
+                        content.getStudent().getParents().forEach(parent -> {
+                            String parent_name = parent.getUsername();
+                            parent_names.add(parent_name);
+                        });
+                        GetUserResponse student = GetUserResponse.builder()
+                                .id(content.getStudent().getId())
+                                .username(content.getStudent().getUsername())
+                                .email(content.getStudent().getEmail())
+                                .firstName(content.getStudent().getFirstName())
+                                .lastName(content.getStudent().getLastName())
+                                .dateOfBirth(content.getStudent().getDateOfBirth())
+                                .profile_image_url(content.getStudent().getProfileImageUrl())
+                                .sex(content.getStudent().getSex())
+                                .phone(content.getStudent().getPhone())
+                                .address(content.getStudent().getAddress())
+                                .parents(parent_names)
+                                .createTime(content.getStudent().getCreateTime())
+                                .build();
+                        listStudents.add(student);
+                    });
+                    allStudentDoneResponses.add(listStudents);
                 }
 
                 else {
@@ -145,6 +172,31 @@ public class ClassesServiceImpl implements ClassesService {
                         .schedule(schedule)
                         .build();
                     allInfoClassTeacherDoneResponses.add(infoClassTeacherResponse);
+
+                    List<GetUserResponse> listStudentDones = new ArrayList<>();
+                    ele.getUserRegisterJoinSemesters().forEach(content -> {
+                        List<String> parent_names = new ArrayList<>();
+                        content.getStudent().getParents().forEach(parent -> {
+                            String parent_name = parent.getUsername();
+                            parent_names.add(parent_name);
+                        });
+                        GetUserResponse student = GetUserResponse.builder()
+                                .id(content.getStudent().getId())
+                                .username(content.getStudent().getUsername())
+                                .email(content.getStudent().getEmail())
+                                .firstName(content.getStudent().getFirstName())
+                                .lastName(content.getStudent().getLastName())
+                                .dateOfBirth(content.getStudent().getDateOfBirth())
+                                .profile_image_url(content.getStudent().getProfileImageUrl())
+                                .sex(content.getStudent().getSex())
+                                .phone(content.getStudent().getPhone())
+                                .address(content.getStudent().getAddress())
+                                .parents(parent_names)
+                                .createTime(content.getStudent().getCreateTime())
+                                .build();
+                        listStudentDones.add(student);
+                    });
+                    allStudentDoneResponses.add(listStudentDones);
                 }
                 
             }
@@ -152,6 +204,8 @@ public class ClassesServiceImpl implements ClassesService {
         Map<String, Object> response = new HashMap<>();
         response.put("classes_doning", allInfoClassTeacherDoingResponses);
         response.put("schedule_time", allScheduleTime);
+        response.put("students_done", allStudentDoneResponses);
+        response.put("students_doing", allStudentDoingResponses);
         response.put("classes_done", allInfoClassTeacherDoneResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
