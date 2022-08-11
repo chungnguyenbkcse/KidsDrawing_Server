@@ -106,7 +106,7 @@ public class ClassesServiceImpl implements ClassesService {
                 }
             });
             if (ele.getTeachSemester().getTeacher().getId() == id){
-                if (time_now.isAfter(res)){
+                if (time_now.isAfter(res) == false){
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
                         .registration_id(ele.getTeachSemester().getId())
