@@ -75,7 +75,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .build();
                     allTeacherRegisterQualificationNotApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
                 }
-                else {
+                else if (ele.getStatus() == "Not approve now"){
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
