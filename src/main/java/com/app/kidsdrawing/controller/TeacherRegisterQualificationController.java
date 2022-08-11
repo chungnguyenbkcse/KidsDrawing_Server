@@ -28,9 +28,15 @@ public class TeacherRegisterQualificationController {
     private final TeacherRegisterQualificationService  teacherRegisterQualificationService;
 
     @CrossOrigin
-    @GetMapping(value = "/teacher/{id}")
+    @GetMapping(value = "/info/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherRegisterQualificationByTeacherId(@PathVariable Long id) {
         return ResponseEntity.ok().body(teacherRegisterQualificationService.getAllTeacherRegisterQualificationByTeacherId(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/teacher/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherRegisterQualificationApprovedByTeacherId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(teacherRegisterQualificationService.getAllTeacherRegisterQualificationApprovedByTeacherId(id));
     }
     
     @CrossOrigin

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateTeacherRegisterQualificationRequest;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
+import com.app.kidsdrawing.dto.GetTeacherRegisterQuanlificationTeacherResponse;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
@@ -33,6 +34,70 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
     private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationApprovedByTeacherId(Long id) {
+        List<GetTeacherRegisterQuanlificationTeacherResponse> allTeacherRegisterQualificationApprovedResponses = new ArrayList<>();
+        List<GetTeacherRegisterQuanlificationTeacherResponse> allTeacherRegisterQualificationNotApprovedResponses = new ArrayList<>();
+        List<GetTeacherRegisterQuanlificationTeacherResponse> allTeacherRegisterQualificationNotApproveNowResponses = new ArrayList<>();
+        List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
+        pageTeacherRegisterQualification.forEach(ele -> {
+            if (ele.getStatus() == "Approved"){
+                GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
+                    .id(ele.getId())
+                    .teacher_id(ele.getTeacher().getId())
+                    .teacher_name(ele.getTeacher().getUsername())
+                    .reviewer_id(ele.getReviewer().getId())
+                    .course_id(ele.getCourse().getId())
+                    .course_name(ele.getCourse().getName())
+                    .art_age_name(ele.getCourse().getArtAges().getName())
+                    .art_level_name(ele.getCourse().getArtLevels().getName())
+                    .art_type_name(ele.getCourse().getArtTypes().getName())
+                    .degree_photo_url(ele.getDegree_photo_url())
+                    .status(ele.getStatus())
+                    .build();
+                allTeacherRegisterQualificationApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
+            }
+            else if (ele.getStatus() == "Not approve"){
+                GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
+                    .id(ele.getId())
+                    .teacher_id(ele.getTeacher().getId())
+                    .teacher_name(ele.getTeacher().getUsername())
+                    .reviewer_id(ele.getReviewer().getId())
+                    .course_id(ele.getCourse().getId())
+                    .course_name(ele.getCourse().getName())
+                    .art_age_name(ele.getCourse().getArtAges().getName())
+                    .art_level_name(ele.getCourse().getArtLevels().getName())
+                    .art_type_name(ele.getCourse().getArtTypes().getName())
+                    .degree_photo_url(ele.getDegree_photo_url())
+                    .status(ele.getStatus())
+                    .build();
+                allTeacherRegisterQualificationNotApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
+            }
+            else {
+                GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
+                    .id(ele.getId())
+                    .teacher_id(ele.getTeacher().getId())
+                    .teacher_name(ele.getTeacher().getUsername())
+                    .reviewer_id(ele.getReviewer().getId())
+                    .course_id(ele.getCourse().getId())
+                    .course_name(ele.getCourse().getName())
+                    .art_age_name(ele.getCourse().getArtAges().getName())
+                    .art_level_name(ele.getCourse().getArtLevels().getName())
+                    .art_type_name(ele.getCourse().getArtTypes().getName())
+                    .degree_photo_url(ele.getDegree_photo_url())
+                    .status(ele.getStatus())
+                    .build();
+                allTeacherRegisterQualificationNotApproveNowResponses.add(teacherRegisterQuanlificationTeacherResponse);
+            } 
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("approved", allTeacherRegisterQualificationApprovedResponses);
+        response.put("not_approved", allTeacherRegisterQualificationNotApprovedResponses);
+        response.put("not_approved_now", allTeacherRegisterQualificationNotApproveNowResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualification() {
