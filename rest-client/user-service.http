@@ -486,6 +486,27 @@ Content-Type: application/json
     "roleNames": ["TEACHER_USER"]
 }
 
+### REGISTER ACTION ###
+# @name teacher_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "teacher-4",
+    "password": "12345678aA@",
+    "email": "teacher-4@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_ids": [],
+    "roleNames": ["TEACHER_USER"]
+}
+
 ### ADMIN ACTION ###
 
 # @name login_admin
@@ -504,6 +525,12 @@ Content-Type: application/json
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
+GET {{rest}}/teacher-register-level/teacher/28
+Authorization: Bearer {{admin_access_token}}
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
 GET {{rest}}/teacher-register-level
 Authorization: Bearer {{admin_access_token}}
 
@@ -515,10 +542,10 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 2,
+    "teacher_id": 28,
     "course_id": 1,
     "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
-    "status": "Not approved yet"
+    "status": "Approved"
 }
 
 ### CREATE ART TYPE ACTION ###
@@ -799,11 +826,6 @@ GET {{rest}}/semester-course?page=0&size=10
 
 GET {{rest}}/classes/teacher/2
 
-
-### GET ART TYPE ACTION ###
-# @name get_all_art_type
-
-GET {{rest}}/teacher-register-level/teacher/2
 
 
 ### GET ART TYPE ACTION ###
