@@ -42,53 +42,55 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         List<GetTeacherRegisterQuanlificationTeacherResponse> allTeacherRegisterQualificationNotApproveNowResponses = new ArrayList<>();
         List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
         pageTeacherRegisterQualification.forEach(ele -> {
-            if (ele.getStatus() == "Approved"){
-                GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
-                    .id(ele.getId())
-                    .teacher_id(ele.getTeacher().getId())
-                    .teacher_name(ele.getTeacher().getUsername())
-                    .reviewer_id(ele.getReviewer().getId())
-                    .course_id(ele.getCourse().getId())
-                    .course_name(ele.getCourse().getName())
-                    .art_age_name(ele.getCourse().getArtAges().getName())
-                    .art_level_name(ele.getCourse().getArtLevels().getName())
-                    .art_type_name(ele.getCourse().getArtTypes().getName())
-                    .degree_photo_url(ele.getDegree_photo_url())
-                    .status(ele.getStatus())
-                    .build();
-                allTeacherRegisterQualificationApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
-            }
-            else if (ele.getStatus() == "Not approve"){
-                GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
-                    .id(ele.getId())
-                    .teacher_id(ele.getTeacher().getId())
-                    .teacher_name(ele.getTeacher().getUsername())
-                    .reviewer_id(ele.getReviewer().getId())
-                    .course_id(ele.getCourse().getId())
-                    .course_name(ele.getCourse().getName())
-                    .art_age_name(ele.getCourse().getArtAges().getName())
-                    .art_level_name(ele.getCourse().getArtLevels().getName())
-                    .art_type_name(ele.getCourse().getArtTypes().getName())
-                    .degree_photo_url(ele.getDegree_photo_url())
-                    .status(ele.getStatus())
-                    .build();
-                allTeacherRegisterQualificationNotApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
-            }
-            else {
-                GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
-                    .id(ele.getId())
-                    .teacher_id(ele.getTeacher().getId())
-                    .teacher_name(ele.getTeacher().getUsername())
-                    .reviewer_id(ele.getReviewer().getId())
-                    .course_id(ele.getCourse().getId())
-                    .course_name(ele.getCourse().getName())
-                    .art_age_name(ele.getCourse().getArtAges().getName())
-                    .art_level_name(ele.getCourse().getArtLevels().getName())
-                    .art_type_name(ele.getCourse().getArtTypes().getName())
-                    .degree_photo_url(ele.getDegree_photo_url())
-                    .status(ele.getStatus())
-                    .build();
-                allTeacherRegisterQualificationNotApproveNowResponses.add(teacherRegisterQuanlificationTeacherResponse);
+            if (ele.getTeacher().getId() == id){
+                if (ele.getStatus() == "Approved"){
+                    GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
+                        .id(ele.getId())
+                        .teacher_id(ele.getTeacher().getId())
+                        .teacher_name(ele.getTeacher().getUsername())
+                        .reviewer_id(ele.getReviewer().getId())
+                        .course_id(ele.getCourse().getId())
+                        .course_name(ele.getCourse().getName())
+                        .art_age_name(ele.getCourse().getArtAges().getName())
+                        .art_level_name(ele.getCourse().getArtLevels().getName())
+                        .art_type_name(ele.getCourse().getArtTypes().getName())
+                        .degree_photo_url(ele.getDegree_photo_url())
+                        .status(ele.getStatus())
+                        .build();
+                    allTeacherRegisterQualificationApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
+                }
+                else if (ele.getStatus() == "Not approve"){
+                    GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
+                        .id(ele.getId())
+                        .teacher_id(ele.getTeacher().getId())
+                        .teacher_name(ele.getTeacher().getUsername())
+                        .reviewer_id(ele.getReviewer().getId())
+                        .course_id(ele.getCourse().getId())
+                        .course_name(ele.getCourse().getName())
+                        .art_age_name(ele.getCourse().getArtAges().getName())
+                        .art_level_name(ele.getCourse().getArtLevels().getName())
+                        .art_type_name(ele.getCourse().getArtTypes().getName())
+                        .degree_photo_url(ele.getDegree_photo_url())
+                        .status(ele.getStatus())
+                        .build();
+                    allTeacherRegisterQualificationNotApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
+                }
+                else {
+                    GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
+                        .id(ele.getId())
+                        .teacher_id(ele.getTeacher().getId())
+                        .teacher_name(ele.getTeacher().getUsername())
+                        .reviewer_id(ele.getReviewer().getId())
+                        .course_id(ele.getCourse().getId())
+                        .course_name(ele.getCourse().getName())
+                        .art_age_name(ele.getCourse().getArtAges().getName())
+                        .art_level_name(ele.getCourse().getArtLevels().getName())
+                        .art_type_name(ele.getCourse().getArtTypes().getName())
+                        .degree_photo_url(ele.getDegree_photo_url())
+                        .status(ele.getStatus())
+                        .build();
+                    allTeacherRegisterQualificationNotApproveNowResponses.add(teacherRegisterQuanlificationTeacherResponse);
+                }
             } 
         });
 
