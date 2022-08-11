@@ -242,18 +242,11 @@ public class CourseServiceImpl implements CourseService {
         // Danh sach khoa hoc theo ki giao vien chua dang ki
         List<SemesterCourse> allRegisterSuccessfullSemesterCourse = new ArrayList<>();
         // Danh sach dang ki nhung khong duoc xep lop
-        List<UserRegisterTeachSemester> allTeacherRegisterFailTeachSemesterResponses = new ArrayList<>();
-        // Danh sach khoa hoc theo ki giao vien chua dang ki
-        List<SemesterCourse> allRegisterFailSemesterCourse = new ArrayList<>();
         listClass.forEach(ele -> {
             if (allTeacherTeachSemesterResponses.contains(ele.getTeachSemester())){
                 allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getTeachSemester());
                 allRegisterSuccessfullSemesterCourse.add(ele.getTeachSemester().getSemesterCourse());
                 allClassResponses.add(ele);
-            }
-            else {
-                allTeacherRegisterFailTeachSemesterResponses.add(ele.getTeachSemester());
-                allRegisterFailSemesterCourse.add(ele.getTeachSemester().getSemesterCourse());
             }
         });
 
@@ -289,43 +282,10 @@ public class CourseServiceImpl implements CourseService {
             allRegisterSuccessfullSemesterCourseResponses.add(registerSuccessfullSemesterCourseResponse);
         });
 
-        List<GetCourseTeacherResponse> allRegisterFailSemesterCourseResponses = new ArrayList<>();
-        allRegisterFailSemesterCourse.forEach(ele -> {
-            schedule = "";
-            scheduleItemRepository.findAll().forEach(schedule_item -> {
-                if (schedule_item.getSchedule().getId() == ele.getSchedule().getId()){
-                    if (schedule == ""){
-                        schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
-                    }
-                    else {
-                        schedule = schedule + ", Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
-                    }
-                }
-            });
-            GetCourseTeacherResponse registerFailSemesterCourseResponse = GetCourseTeacherResponse.builder()
-                .course_id(ele.getCourse().getId())
-                .semster_course_id(ele.getId())
-                .semester_name(ele.getSemester().getName())
-                .description(ele.getCourse().getDescription())
-                .name(ele.getCourse().getName())
-                .art_age_name(ele.getCourse().getArtAges().getName())
-                .art_level_name(ele.getCourse().getArtLevels().getName())
-                .art_type_name(ele.getCourse().getArtTypes().getName())
-                .price(ele.getCourse().getPrice())
-                .registration_deadline(ele.getSemester().getStart_time())
-                .max_participant(ele.getCourse().getMax_participant())
-                .num_of_section(ele.getCourse().getNum_of_section())
-                .schedule(schedule)
-                .build();
-
-            allRegisterFailSemesterCourseResponses.add(registerFailSemesterCourseResponse);
-        });
-
 
         Map<String, Object> response = new HashMap<>();
         response.put("not_register_courses", allNotRegisterSemesterCourseResponses);
         response.put("register_successfull_courses", allRegisterSuccessfullSemesterCourseResponses);
-        response.put("register_fail_courses", allRegisterFailSemesterCourseResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
