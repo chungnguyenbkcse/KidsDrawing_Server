@@ -797,6 +797,12 @@ GET {{rest}}/semester-course?page=0&size=10
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
+GET {{rest}}/classes/teacher/2
+
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
 GET {{rest}}/course/teacher/2
 
 

@@ -88,13 +88,13 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getInforDetailOfClassByTeacherId(Long id) {
-        List<GetInfoClassTeacherResponse> allInfoClassTeacherResponses = new ArrayList<>();
-        List<Class> allClassDoingResponses = new ArrayList<>();
-        List<Class> allClassDoneResponses = new ArrayList<>();
+        List<GetInfoClassTeacherResponse> allInfoClassTeacherDoingResponses = new ArrayList<>();
+        List<GetInfoClassTeacherResponse> allInfoClassTeacherDoneResponses = new ArrayList<>();
         List<Class> listClass = classRepository.findAll();
         LocalDateTime time_now = LocalDateTime.now();
         listClass.forEach(ele -> {
             schedule = "";
+            LocalDateTime res = getEndSectionOfClass(ele.getId());
             scheduleItemRepository.findAll().forEach(schedule_item -> {
                 if (schedule_item.getSchedule().getId() == ele.getTeachSemester().getSemesterCourse().getSchedule().getId()){
                     if (schedule == ""){
@@ -106,26 +106,49 @@ public class ClassesServiceImpl implements ClassesService {
                 }
             });
             if (ele.getTeachSemester().getTeacher().getId() == id){
-                GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
-                    .id(ele.getId())
-                    .registration_id(ele.getTeachSemester().getId())
-                    .security_code(ele.getSecurity_code())
-                    .name(ele.getName())
-                    .course_id(ele.getTeachSemester().getSemesterCourse().getCourse().getId())
-                    .course_name(ele.getTeachSemester().getSemesterCourse().getCourse().getName())
-                    .semester_name(ele.getTeachSemester().getSemesterCourse().getSemester().getName())
-                    .semster_course_id(ele.getTeachSemester().getSemesterCourse().getId())
-                    .total_student(ele.getUserRegisterJoinSemesters().size())
-                    .art_age_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtAges().getName())
-                    .art_type_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtTypes().getName())
-                    .art_level_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtLevels().getName())
-                    .schedule(schedule)
-                    .build();
-                    allInfoClassTeacherResponses.add(infoClassTeacherResponse);
+                if (time_now.isAfter(res)){
+                    GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
+                        .id(ele.getId())
+                        .registration_id(ele.getTeachSemester().getId())
+                        .security_code(ele.getSecurity_code())
+                        .name(ele.getName())
+                        .course_id(ele.getTeachSemester().getSemesterCourse().getCourse().getId())
+                        .course_name(ele.getTeachSemester().getSemesterCourse().getCourse().getName())
+                        .semester_name(ele.getTeachSemester().getSemesterCourse().getSemester().getName())
+                        .semster_course_id(ele.getTeachSemester().getSemesterCourse().getId())
+                        .total_student(ele.getUserRegisterJoinSemesters().size())
+                        .art_age_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtAges().getName())
+                        .art_type_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtTypes().getName())
+                        .art_level_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtLevels().getName())
+                        .schedule(schedule)
+                        .build();
+                    allInfoClassTeacherDoingResponses.add(infoClassTeacherResponse);
+                }
+
+                else {
+                    GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
+                        .id(ele.getId())
+                        .registration_id(ele.getTeachSemester().getId())
+                        .security_code(ele.getSecurity_code())
+                        .name(ele.getName())
+                        .course_id(ele.getTeachSemester().getSemesterCourse().getCourse().getId())
+                        .course_name(ele.getTeachSemester().getSemesterCourse().getCourse().getName())
+                        .semester_name(ele.getTeachSemester().getSemesterCourse().getSemester().getName())
+                        .semster_course_id(ele.getTeachSemester().getSemesterCourse().getId())
+                        .total_student(ele.getUserRegisterJoinSemesters().size())
+                        .art_age_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtAges().getName())
+                        .art_type_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtTypes().getName())
+                        .art_level_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtLevels().getName())
+                        .schedule(schedule)
+                        .build();
+                    allInfoClassTeacherDoneResponses.add(infoClassTeacherResponse);
+                }
+                
             }
         });
         Map<String, Object> response = new HashMap<>();
-        response.put("classes", allInfoClassTeacherResponses);
+        response.put("classes_doning", allInfoClassTeacherDoingResponses);
+        response.put("classes_done", allInfoClassTeacherDoneResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -243,6 +266,135 @@ public class ClassesServiceImpl implements ClassesService {
         response.put("teachers", allUserResponses);
         response.put("schedules", allScheduleItemOfScheduleResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public LocalDateTime getEndSectionOfClass(Long id) {
+        Optional<Class> classOpt = classRepository.findById(id);
+        Class classes = classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Class.not_found");
+        });
+
+        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = teacherTeachSemesterRepository
+                .findById(classes.getTeachSemester().getId());
+        UserRegisterTeachSemester userRegisterTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
+        });
+
+
+        Optional<SemesterCourse> semester_courseOpt = semesterCourseRepository
+                .findById(userRegisterTeachSemester.getSemesterCourse().getId());
+        SemesterCourse semesterCouse = semester_courseOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.semester_course.not_found");
+        });
+
+
+        Optional<Schedule> scheduleOpt = scheduleRepository.findById(semesterCouse.getSchedule().getId());
+        Schedule schedule = scheduleOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Schedule.not_found");
+        });
+
+        List<Integer> dayOfWeeks = new ArrayList<>();
+        semesterCouse.getSchedule().getScheduleItems().forEach(ele -> {
+            dayOfWeeks.add(ele.getDate_of_week());
+        });
+
+        Collections.sort(dayOfWeeks); 
+
+        List<LessonTime> lessonTimeResponses = new ArrayList<>();
+        schedule.getScheduleItems().forEach(schedule_item -> {
+            lessonTimeResponses.add(schedule_item.getLessonTime());
+        });
+
+        List<LocalDate> list_holiday = new ArrayList<>();
+        semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+            list_holiday.add(holiday.getDay());
+        });
+
+        List<Map<String, List<List<LocalDateTime>>>> allCalendarForSemesterCourse = new ArrayList<>();
+        Integer total_section = semesterCouse.getCourse().getNum_of_section();
+        System.out.printf("total_section: %d\n", total_section);
+        System.out.printf("total_number_week: %d\n", schedule.getScheduleItems().size());
+        int total_week = total_section / schedule.getScheduleItems().size();
+        if (total_section % schedule.getScheduleItems().size() != 0){
+            total_week ++;
+        }
+        System.out.printf("total_week: %d\n", total_week);
+        total_section_count = 0;
+        LocalDateTime start_time = semesterCouse.getSemester().getStart_time();
+        week_count = 0;
+        while (total_section_count < total_section) {
+            List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
+            for (int idx = 0; idx < semesterCouse.getSchedule().getScheduleItems().size(); idx++) {
+                Integer dayOfWeek = dayOfWeeks.get(idx);
+                LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                if (dayOfWeek == 2) {
+                    while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                        start_time = start_time.plusDays(1);
+                    }
+                } else if (dayOfWeek == 3) {
+                    while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                        start_time = start_time.plusDays(1);
+                    }
+                }
+    
+                else if (dayOfWeek == 4) {
+                    while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+                        
+                        start_time = start_time.plusDays(1);
+                    }
+                }
+    
+                else if (dayOfWeek == 5) {
+                    while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+                        
+                        start_time = start_time.plusDays(1);
+                    }
+                }
+    
+                else if (dayOfWeek == 6) {
+                    while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+                        
+                        start_time = start_time.plusDays(1);
+                    }
+                }
+    
+                else if (dayOfWeek == 7) {
+                    while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+                        
+                        start_time = start_time.plusDays(1);
+                    }
+                }
+    
+                else {
+                    while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                        
+                        start_time = start_time.plusDays(1);
+                    }
+                }
+
+                if (total_section_count < total_section) {
+                    LocalDate start_date = start_time.toLocalDate();
+                    if (list_holiday.contains(start_date) == false) {
+                        lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                        lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                        total_section_count++;
+                    }
+                }
+                lesson_time_in_week.add(lesson_time_in_day); 
+            }
+            Map<String, List<List<LocalDateTime>>> schedule_in_week = new HashMap<>(); 
+            String name = "week_" + week_count;
+            schedule_in_week.put(name, lesson_time_in_week);
+            allCalendarForSemesterCourse.add(schedule_in_week);
+            //start_time = start_time.plusWeeks(1);
+            week_count ++;
+        }
+
+        return start_time;
     }
 
     @Override
