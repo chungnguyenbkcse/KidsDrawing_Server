@@ -70,6 +70,12 @@ public class ClassesController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/teacher/{id}")
+    public  ResponseEntity<ResponseEntity<Map<String, Object>>>  getInforDetailOfClassByTeacherId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(classService.getInforDetailOfClassByTeacherId(id));
+    }
+
+    @CrossOrigin
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteClassById(@PathVariable Long id) {
         Long classId = classService.removeClassById(id);
