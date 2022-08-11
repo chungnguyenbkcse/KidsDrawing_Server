@@ -152,7 +152,7 @@ public class ClassesServiceImpl implements ClassesService {
                                 .build();
                         listStudents.add(student);
                     });
-                    allStudentDoneResponses.add(listStudents);
+                    allStudentDoingResponses.add(listStudents);
                 }
 
                 else {
