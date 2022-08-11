@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,25 +10,30 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateCourseRequest;
 import com.app.kidsdrawing.dto.GetCourseResponse;
+import com.app.kidsdrawing.dto.GetCourseTeacherResponse;
 import com.app.kidsdrawing.entity.ArtAge;
 import com.app.kidsdrawing.entity.ArtLevel;
 import com.app.kidsdrawing.entity.ArtType;
+import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.entity.Course;
+import com.app.kidsdrawing.entity.SemesterCourse;
 import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.CourseAlreadyCreateException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtAgeRepository;
 import com.app.kidsdrawing.repository.ArtLevelRepository;
 import com.app.kidsdrawing.repository.ArtTypeRepository;
+import com.app.kidsdrawing.repository.ClassRepository;
 import com.app.kidsdrawing.repository.CourseRepository;
+import com.app.kidsdrawing.repository.ScheduleItemRepository;
+import com.app.kidsdrawing.repository.SemesterCourseRepository;
+import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.CourseService;
 
@@ -43,13 +49,17 @@ public class CourseServiceImpl implements CourseService {
     private final ArtAgeRepository artAgeRepository;
     private final ArtTypeRepository artTypeRepository;
     private final ArtLevelRepository artLevelRepository;
+    private final ClassRepository classRepository;
+    private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
+    private final SemesterCourseRepository semesterCourseRepository;
+    private final ScheduleItemRepository scheduleItemRepository;
+    private static String schedule = "";
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourse(int page, int size) {
+    public ResponseEntity<Map<String, Object>> getAllCourse() {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<Course> pageCourse = courseRepository.findAll(paging);
-        pageCourse.getContent().forEach(course -> {
+        List<Course> pageCourse = courseRepository.findAll();
+        pageCourse.forEach(course -> {
             GetCourseResponse courseResponse = GetCourseResponse.builder()
                     .id(course.getId())
                     .name(course.getName())
@@ -71,18 +81,14 @@ public class CourseServiceImpl implements CourseService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("courses", allCourseResponses);
-        response.put("currentPage", pageCourse.getNumber());
-        response.put("totalItems", pageCourse.getTotalElements());
-        response.put("totalPages", pageCourse.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtTypeId(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtTypeId(Long id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<Course> pageCourse = courseRepository.findAll(paging);
-        pageCourse.getContent().forEach(course -> {
+        List<Course> pageCourse = courseRepository.findAll();
+        pageCourse.forEach(course -> {
             if (course.getArtTypes().getId() == id){
                 GetCourseResponse courseResponse = GetCourseResponse.builder()
                 .id(course.getId())
@@ -106,18 +112,14 @@ public class CourseServiceImpl implements CourseService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("courses", allCourseResponses);
-        response.put("currentPage", pageCourse.getNumber());
-        response.put("totalItems", pageCourse.getTotalElements());
-        response.put("totalPages", pageCourse.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtAgeId(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtAgeId(Long id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<Course> pageCourse = courseRepository.findAll(paging);
-        pageCourse.getContent().forEach(course -> {
+        List<Course> pageCourse = courseRepository.findAll();
+        pageCourse.forEach(course -> {
             if (course.getArtAges().getId() == id){
                 GetCourseResponse courseResponse = GetCourseResponse.builder()
                 .id(course.getId())
@@ -141,18 +143,14 @@ public class CourseServiceImpl implements CourseService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("courses", allCourseResponses);
-        response.put("currentPage", pageCourse.getNumber());
-        response.put("totalItems", pageCourse.getTotalElements());
-        response.put("totalPages", pageCourse.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtLevelId(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtLevelId(Long id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<Course> pageCourse = courseRepository.findAll(paging);
-        pageCourse.getContent().forEach(course -> {
+        List<Course> pageCourse = courseRepository.findAll();
+        pageCourse.forEach(course -> {
             if (course.getArtLevels().getId() == id){
                 GetCourseResponse courseResponse = GetCourseResponse.builder()
                 .id(course.getId())
@@ -176,9 +174,85 @@ public class CourseServiceImpl implements CourseService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("courses", allCourseResponses);
-        response.put("currentPage", pageCourse.getNumber());
-        response.put("totalItems", pageCourse.getTotalElements());
-        response.put("totalPages", pageCourse.getTotalPages());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllCourseByTeacherId(Long id) {
+        List<UserRegisterTeachSemester> listTeacherTeachSemester = teacherTeachSemesterRepository.findAll();
+        
+        // Danh sach dang ki day cua giao vien
+        List<UserRegisterTeachSemester> allTeacherTeachSemesterResponses = new ArrayList<>();
+        // Danh sach khoa hoc theo ki giao vien da dang ki
+        List<SemesterCourse> allRegisteredSemesterCourseResponses = new ArrayList<>();
+        listTeacherTeachSemester.forEach(ele -> {
+            if (ele.getTeacher().getId() == id){
+                allTeacherTeachSemesterResponses.add(ele);
+                allRegisteredSemesterCourseResponses.add(ele.getSemesterCourse());
+            }
+        });
+
+        // Danh sach khoa hoc theo ki giao vien chua dang ki
+        List<SemesterCourse> allNotRegisterSemesterCourse = new ArrayList<>();
+        LocalDateTime time_now = LocalDateTime.now();
+        List<SemesterCourse> pageSemesterCourse = semesterCourseRepository.findAll();
+        pageSemesterCourse.forEach(ele -> {
+            if (allRegisteredSemesterCourseResponses.contains(ele) == false && time_now.isAfter(ele.getSemester().getStart_time()) == true ){
+                allNotRegisterSemesterCourse.add(ele);
+            }
+        });
+
+        List<GetCourseTeacherResponse> allNotRegisterSemesterCourseResponses = new ArrayList<>();
+        allNotRegisterSemesterCourse.forEach(ele -> {
+            schedule = "";
+            scheduleItemRepository.findAll().forEach(schedule_item -> {
+                if (schedule_item.getSchedule().getId() == ele.getSchedule().getId()){
+                    if (schedule == ""){
+                        schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
+                    }
+                    else {
+                        schedule = schedule + ", Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
+                    }
+                }
+            });
+            GetCourseTeacherResponse notRegisterSemesterCourseResponse = GetCourseTeacherResponse.builder()
+                .course_id(ele.getCourse().getId())
+                .semster_course_id(ele.getId())
+                .semester_name(ele.getSemester().getName())
+                .description(ele.getCourse().getDescription())
+                .name(ele.getCourse().getName())
+                .art_age_name(ele.getCourse().getArtAges().getName())
+                .art_level_name(ele.getCourse().getArtLevels().getName())
+                .art_type_name(ele.getCourse().getArtTypes().getName())
+                .price(ele.getCourse().getPrice())
+                .registration_deadline(ele.getSemester().getStart_time())
+                .max_participant(ele.getCourse().getMax_participant())
+                .num_of_section(ele.getCourse().getNum_of_section())
+                .schedule(schedule)
+                .build();
+
+            allNotRegisterSemesterCourseResponses.add(notRegisterSemesterCourseResponse);
+        });
+
+        List<Class> allClassResponses = new ArrayList<>();
+        List<Class> listClass = classRepository.findAll();
+
+        // Danh sach dang ki giao vien duoc xep lop
+        List<UserRegisterTeachSemester> allTeacherRegisterSuccessfullTeachSemesterResponses = new ArrayList<>();
+        // Danh sach dang ki nhung khong duoc xep lop
+        List<UserRegisterTeachSemester> allTeacherRegisterFailTeachSemesterResponses = new ArrayList<>();
+        listClass.forEach(ele -> {
+            if (allTeacherTeachSemesterResponses.contains(ele.getTeachSemester())){
+                allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getTeachSemester());
+                allClassResponses.add(ele);
+            }
+            else {
+                allTeacherRegisterFailTeachSemesterResponses.add(ele.getTeachSemester());
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("not_register_courses", allNotRegisterSemesterCourseResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

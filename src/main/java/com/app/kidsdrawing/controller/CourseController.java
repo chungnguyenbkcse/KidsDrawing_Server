@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -48,30 +47,32 @@ public class CourseController {
 
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourses(@RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(courseService.getAllCourse(page, size));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourses() {
+        return ResponseEntity.ok().body(courseService.getAllCourse());
     }
     
     @CrossOrigin
     @GetMapping(value = "/art-type/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtTypeid(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(courseService.getAllCourseByArtTypeId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtTypeid(@PathVariable Long id) {
+        return ResponseEntity.ok().body(courseService.getAllCourseByArtTypeId(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/teacher/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByTeacherid(@PathVariable Long id) {
+        return ResponseEntity.ok().body(courseService.getAllCourseByTeacherId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/art-level/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtLevelid(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(courseService.getAllCourseByArtLevelId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtLevelid(@PathVariable Long id) {
+        return ResponseEntity.ok().body(courseService.getAllCourseByArtLevelId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/art-age/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtAgeid(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(courseService.getAllCourseByArtAgeId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtAgeid(@PathVariable Long id) {
+        return ResponseEntity.ok().body(courseService.getAllCourseByArtAgeId(id));
     }
 
     @CrossOrigin
