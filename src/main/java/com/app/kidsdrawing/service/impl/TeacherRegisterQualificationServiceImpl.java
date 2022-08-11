@@ -43,7 +43,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
         pageTeacherRegisterQualification.forEach(ele -> {
             if (ele.getTeacher().getId() == id){
-                if (ele.getStatus() == "Approved"){
+                if (ele.getStatus().equals("Approved")){
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
@@ -59,7 +59,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .build();
                     allTeacherRegisterQualificationApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
                 }
-                else if (ele.getStatus() == "Not approve"){
+                else if (ele.getStatus().equals("Not approve")){
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
@@ -75,7 +75,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .build();
                     allTeacherRegisterQualificationNotApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
                 }
-                else if (ele.getStatus() == "Not approve now"){
+                else if (ele.getStatus().equals("Not approve now")){
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
