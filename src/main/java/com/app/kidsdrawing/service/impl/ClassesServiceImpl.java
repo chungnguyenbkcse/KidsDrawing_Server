@@ -24,6 +24,7 @@ import com.app.kidsdrawing.dto.GetArtLevelResponse;
 import com.app.kidsdrawing.dto.GetArtTypeResponse;
 import com.app.kidsdrawing.dto.GetClassResponse;
 import com.app.kidsdrawing.dto.GetCourseResponse;
+import com.app.kidsdrawing.dto.GetInfoClassTeacherResponse;
 import com.app.kidsdrawing.dto.GetScheduleItemResponse;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
@@ -62,6 +63,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     private static int total_section_count = 0;
     private static int week_count = 0;
+    private static String schedule = "";
     @Override
     public ResponseEntity<Map<String, Object>> getAllClass() {
         List<GetClassResponse> allClassResponses = new ArrayList<>();
@@ -81,6 +83,49 @@ public class ClassesServiceImpl implements ClassesService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("classes", allClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getInforDetailOfClassByTeacherId(Long id) {
+        List<GetInfoClassTeacherResponse> allInfoClassTeacherResponses = new ArrayList<>();
+        List<Class> allClassDoingResponses = new ArrayList<>();
+        List<Class> allClassDoneResponses = new ArrayList<>();
+        List<Class> listClass = classRepository.findAll();
+        LocalDateTime time_now = LocalDateTime.now();
+        listClass.forEach(ele -> {
+            schedule = "";
+            scheduleItemRepository.findAll().forEach(schedule_item -> {
+                if (schedule_item.getSchedule().getId() == ele.getTeachSemester().getSemesterCourse().getSchedule().getId()){
+                    if (schedule == ""){
+                        schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
+                    }
+                    else {
+                        schedule = schedule + ", Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
+                    }
+                }
+            });
+            if (ele.getTeachSemester().getTeacher().getId() == id){
+                GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
+                    .id(ele.getId())
+                    .registration_id(ele.getTeachSemester().getId())
+                    .security_code(ele.getSecurity_code())
+                    .name(ele.getName())
+                    .course_id(ele.getTeachSemester().getSemesterCourse().getCourse().getId())
+                    .course_name(ele.getTeachSemester().getSemesterCourse().getCourse().getName())
+                    .semester_name(ele.getTeachSemester().getSemesterCourse().getSemester().getName())
+                    .semster_course_id(ele.getTeachSemester().getSemesterCourse().getId())
+                    .total_student(ele.getUserRegisterJoinSemesters().size())
+                    .art_age_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtAges().getName())
+                    .art_type_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtTypes().getName())
+                    .art_level_name(ele.getTeachSemester().getSemesterCourse().getCourse().getArtLevels().getName())
+                    .schedule(schedule)
+                    .build();
+                    allInfoClassTeacherResponses.add(infoClassTeacherResponse);
+            }
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("classes", allInfoClassTeacherResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
