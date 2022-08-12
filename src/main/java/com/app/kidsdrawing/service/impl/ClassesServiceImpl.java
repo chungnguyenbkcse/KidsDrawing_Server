@@ -90,7 +90,7 @@ public class ClassesServiceImpl implements ClassesService {
     public ResponseEntity<Map<String, Object>> getInforDetailOfClassByTeacherId(Long id) {
         List<GetInfoClassTeacherResponse> allInfoClassTeacherDoingResponses = new ArrayList<>();
         List<GetInfoClassTeacherResponse> allInfoClassTeacherDoneResponses = new ArrayList<>();
-        List<List<Map<String, List<List<LocalDateTime>>>>> allScheduleTime = new ArrayList<>();
+        List<Map<String,List<Map<String, List<List<LocalDateTime>>>>>> allScheduleTime = new ArrayList<>();
         List<List<GetUserResponse>> allStudentDoneResponses = new ArrayList<>();
         List<List<GetUserResponse>> allStudentDoingResponses = new ArrayList<>();
         List<Class> listClass = classRepository.findAll();
@@ -111,7 +111,9 @@ public class ClassesServiceImpl implements ClassesService {
             if (ele.getTeachSemester().getTeacher().getId() == id){
                 if (time_now.isAfter(res) == false){
                     List<Map<String, List<List<LocalDateTime>>>> schedule_time = getScheduleDetailOfClass(ele.getId());
-                    allScheduleTime.add(schedule_time);
+                    Map<String,List<Map<String, List<List<LocalDateTime>>>>> x = new HashMap<>();
+                    x.put(ele.getName(),schedule_time);
+                    allScheduleTime.add(x);
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
                         .registration_id(ele.getTeachSemester().getId())
