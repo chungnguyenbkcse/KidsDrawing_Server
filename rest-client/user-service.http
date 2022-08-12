@@ -516,7 +516,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "parent-1",
+    "username": "teacher-1",
     "password": "12345678aA@"
 }
 
