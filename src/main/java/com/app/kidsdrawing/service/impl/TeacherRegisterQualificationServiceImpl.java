@@ -59,7 +59,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .build();
                     allTeacherRegisterQualificationApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
                 }
-                else if (ele.getStatus().equals("Not approve")){
+                else if (ele.getStatus().equals("Not approved")){
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
@@ -75,7 +75,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .build();
                     allTeacherRegisterQualificationNotApprovedResponses.add(teacherRegisterQuanlificationTeacherResponse);
                 }
-                else if (ele.getStatus().equals("Not approve now")){
+                else if (ele.getStatus().equals("Not approved now")){
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())

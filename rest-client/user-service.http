@@ -525,7 +525,7 @@ Content-Type: application/json
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/teacher-register-level/teacher/28
+GET {{rest}}/teacher-register-level/teacher/2
 Authorization: Bearer {{admin_access_token}}
 
 ### GET ART TYPE ACTION ###
