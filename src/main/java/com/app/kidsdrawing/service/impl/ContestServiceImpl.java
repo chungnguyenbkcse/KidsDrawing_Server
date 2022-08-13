@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,15 +18,18 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateContestRequest;
 import com.app.kidsdrawing.dto.GetContestResponse;
+import com.app.kidsdrawing.dto.GetContestTeacherResponse;
 import com.app.kidsdrawing.entity.ArtAge;
 import com.app.kidsdrawing.entity.ArtType;
 import com.app.kidsdrawing.entity.Contest;
 import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.UserGradeContest;
 import com.app.kidsdrawing.exception.ContestAlreadyCreateException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtAgeRepository;
 import com.app.kidsdrawing.repository.ArtTypeRepository;
 import com.app.kidsdrawing.repository.ContestRepository;
+import com.app.kidsdrawing.repository.UserGradeContestRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ContestService;
 
@@ -40,6 +44,95 @@ public class ContestServiceImpl implements ContestService {
     private final UserRepository userRepository;
     private final ArtAgeRepository artAgeRepository;
     private final ArtTypeRepository artTypeRepository;
+    private final UserGradeContestRepository userGradeContestRepository;
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllContestByTeacher(Long id) {
+        List<GetContestTeacherResponse> allContestNotOpenNowResponses = new ArrayList<>();
+        List<GetContestTeacherResponse> allContestOpeningResponses = new ArrayList<>();
+        List<GetContestTeacherResponse> allContestEndResponses = new ArrayList<>();
+        List<GetContestTeacherResponse> allContestNotOpenNowNotTeacherResponses = new ArrayList<>();
+        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
+        LocalDateTime time_now = LocalDateTime.now();
+
+        pageUserGradeContest.forEach(user_grade_contest -> {
+            if (user_grade_contest.getUser().getId() == id) {
+                if (time_now.isAfter(user_grade_contest.getContest().getStart_time()) == true){
+                    GetContestTeacherResponse contestNotOpenNowResponse = GetContestTeacherResponse.builder()
+                        .id(user_grade_contest.getContest().getId())
+                        .name(user_grade_contest.getContest().getName())
+                        .description(user_grade_contest.getContest().getDescription())
+                        .max_participant(user_grade_contest.getContest().getMax_participant())
+                        .registration_time(user_grade_contest.getContest().getRegistration_time())
+                        .image_url(user_grade_contest.getContest().getImage_url())
+                        .start_time(user_grade_contest.getContest().getStart_time())
+                        .end_time(user_grade_contest.getContest().getEnd_time())
+                        .is_enabled(user_grade_contest.getContest().getIs_enabled())
+                        .art_age_name(user_grade_contest.getContest().getArtAges().getName())
+                        .art_type_name(user_grade_contest.getContest().getArtTypes().getName())
+                        .build();
+                    allContestNotOpenNowResponses.add(contestNotOpenNowResponse);
+                }
+                else if (time_now.isAfter(user_grade_contest.getContest().getEnd_time()) == true){
+                    GetContestTeacherResponse contestEndResponse = GetContestTeacherResponse.builder()
+                        .id(user_grade_contest.getContest().getId())
+                        .name(user_grade_contest.getContest().getName())
+                        .description(user_grade_contest.getContest().getDescription())
+                        .max_participant(user_grade_contest.getContest().getMax_participant())
+                        .registration_time(user_grade_contest.getContest().getRegistration_time())
+                        .image_url(user_grade_contest.getContest().getImage_url())
+                        .start_time(user_grade_contest.getContest().getStart_time())
+                        .end_time(user_grade_contest.getContest().getEnd_time())
+                        .is_enabled(user_grade_contest.getContest().getIs_enabled())
+                        .art_age_name(user_grade_contest.getContest().getArtAges().getName())
+                        .art_type_name(user_grade_contest.getContest().getArtTypes().getName())
+                        .build();
+                    allContestEndResponses.add(contestEndResponse);
+                } 
+                else {
+                    GetContestTeacherResponse contestOpeningResponse = GetContestTeacherResponse.builder()
+                        .id(user_grade_contest.getContest().getId())
+                        .name(user_grade_contest.getContest().getName())
+                        .description(user_grade_contest.getContest().getDescription())
+                        .max_participant(user_grade_contest.getContest().getMax_participant())
+                        .registration_time(user_grade_contest.getContest().getRegistration_time())
+                        .image_url(user_grade_contest.getContest().getImage_url())
+                        .start_time(user_grade_contest.getContest().getStart_time())
+                        .end_time(user_grade_contest.getContest().getEnd_time())
+                        .is_enabled(user_grade_contest.getContest().getIs_enabled())
+                        .art_age_name(user_grade_contest.getContest().getArtAges().getName())
+                        .art_type_name(user_grade_contest.getContest().getArtTypes().getName())
+                        .build();
+                    allContestOpeningResponses.add(contestOpeningResponse);
+                }        
+            }
+            else {
+                if (time_now.isAfter(user_grade_contest.getContest().getStart_time()) == true){
+                    GetContestTeacherResponse contestNotOpenNowNotTeacherResponse = GetContestTeacherResponse.builder()
+                        .id(user_grade_contest.getContest().getId())
+                        .name(user_grade_contest.getContest().getName())
+                        .description(user_grade_contest.getContest().getDescription())
+                        .max_participant(user_grade_contest.getContest().getMax_participant())
+                        .registration_time(user_grade_contest.getContest().getRegistration_time())
+                        .image_url(user_grade_contest.getContest().getImage_url())
+                        .start_time(user_grade_contest.getContest().getStart_time())
+                        .end_time(user_grade_contest.getContest().getEnd_time())
+                        .is_enabled(user_grade_contest.getContest().getIs_enabled())
+                        .art_age_name(user_grade_contest.getContest().getArtAges().getName())
+                        .art_type_name(user_grade_contest.getContest().getArtTypes().getName())
+                        .build();
+                    allContestNotOpenNowNotTeacherResponses.add(contestNotOpenNowNotTeacherResponse);
+                }
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("contest_not_open_now", allContestNotOpenNowResponses);
+        response.put("contest_opening", allContestOpeningResponses);
+        response.put("contest_end", allContestEndResponses);
+        response.put("contest_not_open_now_not_teacher", allContestNotOpenNowNotTeacherResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllContest(int page, int size) {
