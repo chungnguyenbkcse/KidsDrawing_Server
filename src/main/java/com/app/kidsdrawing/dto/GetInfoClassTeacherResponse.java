@@ -18,6 +18,7 @@ public class GetInfoClassTeacherResponse {
     private String course_name;
     private Long semster_course_id;
     private int total_student;
+    private int num_of_section;
     private String art_type_name;
     private String art_level_name;
     private String art_age_name;
