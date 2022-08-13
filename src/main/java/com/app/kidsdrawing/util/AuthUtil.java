@@ -39,8 +39,8 @@ public class AuthUtil {
 
     @Value("${jwt_secret}")
     private String secret;
-    private long accessTokenDuration = 30000;
-    private long refreshTokenDuration = 60000;
+    private long accessTokenDuration = 600000;
+    private long refreshTokenDuration = 3600000;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
