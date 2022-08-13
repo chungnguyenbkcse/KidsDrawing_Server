@@ -64,7 +64,7 @@ public class ContestServiceImpl implements ContestService {
                 }
             });
             if (teachers.contains(id)){
-                if (time_now.isAfter(contest.getStart_time()) == true){
+                if (time_now.isAfter(contest.getStart_time()) == false){
                     GetContestTeacherResponse contestNotOpenNowResponse = GetContestTeacherResponse.builder()
                         .id(contest.getId())
                         .name(contest.getName())
@@ -96,7 +96,7 @@ public class ContestServiceImpl implements ContestService {
                         .build();
                     allContestEndResponses.add(contestEndResponse);
                 } 
-                else {
+                else if (time_now.isAfter(contest.getStart_time()) == true && time_now.isAfter(contest.getEnd_time()) == false){
                     GetContestTeacherResponse contestOpeningResponse = GetContestTeacherResponse.builder()
                         .id(contest.getId())
                         .name(contest.getName())
@@ -114,7 +114,7 @@ public class ContestServiceImpl implements ContestService {
                 }
             }
             else {
-                if (time_now.isAfter(contest.getStart_time()) == true){
+                if (time_now.isAfter(contest.getStart_time()) == false){
                     GetContestTeacherResponse contestNotOpenNowNotTeacherResponse = GetContestTeacherResponse.builder()
                         .id(contest.getId())
                         .name(contest.getName())
