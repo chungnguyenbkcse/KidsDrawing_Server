@@ -53,73 +53,80 @@ public class ContestServiceImpl implements ContestService {
         List<GetContestTeacherResponse> allContestEndResponses = new ArrayList<>();
         List<GetContestTeacherResponse> allContestNotOpenNowNotTeacherResponses = new ArrayList<>();
         List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
+        List<Contest> pageContest = contestRepository.findAll();
         LocalDateTime time_now = LocalDateTime.now();
 
-        pageUserGradeContest.forEach(user_grade_contest -> {
-            if (user_grade_contest.getUser().getId() == id) {
-                if (time_now.isAfter(user_grade_contest.getContest().getStart_time()) == true){
+        pageContest.forEach(contest -> {
+            List<Long> teachers = new ArrayList<>();
+            pageUserGradeContest.forEach(user_grade_contest -> { 
+                if (user_grade_contest.getContest().getId() == contest.getId()){
+                    teachers.add(user_grade_contest.getUser().getId());
+                }
+            });
+            if (teachers.contains(id)){
+                if (time_now.isAfter(contest.getStart_time()) == true){
                     GetContestTeacherResponse contestNotOpenNowResponse = GetContestTeacherResponse.builder()
-                        .id(user_grade_contest.getContest().getId())
-                        .name(user_grade_contest.getContest().getName())
-                        .description(user_grade_contest.getContest().getDescription())
-                        .max_participant(user_grade_contest.getContest().getMax_participant())
-                        .registration_time(user_grade_contest.getContest().getRegistration_time())
-                        .image_url(user_grade_contest.getContest().getImage_url())
-                        .start_time(user_grade_contest.getContest().getStart_time())
-                        .end_time(user_grade_contest.getContest().getEnd_time())
-                        .is_enabled(user_grade_contest.getContest().getIs_enabled())
-                        .art_age_name(user_grade_contest.getContest().getArtAges().getName())
-                        .art_type_name(user_grade_contest.getContest().getArtTypes().getName())
+                        .id(contest.getId())
+                        .name(contest.getName())
+                        .description(contest.getDescription())
+                        .max_participant(contest.getMax_participant())
+                        .registration_time(contest.getRegistration_time())
+                        .image_url(contest.getImage_url())
+                        .start_time(contest.getStart_time())
+                        .end_time(contest.getEnd_time())
+                        .is_enabled(contest.getIs_enabled())
+                        .art_age_name(contest.getArtAges().getName())
+                        .art_type_name(contest.getArtTypes().getName())
                         .build();
                     allContestNotOpenNowResponses.add(contestNotOpenNowResponse);
                 }
-                else if (time_now.isAfter(user_grade_contest.getContest().getEnd_time()) == true){
+                else if (time_now.isAfter(contest.getEnd_time()) == true){
                     GetContestTeacherResponse contestEndResponse = GetContestTeacherResponse.builder()
-                        .id(user_grade_contest.getContest().getId())
-                        .name(user_grade_contest.getContest().getName())
-                        .description(user_grade_contest.getContest().getDescription())
-                        .max_participant(user_grade_contest.getContest().getMax_participant())
-                        .registration_time(user_grade_contest.getContest().getRegistration_time())
-                        .image_url(user_grade_contest.getContest().getImage_url())
-                        .start_time(user_grade_contest.getContest().getStart_time())
-                        .end_time(user_grade_contest.getContest().getEnd_time())
-                        .is_enabled(user_grade_contest.getContest().getIs_enabled())
-                        .art_age_name(user_grade_contest.getContest().getArtAges().getName())
-                        .art_type_name(user_grade_contest.getContest().getArtTypes().getName())
+                        .id(contest.getId())
+                        .name(contest.getName())
+                        .description(contest.getDescription())
+                        .max_participant(contest.getMax_participant())
+                        .registration_time(contest.getRegistration_time())
+                        .image_url(contest.getImage_url())
+                        .start_time(contest.getStart_time())
+                        .end_time(contest.getEnd_time())
+                        .is_enabled(contest.getIs_enabled())
+                        .art_age_name(contest.getArtAges().getName())
+                        .art_type_name(contest.getArtTypes().getName())
                         .build();
                     allContestEndResponses.add(contestEndResponse);
                 } 
                 else {
                     GetContestTeacherResponse contestOpeningResponse = GetContestTeacherResponse.builder()
-                        .id(user_grade_contest.getContest().getId())
-                        .name(user_grade_contest.getContest().getName())
-                        .description(user_grade_contest.getContest().getDescription())
-                        .max_participant(user_grade_contest.getContest().getMax_participant())
-                        .registration_time(user_grade_contest.getContest().getRegistration_time())
-                        .image_url(user_grade_contest.getContest().getImage_url())
-                        .start_time(user_grade_contest.getContest().getStart_time())
-                        .end_time(user_grade_contest.getContest().getEnd_time())
-                        .is_enabled(user_grade_contest.getContest().getIs_enabled())
-                        .art_age_name(user_grade_contest.getContest().getArtAges().getName())
-                        .art_type_name(user_grade_contest.getContest().getArtTypes().getName())
+                        .id(contest.getId())
+                        .name(contest.getName())
+                        .description(contest.getDescription())
+                        .max_participant(contest.getMax_participant())
+                        .registration_time(contest.getRegistration_time())
+                        .image_url(contest.getImage_url())
+                        .start_time(contest.getStart_time())
+                        .end_time(contest.getEnd_time())
+                        .is_enabled(contest.getIs_enabled())
+                        .art_age_name(contest.getArtAges().getName())
+                        .art_type_name(contest.getArtTypes().getName())
                         .build();
                     allContestOpeningResponses.add(contestOpeningResponse);
-                }        
+                }
             }
             else {
-                if (time_now.isAfter(user_grade_contest.getContest().getStart_time()) == true){
+                if (time_now.isAfter(contest.getStart_time()) == true){
                     GetContestTeacherResponse contestNotOpenNowNotTeacherResponse = GetContestTeacherResponse.builder()
-                        .id(user_grade_contest.getContest().getId())
-                        .name(user_grade_contest.getContest().getName())
-                        .description(user_grade_contest.getContest().getDescription())
-                        .max_participant(user_grade_contest.getContest().getMax_participant())
-                        .registration_time(user_grade_contest.getContest().getRegistration_time())
-                        .image_url(user_grade_contest.getContest().getImage_url())
-                        .start_time(user_grade_contest.getContest().getStart_time())
-                        .end_time(user_grade_contest.getContest().getEnd_time())
-                        .is_enabled(user_grade_contest.getContest().getIs_enabled())
-                        .art_age_name(user_grade_contest.getContest().getArtAges().getName())
-                        .art_type_name(user_grade_contest.getContest().getArtTypes().getName())
+                        .id(contest.getId())
+                        .name(contest.getName())
+                        .description(contest.getDescription())
+                        .max_participant(contest.getMax_participant())
+                        .registration_time(contest.getRegistration_time())
+                        .image_url(contest.getImage_url())
+                        .start_time(contest.getStart_time())
+                        .end_time(contest.getEnd_time())
+                        .is_enabled(contest.getIs_enabled())
+                        .art_age_name(contest.getArtAges().getName())
+                        .art_type_name(contest.getArtTypes().getName())
                         .build();
                     allContestNotOpenNowNotTeacherResponses.add(contestNotOpenNowNotTeacherResponse);
                 }
