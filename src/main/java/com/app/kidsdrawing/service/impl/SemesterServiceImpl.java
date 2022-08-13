@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -319,11 +320,12 @@ public class SemesterServiceImpl implements SemesterService {
                     validUserRegisterSemesters.add(allUserRegisterJoinSemesters.get(idx));
                 }
                 if (i < allUserRegisterTeachSemesters.size()){
+                    String key = getSaltString();
                     Class savedClass = Class.builder()
                         .user(user)
                         .teachSemester(allUserRegisterTeachSemesters.get(i))
                         .security_code(String.valueOf(i))
-                        .name(String.valueOf(i))
+                        .name(key)
                         .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
                         .build();
                     classRepository.save(savedClass);
@@ -331,6 +333,19 @@ public class SemesterServiceImpl implements SemesterService {
             }
         });
         return id;
+    }
+
+    protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
     }
 
     @Override
