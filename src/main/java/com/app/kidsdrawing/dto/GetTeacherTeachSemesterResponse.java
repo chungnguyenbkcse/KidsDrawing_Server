@@ -15,7 +15,7 @@ public class GetTeacherTeachSemesterResponse {
     private Long id;
     private Long teacher_id;
     private Long reviewer_id;
-    private Long semester_course_id;
+    private Long semester_class_id;
     private Boolean status;
     private LocalDateTime time;
 }

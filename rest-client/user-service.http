@@ -19,6 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
+    "parent_id": 7,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -40,6 +41,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
+    "parent_id": 7,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -61,6 +63,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -82,6 +85,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -103,6 +107,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
+    "parent_id": 9,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -124,6 +129,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
+    "parent_id": 9,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -135,9 +141,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-10",
+    "username": "student-16",
     "password": "12345678aA@",
-    "email": "student-10@gmail.com",
+    "email": "student-16@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -145,6 +151,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
+    "parent_id": 16,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -503,6 +510,26 @@ Content-Type: application/json
     "roleNames": ["TEACHER_USER"]
 }
 
+
+### REGISTER ACTION ###
+# @name teacher_register
+
+POST {{rest}}/user/teacher
+Content-Type: application/json
+
+{
+    "username": "teacher-6",
+    "email": "teacher-6@gmail.com",
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "roleNames": ["TEACHER_USER"]
+}
+
 ### ADMIN ACTION ###
 
 # @name login_admin
@@ -512,7 +539,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -657,57 +684,6 @@ Content-Type: application/json
 ### CREATE LESSON TIME ACTION ###
 # @name create_lesson_time
 
-POST {{rest}}/schedule
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Lịch học 1",
-    "creator_id": 1
-}
-
-### CREATE LESSON TIME ACTION ###
-# @name create_lesson_time
-
-POST {{rest}}/schedule-item
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "schedule_id": 1,
-    "lesson_time": 1,
-    "date_of_week": 2
-}
-
-### CREATE LESSON TIME ACTION ###
-# @name create_lesson_time
-
-POST {{rest}}/schedule-item
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "schedule_id": 1,
-    "lesson_time": 2,
-    "date_of_week": 4
-}
-
-### CREATE LESSON TIME ACTION ###
-# @name create_lesson_time
-
-POST {{rest}}/schedule-item
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "schedule_id": 1,
-    "lesson_time": 1,
-    "date_of_week": 6
-}
-
-### CREATE LESSON TIME ACTION ###
-# @name create_lesson_time
-
 POST {{rest}}/lesson-time
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
@@ -740,7 +716,7 @@ Content-Type: application/json
     "name": "Học kì 1 năm học 2022",
     "description": "",
     "number": 1,
-    "start_time": "2022-08-12T12:59:11.332",
+    "start_time": "2022-01-01T00:00:11.332",
     "year": 2022,
     "creator_id": 1
 }
@@ -755,7 +731,7 @@ Content-Type: application/json
 {
     "creation_id": 1,
     "course_id": 1,
-    "schedule_id": 1
+    "max_participant": 100
 
 }
 
@@ -917,7 +893,6 @@ Content-Type: application/json
 {
     "name": "Khóa học mầm chì màu cơ bản",
     "description": "<p>hello nguyen van chung</p>",
-    "max_participant": 20,
     "num_of_section": 10,
     "price": 2000000,
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344893/lop-day-hoc-ve-tre-em-be-thieu-nhi-370x255_natvks.png",
@@ -926,18 +901,6 @@ Content-Type: application/json
     "art_age_id": 1,
     "art_type_id": 1,
     "art_level_id": 1
-}
-
-### CREATE LESSON TIME ACTION ###
-# @name create_lesson_time
-
-POST {{rest}}/schedule
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Lịch học 1",
-    "creator_id": 1
 }
 
 ###

@@ -13,6 +13,5 @@ public class GetSemesterClassResponse {
     private Long id;
     private Long creation_id;
     private Long course_id;
-    private Long schedule_id;
     private Integer max_participant;
 }

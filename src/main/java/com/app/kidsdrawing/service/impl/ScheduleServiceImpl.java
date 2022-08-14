@@ -16,9 +16,11 @@ import com.app.kidsdrawing.dto.CreateScheduleRequest;
 import com.app.kidsdrawing.dto.GetScheduleResponse;
 import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.Schedule;
+import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.LessonTimeRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
+import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.service.ScheduleService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final LessonTimeRepository lessonTimeRepository;
+    private final SemesterClassRepository semesterClassRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSchedule() {
@@ -40,6 +43,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .id(schedule.getId())
                     .lesson_time(schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString())
                     .lesson_time_id(schedule.getLessonTime().getId())
+                    .semester_class_id(schedule.getSemesterClass().getId())
                     .date_of_week(schedule.getDate_of_week())
                     .build();
             allScheduleResponses.add(scheduleResponse);
@@ -61,6 +65,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             .id(schedule.getId())
             .lesson_time(schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString())
             .lesson_time_id(schedule.getLessonTime().getId())
+            .semester_class_id(schedule.getSemesterClass().getId())
             .date_of_week(schedule.getDate_of_week())
             .build();
     }
@@ -72,9 +77,15 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new EntityNotFoundException("exception.lesson_time.not_found");
         });
 
+        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById(createScheduleRequest.getSemester_class_id());
+        SemesterClass semester_class = semesterClassOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.semester_class.not_found");
+        });
+
         Schedule savedSchedule = Schedule.builder()
                 .lessonTime(lesson_time)
                 .date_of_week(createScheduleRequest.getDate_of_week())
+                .semesterClass(semester_class)
                 .build();
         scheduleRepository.save(savedSchedule);
 
@@ -104,8 +115,14 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new EntityNotFoundException("exception.lesson_time.not_found");
         });
 
+        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById(createScheduleRequest.getSemester_class_id());
+        SemesterClass semester_class = semesterClassOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.semester_class.not_found");
+        });
+
         updatedSchedule.setLessonTime(lesson_time);
         updatedSchedule.setDate_of_week(createScheduleRequest.getDate_of_week());
+        updatedSchedule.setSemesterClass(semester_class);
         scheduleRepository.save(updatedSchedule);
 
         return updatedSchedule.getId();

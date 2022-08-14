@@ -136,6 +136,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         SemesterClass savedSemesterClass = SemesterClass.builder()
                 .semester(semester)
                 .course(course)
+                .max_participant(createSemesterClassRequest.getMax_participant())
                 .build();
         semesterCourseRepository.save(savedSemesterClass);
 
@@ -172,6 +173,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
         updatedSemesterClass.setSemester(semester);
         updatedSemesterClass.setCourse(course);
+        updatedSemesterClass.setMax_participant(createSemesterClassRequest.getMax_participant());
         semesterCourseRepository.save(updatedSemesterClass);
 
         return updatedSemesterClass.getId();
