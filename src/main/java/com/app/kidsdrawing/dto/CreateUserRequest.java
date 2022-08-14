@@ -18,5 +18,4 @@ public class CreateUserRequest {
     private String phone;
     private String address;
     private Set<String> roleNames;
-    private Set<Long> parent_ids;
 }

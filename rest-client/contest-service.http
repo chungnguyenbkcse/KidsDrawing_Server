@@ -43,4 +43,4 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/contest
+GET  {{rest}}/contest/teacher/2

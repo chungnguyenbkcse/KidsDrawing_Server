@@ -134,11 +134,7 @@ public class ClassesServiceImpl implements ClassesService {
                     
                     List<GetUserResponse> listStudents = new ArrayList<>();
                     ele.getUserRegisterJoinSemesters().forEach(content -> {
-                        List<String> parent_names = new ArrayList<>();
-                        content.getStudent().getParents().forEach(parent -> {
-                            String parent_name = parent.getUsername();
-                            parent_names.add(parent_name);
-                        });
+                        String parent_name = content.getStudent().getParent().getUsername();
                         GetUserResponse student = GetUserResponse.builder()
                                 .id(content.getStudent().getId())
                                 .username(content.getStudent().getUsername())
@@ -150,7 +146,7 @@ public class ClassesServiceImpl implements ClassesService {
                                 .sex(content.getStudent().getSex())
                                 .phone(content.getStudent().getPhone())
                                 .address(content.getStudent().getAddress())
-                                .parents(parent_names)
+                                .parent(parent_name)
                                 .createTime(content.getStudent().getCreateTime())
                                 .build();
                         listStudents.add(student);
@@ -179,11 +175,7 @@ public class ClassesServiceImpl implements ClassesService {
 
                     List<GetUserResponse> listStudentDones = new ArrayList<>();
                     ele.getUserRegisterJoinSemesters().forEach(content -> {
-                        List<String> parent_names = new ArrayList<>();
-                        content.getStudent().getParents().forEach(parent -> {
-                            String parent_name = parent.getUsername();
-                            parent_names.add(parent_name);
-                        });
+                        String parent_name = content.getStudent().getParent().getUsername();
                         GetUserResponse student = GetUserResponse.builder()
                                 .id(content.getStudent().getId())
                                 .username(content.getStudent().getUsername())
@@ -195,7 +187,7 @@ public class ClassesServiceImpl implements ClassesService {
                                 .sex(content.getStudent().getSex())
                                 .phone(content.getStudent().getPhone())
                                 .address(content.getStudent().getAddress())
-                                .parents(parent_names)
+                                .parent(parent_name)
                                 .createTime(content.getStudent().getCreateTime())
                                 .build();
                         listStudentDones.add(student);
@@ -277,11 +269,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .build();
             allCourseResponses.add(courseResponse);
 
-            List<String> parent_names = new ArrayList<>();
-            userRegisterTeachSemester.getTeacher().getParents().forEach(parent -> {
-                String parent_name = parent.getUsername();
-                parent_names.add(parent_name);
-            });
+            String parent_name = userRegisterTeachSemester.getTeacher().getParent().getUsername();
 
             GetUserResponse userResponse = GetUserResponse.builder()
                     .id(userRegisterTeachSemester.getTeacher().getId())
@@ -294,7 +282,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .sex(userRegisterTeachSemester.getTeacher().getSex())
                     .phone(userRegisterTeachSemester.getTeacher().getPhone())
                     .address(userRegisterTeachSemester.getTeacher().getAddress())
-                    .parents(parent_names)
+                    .parent(parent_name)
                     .createTime(userRegisterTeachSemester.getTeacher().getCreateTime())
                     .build();
             allUserResponses.add(userResponse);
@@ -471,12 +459,6 @@ public class ClassesServiceImpl implements ClassesService {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
 
-        List<String> parent_names = new ArrayList<>();
-        userRegisterTeachSemester.getTeacher().getParents().forEach(parent -> {
-            String parent_name = parent.getUsername();
-            parent_names.add(parent_name);
-        });
-
         Optional<SemesterCourse> semester_courseOpt = semesterCourseRepository
                 .findById(userRegisterTeachSemester.getSemesterCourse().getId());
         SemesterCourse semesterCouse = semester_courseOpt.orElseThrow(() -> {
@@ -626,11 +608,7 @@ public class ClassesServiceImpl implements ClassesService {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
 
-        List<String> parent_names = new ArrayList<>();
-        userRegisterTeachSemester.getTeacher().getParents().forEach(parent -> {
-            String parent_name = parent.getUsername();
-            parent_names.add(parent_name);
-        });
+        String parent_name = userRegisterTeachSemester.getTeacher().getParent().getUsername();
 
         response.put("teacher", GetUserResponse.builder()
                 .id(userRegisterTeachSemester.getTeacher().getId())
@@ -643,7 +621,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .sex(userRegisterTeachSemester.getTeacher().getSex())
                 .phone(userRegisterTeachSemester.getTeacher().getPhone())
                 .address(userRegisterTeachSemester.getTeacher().getAddress())
-                .parents(parent_names)
+                .parent(parent_name)
                 .createTime(userRegisterTeachSemester.getTeacher().getCreateTime())
                 .build());
 
@@ -689,11 +667,7 @@ public class ClassesServiceImpl implements ClassesService {
 
         List<GetUserResponse> listStudents = new ArrayList<>();
         classes.getUserRegisterJoinSemesters().forEach(content -> {
-            List<String> parent_namess = new ArrayList<>();
-            content.getStudent().getParents().forEach(parent -> {
-                String parent_name = parent.getUsername();
-                parent_names.add(parent_name);
-            });
+            String parent_namex = content.getStudent().getParent().getUsername();
             GetUserResponse student = GetUserResponse.builder()
                     .id(content.getStudent().getId())
                     .username(content.getStudent().getUsername())
@@ -705,7 +679,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .sex(content.getStudent().getSex())
                     .phone(content.getStudent().getPhone())
                     .address(content.getStudent().getAddress())
-                    .parents(parent_namess)
+                    .parent(parent_namex)
                     .createTime(content.getStudent().getCreateTime())
                     .build();
             listStudents.add(student);

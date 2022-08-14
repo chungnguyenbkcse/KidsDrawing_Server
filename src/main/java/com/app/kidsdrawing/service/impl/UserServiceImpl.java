@@ -58,11 +58,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         });
         pageUser.forEach(user -> {
             if (user.getRoles().contains(role) == true){
-                List<String> parent_names = new ArrayList<>();
-                user.getParents().forEach(parent -> {
-                    String parent_name = parent.getUsername();
-                    parent_names.add(parent_name);
-                });
                 GetUserResponse userResponse = GetUserResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -74,7 +69,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .sex(user.getSex())
                     .phone(user.getPhone())
                     .address(user.getAddress())
-                    .parents(parent_names)
                     .createTime(user.getCreateTime())
                     .build();
                 allUserResponses.add(userResponse);
@@ -100,11 +94,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Map<String, Object> response = new HashMap<>();
         pageUser.forEach(user -> {
             if (user.getRoles().contains(role) == true){
-                List<String> parent_names = new ArrayList<>();
-                user.getParents().forEach(parent -> {
-                    String parent_name = parent.getUsername();
-                    parent_names.add(parent_name);
-                });
                 GetUserResponse userResponse = GetUserResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -116,7 +105,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .sex(user.getSex())
                     .phone(user.getPhone())
                     .address(user.getAddress())
-                    .parents(parent_names)
                     .createTime(user.getCreateTime())
                     .build();
                 allUserResponses.add(userResponse);
@@ -174,12 +162,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
-
-        List<String> parent_names = new ArrayList<>();
-        user.getParents().forEach(parent -> {
-            String parent_name = parent.getUsername();
-            parent_names.add(parent_name);
-        });
         return GetUserInfoResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -191,7 +173,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .sex(user.getSex())
                 .phone(user.getPhone())
                 .address(user.getAddress())
-                .parents(parent_names)
                 .createTime(user.getCreateTime())
                 .build();
     }
@@ -203,11 +184,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
-        List<String> parent_names = new ArrayList<>();
-        user.getParents().forEach(parent -> {
-            String parent_name = parent.getUsername();
-            parent_names.add(parent_name);
-        });
         return GetUserInfoResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
@@ -218,7 +194,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .sex(user.getSex())
                 .phone(user.getPhone())
                 .address(user.getAddress())
-                .parents(parent_names)
                 .createTime(user.getCreateTime())
                 .build();
     }
@@ -252,15 +227,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .run();
         });
 
-        List<User> parents = new ArrayList<>();
-        createUserRequest.getParent_ids().forEach(parent_id -> {
-            Optional<User> parentOpt = userRepository.findById(parent_id);
-            User parent = parentOpt.orElseThrow(() -> {
-                throw new EntityNotFoundException("exception.user_parent.not_found");
-            });
-            parents.add(parent);
-        });
-
         User savedUser = User.builder()
                 .username(createUserRequest.getUsername())
                 .email(createUserRequest.getEmail())
@@ -271,7 +237,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .sex(createUserRequest.getSex())
                 .phone(createUserRequest.getPhone())
                 .address(createUserRequest.getAddress())
-                .parents(new HashSet<>(parents))
                 .roles(new HashSet<>(validRoles))
                 .build();
         userRepository.save(savedUser);
@@ -308,15 +273,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     })
                     .run();
         });
-
-        List<User> parents = new ArrayList<>();
-        createUserRequest.getParent_ids().forEach(parent_id -> {
-            Optional<User> parentOpt = userRepository.findById(parent_id);
-            User parent = parentOpt.orElseThrow(() -> {
-                throw new EntityNotFoundException("exception.user_parent.not_found");
-            });
-            parents.add(parent);
-        });
         
         user.setUsername(createUserRequest.getUsername());
         user.setEmail(createUserRequest.getEmail());
@@ -329,7 +285,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setSex(createUserRequest.getSex());
         user.setPhone(createUserRequest.getPhone());
         user.setRoles(new HashSet<>(validRoles));
-        user.setParents(new HashSet<>(parents));
 
         userRepository.save(user);
         return user.getId();
