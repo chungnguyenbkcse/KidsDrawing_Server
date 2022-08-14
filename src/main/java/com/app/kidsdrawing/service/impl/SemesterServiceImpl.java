@@ -327,7 +327,7 @@ public class SemesterServiceImpl implements SemesterService {
                         .user(user)
                         .teachSemester(allUserRegisterTeachSemesters.get(i))
                         .security_code(key)
-                        .name("CM" + "_" + String.valueOf(listClass.size() + i))
+                        .name(key)
                         .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
                         .build();
                     classRepository.save(savedClass);

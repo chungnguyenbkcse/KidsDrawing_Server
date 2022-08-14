@@ -593,7 +593,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 4,
+    "teacher_id": 2,
     "course_id": 1,
     "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
     "status": "Approved"
@@ -607,7 +607,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "time": ["2022-08-08", "2022-08-10", "2022-08-12"]
+    "time": ["2022-01-03", "2022-01-10", "2022-01-12", "2022-01-04", "2022-01-11", "2022-01-13"]
 }
 
 ### CREATE CONTEST ACTION ###
@@ -618,7 +618,7 @@ Authorization: Bearer {{admin_access_token}}
 
 ### CREATE CONTEST ACTION ###
 # @name get_info_user
-GET {{rest}}/classes/info/3
+GET {{rest}}/classes/info/10
 Authorization: Bearer {{admin_access_token}}
 
 ### GET classes ACTION ###
@@ -634,8 +634,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 3,
-    "semester_course_id": 5
+    "teacher_id": 5,
+    "semester_class_id": 2
 }
 
 
@@ -647,9 +647,9 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 27,
-    "semester_course_id": 5,
-    "payer_id": 12,
+    "student_id": 29,
+    "semester_course_id": 2,
+    "payer_id": 16,
     "price": 2000000
 }
 
@@ -662,8 +662,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 2,
-    "semester_course_id": 1
+    "teacher_id": 3,
+    "semester_class_id": 1
 }
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
@@ -689,8 +689,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "start_time": "07:00:00",
-    "end_time": "08:00:00"
+    "start_time": "09:00:00",
+    "end_time": "10:00:00"
 }
 
 ### CREATE LESSON TIME ACTION ###
@@ -701,8 +701,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "start_time": "10:00:00",
-    "end_time": "11:00:00"
+    "start_time": "13:00:00",
+    "end_time": "14:00:00"
 }
 
 ### CREATE CONTEST ACTION ###
@@ -724,7 +724,7 @@ Content-Type: application/json
 ### CREATE LESSON TIME ACTION ###
 # @name create_lesson_time
 
-POST {{rest}}/semester-class
+POST  {{rest}}/semester-class
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
@@ -732,7 +732,6 @@ Content-Type: application/json
     "creation_id": 1,
     "course_id": 1,
     "max_participant": 100
-
 }
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
@@ -893,6 +892,7 @@ Content-Type: application/json
 {
     "name": "Khóa học mầm chì màu cơ bản",
     "description": "<p>hello nguyen van chung</p>",
+    "max_participant": 20,
     "num_of_section": 10,
     "price": 2000000,
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344893/lop-day-hoc-ve-tre-em-be-thieu-nhi-370x255_natvks.png",
@@ -901,6 +901,19 @@ Content-Type: application/json
     "art_age_id": 1,
     "art_type_id": 1,
     "art_level_id": 1
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/schedule
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "lesson_time": 4,
+    "semester_class_id": 2,
+    "date_of_week": 5
 }
 
 ###
