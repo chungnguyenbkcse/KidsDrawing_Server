@@ -6,7 +6,7 @@ import java.util.Set;
 import lombok.Data;
 
 @Data
-public class CreateUserRequest {
+public class CreateStudentRequest {
     private String username;
     private String email;
     private String password;

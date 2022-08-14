@@ -6,10 +6,9 @@ import java.util.Set;
 import lombok.Data;
 
 @Data
-public class CreateUserRequest {
+public class CreateTeacherRequest {
     private String username;
     private String email;
-    private String password;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;

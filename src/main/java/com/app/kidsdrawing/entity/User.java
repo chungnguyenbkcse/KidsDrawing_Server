@@ -85,8 +85,8 @@ public class User{
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles;
 
-    @OneToOne
-    @JoinColumn(name = "parent_id")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private User parent;
      
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)

@@ -23,6 +23,5 @@ public class GetUserResponse {
     private String sex;
     private String phone;
     private String address;
-    private String parent;
     private LocalDateTime createTime;
 }

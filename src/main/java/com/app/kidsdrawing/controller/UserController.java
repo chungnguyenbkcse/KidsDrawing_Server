@@ -3,6 +3,8 @@ package com.app.kidsdrawing.controller;
 import java.net.URI;
 import java.util.Map;
 
+import com.app.kidsdrawing.dto.CreateStudentRequest;
+import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import com.app.kidsdrawing.service.UserService;
@@ -26,11 +28,20 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
     private final UserService userService;
-    
+
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody CreateUserRequest createUserRequest) {
-        Long userId = userService.createUser(createUserRequest);
+    public ResponseEntity<String> createStudent(@RequestBody CreateStudentRequest createStudentOrParentRequest) {
+        Long userId = userService.createStudent(createStudentOrParentRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
+                .buildAndExpand(userId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/teacher")
+    public ResponseEntity<String> createTeacher(@RequestBody CreateTeacherRequest createTeacherRequest) {
+        Long userId = userService.createTeacher(createTeacherRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();
@@ -46,14 +57,15 @@ public class UserController {
     @GetMapping(value = "/student")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudent() {
         Long role_id = (long) 2;
-        return ResponseEntity.ok().body(userService.getAllUsers(role_id));
+        return ResponseEntity.ok().body(userService.getAllStudents(role_id));
     } 
+
 
     @CrossOrigin
     @GetMapping(value = "/parent")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllParent() {
         Long role_id = (long) 3;
-        return ResponseEntity.ok().body(userService.getAllUsers(role_id));
+        return ResponseEntity.ok().body(userService.getAllParents(role_id));
     } 
 
     @CrossOrigin
