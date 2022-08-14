@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.app.kidsdrawing.dto.CreateSemesterCourseRequest;
-import com.app.kidsdrawing.dto.GetSemesterCourseResponse;
-import com.app.kidsdrawing.service.SemesterCourseService;
+import com.app.kidsdrawing.dto.CreateSemesterClassRequest;
+import com.app.kidsdrawing.dto.GetSemesterClassResponse;
+import com.app.kidsdrawing.service.SemesterClassService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1/semester-course")
-public class SemesterCourseController {
-    private final SemesterCourseService semesterCourseService;
+@RequestMapping(value = "/api/v1/semester-class")
+public class SemesterClassController {
+    private final SemesterClassService semesterCourseService;
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createSemesterCourse(@RequestBody CreateSemesterCourseRequest createSemesterCourseRequest) {
-        Long semesterCourseId = semesterCourseService.createSemesterCourse(createSemesterCourseRequest);
+    public ResponseEntity<String> createSemesterClass(@RequestBody CreateSemesterClassRequest createSemesterClassRequest) {
+        Long semesterCourseId = semesterCourseService.createSemesterClass(createSemesterClassRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{semesterCourseId}")
                 .buildAndExpand(semesterCourseId).toUri();
         return ResponseEntity.created(location).build();
@@ -39,8 +39,8 @@ public class SemesterCourseController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateSemesterCourse(@PathVariable Long id, @RequestBody CreateSemesterCourseRequest createSemesterCourseRequest) {
-        Long semesterCourseId = semesterCourseService.updateSemesterCourseById(id,createSemesterCourseRequest);
+    public ResponseEntity<String> updateSemesterClass(@PathVariable Long id, @RequestBody CreateSemesterClassRequest createSemesterClassRequest) {
+        Long semesterCourseId = semesterCourseService.updateSemesterClassById(id,createSemesterClassRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(semesterCourseId).toUri();
         return ResponseEntity.created(location).build();
@@ -48,37 +48,37 @@ public class SemesterCourseController {
     
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterCoursesBySemester(@RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemester(@RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterCourse(page, size));
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClass(page, size));
     }
 
     @CrossOrigin
     @GetMapping(value = "/semester/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterCoursesBySemesterBySemester(@RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemesterBySemester(@RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size, @PathVariable Long id) {
-        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterCourseBySemester(page, size, id));
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassBySemester(page, size, id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/course/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterCoursesBySemesterByCourse(@RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemesterByCourse(@RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size, @PathVariable Long id) {
-        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterCourseByCourse(page, size, id));
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassByCourse(page, size, id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetSemesterCourseResponse> getSemesterCourseById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(semesterCourseService.getSemesterCourseById(id));
+    public ResponseEntity<GetSemesterClassResponse> getSemesterClassById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(semesterCourseService.getSemesterClassById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteSemesterCourseById(@PathVariable Long id) {
-        Long SemesterCourseId = semesterCourseService.removeSemesterCourseById(id);
+    public ResponseEntity<String> deleteSemesterClassById(@PathVariable Long id) {
+        Long SemesterClassId = semesterCourseService.removeSemesterClassById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-                .buildAndExpand(SemesterCourseId).toUri();
+                .buildAndExpand(SemesterClassId).toUri();
         return ResponseEntity.created(location).build();
     }
 }

@@ -21,7 +21,7 @@ import com.app.kidsdrawing.entity.ArtLevel;
 import com.app.kidsdrawing.entity.ArtType;
 import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.entity.Course;
-import com.app.kidsdrawing.entity.SemesterCourse;
+import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.CourseAlreadyCreateException;
@@ -31,8 +31,8 @@ import com.app.kidsdrawing.repository.ArtLevelRepository;
 import com.app.kidsdrawing.repository.ArtTypeRepository;
 import com.app.kidsdrawing.repository.ClassRepository;
 import com.app.kidsdrawing.repository.CourseRepository;
-import com.app.kidsdrawing.repository.ScheduleItemRepository;
-import com.app.kidsdrawing.repository.SemesterCourseRepository;
+import com.app.kidsdrawing.repository.ScheduleRepository;
+import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.CourseService;
@@ -51,8 +51,8 @@ public class CourseServiceImpl implements CourseService {
     private final ArtLevelRepository artLevelRepository;
     private final ClassRepository classRepository;
     private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
-    private final SemesterCourseRepository semesterCourseRepository;
-    private final ScheduleItemRepository scheduleItemRepository;
+    private final SemesterClassRepository semesterCourseRepository;
+    private final ScheduleRepository scheduleRepository;
     private static String schedule = "";
 
     @Override
@@ -64,7 +64,6 @@ public class CourseServiceImpl implements CourseService {
                     .id(course.getId())
                     .name(course.getName())
                     .description(course.getDescription())
-                    .max_participant(course.getMax_participant())
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
@@ -94,7 +93,6 @@ public class CourseServiceImpl implements CourseService {
                 .id(course.getId())
                 .name(course.getName())
                 .description(course.getDescription())
-                .max_participant(course.getMax_participant())
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
@@ -125,7 +123,6 @@ public class CourseServiceImpl implements CourseService {
                 .id(course.getId())
                 .name(course.getName())
                 .description(course.getDescription())
-                .max_participant(course.getMax_participant())
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
@@ -156,7 +153,6 @@ public class CourseServiceImpl implements CourseService {
                 .id(course.getId())
                 .name(course.getName())
                 .description(course.getDescription())
-                .max_participant(course.getMax_participant())
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
@@ -184,29 +180,29 @@ public class CourseServiceImpl implements CourseService {
         // Danh sach dang ki day cua giao vien
         List<UserRegisterTeachSemester> allTeacherTeachSemesterResponses = new ArrayList<>();
         // Danh sach khoa hoc theo ki giao vien da dang ki
-        List<SemesterCourse> allRegisteredSemesterCourseResponses = new ArrayList<>();
+        List<SemesterClass> allRegisteredSemesterClassResponses = new ArrayList<>();
         listTeacherTeachSemester.forEach(ele -> {
             if (ele.getTeacher().getId() == id){
                 allTeacherTeachSemesterResponses.add(ele);
-                allRegisteredSemesterCourseResponses.add(ele.getSemesterCourse());
+                allRegisteredSemesterClassResponses.add(ele.getSemesterClass());
             }
         });
 
         // Danh sach khoa hoc theo ki giao vien chua dang ki
-        List<SemesterCourse> allNotRegisterSemesterCourse = new ArrayList<>();
+        List<SemesterClass> allNotRegisterSemesterClass = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<SemesterCourse> pageSemesterCourse = semesterCourseRepository.findAll();
-        pageSemesterCourse.forEach(ele -> {
-            if (allRegisteredSemesterCourseResponses.contains(ele) == false && time_now.isAfter(ele.getSemester().getStart_time()) == false ){
-                allNotRegisterSemesterCourse.add(ele);
+        List<SemesterClass> pageSemesterClass = semesterCourseRepository.findAll();
+        pageSemesterClass.forEach(ele -> {
+            if (allRegisteredSemesterClassResponses.contains(ele) == false && time_now.isAfter(ele.getSemester().getStart_time()) == false ){
+                allNotRegisterSemesterClass.add(ele);
             }
         });
 
-        List<GetCourseTeacherResponse> allNotRegisterSemesterCourseResponses = new ArrayList<>();
-        allNotRegisterSemesterCourse.forEach(ele -> {
+        List<GetCourseTeacherResponse> allNotRegisterSemesterClassResponses = new ArrayList<>();
+        allNotRegisterSemesterClass.forEach(ele -> {
             schedule = "";
-            scheduleItemRepository.findAll().forEach(schedule_item -> {
-                if (schedule_item.getSchedule().getId() == ele.getSchedule().getId()){
+            scheduleRepository.findAll().forEach(schedule_item -> {
+                if (schedule_item.getSemesterClass().getId() == ele.getId()){
                     if (schedule == ""){
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
                     }
@@ -215,7 +211,7 @@ public class CourseServiceImpl implements CourseService {
                     }
                 }
             });
-            GetCourseTeacherResponse notRegisterSemesterCourseResponse = GetCourseTeacherResponse.builder()
+            GetCourseTeacherResponse notRegisterSemesterClassResponse = GetCourseTeacherResponse.builder()
                 .course_id(ele.getCourse().getId())
                 .semster_course_id(ele.getId())
                 .semester_name(ele.getSemester().getName())
@@ -227,12 +223,11 @@ public class CourseServiceImpl implements CourseService {
                 .art_type_name(ele.getCourse().getArtTypes().getName())
                 .price(ele.getCourse().getPrice())
                 .registration_deadline(ele.getSemester().getStart_time())
-                .max_participant(ele.getCourse().getMax_participant())
                 .num_of_section(ele.getCourse().getNum_of_section())
                 .schedule(schedule)
                 .build();
 
-            allNotRegisterSemesterCourseResponses.add(notRegisterSemesterCourseResponse);
+            allNotRegisterSemesterClassResponses.add(notRegisterSemesterClassResponse);
         });
 
         List<Class> allClassResponses = new ArrayList<>();
@@ -241,21 +236,21 @@ public class CourseServiceImpl implements CourseService {
         // Danh sach dang ki giao vien duoc xep lop
         List<UserRegisterTeachSemester> allTeacherRegisterSuccessfullTeachSemesterResponses = new ArrayList<>();
         // Danh sach khoa hoc theo ki giao vien chua dang ki
-        List<SemesterCourse> allRegisterSuccessfullSemesterCourse = new ArrayList<>();
+        List<SemesterClass> allRegisterSuccessfullSemesterClass = new ArrayList<>();
         // Danh sach dang ki nhung khong duoc xep lop
         listClass.forEach(ele -> {
             if (allTeacherTeachSemesterResponses.contains(ele.getTeachSemester())){
                 allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getTeachSemester());
-                allRegisterSuccessfullSemesterCourse.add(ele.getTeachSemester().getSemesterCourse());
+                allRegisterSuccessfullSemesterClass.add(ele.getTeachSemester().getSemesterClass());
                 allClassResponses.add(ele);
             }
         });
 
-        List<GetCourseTeacherResponse> allRegisterSuccessfullSemesterCourseResponses = new ArrayList<>();
-        allRegisterSuccessfullSemesterCourse.forEach(ele -> {
+        List<GetCourseTeacherResponse> allRegisterSuccessfullSemesterClassResponses = new ArrayList<>();
+        allRegisterSuccessfullSemesterClass.forEach(ele -> {
             schedule = "";
-            scheduleItemRepository.findAll().forEach(schedule_item -> {
-                if (schedule_item.getSchedule().getId() == ele.getSchedule().getId()){
+            scheduleRepository.findAll().forEach(schedule_item -> {
+                if (schedule_item.getSemesterClass().getId() == ele.getId()){
                     if (schedule == ""){
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
                     }
@@ -264,7 +259,7 @@ public class CourseServiceImpl implements CourseService {
                     }
                 }
             });
-            GetCourseTeacherResponse registerSuccessfullSemesterCourseResponse = GetCourseTeacherResponse.builder()
+            GetCourseTeacherResponse registerSuccessfullSemesterClassResponse = GetCourseTeacherResponse.builder()
                 .course_id(ele.getCourse().getId())
                 .semster_course_id(ele.getId())
                 .semester_name(ele.getSemester().getName())
@@ -276,18 +271,17 @@ public class CourseServiceImpl implements CourseService {
                 .art_type_name(ele.getCourse().getArtTypes().getName())
                 .price(ele.getCourse().getPrice())
                 .registration_deadline(ele.getSemester().getStart_time())
-                .max_participant(ele.getCourse().getMax_participant())
                 .num_of_section(ele.getCourse().getNum_of_section())
                 .schedule(schedule)
                 .build();
 
-            allRegisterSuccessfullSemesterCourseResponses.add(registerSuccessfullSemesterCourseResponse);
+            allRegisterSuccessfullSemesterClassResponses.add(registerSuccessfullSemesterClassResponse);
         });
 
 
         Map<String, Object> response = new HashMap<>();
-        response.put("not_register_courses", allNotRegisterSemesterCourseResponses);
-        response.put("register_successfull_courses", allRegisterSuccessfullSemesterCourseResponses);
+        response.put("not_register_courses", allNotRegisterSemesterClassResponses);
+        response.put("register_successfull_courses", allRegisterSuccessfullSemesterClassResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -302,7 +296,6 @@ public class CourseServiceImpl implements CourseService {
                 .id(course.getId())
                 .name(course.getName())
                 .description(course.getDescription())
-                .max_participant(course.getMax_participant())
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
@@ -327,7 +320,6 @@ public class CourseServiceImpl implements CourseService {
                 .id(course.getId())
                 .name(course.getName())
                 .description(course.getDescription())
-                .max_participant(course.getMax_participant())
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
@@ -371,7 +363,6 @@ public class CourseServiceImpl implements CourseService {
         Course savedCourse = Course.builder()
                 .name(createCourseRequest.getName())
                 .description(createCourseRequest.getDescription())
-                .max_participant(createCourseRequest.getMax_participant())
                 .num_of_section(createCourseRequest.getNum_of_section())
                 .image_url(createCourseRequest.getImage_url())
                 .price(createCourseRequest.getPrice())
@@ -424,7 +415,6 @@ public class CourseServiceImpl implements CourseService {
         });
         updatedCourse.setName(createCourseRequest.getName());
         updatedCourse.setDescription(createCourseRequest.getDescription());
-        updatedCourse.setMax_participant(createCourseRequest.getMax_participant());
         updatedCourse.setNum_of_section(createCourseRequest.getNum_of_section());
         updatedCourse.setImage_url(createCourseRequest.getImage_url());
         updatedCourse.setPrice(createCourseRequest.getPrice());

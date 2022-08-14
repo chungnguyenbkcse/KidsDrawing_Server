@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class CreateScheduleRequest {
-    private Long creator_id;
-    private String name; 
+    private Long lesson_time;
+    private Integer date_of_week; 
 }

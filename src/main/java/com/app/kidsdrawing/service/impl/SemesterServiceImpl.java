@@ -20,7 +20,7 @@ import com.app.kidsdrawing.dto.CreateHolidayRequest;
 import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.entity.Semester;
-import com.app.kidsdrawing.entity.SemesterCourse;
+import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.entity.Course;
@@ -119,27 +119,29 @@ public class SemesterServiceImpl implements SemesterService {
 
         List<Course> allCourseResponses = new ArrayList<>();
         //List<Course> pageCourse = courseRepository.findAll();
-        List<SemesterCourse> allSemesterCourseResponses = new ArrayList<>();
+        List<SemesterClass> allSemesterClassResponses = new ArrayList<>();
         List<Schedule> allScheduleResponses = new ArrayList<>();
         //List<Schedule> pageSchedule = scheduleRepository.findAll();
         //List<LessonTime> pageLessonTime = lessonTimeRepository.findAll();
 
-        semester.getSemesterCourse().forEach(semester_course -> {
-            allSemesterCourseResponses.add(semester_course);
-            allScheduleResponses.add(semester_course.getSchedule());
+        semester.getSemesterClass().forEach(semester_course -> {
+            allSemesterClassResponses.add(semester_course);
+            semester_course.getSchedules().forEach(ele -> {
+                allScheduleResponses.add(ele);
+            });
             allCourseResponses.add(semester_course.getCourse());
         });
 
         List<Class> listClass = classRepository.findAll();
-        List<List<Class>> allClassOfSemesterCourseResponses = new ArrayList<>();        
-        allSemesterCourseResponses.forEach(semester_course -> {
+        List<List<Class>> allClassOfSemesterClassResponses = new ArrayList<>();        
+        allSemesterClassResponses.forEach(semester_course -> {
             List<Class> list_class = new ArrayList<>();
             listClass.forEach(ele_class -> {
-                if (ele_class.getTeachSemester().getSemesterCourse().getId() == semester_course.getId()){
+                if (ele_class.getTeachSemester().getSemesterClass().getId() == semester_course.getId()){
                     list_class.add(ele_class);
                 }
             });
-            allClassOfSemesterCourseResponses.add(list_class);
+            allClassOfSemesterClassResponses.add(list_class);
         });
 
         createHolidayResquest.getTime().forEach(holiday -> {
@@ -150,11 +152,11 @@ public class SemesterServiceImpl implements SemesterService {
             holidayRepository.save(saveHoliday);
         });
 
-        allClassOfSemesterCourseResponses.forEach( list_class -> {
+        allClassOfSemesterClassResponses.forEach( list_class -> {
             List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
             List<SectionTemplate> allSectionTemplate = new ArrayList<>();
             listSectionTemplate.forEach(section_template -> {
-                if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterCourse().getCourse().getId()){
+                if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterClass().getCourse().getId()){
                     allSectionTemplate.add(section_template);
                     section_template.getCourse().getNum_of_section();
                 }
@@ -249,9 +251,9 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        List<SemesterCourse> allSemesterCourseResponses = new ArrayList<>();
-        semester.getSemesterCourse().forEach(semester_course -> {
-            allSemesterCourseResponses.add(semester_course);
+        List<SemesterClass> allSemesterClassResponses = new ArrayList<>();
+        semester.getSemesterClass().forEach(semester_course -> {
+            allSemesterClassResponses.add(semester_course);
         });
 
         List<Class> listClass = classRepository.findAll();
@@ -267,11 +269,11 @@ public class SemesterServiceImpl implements SemesterService {
         List<UserRegisterJoinSemester> pageUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findAll();
         // Danh sách giáo viên đăng kí dạy
         List<UserRegisterTeachSemester> pageUserRegisterTeachSemesters = teacherTeachSemesterRepository.findAll();
-        allSemesterCourseResponses.forEach(semester_course -> {
+        allSemesterClassResponses.forEach(semester_course -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
             List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = new ArrayList<>();
             pageUserRegisterJoinSemesters.forEach(user_register_join_semester -> {
-                if (user_register_join_semester.getSemesterCourse().getId() == semester_course.getId()){
+                if (user_register_join_semester.getSemesterClass().getId() == semester_course.getId()){
                     allUserRegisterJoinSemesters.add(user_register_join_semester);
                 }
             });
@@ -279,7 +281,7 @@ public class SemesterServiceImpl implements SemesterService {
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
             List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = new ArrayList<>();
             pageUserRegisterTeachSemesters.forEach(user_register_teach_semester -> {
-                if (user_register_teach_semester.getSemesterCourse().getId() == semester_course.getId()){
+                if (user_register_teach_semester.getSemesterClass().getId() == semester_course.getId()){
                     allUserRegisterTeachSemesters.add(user_register_teach_semester);
                 }
             });

@@ -67,7 +67,7 @@ public class Semester {
     private User user;
 
     @OneToMany(mappedBy="semester")
-    private Set<SemesterCourse> semesterCourse;
+    private Set<SemesterClass> semesterClass;
 
     @OneToMany(mappedBy="semester")
     private Set<Holiday> holidays;

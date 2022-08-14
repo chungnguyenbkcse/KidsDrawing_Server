@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateUserRegisterJoinSemesterRequest;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
-import com.app.kidsdrawing.entity.SemesterCourse;
+import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.SemesterCourseRepository;
+import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.UserRegisterJoinSemesterService;
@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSemesterService{
     
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
-    private final SemesterCourseRepository semesterCourseRepository;
+    private final SemesterClassRepository semesterClassRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -42,7 +42,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
                 .student_id(content.getStudent().getId())
-                .semester_course_id(content.getSemesterCourse().getId())
+                .semester_course_id(content.getSemesterClass().getId())
                 .payer_id(content.getPayer().getId())
                 .price(content.getPrice())
                 .time(content.getTime())
@@ -65,7 +65,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         return GetUserRegisterJoinSemesterResponse.builder()
                 .id(userRegisterJoinSemester.getId())
                 .student_id(userRegisterJoinSemester.getStudent().getId())
-                .semester_course_id(userRegisterJoinSemester.getSemesterCourse().getId())
+                .semester_course_id(userRegisterJoinSemester.getSemesterClass().getId())
                 .payer_id(userRegisterJoinSemester.getPayer().getId())
                 .price(userRegisterJoinSemester.getPrice())
                 .time(userRegisterJoinSemester.getTime())
@@ -74,8 +74,8 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
     @Override
     public Long createUserRegisterJoinSemester(CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
-        Optional <SemesterCourse> semester_courseOpt = semesterCourseRepository.findById(createUserRegisterJoinSemesterRequest.getSemester_course_id());
-        SemesterCourse semesterCouse = semester_courseOpt.orElseThrow(() -> {
+        Optional <SemesterClass> semester_courseOpt = semesterClassRepository.findById(createUserRegisterJoinSemesterRequest.getSemester_course_id());
+        SemesterClass semesterCouse = semester_courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_course.not_found");
         });
 
@@ -90,7 +90,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         });
         
         UserRegisterJoinSemester savedUserRegisterJoinSemester = UserRegisterJoinSemester.builder()
-                .semesterCourse(semesterCouse)
+                .semesterClass(semesterCouse)
                 .student(student)
                 .payer(payer)
                 .price(createUserRegisterJoinSemesterRequest.getPrice())
@@ -118,8 +118,8 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
         });
 
-        Optional <SemesterCourse> semester_courseOpt = semesterCourseRepository.findById(createUserRegisterJoinSemesterRequest.getSemester_course_id());
-        SemesterCourse semesterCouse = semester_courseOpt.orElseThrow(() -> {
+        Optional <SemesterClass> semester_courseOpt = semesterClassRepository.findById(createUserRegisterJoinSemesterRequest.getSemester_course_id());
+        SemesterClass semesterCouse = semester_courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_course.not_found");
         });
 
@@ -133,7 +133,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.user_payer.not_found");
         });
 
-        updatedUserRegisterJoinSemester.setSemesterCourse(semesterCouse);
+        updatedUserRegisterJoinSemester.setSemesterClass(semesterCouse);
         updatedUserRegisterJoinSemester.setStudent(student);
         updatedUserRegisterJoinSemester.setPayer(payer);
         updatedUserRegisterJoinSemester.setPrice(createUserRegisterJoinSemesterRequest.getPrice());

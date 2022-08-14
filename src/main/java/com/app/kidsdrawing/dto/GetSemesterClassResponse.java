@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetScheduleItemResponse {
+public class GetSemesterClassResponse {
     private Long id;
+    private Long creation_id;
+    private Long course_id;
     private Long schedule_id;
-    private Long lesson_time;
-    private Integer date_of_week;
+    private Integer max_participant;
 }

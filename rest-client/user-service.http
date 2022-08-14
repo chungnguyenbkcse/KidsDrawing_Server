@@ -19,7 +19,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [5],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -41,7 +40,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [5],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -63,7 +61,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [6],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -85,7 +82,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [6],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -107,7 +103,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [7],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -129,7 +124,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [7],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -151,7 +145,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [14],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -173,7 +166,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [5],
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -195,7 +187,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -217,7 +208,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -239,7 +229,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -261,7 +250,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -283,7 +271,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -306,7 +293,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -329,7 +315,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -351,7 +336,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -374,7 +358,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -397,7 +380,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["PARENT_USER"]
 }
 
@@ -419,7 +401,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["ADMIN_USER"]
 }
 
@@ -440,7 +421,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["TEACHER_USER"]
 }
 
@@ -461,7 +441,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["TEACHER_USER"]
 }
 
@@ -482,7 +461,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["TEACHER_USER"]
 }
 
@@ -503,7 +481,6 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_ids": [],
     "roleNames": ["TEACHER_USER"]
 }
 
@@ -752,7 +729,7 @@ Content-Type: application/json
 ### CREATE LESSON TIME ACTION ###
 # @name create_lesson_time
 
-POST {{rest}}/semester-course
+POST {{rest}}/semester-class
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
@@ -818,7 +795,7 @@ Content-Type: application/json
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/semester-course?page=0&size=10
+GET {{rest}}/semester-class?page=0&size=10
 
 
 ### GET ART TYPE ACTION ###

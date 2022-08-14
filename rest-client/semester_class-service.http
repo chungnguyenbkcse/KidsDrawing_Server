@@ -3,50 +3,49 @@
 ### CREATE LESSON TIME ACTION ###
 # @name create_lesson_time
 
-POST {{rest}}/schedule-item
+POST {{rest}}/semester-class
 Content-Type: application/json
 
 {
-    "schedule_id": 8,
-    "lesson_time": 6,
-    "date_of_week": 2
+    "creation_id": 13,
+    "course_id": 4,
+    "schedule_id": 8
+
 }
 
 ### CREATE LESSON TIME ACTION ###
 # @name create_lesson_time
 
-POST {{rest}}/schedule-item
+POST {{rest}}/semester-class
 Content-Type: application/json
 
 {
-    "schedule_id": 10,
-    "lesson_time": 7,
-    "date_of_week": 4
+    "name": "Lịch học 2",
+    "creator_id": 3
 }
 
 ### UPDATE ART TYPE ACTION ###
 # @name update_art_type
 
-PUT {{rest}}/schedule-item/12
+PUT {{rest}}/semester-class/8
 Content-Type: application/json
 
 {
-    "schedule_id": 10,
-    "lesson_time": 7,
-    "date_of_week": 5
+    "name": "Lịch học 1_1",
+    "creator_id": 3
 }
 
 ### REMOVE ART TYPE ACTION ###
 # @name update_art_type
 
-DELETE  {{rest}}/schedule-item/12
+DELETE  {{rest}}/lesson-time/2
 
 ### GET ART TYPE ACTION ###
 # @name get_art_type
 
-GET {{rest}}/schedule-item/11
+GET {{rest}}/semester-class/15
 
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/schedule-item?page=0&size=2
+GET {{rest}}/semester-class?page=0&size=2

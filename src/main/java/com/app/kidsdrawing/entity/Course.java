@@ -46,9 +46,6 @@ public class Course {
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
-    @Column(name = "max_participant")
-    private Integer max_participant;
-
     @Column(name = "num_of_section")
     private Integer num_of_section;
 

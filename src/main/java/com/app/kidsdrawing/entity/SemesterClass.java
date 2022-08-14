@@ -1,5 +1,7 @@
 package com.app.kidsdrawing.entity;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -23,8 +26,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "semester_course")
-public class SemesterCourse {
+@Table(name = "semester_class")
+public class SemesterClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -38,7 +41,9 @@ public class SemesterCourse {
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "schedule_id", referencedColumnName = "id")
-    private Schedule schedule;
+    @OneToMany(mappedBy="semesterClass")
+    private Set<Schedule> schedules;
+
+    @Column(name = "max_participant")
+    private Integer max_participant;
 }

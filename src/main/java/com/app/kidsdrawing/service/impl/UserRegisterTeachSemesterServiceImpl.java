@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateTeacherTeachSemesterRequest;
 import com.app.kidsdrawing.dto.GetTeacherTeachSemesterResponse;
-import com.app.kidsdrawing.entity.SemesterCourse;
+import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.SemesterCourseRepository;
+import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.UserRegisterTeachSemesterService;
@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSemesterService{
     
     private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
-    private final SemesterCourseRepository semesterCourseRepository;
+    private final SemesterClassRepository semesterClassRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -42,7 +42,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
             GetTeacherTeachSemesterResponse teacherTeachSemesterResponse = GetTeacherTeachSemesterResponse.builder()
                 .id(content.getId())
                 .teacher_id(content.getTeacher().getId())
-                .semester_course_id(content.getSemesterCourse().getId())
+                .semester_course_id(content.getSemesterClass().getId())
                 .time(content.getTime())
                 .build();
             allTeacherTeachSemesterResponses.add(teacherTeachSemesterResponse);
@@ -63,15 +63,15 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
         return GetTeacherTeachSemesterResponse.builder()
             .id(teacherTeachSemester.getId())
             .teacher_id(teacherTeachSemester.getTeacher().getId())
-            .semester_course_id(teacherTeachSemester.getSemesterCourse().getId())
+            .semester_course_id(teacherTeachSemester.getSemesterClass().getId())
             .time(teacherTeachSemester.getTime())
             .build();
     }
 
     @Override
     public Long createTeacherTeachSemester(CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
-        Optional <SemesterCourse> semester_courseOpt = semesterCourseRepository.findById(createTeacherTeachSemesterRequest.getSemester_course_id());
-        SemesterCourse semesterCouse = semester_courseOpt.orElseThrow(() -> {
+        Optional <SemesterClass> semester_courseOpt = semesterClassRepository.findById(createTeacherTeachSemesterRequest.getSemester_course_id());
+        SemesterClass semesterCouse = semester_courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_course.not_found");
         });
 
@@ -81,7 +81,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
         });
         
         UserRegisterTeachSemester savedTeacherTeachSemester = UserRegisterTeachSemester.builder()
-                .semesterCourse(semesterCouse)
+                .semesterClass(semesterCouse)
                 .teacher(teacher)
                 .build();
         teacherTeachSemesterRepository.save(savedTeacherTeachSemester);
@@ -107,8 +107,8 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
 
-        Optional <SemesterCourse> semester_courseOpt = semesterCourseRepository.findById(createTeacherTeachSemesterRequest.getSemester_course_id());
-        SemesterCourse semesterCouse = semester_courseOpt.orElseThrow(() -> {
+        Optional <SemesterClass> semester_courseOpt = semesterClassRepository.findById(createTeacherTeachSemesterRequest.getSemester_course_id());
+        SemesterClass semesterCouse = semester_courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_course.not_found");
         });
 
@@ -117,7 +117,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 
-        updatedTeacherTeachSemester.setSemesterCourse(semesterCouse);
+        updatedTeacherTeachSemester.setSemesterClass(semesterCouse);
         updatedTeacherTeachSemester.setTeacher(teacher);
 
         return updatedTeacherTeachSemester.getId();

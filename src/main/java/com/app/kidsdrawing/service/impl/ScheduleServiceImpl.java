@@ -9,22 +9,16 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateScheduleRequest;
-import com.app.kidsdrawing.dto.GetScheduleItemResponse;
 import com.app.kidsdrawing.dto.GetScheduleResponse;
+import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.Schedule;
-import com.app.kidsdrawing.entity.ScheduleItem;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.ScheduleItemRepository;
+import com.app.kidsdrawing.repository.LessonTimeRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
-import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ScheduleService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,67 +29,24 @@ import lombok.RequiredArgsConstructor;
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-    private final UserRepository userRepository;
-    private final ScheduleItemRepository scheduleItemRepository;
+    private final LessonTimeRepository lessonTimeRepository;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSchedule(int page, int size) {
+    public ResponseEntity<Map<String, Object>> getAllSchedule() {
         List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<Schedule> pageSchedule = scheduleRepository.findAll(paging);
-        pageSchedule.getContent().forEach(schedule -> {
+        List<Schedule> pageSchedule = scheduleRepository.findAll();
+        pageSchedule.forEach(schedule -> {
             GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
                     .id(schedule.getId())
-                    .name(schedule.getName())
-                    .create_time(schedule.getCreate_time())
-                    .update_time(schedule.getUpdate_time())
+                    .lesson_time(schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString())
+                    .lesson_time_id(schedule.getLessonTime().getId())
+                    .date_of_week(schedule.getDate_of_week())
                     .build();
             allScheduleResponses.add(scheduleResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
         response.put("schedules", allScheduleResponses);
-        response.put("currentPage", pageSchedule.getNumber());
-        response.put("totalItems", pageSchedule.getTotalElements());
-        response.put("totalPages", pageSchedule.getTotalPages());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Map<String, Object>> getAllScheduleItemOfSchedule() {
-        List<List<GetScheduleItemResponse>> allScheduleItemOfScheduleResponses = new ArrayList<>();
-        List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
-        List<Schedule> pageSchedule = scheduleRepository.findAll();
-        List<ScheduleItem> pageScheduleItem = scheduleItemRepository.findAll();
-        pageSchedule.forEach(schedule -> {
-            GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
-                    .id(schedule.getId())
-                    .name(schedule.getName())
-                    .create_time(schedule.getCreate_time())
-                    .update_time(schedule.getUpdate_time())
-                    .build();
-            allScheduleResponses.add(scheduleResponse);
-        });
-
-        pageSchedule.forEach(schedule -> {
-            List<GetScheduleItemResponse> allScheduleItemResponses = new ArrayList<>();
-            pageScheduleItem.forEach(schedule_item -> {
-                if (schedule.getId() == schedule_item.getSchedule().getId()) {
-                    GetScheduleItemResponse scheduleItemResponse = GetScheduleItemResponse.builder()
-                        .id(schedule_item.getId())
-                        .schedule_id(schedule_item.getSchedule().getId())
-                        .lesson_time(schedule_item.getLessonTime().getId())
-                        .date_of_week(schedule_item.getDate_of_week())
-                        .build();
-                    allScheduleItemResponses.add(scheduleItemResponse);
-                }
-            });
-            allScheduleItemOfScheduleResponses.add(allScheduleItemResponses);
-        });
-        
-        Map<String, Object> response = new HashMap<>();
-        response.put("schedule", allScheduleResponses);
-        response.put("schedule_item", allScheduleItemOfScheduleResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -107,23 +58,23 @@ public class ScheduleServiceImpl implements ScheduleService {
         });
 
         return GetScheduleResponse.builder()
-                .id(schedule.getId())
-                .name(schedule.getName())
-                .create_time(schedule.getCreate_time())
-                .update_time(schedule.getUpdate_time())
-                .build();
+            .id(schedule.getId())
+            .lesson_time(schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString())
+            .lesson_time_id(schedule.getLessonTime().getId())
+            .date_of_week(schedule.getDate_of_week())
+            .build();
     }
 
     @Override
     public Long createSchedule(CreateScheduleRequest createScheduleRequest) {
-        Optional<User> userOpt = userRepository.findById(createScheduleRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
+        Optional<LessonTime> lessonTimeOpt =   lessonTimeRepository.findById(createScheduleRequest.getLesson_time());
+        LessonTime lesson_time = lessonTimeOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.lesson_time.not_found");
         });
 
         Schedule savedSchedule = Schedule.builder()
-                .name(createScheduleRequest.getName())
-                .user(user)
+                .lessonTime(lesson_time)
+                .date_of_week(createScheduleRequest.getDate_of_week())
                 .build();
         scheduleRepository.save(savedSchedule);
 
@@ -148,13 +99,13 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new EntityNotFoundException("exception.Schedule.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById(createScheduleRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
+        Optional<LessonTime> lessonTimeOpt =   lessonTimeRepository.findById(createScheduleRequest.getLesson_time());
+        LessonTime lesson_time = lessonTimeOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.lesson_time.not_found");
         });
 
-        updatedSchedule.setName(createScheduleRequest.getName());
-        updatedSchedule.setUser(user);
+        updatedSchedule.setLessonTime(lesson_time);
+        updatedSchedule.setDate_of_week(createScheduleRequest.getDate_of_week());
         scheduleRepository.save(updatedSchedule);
 
         return updatedSchedule.getId();
