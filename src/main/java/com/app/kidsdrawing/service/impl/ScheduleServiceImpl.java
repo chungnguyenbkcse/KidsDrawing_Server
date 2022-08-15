@@ -41,12 +41,34 @@ public class ScheduleServiceImpl implements ScheduleService {
         pageSchedule.forEach(schedule -> {
             GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
                     .id(schedule.getId())
-                    .lesson_time(schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString())
+                    .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")
                     .lesson_time_id(schedule.getLessonTime().getId())
                     .semester_class_id(schedule.getSemesterClass().getId())
                     .date_of_week(schedule.getDate_of_week())
                     .build();
             allScheduleResponses.add(scheduleResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("schedules", allScheduleResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllScheduleBySemesterClassId(Long id) {
+        List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
+        List<Schedule> pageSchedule = scheduleRepository.findAll();
+        pageSchedule.forEach(schedule -> {
+            if (schedule.getSemesterClass().getId() == id){
+                GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
+                    .id(schedule.getId())
+                    .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")
+                    .lesson_time_id(schedule.getLessonTime().getId())
+                    .semester_class_id(schedule.getSemesterClass().getId())
+                    .date_of_week(schedule.getDate_of_week())
+                    .build();
+                allScheduleResponses.add(scheduleResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -63,7 +85,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         return GetScheduleResponse.builder()
             .id(schedule.getId())
-            .lesson_time(schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString())
+            .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")
             .lesson_time_id(schedule.getLessonTime().getId())
             .semester_class_id(schedule.getSemesterClass().getId())
             .date_of_week(schedule.getDate_of_week())

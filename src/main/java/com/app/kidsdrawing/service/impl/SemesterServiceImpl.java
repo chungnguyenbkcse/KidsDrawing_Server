@@ -68,6 +68,7 @@ public class SemesterServiceImpl implements SemesterService {
                     .name(semester.getName())
                     .description(semester.getDescription())
                     .start_time(semester.getStart_time())
+                    .end_time(semester.getEnd_time())
                     .number(semester.getNumber())
                     .year(semester.getYear())
                     .create_time(semester.getCreate_time())
@@ -94,6 +95,7 @@ public class SemesterServiceImpl implements SemesterService {
                     .name(semester.getName())
                     .description(semester.getDescription())
                     .start_time(semester.getStart_time())
+                    .end_time(semester.getEnd_time())
                     .number(semester.getNumber())
                     .year(semester.getYear())
                     .create_time(semester.getCreate_time())
@@ -362,6 +364,7 @@ public class SemesterServiceImpl implements SemesterService {
                 .name(semester.getName())
                 .description(semester.getDescription())
                 .start_time(semester.getStart_time())
+                .end_time(semester.getEnd_time())
                 .number(semester.getNumber())
                 .year(semester.getYear())
                 .create_time(semester.getCreate_time())
@@ -383,6 +386,7 @@ public class SemesterServiceImpl implements SemesterService {
                 .number(createSemesterRequest.getNumber())
                 .year(createSemesterRequest.getYear())
                 .start_time(createSemesterRequest.getStart_time())
+                .end_time(createSemesterRequest.getEnd_time())
                 .user(user)
                 .build();
         semesterRepository.save(savedSemester);
@@ -418,6 +422,7 @@ public class SemesterServiceImpl implements SemesterService {
         updatedSemester.setNumber(createSemesterRequest.getNumber());
         updatedSemester.setYear(createSemesterRequest.getYear());
         updatedSemester.setStart_time(createSemesterRequest.getStart_time());
+        updatedSemester.setEnd_time(createSemesterRequest.getEnd_time());
         updatedSemester.setUser(user);
         semesterRepository.save(updatedSemester);
 

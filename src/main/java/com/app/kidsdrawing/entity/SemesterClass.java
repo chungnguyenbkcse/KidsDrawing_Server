@@ -33,6 +33,9 @@ public class SemesterClass {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "creation_id", referencedColumnName = "id")
     private Semester semester;

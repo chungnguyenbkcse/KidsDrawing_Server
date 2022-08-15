@@ -9,6 +9,7 @@ import com.app.kidsdrawing.dto.GetScheduleResponse;
 
 public interface ScheduleService {
     ResponseEntity<Map<String, Object>> getAllSchedule();
+    ResponseEntity<Map<String, Object>> getAllScheduleBySemesterClassId(Long id);
     GetScheduleResponse getScheduleById(Long id);
     Long createSchedule(CreateScheduleRequest createScheduleRequest);
     Long removeScheduleById(Long id);

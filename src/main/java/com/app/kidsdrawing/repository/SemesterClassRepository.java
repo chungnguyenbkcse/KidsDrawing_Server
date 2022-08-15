@@ -11,5 +11,6 @@ import com.app.kidsdrawing.entity.SemesterClass;
 public interface SemesterClassRepository extends JpaRepository <SemesterClass, Long>{
     Page<SemesterClass> findAll(Pageable pageable);
     boolean existsById(Long id);
+    boolean existsByName(String name);
     void deleteById(Long id);
 }

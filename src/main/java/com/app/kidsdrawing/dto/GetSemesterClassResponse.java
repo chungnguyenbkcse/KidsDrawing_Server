@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetSemesterClassResponse {
     private Long id;
+    private String name;
     private Long creation_id;
+    private String semester_name;
     private Long course_id;
+    private String course_name;
     private Integer max_participant;
 }

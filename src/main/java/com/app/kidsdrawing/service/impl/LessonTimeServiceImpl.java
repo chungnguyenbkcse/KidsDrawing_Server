@@ -9,9 +9,6 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +29,10 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     private final LessonTimeRepository lessonTimeRepository;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllLessonTime(int page, int size) {
+    public ResponseEntity<Map<String, Object>> getAllLessonTime() {
         List<GetLessonTimeResponse> allLessonTimeResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<LessonTime> pageLessonTime = lessonTimeRepository.findAll(paging);
-        pageLessonTime.getContent().forEach(lesson_time -> {
+        List<LessonTime> pageLessonTime = lessonTimeRepository.findAll();
+        pageLessonTime.forEach(lesson_time -> {
             GetLessonTimeResponse lessonTimeResponse = GetLessonTimeResponse.builder()
                     .id(lesson_time.getId())
                     .start_time(lesson_time.getStart_time())
@@ -47,9 +43,6 @@ public class LessonTimeServiceImpl implements LessonTimeService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("lesson_times", allLessonTimeResponses);
-        response.put("currentPage", pageLessonTime.getNumber());
-        response.put("totalItems", pageLessonTime.getTotalElements());
-        response.put("totalPages", pageLessonTime.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -9,9 +9,6 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +18,7 @@ import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.exception.SemesterClassAlreadyCreateException;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
@@ -33,91 +31,95 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SemesterClassServiceImpl implements SemesterClassService {
 
-    private final SemesterClassRepository semesterCourseRepository;
+    private final SemesterClassRepository semesterClassRepository;
     private final SemesterRepository semesterRepository;
     private final CourseRepository courseRepository;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClass(int page, int size) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClass() {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<SemesterClass> pageSemesterClass = semesterCourseRepository.findAll(paging);
-        pageSemesterClass.getContent().forEach(semesterCourse -> {
-            GetSemesterClassResponse semesterCourseResponse = GetSemesterClassResponse.builder()
-                    .id(semesterCourse.getId())
-                    .creation_id(semesterCourse.getSemester().getId())
-                    .course_id(semesterCourse.getCourse().getId())
+        List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
+        pageSemesterClass.forEach(semesterClass -> {
+            GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(semesterClass.getId())
+                    .name(semesterClass.getName())
+                    .creation_id(semesterClass.getSemester().getId())
+                    .semester_name(semesterClass.getSemester().getName())
+                    .course_id(semesterClass.getCourse().getId())
+                    .course_name(semesterClass.getCourse().getName())
+                    .max_participant(semesterClass.getMax_participant())
                     .build();
-            allSemesterClassResponses.add(semesterCourseResponse);
+            allSemesterClassResponses.add(semesterClassResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("semester_courses", allSemesterClassResponses);
-        response.put("currentPage", pageSemesterClass.getNumber());
-        response.put("totalItems", pageSemesterClass.getTotalElements());
-        response.put("totalPages", pageSemesterClass.getTotalPages());
+        response.put("semester_classes", allSemesterClassResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
     public GetSemesterClassResponse getSemesterClassById(Long id){
-        Optional<SemesterClass> semesterCourseOpt = semesterCourseRepository.findById(id);
-        SemesterClass semesterCourse = semesterCourseOpt.orElseThrow(() -> {
+        Optional<SemesterClass> semesterClassOpt = semesterClassRepository.findById(id);
+        SemesterClass semesterClass = semesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
 
         return GetSemesterClassResponse.builder()
-                .id(semesterCourse.getId())
-                .creation_id(semesterCourse.getSemester().getId())
-                .course_id(semesterCourse.getCourse().getId())
-                .build();
+            .id(semesterClass.getId())
+            .name(semesterClass.getName())
+            .creation_id(semesterClass.getSemester().getId())
+            .semester_name(semesterClass.getSemester().getName())
+            .course_id(semesterClass.getCourse().getId())
+            .course_name(semesterClass.getCourse().getName())
+            .max_participant(semesterClass.getMax_participant())
+            .build();
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(Long id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<SemesterClass> pageSemesterClass = semesterCourseRepository.findAll(paging);
-        pageSemesterClass.getContent().forEach(semesterCourse -> {
-            if (semesterCourse.getSemester().getId() == id){
-                GetSemesterClassResponse semesterCourseResponse = GetSemesterClassResponse.builder()
-                    .id(semesterCourse.getId())
-                    .creation_id(semesterCourse.getSemester().getId())
-                    .course_id(semesterCourse.getCourse().getId())
+        List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
+        pageSemesterClass.forEach(semesterClass -> {
+            if (semesterClass.getSemester().getId() == id){
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(semesterClass.getId())
+                    .name(semesterClass.getName())
+                    .creation_id(semesterClass.getSemester().getId())
+                    .semester_name(semesterClass.getSemester().getName())
+                    .course_id(semesterClass.getCourse().getId())
+                    .course_name(semesterClass.getCourse().getName())
+                    .max_participant(semesterClass.getMax_participant())
                     .build();
-                allSemesterClassResponses.add(semesterCourseResponse);
+                allSemesterClassResponses.add(semesterClassResponse);
             }
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("semester_courses", allSemesterClassResponses);
-        response.put("currentPage", pageSemesterClass.getNumber());
-        response.put("totalItems", pageSemesterClass.getTotalElements());
-        response.put("totalPages", pageSemesterClass.getTotalPages());
+        response.put("semester_classes", allSemesterClassResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(int page, int size, Long id){
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(Long id){
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<SemesterClass> pageSemesterClass = semesterCourseRepository.findAll(paging);
-        pageSemesterClass.getContent().forEach(semesterCourse -> {
-            if (semesterCourse.getCourse().getId() == id){
-                GetSemesterClassResponse semesterCourseResponse = GetSemesterClassResponse.builder()
-                    .id(semesterCourse.getId())
-                    .creation_id(semesterCourse.getSemester().getId())
-                    .course_id(semesterCourse.getCourse().getId())
-                    .build();
-                allSemesterClassResponses.add(semesterCourseResponse);
+        List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
+        pageSemesterClass.forEach(semesterClass -> {
+            if (semesterClass.getCourse().getId() == id){
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(semesterClass.getId())
+                    .name(semesterClass.getName())
+                    .creation_id(semesterClass.getSemester().getId())
+                    .semester_name(semesterClass.getSemester().getName())
+                    .course_id(semesterClass.getCourse().getId())
+                    .course_name(semesterClass.getCourse().getName())
+                    .max_participant(semesterClass.getMax_participant())
+                .build();
+                allSemesterClassResponses.add(semesterClassResponse);
             }
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("semester_courses", allSemesterClassResponses);
-        response.put("currentPage", pageSemesterClass.getNumber());
-        response.put("totalItems", pageSemesterClass.getTotalElements());
-        response.put("totalPages", pageSemesterClass.getTotalPages());
+        response.put("semester_classes", allSemesterClassResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -133,30 +135,35 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
+        if (semesterClassRepository.existsByName(createSemesterClassRequest.getName())) {
+            throw new SemesterClassAlreadyCreateException("exception.semester_name.semester_class_taken");
+        }
+
         SemesterClass savedSemesterClass = SemesterClass.builder()
                 .semester(semester)
                 .course(course)
+                .name(createSemesterClassRequest.getName())
                 .max_participant(createSemesterClassRequest.getMax_participant())
                 .build();
-        semesterCourseRepository.save(savedSemesterClass);
+        semesterClassRepository.save(savedSemesterClass);
 
         return savedSemesterClass.getId();
     }
 
     @Override
     public Long removeSemesterClassById(Long id) {
-        Optional<SemesterClass> SemesterClassOpt = semesterCourseRepository.findById(id);
+        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
         SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
 
-        semesterCourseRepository.deleteById(id);
+        semesterClassRepository.deleteById(id);
         return id;
     }
 
     @Override
     public Long updateSemesterClassById(Long id, CreateSemesterClassRequest createSemesterClassRequest) {
-        Optional<SemesterClass> SemesterClassOpt = semesterCourseRepository.findById(id);
+        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
         SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
@@ -171,10 +178,17 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
+        if (createSemesterClassRequest.getName().equals(updatedSemesterClass.getName()) == false){
+            if (semesterClassRepository.existsByName(createSemesterClassRequest.getName())) {
+                throw new SemesterClassAlreadyCreateException("exception.semester_name.semester_class_taken");
+            }
+        }
+
         updatedSemesterClass.setSemester(semester);
         updatedSemesterClass.setCourse(course);
         updatedSemesterClass.setMax_participant(createSemesterClassRequest.getMax_participant());
-        semesterCourseRepository.save(updatedSemesterClass);
+        updatedSemesterClass.setName(createSemesterClassRequest.getName());
+        semesterClassRepository.save(updatedSemesterClass);
 
         return updatedSemesterClass.getId();
     }

@@ -141,9 +141,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-10",
+    "username": "student-9",
     "password": "12345678aA@",
-    "email": "student-10@gmail.com",
+    "email": "student-9@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -151,7 +151,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 17,
+    "parent_id": 16,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -565,7 +565,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 28,
+    "teacher_id": 5,
     "course_id": 1,
     "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
     "status": "Approved"
@@ -634,8 +634,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 5,
-    "semester_class_id": 2
+    "teacher_id": 4,
+    "semester_class_id": 1
 }
 
 
@@ -708,7 +708,7 @@ Content-Type: application/json
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/semester
+PUT {{rest}}/semester/1
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
@@ -717,6 +717,7 @@ Content-Type: application/json
     "description": "",
     "number": 1,
     "start_time": "2022-01-01T00:00:11.332",
+    "end_time": "2022-05-30T00:00:11.332",
     "year": 2022,
     "creator_id": 1
 }
@@ -911,9 +912,9 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "lesson_time": 4,
-    "semester_class_id": 2,
-    "date_of_week": 5
+    "lesson_time": 3,
+    "semester_class_id": 1,
+    "date_of_week": 6
 }
 
 ###
@@ -963,7 +964,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student",
+    "username": "admin",
     "password": "12345678aA@"
 }
 

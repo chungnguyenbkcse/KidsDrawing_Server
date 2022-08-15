@@ -48,4 +48,4 @@ GET {{rest}}/semester-class/15
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/semester-class?page=0&size=2
+GET {{rest}}/semester-class

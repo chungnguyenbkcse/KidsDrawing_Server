@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -48,23 +47,20 @@ public class SemesterClassController {
     
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemester(@RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClass(page, size));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemester() {
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClass());
     }
 
     @CrossOrigin
     @GetMapping(value = "/semester/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemesterBySemester(@RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size, @PathVariable Long id) {
-        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassBySemester(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemesterBySemester(@PathVariable Long id) {
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassBySemester(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/course/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemesterByCourse(@RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size, @PathVariable Long id) {
-        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassByCourse(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemesterByCourse(@PathVariable Long id) {
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassByCourse(id));
     }
 
     @CrossOrigin

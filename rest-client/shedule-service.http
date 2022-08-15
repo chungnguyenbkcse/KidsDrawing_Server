@@ -41,7 +41,7 @@ DELETE  {{rest}}/lesson-time/1
 ### GET ART TYPE ACTION ###
 # @name get_art_type
 
-GET {{rest}}/schedule/1
+GET {{rest}}/schedule/semester-class/1
 
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type

@@ -19,6 +19,7 @@ public class GetSemesterResponse {
     private Integer number;
     private Integer year;
     private LocalDateTime start_time;
+    private LocalDateTime end_time;
     private Long creator_id;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
