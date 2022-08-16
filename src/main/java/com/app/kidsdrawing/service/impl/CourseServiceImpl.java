@@ -193,7 +193,7 @@ public class CourseServiceImpl implements CourseService {
         LocalDateTime time_now = LocalDateTime.now();
         List<SemesterClass> pageSemesterClass = semesterCourseRepository.findAll();
         pageSemesterClass.forEach(ele -> {
-            if (allRegisteredSemesterClassResponses.contains(ele) == false && time_now.isAfter(ele.getSemester().getStart_time()) == false ){
+            if (allRegisteredSemesterClassResponses.size() == 0 || (allRegisteredSemesterClassResponses.contains(ele) == false && time_now.isAfter(ele.getSemester().getStart_time()) == false) ){
                 allNotRegisterSemesterClass.add(ele);
             }
         });
