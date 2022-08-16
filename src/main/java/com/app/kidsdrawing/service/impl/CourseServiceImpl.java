@@ -181,6 +181,7 @@ public class CourseServiceImpl implements CourseService {
         List<UserRegisterTeachSemester> allTeacherTeachSemesterResponses = new ArrayList<>();
         // Danh sach khoa hoc theo ki giao vien da dang ki
         List<SemesterClass> allRegisteredSemesterClassResponses = new ArrayList<>();
+
         listTeacherTeachSemester.forEach(ele -> {
             if (ele.getTeacher().getId() == id){
                 allTeacherTeachSemesterResponses.add(ele);
