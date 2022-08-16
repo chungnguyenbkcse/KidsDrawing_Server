@@ -15,6 +15,7 @@ public class GetCourseTeacherResponse {
     private Long course_id;
     private Long semster_course_id;
     private String name;
+    private String course_name;
     private String description;
     private Integer max_participant;
     private Integer num_of_section;

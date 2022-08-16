@@ -539,7 +539,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "admin",
+    "username": "teacher-2",
     "password": "12345678aA@"
 }
 
@@ -634,8 +634,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 4,
-    "semester_class_id": 1
+    "teacher_id": 6,
+    "semester_class_id": 2
 }
 
 
@@ -647,7 +647,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 29,
+    "student_id": 30,
     "semester_course_id": 2,
     "payer_id": 16,
     "price": 2000000
