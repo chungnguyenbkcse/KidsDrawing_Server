@@ -124,7 +124,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public Long createSemesterClass(CreateSemesterClassRequest createSemesterClassRequest) {
+    public GetSemesterClassResponse  createSemesterClass(CreateSemesterClassRequest createSemesterClassRequest) {
         Optional<Semester> semesterOpt = semesterRepository.findById(createSemesterClassRequest.getCreation_id());
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester.not_found");
@@ -147,7 +147,17 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 .build();
         semesterClassRepository.save(savedSemesterClass);
 
-        return savedSemesterClass.getId();
+        GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+            .id(savedSemesterClass.getId())
+            .name(savedSemesterClass.getName())
+            .creation_id(savedSemesterClass.getSemester().getId())
+            .semester_name(savedSemesterClass.getSemester().getName())
+            .course_id(savedSemesterClass.getCourse().getId())
+            .course_name(savedSemesterClass.getCourse().getName())
+            .max_participant(savedSemesterClass.getMax_participant())
+        .build();
+
+        return semesterClassResponse;
     }
 
     @Override

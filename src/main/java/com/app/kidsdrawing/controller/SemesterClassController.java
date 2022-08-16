@@ -29,11 +29,8 @@ public class SemesterClassController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createSemesterClass(@RequestBody CreateSemesterClassRequest createSemesterClassRequest) {
-        Long semesterCourseId = semesterCourseService.createSemesterClass(createSemesterClassRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{semesterCourseId}")
-                .buildAndExpand(semesterCourseId).toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<GetSemesterClassResponse> createSemesterClass(@RequestBody CreateSemesterClassRequest createSemesterClassRequest) {
+        return ResponseEntity.ok().body(semesterCourseService.createSemesterClass(createSemesterClassRequest));
     }
 
     @CrossOrigin

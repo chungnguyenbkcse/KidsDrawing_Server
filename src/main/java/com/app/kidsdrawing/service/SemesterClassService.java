@@ -12,7 +12,7 @@ public interface SemesterClassService {
     ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(Long id);
     ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(Long id);
     GetSemesterClassResponse getSemesterClassById(Long id);
-    Long createSemesterClass(CreateSemesterClassRequest createSemesterClassRequest);
+    GetSemesterClassResponse  createSemesterClass(CreateSemesterClassRequest createSemesterClassRequest);
     Long removeSemesterClassById(Long id);
     Long updateSemesterClassById(Long id, CreateSemesterClassRequest createSemesterClassRequest);
 }
