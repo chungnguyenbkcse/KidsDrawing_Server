@@ -3,12 +3,12 @@
 ### CREATE LESSON TIME ACTION ###
 # @name create_lesson_time
 
-POST {{rest}}/notificatin
+POST {{rest}}/notification
 Content-Type: application/json
 
 {
-    "fcmToken": "cVVucbNk5Q6nRZ_LATNbJX:APA91bFtWGDLJm2ZjIeBc7RAvfjB9vJaOAIVdOKxLJmZWM8DuMF6FYR9s41_cQt-V-w4y7ENO9cEeA31CixtJP5x7YkE-7dZJ3E9Br2KZXEuX6P2i9XhFLQ-98hTWDUuxPAyCsrP2s-P",
+    "fcmToken": "cVVucbNk5Q6nRZ_LATNbJX:APA91bGlhak8RCEtSQjKs-HJXQcvlyk7v_fB_zLivO8Os4noms1nZyBK5RckHE47qI_04avsCRnajhSTCkbtxxi6Qy3B7T4vMZ0hOOuv4mHumoZcMpmupMHTEjLPChN7logfzmUEe9Wd",
     "title": "Nghỉ học",
-    "body": "hello"
+    "body": "xxxx"
 }
 
