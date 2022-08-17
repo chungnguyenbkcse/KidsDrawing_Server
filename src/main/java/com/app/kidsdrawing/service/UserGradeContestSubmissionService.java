@@ -10,7 +10,7 @@ import com.app.kidsdrawing.dto.GetUserGradeContestSubmissionResponse;
 public interface UserGradeContestSubmissionService {
     ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmission();
     ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByStudentId(Long id);
-    ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestSubmissionId(Long id);
+    ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestId(Long id);
     GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(Long id);
     Long createUserGradeContestSubmission(CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest);
     Long removeUserGradeContestSubmissionById(Long id);

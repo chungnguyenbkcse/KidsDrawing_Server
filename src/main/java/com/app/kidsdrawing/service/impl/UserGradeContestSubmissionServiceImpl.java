@@ -78,11 +78,18 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestSubmissionId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestId(Long id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
+        List<ContestSubmission> allContestSubmissionResponses = new ArrayList<>();
+        List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findAll();
+        listContestSubmission.forEach(content -> {
+            if (content.getContest().getId() == id){
+                allContestSubmissionResponses.add(content);
+            }
+        });
         listUserGradeContestSubmission.forEach(content -> {
-            if (content.getContestSubmission().getId() == id){
+            if (allContestSubmissionResponses.contains(content.getContestSubmission())){
                 GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
                     .student_id(content.getStudent().getId())
                     .contest_submission_id(content.getContestSubmission().getId())

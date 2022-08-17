@@ -40,9 +40,9 @@ public class UserGradeContestSubmissionController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/contest-submission/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByContestSubmissionId(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userGradeContestSubmissionService.getAllUserGradeContestSubmissionByContestSubmissionId(id));
+    @GetMapping(value = "/contest/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByContestId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userGradeContestSubmissionService.getAllUserGradeContestSubmissionByContestId(id));
     }
 
     @CrossOrigin
