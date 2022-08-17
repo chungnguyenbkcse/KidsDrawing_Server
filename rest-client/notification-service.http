@@ -1,0 +1,14 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/notificatin
+Content-Type: application/json
+
+{
+    "fcmToken": "cVVucbNk5Q6nRZ_LATNbJX:APA91bFtWGDLJm2ZjIeBc7RAvfjB9vJaOAIVdOKxLJmZWM8DuMF6FYR9s41_cQt-V-w4y7ENO9cEeA31CixtJP5x7YkE-7dZJ3E9Br2KZXEuX6P2i9XhFLQ-98hTWDUuxPAyCsrP2s-P",
+    "title": "Nghỉ học",
+    "body": "hello"
+}
+

@@ -20,3 +20,4 @@ spring:
         "[globally_quoted_identifiers]": true
         dialect: org.hibernate.dialect.PostgreSQL81Dialect
 jwt_secret: 8d0430fbb7e52620bca66c47cb80c1a9b844e629195010f4c27643528ea021838812c9f6669f979fe7431ea210014737ca08a05e568d82eefecaab5624d163b9
+app.firebase-configuration-file: messaging-fcm-bc512-firebase-adminsdk-p231d-c6cb2a0c93.json
