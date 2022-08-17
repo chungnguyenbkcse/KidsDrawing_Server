@@ -152,4 +152,6 @@ public class User{
     @OneToOne(mappedBy = "user")
     private SectionTemplate sectionTemplates;
 
+    @OneToOne(mappedBy="user")
+    private UserReadNotification userReadNotification;
 }

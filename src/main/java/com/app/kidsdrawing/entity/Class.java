@@ -79,4 +79,7 @@ public class Class {
 
     @OneToMany(mappedBy="class1")
     private Set<StudentLeave> studentLeaves;
+
+    @OneToOne(mappedBy="classes")
+    private ClassNotification classNotification;
 }
