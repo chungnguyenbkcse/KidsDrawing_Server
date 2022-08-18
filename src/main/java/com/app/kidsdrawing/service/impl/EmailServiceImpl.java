@@ -158,7 +158,7 @@ public class EmailServiceImpl implements EmailService {
                 role_name.add(ele.getName());
             });
 
-            if (role_name.contains("USER_TEACHER")){
+            if (role_name.contains("TEACHER_USER")){
                 EmailDetails email = new EmailDetails();
                 email.setRecipient(user.getEmail());
                 email.setSubject(details.getSubject());
@@ -178,7 +178,7 @@ public class EmailServiceImpl implements EmailService {
                 role_name.add(ele.getName());
             });
 
-            if (role_name.contains("USER_PARENT") || role_name.contains("USER_STUDENT")){
+            if (role_name.contains("PARENT_USER") || role_name.contains("STUDENT_USER")){
                 EmailDetails email = new EmailDetails();
                 email.setRecipient(user.getEmail());
                 email.setSubject(details.getSubject());
