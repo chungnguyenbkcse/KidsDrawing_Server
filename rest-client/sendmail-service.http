@@ -1,0 +1,13 @@
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/sendEmail
+Content-Type: application/json
+
+{
+    "recipient": "chungnguyen10012000@gmail.com",
+    "msgBody": "Xin chào bạn!",
+    "subject": "Thông báo 1"
+}

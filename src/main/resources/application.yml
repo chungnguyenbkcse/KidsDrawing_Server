@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: "jdbc:postgres://oxrvvgvhcfvfmc:6274f9d08c7261d680dd09714b3e39852d4550b5587ae641e56a52843753d399@ec2-54-165-184-219.compute-1.amazonaws.com:5432/db5moqnus8h5l8"
-    username: oxrvvgvhcfvfmc
-    password: 6274f9d08c7261d680dd09714b3e39852d4550b5587ae641e56a52843753d399
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: postgres
+    password: changeme
   http:
     multipart:
       max-file-size: 10MB
@@ -12,12 +12,23 @@ spring:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         "[format_sql]": true
         "[globally_quoted_identifiers]": true
         dialect: org.hibernate.dialect.PostgreSQL81Dialect
+  mail: 
+    host: smtp.gmail.com
+    port: 587
+    username: kidsdrawing.company@gmail.com
+    password: wtvjqavetpafomcb
+    properties:
+      mail: 
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 jwt_secret: 8d0430fbb7e52620bca66c47cb80c1a9b844e629195010f4c27643528ea021838812c9f6669f979fe7431ea210014737ca08a05e568d82eefecaab5624d163b9
 app.firebase-configuration-file: messaging-fcm-bc512-firebase-adminsdk-p231d-c6cb2a0c93.json
