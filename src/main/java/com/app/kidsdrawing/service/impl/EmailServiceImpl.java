@@ -1,6 +1,9 @@
 package com.app.kidsdrawing.service.impl;
 
 import java.io.File;
+import java.util.List;
+import java.util.Optional;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.app.kidsdrawing.dto.CreateEmailDetailRequest;
 import com.app.kidsdrawing.entity.EmailDetails;
+import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.entity.Class;
+import com.app.kidsdrawing.repository.ClassRepository;
+import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.EmailService;
  
 // Annotation
@@ -21,6 +30,8 @@ import com.app.kidsdrawing.service.EmailService;
 public class EmailServiceImpl implements EmailService {
  
     @Autowired private JavaMailSender javaMailSender;
+    @Autowired private UserRepository userRepository;
+    @Autowired private ClassRepository classRepository;
  
     @Value("${spring.mail.username}") private String sender;
  
@@ -52,6 +63,70 @@ public class EmailServiceImpl implements EmailService {
         catch (Exception e) {
             return "Error while Sending Mail";
         }
+    }
+
+    public String sendMailByAdmin(CreateEmailDetailRequest details){
+        // Creating a mime message
+        List<User> allUser = userRepository.findAll();
+
+        allUser.forEach(ele -> {
+            EmailDetails email = new EmailDetails();
+            email.setRecipient(ele.getEmail());
+            email.setSubject(details.getSubject());
+            email.setMsgBody(details.getMsgBody());
+            sendSimpleMail(email);
+        });
+ 
+        return "Mail Sent Successfully...";
+    }
+
+    public String sendMailWithAttachmentByAdmin(CreateEmailDetailRequest details){
+        // Creating a mime message
+        List<User> allUser = userRepository.findAll();
+
+        allUser.forEach(ele -> {
+            EmailDetails email = new EmailDetails();
+            email.setRecipient(ele.getEmail());
+            email.setSubject(details.getSubject());
+            email.setMsgBody(details.getMsgBody());
+            email.setAttachment(details.getAttachment());
+            sendMailWithAttachment(email);
+        });
+ 
+        return "Mail Sent Successfully...";
+    }
+
+    public String sendMailByClass(CreateEmailDetailRequest details, Long id) {
+        Optional<Class> classOpt = classRepository.findById(id);
+        Class classes = classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Class.not_found");
+        });
+
+        classes.getUserRegisterJoinSemesters().forEach(ele -> {
+            EmailDetails email = new EmailDetails();
+            email.setRecipient(ele.getStudent().getEmail());
+            email.setSubject(details.getSubject());
+            email.setMsgBody(details.getMsgBody());
+            sendSimpleMail(email);
+        });
+        return "Mail Sent Successfully...";
+    }
+
+    public String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, Long id) {
+        Optional<Class> classOpt = classRepository.findById(id);
+        Class classes = classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Class.not_found");
+        });
+
+        classes.getUserRegisterJoinSemesters().forEach(ele -> {
+            EmailDetails email = new EmailDetails();
+            email.setRecipient(ele.getStudent().getEmail());
+            email.setSubject(details.getSubject());
+            email.setMsgBody(details.getMsgBody());
+            email.setAttachment(details.getAttachment());
+            sendSimpleMail(email);
+        });
+        return "Mail Sent Successfully...";
     }
  
     // Method 2
