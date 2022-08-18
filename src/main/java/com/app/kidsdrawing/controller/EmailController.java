@@ -63,7 +63,7 @@ public class EmailController {
         return status;
     }
 
-    @PostMapping(value = "/class/{id}")
+    @PostMapping(value = "/class/attachment/{id}")
     public String
     sendMailWithAttachmentByClass(@PathVariable Long id, @RequestBody CreateEmailDetailRequest details)
     {

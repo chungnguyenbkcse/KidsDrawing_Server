@@ -3,11 +3,12 @@
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/sendEmail
+POST {{rest}}/sendEmail/sendMailWithAttachment
 Content-Type: application/json
 
 {
     "recipient": "chungnguyen10012000@gmail.com",
-    "msgBody": "Xin chào bạn!",
-    "subject": "Thông báo 1"
+    "msgBody": "Chào mừng bạn đến với KidsDrawing!",
+    "subject": "Tài khoản KidsDrawing",
+    "attachment": "https://kids-drawing-type-script.vercel.app/auth"
 }
