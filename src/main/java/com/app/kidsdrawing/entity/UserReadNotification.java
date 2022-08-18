@@ -35,6 +35,6 @@ public class UserReadNotification {
     @JoinColumn(name = "notification_id")
     Notification notification;
 
-    @Column(name = "feedback")
+    @Column(name = "is_read")
     private Boolean is_read;
 }

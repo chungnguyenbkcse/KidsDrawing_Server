@@ -6,4 +6,5 @@ import lombok.Data;
 public class CreateNotificationRequest {
     private String name;
     private String description;
+    private Long class_id;
 }

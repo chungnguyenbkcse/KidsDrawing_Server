@@ -14,10 +14,13 @@ public interface EmailService {
     // Admin send mail for user
     String sendMailByAdmin(CreateEmailDetailRequest details);
     String sendMailWithAttachmentByAdmin(CreateEmailDetailRequest details);
+    String sendMailToTeacher(CreateEmailDetailRequest details);
+    String sendMailToStudent(CreateEmailDetailRequest details);
 
     // Teacher send mail for student
     String sendMailByClass(CreateEmailDetailRequest details, Long id);
     String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, Long id);
+
     // Method
     // To send an email with attachment
     String sendMailWithAttachment(EmailDetails details);

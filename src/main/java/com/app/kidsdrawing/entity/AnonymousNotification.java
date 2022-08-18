@@ -2,11 +2,10 @@ package com.app.kidsdrawing.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,10 +24,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "anonymous_notification")
 public class AnonymousNotification {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+
+    @EmbeddedId
+    AnonymousNotificationKey id;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId("nontificationId")
+    @JoinColumn(name = "notification_id")
+    Notification notification;
 
     @Column(name = "user_full_name")
     private String user_full_name;
@@ -38,8 +41,4 @@ public class AnonymousNotification {
 
     @Column(name = "phone")
     private String phone;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "notification_id", referencedColumnName = "id")
-    private Notification notification;
 }

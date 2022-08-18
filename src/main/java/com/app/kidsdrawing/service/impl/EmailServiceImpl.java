@@ -1,8 +1,10 @@
 package com.app.kidsdrawing.service.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateEmailDetailRequest;
 import com.app.kidsdrawing.entity.EmailDetails;
+import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.entity.Class;
@@ -109,6 +112,14 @@ public class EmailServiceImpl implements EmailService {
             email.setMsgBody(details.getMsgBody());
             sendSimpleMail(email);
         });
+
+        classes.getUserRegisterJoinSemesters().forEach(ele -> {
+            EmailDetails email = new EmailDetails();
+            email.setRecipient(ele.getStudent().getParent().getEmail());
+            email.setSubject(details.getSubject());
+            email.setMsgBody(details.getMsgBody());
+            sendSimpleMail(email);
+        });
         return "Mail Sent Successfully...";
     }
 
@@ -126,7 +137,56 @@ public class EmailServiceImpl implements EmailService {
             email.setAttachment(details.getAttachment());
             sendSimpleMail(email);
         });
+
+        classes.getUserRegisterJoinSemesters().forEach(ele -> {
+            EmailDetails email = new EmailDetails();
+            email.setRecipient(ele.getStudent().getParent().getEmail());
+            email.setSubject(details.getSubject());
+            email.setMsgBody(details.getMsgBody());
+            email.setAttachment(details.getAttachment());
+            sendSimpleMail(email);
+        });
         return "Mail Sent Successfully...";
+    }
+
+    public String sendMailToTeacher(CreateEmailDetailRequest details) {
+        List<User> allUser = userRepository.findAll();
+        allUser.forEach(user -> {           
+            List<String> role_name = new ArrayList<>();
+            Set<Role> role = user.getRoles();
+            role.forEach(ele -> {
+                role_name.add(ele.getName());
+            });
+
+            if (role_name.contains("USER_TEACHER")){
+                EmailDetails email = new EmailDetails();
+                email.setRecipient(user.getEmail());
+                email.setSubject(details.getSubject());
+                email.setMsgBody(details.getMsgBody());
+                sendSimpleMail(email);
+            }
+        });
+        return "Mail sent Successfully"; 
+    }
+
+    public String sendMailToStudent(CreateEmailDetailRequest details) {
+        List<User> allUser = userRepository.findAll();
+        allUser.forEach(user -> {           
+            List<String> role_name = new ArrayList<>();
+            Set<Role> role = user.getRoles();
+            role.forEach(ele -> {
+                role_name.add(ele.getName());
+            });
+
+            if (role_name.contains("USER_PARENT") || role_name.contains("USER_STUDENT")){
+                EmailDetails email = new EmailDetails();
+                email.setRecipient(user.getEmail());
+                email.setSubject(details.getSubject());
+                email.setMsgBody(details.getMsgBody());
+                sendSimpleMail(email);
+            }
+        });
+        return "Mail sent Successfully"; 
     }
  
     // Method 2

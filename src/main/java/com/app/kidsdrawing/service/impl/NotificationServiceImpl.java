@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateNotificationRequest;
 import com.app.kidsdrawing.dto.GetNotificationResponse;
 import com.app.kidsdrawing.entity.Notification;
+import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.repository.ClassRepository;
 import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.service.NotificationService;
 
@@ -27,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final ClassRepository classRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllNotification() {
@@ -65,13 +68,28 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Long createNotification(CreateNotificationRequest createNotificationRequest) {
 
-        Notification savedNotification = Notification.builder()
+        Optional<Class> classOpt = classRepository.findById(createNotificationRequest.getClass_id());
+        Class classes = classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Class.not_found");
+        });
+
+        if (createNotificationRequest.getClass_id() == 0) {
+            Notification savedNotification = Notification.builder()
+                .name(createNotificationRequest.getName())
+                .description(createNotificationRequest.getDescription())
+                .classes(classes)
+                .build();
+            notificationRepository.save(savedNotification);
+            return savedNotification.getId();
+        }
+        else {
+            Notification savedNotification = Notification.builder()
                 .name(createNotificationRequest.getName())
                 .description(createNotificationRequest.getDescription())
                 .build();
-        notificationRepository.save(savedNotification);
-
-        return savedNotification.getId();
+            notificationRepository.save(savedNotification);
+            return savedNotification.getId();
+        }
     }
 
     @Override
