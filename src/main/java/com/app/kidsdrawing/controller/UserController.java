@@ -6,6 +6,7 @@ import java.util.Map;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
+import com.app.kidsdrawing.dto.CreateUserStatusRequest;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import com.app.kidsdrawing.service.UserService;
 
@@ -78,6 +79,15 @@ public class UserController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateUserInfoById(@PathVariable Long id, @RequestBody CreateUserRequest createUserRequest) {
         Long userId = userService.updateUser(id, createUserRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(userId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @PutMapping(value = "/status/{id}")
+    public ResponseEntity<String> updateUserStatus(@PathVariable Long id, @RequestBody CreateUserStatusRequest createUserStatusRequest) {
+        Long userId = userService.updateUserStatus(id, createUserStatusRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();

@@ -69,6 +69,9 @@ public class User{
     @Column(name = "address")
     private String address;
 
+    @Column(name = "status")
+    private String status;
+
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp

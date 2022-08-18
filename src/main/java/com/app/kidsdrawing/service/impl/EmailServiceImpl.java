@@ -111,14 +111,12 @@ public class EmailServiceImpl implements EmailService {
             email.setSubject(details.getSubject());
             email.setMsgBody(details.getMsgBody());
             sendSimpleMail(email);
-        });
 
-        classes.getUserRegisterJoinSemesters().forEach(ele -> {
-            EmailDetails email = new EmailDetails();
-            email.setRecipient(ele.getStudent().getParent().getEmail());
-            email.setSubject(details.getSubject());
-            email.setMsgBody(details.getMsgBody());
-            sendSimpleMail(email);
+            EmailDetails email_1 = new EmailDetails();
+            email_1.setRecipient(ele.getStudent().getParent().getEmail());
+            email_1.setSubject(details.getSubject());
+            email_1.setMsgBody(details.getMsgBody());
+            sendSimpleMail(email_1);
         });
         return "Mail Sent Successfully...";
     }
@@ -136,15 +134,13 @@ public class EmailServiceImpl implements EmailService {
             email.setMsgBody(details.getMsgBody());
             email.setAttachment(details.getAttachment());
             sendSimpleMail(email);
-        });
 
-        classes.getUserRegisterJoinSemesters().forEach(ele -> {
-            EmailDetails email = new EmailDetails();
-            email.setRecipient(ele.getStudent().getParent().getEmail());
-            email.setSubject(details.getSubject());
-            email.setMsgBody(details.getMsgBody());
-            email.setAttachment(details.getAttachment());
-            sendSimpleMail(email);
+            EmailDetails email_1 = new EmailDetails();
+            email_1.setRecipient(ele.getStudent().getParent().getEmail());
+            email_1.setSubject(details.getSubject());
+            email_1.setMsgBody(details.getMsgBody());
+            email_1.setAttachment(details.getAttachment());
+            sendSimpleMail(email_1);
         });
         return "Mail Sent Successfully...";
     }

@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
+import com.app.kidsdrawing.dto.CreateUserStatusRequest;
 import com.app.kidsdrawing.dto.GetStudentResponse;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetTeacherResponse;
@@ -83,6 +84,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Map<String, Object> response = new HashMap<>();
         response.put("students", allUserResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public Long updateUserStatus(Long id, CreateUserStatusRequest createUserStatusRequest) {
+        Optional<User> userOpt = userRepository.findById(id);
+        User user = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
+        });
+
+        user.setStatus(createUserStatusRequest.getStatus());
+        userRepository.save(user);
+        return user.getId();
     }
 
     @Override
