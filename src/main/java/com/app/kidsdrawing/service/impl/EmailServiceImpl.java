@@ -169,6 +169,27 @@ public class EmailServiceImpl implements EmailService {
         return "Mail sent Successfully"; 
     }
 
+    public String sendMailAttachmentToTeacher(CreateEmailDetailRequest details) {
+        List<User> allUser = userRepository.findAll();
+        allUser.forEach(user -> {           
+            List<String> role_name = new ArrayList<>();
+            Set<Role> role = user.getRoles();
+            role.forEach(ele -> {
+                role_name.add(ele.getName());
+            });
+
+            if (role_name.contains("TEACHER_USER")){
+                EmailDetails email = new EmailDetails();
+                email.setRecipient(user.getEmail());
+                email.setSubject(details.getSubject());
+                email.setMsgBody(details.getMsgBody());
+                email.setAttachment(details.getAttachment());
+                sendSimpleMail(email);
+            }
+        });
+        return "Mail sent Successfully"; 
+    }
+
     public String sendMailToStudent(CreateEmailDetailRequest details) {
         List<User> allUser = userRepository.findAll();
         allUser.forEach(user -> {           
@@ -183,6 +204,27 @@ public class EmailServiceImpl implements EmailService {
                 email.setRecipient(user.getEmail());
                 email.setSubject(details.getSubject());
                 email.setMsgBody(details.getMsgBody());
+                sendSimpleMail(email);
+            }
+        });
+        return "Mail sent Successfully"; 
+    }
+
+    public String sendMailAttachmentToStudent(CreateEmailDetailRequest details) {
+        List<User> allUser = userRepository.findAll();
+        allUser.forEach(user -> {           
+            List<String> role_name = new ArrayList<>();
+            Set<Role> role = user.getRoles();
+            role.forEach(ele -> {
+                role_name.add(ele.getName());
+            });
+
+            if (role_name.contains("PARENT_USER") || role_name.contains("STUDENT_USER")){
+                EmailDetails email = new EmailDetails();
+                email.setRecipient(user.getEmail());
+                email.setSubject(details.getSubject());
+                email.setMsgBody(details.getMsgBody());
+                email.setAttachment(details.getAttachment());
                 sendSimpleMail(email);
             }
         });

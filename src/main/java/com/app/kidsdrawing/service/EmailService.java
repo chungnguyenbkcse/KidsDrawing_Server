@@ -16,6 +16,8 @@ public interface EmailService {
     String sendMailWithAttachmentByAdmin(CreateEmailDetailRequest details);
     String sendMailToTeacher(CreateEmailDetailRequest details);
     String sendMailToStudent(CreateEmailDetailRequest details);
+    String sendMailAttachmentToTeacher(CreateEmailDetailRequest details);
+    String sendMailAttachmentToStudent(CreateEmailDetailRequest details);
 
     // Teacher send mail for student
     String sendMailByClass(CreateEmailDetailRequest details, Long id);

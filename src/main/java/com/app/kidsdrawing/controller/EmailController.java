@@ -63,6 +63,51 @@ public class EmailController {
         return status;
     }
 
+
+    @PostMapping(value = "/teacher")
+    public String
+    sendMailToTeacher(@RequestBody CreateEmailDetailRequest details)
+    {
+        
+        String status
+            = emailService.sendMailToTeacher(details);
+ 
+        return status;
+    }
+
+    @PostMapping(value = "/teacher/attachment")
+    public String
+    sendMailAttachmentToTeacher(@RequestBody CreateEmailDetailRequest details)
+    {
+        
+        String status
+            = emailService.sendMailAttachmentToTeacher(details);
+ 
+        return status;
+    }
+
+    @PostMapping(value = "/student")
+    public String
+    sendMailToStudent(@RequestBody CreateEmailDetailRequest details)
+    {
+        
+        String status
+            = emailService.sendMailToStudent(details);
+ 
+        return status;
+    }
+
+    @PostMapping(value = "/student/attachment")
+    public String
+    sendMailAttachmentToStudent(@RequestBody CreateEmailDetailRequest details)
+    {
+        
+        String status
+            = emailService.sendMailAttachmentToStudent(details);
+ 
+        return status;
+    }
+
     @PostMapping(value = "/class/attachment/{id}")
     public String
     sendMailWithAttachmentByClass(@PathVariable Long id, @RequestBody CreateEmailDetailRequest details)
