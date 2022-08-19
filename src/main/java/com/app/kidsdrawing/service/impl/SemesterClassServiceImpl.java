@@ -147,7 +147,6 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 .semester(semester)
                 .course(course)
                 .name(createSemesterClassRequest.getName())
-                .max_participant(createSemesterClassRequest.getMax_participant())
                 .registration_time(createSemesterClassRequest.getRegistration_time())
                 .build();
         semesterClassRepository.save(savedSemesterClass);
@@ -202,7 +201,6 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
         updatedSemesterClass.setSemester(semester);
         updatedSemesterClass.setCourse(course);
-        updatedSemesterClass.setMax_participant(createSemesterClassRequest.getMax_participant());
         updatedSemesterClass.setName(createSemesterClassRequest.getName());
         updatedSemesterClass.setRegistration_time(createSemesterClassRequest.getRegistration_time());
         semesterClassRepository.save(updatedSemesterClass);
