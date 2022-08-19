@@ -245,6 +245,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .status(user.getStatus())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .dateOfBirth(user.getDateOfBirth())
