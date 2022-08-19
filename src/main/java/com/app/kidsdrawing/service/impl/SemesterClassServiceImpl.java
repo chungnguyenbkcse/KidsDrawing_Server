@@ -17,11 +17,13 @@ import com.app.kidsdrawing.dto.GetSemesterClassResponse;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
+import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.exception.SemesterClassAlreadyCreateException;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
+import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
 import com.app.kidsdrawing.service.SemesterClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private final SemesterClassRepository semesterClassRepository;
     private final SemesterRepository semesterRepository;
     private final CourseRepository courseRepository;
+    private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClass() {
@@ -206,5 +209,25 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         semesterClassRepository.save(updatedSemesterClass);
 
         return updatedSemesterClass.getId();
+    }
+
+    @Override
+    public String updateSemesterClassMaxParticipantById(Long id) {
+        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
+        SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.SemesterClass.not_found");
+        });
+
+        List<UserRegisterTeachSemester> pageUserRegisterTeachSemesters = teacherTeachSemesterRepository.findAll();
+        List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = new ArrayList<>();
+        pageUserRegisterTeachSemesters.forEach(user_register_teach_semester -> {
+            if (user_register_teach_semester.getSemesterClass().getId() == id){
+                allUserRegisterTeachSemesters.add(user_register_teach_semester);
+            }
+        });
+        
+        updatedSemesterClass.setMax_participant(allUserRegisterTeachSemesters.size()*6 + 4);
+        semesterClassRepository.save(updatedSemesterClass);
+        return "Max participant successfull!";
     }
 }

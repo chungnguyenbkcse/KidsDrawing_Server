@@ -21,6 +21,7 @@ import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.service.SemesterClassService;
 import com.app.kidsdrawing.service.UserRegisterTeachSemesterService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
     private final UserRepository userRepository;
+    private final SemesterClassService semesterCourseService;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllTeacherTeachSemester() {
@@ -85,6 +87,8 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
                 .teacher(teacher)
                 .build();
         teacherTeachSemesterRepository.save(savedTeacherTeachSemester);
+
+        semesterCourseService.updateSemesterClassMaxParticipantById(savedTeacherTeachSemester.getId());
 
         return savedTeacherTeachSemester.getId();
     }

@@ -15,4 +15,5 @@ public interface SemesterClassService {
     GetSemesterClassResponse  createSemesterClass(CreateSemesterClassRequest createSemesterClassRequest);
     Long removeSemesterClassById(Long id);
     Long updateSemesterClassById(Long id, CreateSemesterClassRequest createSemesterClassRequest);
+    String updateSemesterClassMaxParticipantById(Long id);
 }
