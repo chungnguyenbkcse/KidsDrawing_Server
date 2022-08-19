@@ -21,6 +21,7 @@ import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetTeacherResponse;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
+import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
@@ -28,6 +29,7 @@ import com.app.kidsdrawing.exception.UserAlreadyRegisteredException;
 import com.app.kidsdrawing.repository.RoleRepository;
 import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
 import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.service.EmailService;
 import com.app.kidsdrawing.service.UserService;
 import com.app.kidsdrawing.util.AuthUtil;
 
@@ -51,6 +53,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
     private final AuthUtil authUtil;
     private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
 
@@ -302,7 +305,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .roles(new HashSet<>(validRoles))
                 .build();
         userRepository.save(savedUser);
-
         return savedUser.getId();
     }
 
@@ -342,6 +344,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .roles(new HashSet<>(validRoles))
                 .build();
         userRepository.save(savedUser);
+        String msgBody = "Chúc mưng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + createStudentOrParentRequest.getPassword() + "\n";
+        EmailDetails details = new EmailDetails(savedUser.getEmail(), msgBody, "Thông báo tạo tài khoản thành công", "");
+        emailService.sendSimpleMail(details);
 
         return savedUser.getId();
     }
@@ -360,7 +365,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Long createTeacher(CreateTeacherRequest createTeacherRequest) {
-        String encodedPassword = passwordEncoder.encode(getSaltString());
+        String password = getSaltString();
+        String encodedPassword = passwordEncoder.encode(password);
 
         if (userRepository.existsByUsername(createTeacherRequest.getUsername())) {
             throw new UserAlreadyRegisteredException("exception.user.user_taken");
@@ -393,6 +399,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .roles(new HashSet<>(validRoles))
                 .build();
         userRepository.save(savedUser);
+
+        String msgBody = "Chúc mưng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + password + "\n";
+        EmailDetails details = new EmailDetails(savedUser.getEmail(), msgBody, "Thông báo tạo tài khoản thành công", "");
+        emailService.sendSimpleMail(details);
 
         return savedUser.getId();
     }
