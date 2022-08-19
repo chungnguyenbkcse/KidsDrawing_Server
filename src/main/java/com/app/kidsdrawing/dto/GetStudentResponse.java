@@ -18,6 +18,7 @@ public class GetStudentResponse {
     private String email;
     private String firstName;
     private String lastName;
+    private String status;
     private LocalDate dateOfBirth;
     private String profile_image_url;
     private String sex;

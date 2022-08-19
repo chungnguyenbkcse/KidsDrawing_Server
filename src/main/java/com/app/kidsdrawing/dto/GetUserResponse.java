@@ -16,6 +16,7 @@ public class GetUserResponse {
     private Long id;
     private String username;
     private String email;
+    private String status;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
