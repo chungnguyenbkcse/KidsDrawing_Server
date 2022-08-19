@@ -345,7 +345,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .roles(new HashSet<>(validRoles))
                 .build();
         userRepository.save(savedUser);
-        String msgBody = "Chúc mưng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + createStudentOrParentRequest.getPassword() + "\n";
+        String msgBody = "Chúc mừng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + createStudentOrParentRequest.getPassword() + "\n";
         EmailDetails details = new EmailDetails(savedUser.getEmail(), msgBody, "Thông báo tạo tài khoản thành công", "");
         emailService.sendSimpleMail(details);
 

@@ -19,11 +19,13 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateHolidayRequest;
 import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
+import com.app.kidsdrawing.dto.PnsRequest;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.entity.Course;
+import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.entity.Holiday;
 import com.app.kidsdrawing.entity.Schedule;
 import com.app.kidsdrawing.entity.Section;
@@ -39,6 +41,8 @@ import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.service.EmailService;
+import com.app.kidsdrawing.service.FCMService;
 import com.app.kidsdrawing.service.SemesterService;
 
 import lombok.RequiredArgsConstructor;
@@ -56,6 +60,8 @@ public class SemesterServiceImpl implements SemesterService {
     private final SectionTemplateRepository sectionTemplateRepository;
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
+    private final EmailService emailService;
+    private final FCMService fcmService;
 
     private static int counter = 0;
     @Override
@@ -333,6 +339,43 @@ public class SemesterServiceImpl implements SemesterService {
                         .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
                         .build();
                     classRepository.save(savedClass);
+                    String msgBody = "Chúc mừng giáo viên "+ savedClass.getTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";
+                    EmailDetails details = new EmailDetails(savedClass.getTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");
+                    emailService.sendSimpleMail(details);
+
+                    if (savedClass.getTeachSemester().getTeacher().getStatus() != null && savedClass.getTeachSemester().getTeacher().getStatus() != ""){
+                        PnsRequest pnsRequest = new PnsRequest();
+                        pnsRequest.setFcmToken(savedClass.getTeachSemester().getTeacher().getStatus());
+                        pnsRequest.setTitle("Thông báo xếp lớp thành công");
+                        pnsRequest.setBody(msgBody);
+                        fcmService.pushNotification(pnsRequest);
+                    }
+
+                    validUserRegisterSemesters.forEach(ele -> {
+                        String msgBodyStudent = "Chúc mừng học sinh "+ ele.getStudent().getFirstName() + " "+ ele.getStudent().getLastName() + "đã được xếp lớp thành công vào lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + ele.getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + ele.getSemesterClass().getCourse().getName() + "\n" + "Giáo viên dạy: " + savedClass.getTeachSemester().getTeacher().getFirstName() + " " + savedClass.getTeachSemester().getTeacher().getLastName() + "\n";
+                        EmailDetails student_details = new EmailDetails(ele.getStudent().getEmail(), msgBodyStudent, "Thông báo xếp lớp thành công", "");
+                        emailService.sendSimpleMail(student_details);
+                        if (ele.getStudent().getStatus() != null && ele.getStudent().getStatus() != ""){
+                            PnsRequest pnsRequestStudent = new PnsRequest();
+                            pnsRequestStudent.setFcmToken(ele.getStudent().getStatus());
+                            pnsRequestStudent.setTitle("Thông báo xếp lớp thành công");
+                            pnsRequestStudent.setBody(msgBodyStudent);
+                            fcmService.pushNotification(pnsRequestStudent);
+                        }
+                    });
+                }
+                else {
+                    String msgBody = "Xin thông báo giáo viên "+ allUserRegisterTeachSemesters.get(i).getTeacher().getFirstName() + " "+ allUserRegisterTeachSemesters.get(i).getTeacher().getLastName() + " đã không được phân công giảng dạy lớp " + semester_course.getName() + " trên KidsDrawing.\n ;ý do: Vì số lượng học sinh đăng kí không đủ để xếp lớp!\n Rất mong sự thông cảm của giáo viên!\n Chúng tôi trân thành cảm ơn bạn đã đăng kí!\n";
+                    EmailDetails details = new EmailDetails(allUserRegisterTeachSemesters.get(i).getTeacher().getEmail(), msgBody, "Thông báo xếp lớp không thành công", "");
+                    emailService.sendSimpleMail(details);
+
+                    if (allUserRegisterTeachSemesters.get(i).getTeacher().getStatus() != null && allUserRegisterTeachSemesters.get(i).getTeacher().getStatus() != ""){
+                        PnsRequest pnsRequest = new PnsRequest();
+                        pnsRequest.setFcmToken(allUserRegisterTeachSemesters.get(i).getTeacher().getStatus());
+                        pnsRequest.setTitle("Thông báo xếp lớp không thành công");
+                        pnsRequest.setBody(msgBody);
+                        fcmService.pushNotification(pnsRequest);
+                    }
                 }
             }
         });
