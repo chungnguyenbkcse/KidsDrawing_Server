@@ -1,5 +1,7 @@
 package com.app.kidsdrawing.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +19,5 @@ public class GetSemesterClassResponse {
     private Long course_id;
     private String course_name;
     private Integer max_participant;
+    private LocalDateTime registration_time;
 }

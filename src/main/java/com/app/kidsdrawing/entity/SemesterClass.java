@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.entity;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -49,4 +50,7 @@ public class SemesterClass {
 
     @Column(name = "max_participant")
     private Integer max_participant;
+
+    @Column(name = "registration_time")
+    private LocalDateTime registration_time;
 }

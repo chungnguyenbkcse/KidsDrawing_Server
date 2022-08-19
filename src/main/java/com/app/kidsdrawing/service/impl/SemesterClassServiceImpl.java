@@ -48,6 +48,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     .course_id(semesterClass.getCourse().getId())
                     .course_name(semesterClass.getCourse().getName())
                     .max_participant(semesterClass.getMax_participant())
+                    .registration_time(semesterClass.getRegistration_time())
                     .build();
             allSemesterClassResponses.add(semesterClassResponse);
         });
@@ -72,6 +73,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             .course_id(semesterClass.getCourse().getId())
             .course_name(semesterClass.getCourse().getName())
             .max_participant(semesterClass.getMax_participant())
+            .registration_time(semesterClass.getRegistration_time())
             .build();
     }
 
@@ -89,6 +91,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     .course_id(semesterClass.getCourse().getId())
                     .course_name(semesterClass.getCourse().getName())
                     .max_participant(semesterClass.getMax_participant())
+                    .registration_time(semesterClass.getRegistration_time())
                     .build();
                 allSemesterClassResponses.add(semesterClassResponse);
             }
@@ -113,6 +116,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     .course_id(semesterClass.getCourse().getId())
                     .course_name(semesterClass.getCourse().getName())
                     .max_participant(semesterClass.getMax_participant())
+                    .registration_time(semesterClass.getRegistration_time())
                 .build();
                 allSemesterClassResponses.add(semesterClassResponse);
             }
@@ -144,6 +148,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 .course(course)
                 .name(createSemesterClassRequest.getName())
                 .max_participant(createSemesterClassRequest.getMax_participant())
+                .registration_time(createSemesterClassRequest.getRegistration_time())
                 .build();
         semesterClassRepository.save(savedSemesterClass);
 
@@ -155,6 +160,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             .course_id(savedSemesterClass.getCourse().getId())
             .course_name(savedSemesterClass.getCourse().getName())
             .max_participant(savedSemesterClass.getMax_participant())
+            .registration_time(savedSemesterClass.getRegistration_time())
         .build();
 
         return semesterClassResponse;
@@ -198,6 +204,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         updatedSemesterClass.setCourse(course);
         updatedSemesterClass.setMax_participant(createSemesterClassRequest.getMax_participant());
         updatedSemesterClass.setName(createSemesterClassRequest.getName());
+        updatedSemesterClass.setRegistration_time(createSemesterClassRequest.getRegistration_time());
         semesterClassRepository.save(updatedSemesterClass);
 
         return updatedSemesterClass.getId();
