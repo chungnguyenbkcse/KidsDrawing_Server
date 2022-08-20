@@ -244,8 +244,10 @@ public class CourseServiceImpl implements CourseService {
         listClass.forEach(ele -> {
             if (allTeacherTeachSemesterResponses.contains(ele.getTeachSemester())){
                 allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getTeachSemester());
-                allRegisterSuccessfullSemesterClass.add(ele.getTeachSemester().getSemesterClass());
                 allClassResponses.add(ele);
+            }
+            else {
+                allRegisterSuccessfullSemesterClass.add(ele.getTeachSemester().getSemesterClass());
             }
         });
 
