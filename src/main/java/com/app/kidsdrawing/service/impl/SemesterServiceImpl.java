@@ -322,14 +322,14 @@ public class SemesterServiceImpl implements SemesterService {
             int[][] list_group = foo(allUserRegisterJoinSemesters.size(), partion, min, max);
             // Số lớp có thể chia
             int total_class = list_group.length;
-            for (int i = 0; i < total_class; i++) {
+            for (int i = 0; i < allUserRegisterTeachSemesters.size(); i++) {
                 //Danh sách học viên lớp thứ i
-                List<UserRegisterJoinSemester> validUserRegisterSemesters = new ArrayList<>(); 
-                for(int j = 0; j < list_group[i].length; j++){
-                    int idx = list_group[i][j] - 1;
-                    validUserRegisterSemesters.add(allUserRegisterJoinSemesters.get(idx));
-                }
-                if (i < allUserRegisterTeachSemesters.size()){
+                if (i < total_class){
+                    List<UserRegisterJoinSemester> validUserRegisterSemesters = new ArrayList<>(); 
+                    for(int j = 0; j < list_group[i].length; j++){
+                        int idx = list_group[i][j] - 1;
+                        validUserRegisterSemesters.add(allUserRegisterJoinSemesters.get(idx));
+                    }
                     String key = getSaltString();
                     Class savedClass = Class.builder()
                         .user(user)

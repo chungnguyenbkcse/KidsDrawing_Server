@@ -151,7 +151,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 30,
+    "parent_id": 11,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -539,7 +539,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "admin",
+    "username": "teacher-1",
     "password": "12345678aA@"
 }
 
@@ -599,32 +599,7 @@ Content-Type: application/json
     "status": "Approved"
 }
 
-### GET ART TYPE ACTION ###
-# @name get_all_art_type
 
-POST {{rest}}/semester/calender/1
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "time": ["2022-01-03", "2022-01-10", "2022-01-12", "2022-01-04", "2022-01-11", "2022-01-13"]
-}
-
-### CREATE CONTEST ACTION ###
-# @name create_contest
-
-POST {{rest}}/semester/schedule-class/1
-Authorization: Bearer {{admin_access_token}}
-
-### CREATE CONTEST ACTION ###
-# @name get_info_user
-GET {{rest}}/classes/info/10
-Authorization: Bearer {{admin_access_token}}
-
-### GET classes ACTION ###
-# @name get_classes
-
-GET  {{rest}}/classes/info
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
@@ -634,8 +609,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 6,
-    "semester_class_id": 2
+    "teacher_id": 7,
+    "semester_class_id": 1
 }
 
 
@@ -647,10 +622,10 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 30,
-    "semester_course_id": 2,
-    "payer_id": 16,
-    "price": 2000000
+    "student_id": 18,
+    "semester_course_id": 1,
+    "payer_id": null,
+    "price": null
 }
 
 
@@ -708,7 +683,7 @@ Content-Type: application/json
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-PUT {{rest}}/semester/1
+POST {{rest}}/semester
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
@@ -716,8 +691,8 @@ Content-Type: application/json
     "name": "Học kì 1 năm học 2022",
     "description": "",
     "number": 1,
-    "start_time": "2022-01-01T00:00:11.332",
-    "end_time": "2022-05-30T00:00:11.332",
+    "start_time": "2022-09-01T00:00:11.332",
+    "end_time": "2022-12-30T00:00:11.332",
     "year": 2022,
     "creator_id": 1
 }
@@ -732,7 +707,7 @@ Content-Type: application/json
 {
     "creation_id": 1,
     "course_id": 1,
-    "max_participant": 100
+    "name": "Lớp mầm chì màu 1"
 }
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
@@ -893,7 +868,6 @@ Content-Type: application/json
 {
     "name": "Khóa học mầm chì màu cơ bản",
     "description": "<p>hello nguyen van chung</p>",
-    "max_participant": 20,
     "num_of_section": 10,
     "price": 2000000,
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344893/lop-day-hoc-ve-tre-em-be-thieu-nhi-370x255_natvks.png",
@@ -902,19 +876,6 @@ Content-Type: application/json
     "art_age_id": 1,
     "art_type_id": 1,
     "art_level_id": 1
-}
-
-### CREATE LESSON TIME ACTION ###
-# @name create_lesson_time
-
-POST {{rest}}/schedule
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "lesson_time": 3,
-    "semester_class_id": 1,
-    "date_of_week": 6
 }
 
 ###

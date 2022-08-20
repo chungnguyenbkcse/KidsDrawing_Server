@@ -1,0 +1,46 @@
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345678aA@"
+}
+
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE SCHEDULE CLASS ACTION ###
+# @name create_schedule_class
+
+POST {{rest}}/semester/schedule-class/1
+Authorization: Bearer {{admin_access_token}}
+
+
+
+### CREATE CALENDAR ACTION ###
+# @name create_semester_calender
+
+POST {{rest}}/semester/calender/1
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "time": ["2022-09-01", "2022-09-02", "2022-09-03", "2022-09-04"]
+}
+
+
+
+### GET CLASSES INFORMATION ACTION ###
+# @name get_info_classes
+GET {{rest}}/classes/info/3
+Authorization: Bearer {{admin_access_token}}
+
+
+### GET CLASSES ACTION ###
+# @name get_classes
+
+GET  {{rest}}/classes/info

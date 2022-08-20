@@ -1,49 +1,27 @@
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345678aA@"
+}
+
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
 
 ### CREATE LESSON TIME ACTION ###
 # @name create_lesson_time
 
 POST {{rest}}/schedule
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "name": "Lịch học 1",
-    "creator_id": 3
+    "lesson_time": 2,
+    "semester_class_id": 1,
+    "date_of_week": 6
 }
-
-### CREATE LESSON TIME ACTION ###
-# @name create_lesson_time
-
-POST {{rest}}/schedule
-Content-Type: application/json
-
-{
-    "name": "Lịch học 2",
-    "creator_id": 3
-}
-
-### UPDATE ART TYPE ACTION ###
-# @name update_art_type
-
-PUT {{rest}}/schedule/8
-Content-Type: application/json
-
-{
-    "name": "Lịch học 1_1",
-    "creator_id": 3
-}
-
-### REMOVE ART TYPE ACTION ###
-# @name update_art_type
-
-DELETE  {{rest}}/lesson-time/1
-
-### GET ART TYPE ACTION ###
-# @name get_art_type
-
-GET {{rest}}/schedule/semester-class/1
-
-### GET ART TYPE ACTION ###
-# @name get_all_art_type
-
-GET {{rest}}/schedule?page=0&size=2

@@ -1,4 +1,4 @@
-@rest = {{$dotenv HOST}}/{{$dotenv API}}
+v
 
 ### CREATE CONTEST ACTION ###
 # @name create_contest

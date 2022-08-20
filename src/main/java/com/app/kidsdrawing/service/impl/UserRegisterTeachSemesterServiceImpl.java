@@ -88,7 +88,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
                 .build();
         teacherTeachSemesterRepository.save(savedTeacherTeachSemester);
 
-        semesterCourseService.updateSemesterClassMaxParticipantById(savedTeacherTeachSemester.getId());
+        semesterCourseService.updateSemesterClassMaxParticipantById(savedTeacherTeachSemester.getSemesterClass().getId());
 
         return savedTeacherTeachSemester.getId();
     }
