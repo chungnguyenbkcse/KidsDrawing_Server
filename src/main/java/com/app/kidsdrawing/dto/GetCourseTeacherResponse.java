@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetCourseTeacherResponse {
+    private Long id;
     private Long course_id;
     private Long semster_course_id;
     private String name;
