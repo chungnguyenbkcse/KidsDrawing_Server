@@ -229,7 +229,6 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(ele.getCourse().getNum_of_section())
                 .schedule(schedule)
                 .build();
-
             allNotRegisterSemesterClassResponses.add(notRegisterSemesterClassResponse);
         });
 
@@ -244,10 +243,8 @@ public class CourseServiceImpl implements CourseService {
         listClass.forEach(ele -> {
             if (allTeacherTeachSemesterResponses.contains(ele.getTeachSemester())){
                 allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getTeachSemester());
-                allClassResponses.add(ele);
-            }
-            else {
                 allRegisterSuccessfullSemesterClass.add(ele.getTeachSemester().getSemesterClass());
+                allClassResponses.add(ele);
             }
         });
 
@@ -285,11 +282,46 @@ public class CourseServiceImpl implements CourseService {
             allRegisterSuccessfullSemesterClassResponses.add(registerSuccessfullSemesterClassResponse);
         });
 
+        List<GetCourseTeacherResponse> allRegisterNotScheduleClassSemesterClassResponses = new ArrayList<>();
+        allRegisteredSemesterClassResponses.forEach(ele -> {
+            if (!allRegisterSuccessfullSemesterClass.contains(ele)){
+                schedule = "";
+                scheduleRepository.findAll().forEach(schedule_item -> {
+                    if (schedule_item.getSemesterClass().getId() == ele.getId()){
+                        if (schedule == ""){
+                            schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
+                        }
+                        else {
+                            schedule = schedule + ", Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
+                        }
+                    }
+                });
+                GetCourseTeacherResponse registerNotScheduleClassSemesterClassResponse = GetCourseTeacherResponse.builder()
+                    .course_id(ele.getCourse().getId())
+                    .semster_course_id(ele.getId())
+                    .id(ele.getId())
+                    .semester_name(ele.getSemester().getName())
+                    .description(ele.getCourse().getDescription())
+                    .image_url(ele.getCourse().getImage_url())
+                    .name(ele.getName())
+                    .course_name(ele.getCourse().getName())
+                    .art_age_name(ele.getCourse().getArtAges().getName())
+                    .art_level_name(ele.getCourse().getArtLevels().getName())
+                    .art_type_name(ele.getCourse().getArtTypes().getName())
+                    .price(ele.getCourse().getPrice())
+                    .registration_deadline(ele.getSemester().getStart_time())
+                    .num_of_section(ele.getCourse().getNum_of_section())
+                    .schedule(schedule)
+                    .build();
+    
+                allRegisterNotScheduleClassSemesterClassResponses.add(registerNotScheduleClassSemesterClassResponse);
+            }
+        });
 
         Map<String, Object> response = new HashMap<>();
         response.put("not_register_courses", allNotRegisterSemesterClassResponses);
         response.put("register_successfull_courses", allRegisterSuccessfullSemesterClassResponses);
-        response.put("register_not_schedule_class", allRegisterSuccessfullSemesterClass);
+        response.put("register_not_schedule_courses", allRegisterNotScheduleClassSemesterClassResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
