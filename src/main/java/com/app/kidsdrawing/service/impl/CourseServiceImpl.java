@@ -287,6 +287,7 @@ public class CourseServiceImpl implements CourseService {
         Map<String, Object> response = new HashMap<>();
         response.put("not_register_courses", allNotRegisterSemesterClassResponses);
         response.put("register_successfull_courses", allRegisterSuccessfullSemesterClassResponses);
+        response.put("register_not_schedule_class", allRegisterSuccessfullSemesterClass);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
