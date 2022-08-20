@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.app.kidsdrawing.dto.CreateTeacherRegisterQualificationAdminRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRegisterQualificationRequest;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.service.TeacherRegisterQualificationService;
@@ -58,6 +59,15 @@ public class TeacherRegisterQualificationController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateTeacherRegisterQualification(@PathVariable Long id, @RequestBody CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest) {
         Long teacherRegisterQualificationId = teacherRegisterQualificationService.updateTeacherRegisterQualificationById(id,createTeacherRegisterQualificationRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(teacherRegisterQualificationId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @PutMapping(value = "/admin/{id}")
+    public ResponseEntity<String> updateTeacherRegisterQualificationAdmin(@PathVariable Long id, @RequestBody CreateTeacherRegisterQualificationAdminRequest createTeacherRegisterQualificationAdminRequest) {
+        Long teacherRegisterQualificationId = teacherRegisterQualificationService.updateTeacherRegisterQualificationByAdmin(id,createTeacherRegisterQualificationAdminRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(teacherRegisterQualificationId).toUri();
         return ResponseEntity.created(location).build();

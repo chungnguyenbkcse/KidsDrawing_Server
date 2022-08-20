@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.app.kidsdrawing.dto.CreateTeacherRegisterQualificationAdminRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRegisterQualificationRequest;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQuanlificationTeacherResponse;
@@ -205,6 +206,18 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         updatedTeacherRegisterQualification.setDegree_photo_url(createTeacherRegisterQualificationRequest.getDegree_photo_url());
         teacherRegisterQualificationRepository.save(updatedTeacherRegisterQualification);
 
+        return updatedTeacherRegisterQualification.getId();
+    }
+
+    @Override
+    public Long updateTeacherRegisterQualificationByAdmin(Long id, CreateTeacherRegisterQualificationAdminRequest createTeacherRegisterQualificationAdminRequest) {
+        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById(id);
+        TeacherRegisterQualification updatedTeacherRegisterQualification = teacherRegisterQualificationOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.TeacherRegisterQualification.not_found");
+        });
+
+        updatedTeacherRegisterQualification.setStatus(createTeacherRegisterQualificationAdminRequest.getStatus());
+        teacherRegisterQualificationRepository.save(updatedTeacherRegisterQualification);
         return updatedTeacherRegisterQualification.getId();
     }
 }
