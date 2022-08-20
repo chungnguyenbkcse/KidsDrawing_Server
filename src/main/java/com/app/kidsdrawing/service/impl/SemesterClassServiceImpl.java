@@ -226,7 +226,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             }
         });
         
-        updatedSemesterClass.setMax_participant(allUserRegisterTeachSemesters.size()*6 + 4);
+        updatedSemesterClass.setMax_participant((allUserRegisterTeachSemesters.size() + 1)*6 + 4);
         semesterClassRepository.save(updatedSemesterClass);
         return "Max participant successfull!";
     }
