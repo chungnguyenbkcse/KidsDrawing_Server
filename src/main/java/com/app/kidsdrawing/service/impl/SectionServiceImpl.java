@@ -42,6 +42,7 @@ public class SectionServiceImpl implements SectionService{
                 .name(content.getName())
                 .description(content.getDescription())
                 .number(content.getNumber())
+                .teach_form(content.getTeaching_form())
                 .recording(content.getRecording())
                 .message(content.getMessage())
                 .create_time(content.getCreate_time())
@@ -69,6 +70,7 @@ public class SectionServiceImpl implements SectionService{
                     .number(content.getNumber())
                     .recording(content.getRecording())
                     .message(content.getMessage())
+                    .teach_form(content.getTeaching_form())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
                     .build();
@@ -96,6 +98,7 @@ public class SectionServiceImpl implements SectionService{
             .number(section.getNumber())
             .recording(section.getRecording())
             .message(section.getMessage())
+            .teach_form(section.getTeaching_form())
             .create_time(section.getCreate_time())
             .update_time(section.getUpdate_time())
             .build();

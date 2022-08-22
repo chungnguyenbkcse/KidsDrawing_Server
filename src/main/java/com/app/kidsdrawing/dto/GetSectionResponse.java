@@ -19,6 +19,7 @@ public class GetSectionResponse {
     private Integer number;
     private String recording;
     private String message;
+    private Boolean teach_form;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }
