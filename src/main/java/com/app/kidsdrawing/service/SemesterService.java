@@ -12,7 +12,7 @@ public interface SemesterService {
     ResponseEntity<Map<String, Object>> getAllSemester();
     ResponseEntity<Map<String, Object>> getAllSemesterNext();
     Long setCalenderForSemester(Long id, CreateHolidayRequest createHolidayResquest);
-    Long setClassForSemester(Long id, int partion, int min, int max);
+    Long setClassForSemester(Long id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest);
     GetSemesterResponse getSemesterById(Long id);
     Long createSemester(CreateSemesterRequest createSemesterRequest);
     Long removeSemesterById(Long id);

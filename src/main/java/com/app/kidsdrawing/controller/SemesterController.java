@@ -42,8 +42,8 @@ public class SemesterController {
     @CrossOrigin
     @PostMapping(value = "/schedule-class/{id}")
     public ResponseEntity<String> createClassBySemester(@PathVariable Long id, @RequestParam(defaultValue = "6") int partion,
-    @RequestParam(defaultValue = "5") int min, @RequestParam(defaultValue = "8") int max) {
-        Long semesterId = semesterService.setClassForSemester(id, partion, min, max);
+    @RequestParam(defaultValue = "5") int min, @RequestParam(defaultValue = "8") int max, @RequestBody CreateHolidayRequest createHolidayResquest) {
+        Long semesterId = semesterService.setClassForSemester(id, partion, min, max, createHolidayResquest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{semesterId}")
                 .buildAndExpand(semesterId).toUri();
         return ResponseEntity.created(location).build();
