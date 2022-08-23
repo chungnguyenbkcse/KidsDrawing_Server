@@ -18,6 +18,7 @@ Content-Type: application/json
 
 POST {{rest}}/semester/schedule-class/1
 Authorization: Bearer {{admin_access_token}}
+
 {
     "time": ["2022-09-01", "2022-09-02", "2022-09-03", "2022-09-04"]
 }

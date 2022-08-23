@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -41,9 +40,8 @@ public class SemesterController {
 
     @CrossOrigin
     @PostMapping(value = "/schedule-class/{id}")
-    public ResponseEntity<String> createClassBySemester(@PathVariable Long id, @RequestParam(defaultValue = "6") int partion,
-    @RequestParam(defaultValue = "5") int min, @RequestParam(defaultValue = "8") int max, @RequestBody CreateHolidayRequest createHolidayResquest) {
-        Long semesterId = semesterService.setClassForSemester(id, partion, min, max, createHolidayResquest);
+    public ResponseEntity<String> createClassBySemester(@PathVariable Long id, @RequestBody CreateHolidayRequest createHolidayResquest) {
+        Long semesterId = semesterService.setClassForSemester(id, 6, 5, 8, createHolidayResquest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{semesterId}")
                 .buildAndExpand(semesterId).toUri();
         return ResponseEntity.created(location).build();

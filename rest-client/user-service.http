@@ -11,7 +11,7 @@ Content-Type: application/json
 {
     "username": "student-1_1",
     "password": "12345678aA@",
-    "email": "student-1@gmail.com",
+    "email": "student-1_1@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 8,
+    "parent_id": 5,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -41,7 +41,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 8,
+    "parent_id": 6,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -63,7 +63,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 9,
+    "parent_id": 7,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -85,7 +85,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 9,
+    "parent_id": 7,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -107,7 +107,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 10,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -129,7 +129,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 10,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -151,7 +151,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 11,
+    "parent_id": 9,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -163,9 +163,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-2",
+    "username": "student-12",
     "password": "12345678aA@",
-    "email": "student-2@gmail.com",
+    "email": "student-12@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -173,6 +173,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
+    "parent_id": 9,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -184,11 +185,11 @@ POST {{rest}}/user
 Content-Type: application/json
 
 {
-    "username": "chungnguyen",
+    "username": "parent-1",
     "password": "a8726357",
     "email": "chungnguyen10012000@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "Chung",
+    "lastName": "Nguyen",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -420,8 +421,8 @@ Content-Type: application/json
     "username": "teacher-1",
     "password": "12345678aA@",
     "email": "teacher-1@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "Le",
+    "lastName": "Thao",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -440,8 +441,8 @@ Content-Type: application/json
     "username": "teacher-2",
     "password": "12345678aA@",
     "email": "teacher-2@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "Thanh",
+    "lastName": "Trung",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -518,10 +519,10 @@ POST {{rest}}/user/teacher
 Content-Type: application/json
 
 {
-    "username": "teacherchungnguyen",
+    "username": "chungnguyen",
     "email": "chung.nguyen10012001@hcmut.edu.vn",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "Nguyen",
+    "lastName": "Chung",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
