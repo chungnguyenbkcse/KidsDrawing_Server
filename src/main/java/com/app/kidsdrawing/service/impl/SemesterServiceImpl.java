@@ -328,47 +328,6 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
 
-        allClassOfSemesterClassResponses.forEach( list_class -> {
-            List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
-            List<SectionTemplate> allSectionTemplate = new ArrayList<>();
-            listSectionTemplate.forEach(section_template -> {
-                if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterClass().getCourse().getId()){
-                    allSectionTemplate.add(section_template);
-                    section_template.getCourse().getNum_of_section();
-                }
-            });
-            list_class.forEach(ele -> {
-                allSectionTemplate.forEach(ele_section_tmp -> {
-                    Section savedSection = Section.builder()
-                        .class1(ele)
-                        .name(ele_section_tmp.getName())
-                        .description(ele_section_tmp.getDescription())
-                        .number(ele_section_tmp.getNumber())
-                        .teaching_form(ele_section_tmp.getTeaching_form())
-                        .build();
-                    sectionRepository.save(savedSection);
-
-                    Tutorial savedTutorial = Tutorial.builder()
-                        .section(savedSection)
-                        .creator(creator)
-                        .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
-                        .description(ele_section_tmp.getTutorialTemplates().getDescription())
-                        .build();
-                    tutorialRepository.save(savedTutorial);
-
-                    ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
-                        TutorialPage savedTutorialPage = TutorialPage.builder()
-                            .tutorial(savedTutorial)
-                            .name(tutorial_page.getName())
-                            .description(tutorial_page.getDescription())
-                            .number(tutorial_page.getNumber())
-                            .build();
-                        tutorialPageRepository.save(savedTutorialPage);
-                    });
-                });
-            });
-        });
-
         // Danh sách học sinh đăng kí học
         List<UserRegisterJoinSemester> pageUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findAll();
         // Danh sách giáo viên đăng kí dạy
@@ -475,6 +434,60 @@ public class SemesterServiceImpl implements SemesterService {
                 }
             }
         });
+
+        List<Class> listClass_ = classRepository.findAll();
+        List<List<Class>> allClassOfSemesterClassResponses_ = new ArrayList<>();        
+        allSemesterClassResponses.forEach(semester_course -> {
+            List<Class> list_class_ = new ArrayList<>();
+            listClass_.forEach(ele_class -> {
+                if (ele_class.getTeachSemester().getSemesterClass().getId() == semester_course.getId()){
+                    list_class_.add(ele_class);
+                }
+            });
+            allClassOfSemesterClassResponses_.add(list_class_);
+        });
+
+        allClassOfSemesterClassResponses_.forEach( list_class -> {
+            List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
+            List<SectionTemplate> allSectionTemplate = new ArrayList<>();
+            listSectionTemplate.forEach(section_template -> {
+                if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterClass().getCourse().getId()){
+                    allSectionTemplate.add(section_template);
+                    section_template.getCourse().getNum_of_section();
+                }
+            });
+            list_class.forEach(ele -> {
+                allSectionTemplate.forEach(ele_section_tmp -> {
+                    Section savedSection = Section.builder()
+                        .class1(ele)
+                        .name(ele_section_tmp.getName())
+                        .description(ele_section_tmp.getDescription())
+                        .number(ele_section_tmp.getNumber())
+                        .teaching_form(ele_section_tmp.getTeaching_form())
+                        .build();
+                    sectionRepository.save(savedSection);
+
+                    Tutorial savedTutorial = Tutorial.builder()
+                        .section(savedSection)
+                        .creator(creator)
+                        .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
+                        .description(ele_section_tmp.getTutorialTemplates().getDescription())
+                        .build();
+                    tutorialRepository.save(savedTutorial);
+
+                    ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
+                        TutorialPage savedTutorialPage = TutorialPage.builder()
+                            .tutorial(savedTutorial)
+                            .name(tutorial_page.getName())
+                            .description(tutorial_page.getDescription())
+                            .number(tutorial_page.getNumber())
+                            .build();
+                        tutorialPageRepository.save(savedTutorialPage);
+                    });
+                });
+            });
+        });
+
         return id;
     }
 

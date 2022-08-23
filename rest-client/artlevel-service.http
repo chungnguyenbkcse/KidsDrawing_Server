@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -17,6 +17,7 @@ Content-Type: application/json
 
 POST {{rest}}/art-level
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
     "name": "Cơ bản",
@@ -28,6 +29,7 @@ Content-Type: application/json
 
 POST {{rest}}/art-level
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
     "name": "Nâng cao",

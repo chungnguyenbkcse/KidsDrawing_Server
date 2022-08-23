@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -18,10 +18,23 @@ Content-Type: application/json
 
 POST {{rest}}/art-age
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
     "name": "4-6 tuổi",
     "description": "Độ tuổi từ 4-6 tuổi"
+}
+
+### CREATE ART AGE ACTION ###
+# @name create_art_age
+
+POST {{rest}}/art-age
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "name": "7-10 tuổi",
+    "description": "Độ tuổi từ 7-10 tuổi"
 }
 
 ### UPDATE ART TYPE ACTION ###

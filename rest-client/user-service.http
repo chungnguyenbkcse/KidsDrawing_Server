@@ -107,7 +107,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 8,
+    "parent_id": 5,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -129,7 +129,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 8,
+    "parent_id": 5,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -151,7 +151,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 9,
+    "parent_id": 5,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -173,7 +173,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 9,
+    "parent_id": 5,
     "roleNames": ["STUDENT_USER"]
 }
 

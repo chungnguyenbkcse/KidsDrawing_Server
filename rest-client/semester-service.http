@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -17,14 +17,14 @@ Content-Type: application/json
 # @name create_contest
 
 POST {{rest}}/semester
-
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
     "name": "Học kì 1 năm học 2022",
     "description": "",
     "number": 1,
-    "start_time": "2022-08-12T12:59:11.332",
+    "start_time": "2022-09-01T00:00:00",
     "year": 2022,
     "creator_id": 1
 }

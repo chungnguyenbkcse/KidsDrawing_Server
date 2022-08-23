@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -18,11 +18,11 @@ Content-Type: application/json
 
 POST {{rest}}/course
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
     "name": "Khóa học mầm chì màu cơ bản",
     "description": "xxxx",
-    "max_participant": 20,
     "num_of_section": 10,
     "price": 2000000,
     "image_url": "",
