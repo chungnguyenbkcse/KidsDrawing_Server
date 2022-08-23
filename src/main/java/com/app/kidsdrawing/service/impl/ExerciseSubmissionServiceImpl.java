@@ -76,6 +76,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                         .id(content.getId())
                         .exercise_id(content.getExercise().getId())
                         .student_id(content.getStudent().getId())
+                        .exercise_name(content.getExercise().getName())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                         .image_url(content.getImage_url())
                         .create_time(content.getCreate_time())
                         .update_time(content.getUpdate_time())
@@ -87,6 +89,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                         .id(content.getId())
                         .exercise_id(content.getExercise().getId())
                         .student_id(content.getStudent().getId())
+                        .exercise_name(content.getExercise().getName())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                         .image_url(content.getImage_url())
                         .create_time(content.getCreate_time())
                         .update_time(content.getUpdate_time())
@@ -120,6 +124,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                         .id(content.getId())
                         .exercise_id(content.getExercise().getId())
                         .student_id(content.getStudent().getId())
+                        .exercise_name(content.getExercise().getName())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                         .image_url(content.getImage_url())
                         .create_time(content.getCreate_time())
                         .update_time(content.getUpdate_time())
@@ -131,6 +137,55 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                         .id(content.getId())
                         .exercise_id(content.getExercise().getId())
                         .student_id(content.getStudent().getId())
+                        .exercise_name(content.getExercise().getName())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .image_url(content.getImage_url())
+                        .create_time(content.getCreate_time())
+                        .update_time(content.getUpdate_time())
+                        .build();
+                        allExerciseNotGradedSubmissionResponses.add(exerciseSubmissionResponse);
+                }
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("exercise_not_graded", allExerciseNotGradedSubmissionResponses);
+        response.put("exercise_graded", allExerciseGradedSubmissionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassId(Long id) {
+        List<GetExerciseSubmissionResponse> allExerciseNotGradedSubmissionResponses = new ArrayList<>();
+        List<GetExerciseSubmissionResponse> allExerciseGradedSubmissionResponses = new ArrayList<>();
+        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAll();
+        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
+        List<ExerciseSubmission> exersiceGraded = new ArrayList<>();
+        listUserGradeExerciseSubmission.forEach(ele -> {
+            exersiceGraded.add(ele.getExerciseSubmission());
+        });
+        listExerciseSubmission.forEach(content -> {
+            if (content.getExercise().getSection().getClass1().getId() == id){
+                if (exersiceGraded.contains(content)) {
+                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                        .id(content.getId())
+                        .exercise_id(content.getExercise().getId())
+                        .student_id(content.getStudent().getId())
+                        .exercise_name(content.getExercise().getName())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .image_url(content.getImage_url())
+                        .create_time(content.getCreate_time())
+                        .update_time(content.getUpdate_time())
+                        .build();
+                    allExerciseGradedSubmissionResponses.add(exerciseSubmissionResponse);
+                }
+                else {
+                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                        .id(content.getId())
+                        .exercise_id(content.getExercise().getId())
+                        .student_id(content.getStudent().getId())
+                        .exercise_name(content.getExercise().getName())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                         .image_url(content.getImage_url())
                         .create_time(content.getCreate_time())
                         .update_time(content.getUpdate_time())

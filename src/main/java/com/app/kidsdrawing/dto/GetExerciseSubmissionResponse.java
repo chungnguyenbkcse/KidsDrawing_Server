@@ -15,6 +15,8 @@ public class GetExerciseSubmissionResponse {
     private Long id;
     private Long student_id;
     private Long exercise_id;
+    private String student_name;
+    private String exercise_name;
     private String image_url;
     private LocalDateTime create_time;
     private LocalDateTime update_time;

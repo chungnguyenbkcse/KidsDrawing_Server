@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetUserGradeExerciseSubmissionResponse {
     private Long student_id;
+    private String student_name;
     private Long exercise_submission_id;
     private String feedback;
     private Float score;

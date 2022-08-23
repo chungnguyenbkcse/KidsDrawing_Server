@@ -20,7 +20,7 @@ POST {{rest}}/notification
 Content-Type: application/json
 
 {
-    "fcmToken": "cVVucbNk5Q6nRZ_LATNbJX:APA91bGlhak8RCEtSQjKs-HJXQcvlyk7v_fB_zLivO8Os4noms1nZyBK5RckHE47qI_04avsCRnajhSTCkbtxxi6Qy3B7T4vMZ0hOOuv4mHumoZcMpmupMHTEjLPChN7logfzmUEe9Wd",
+    "fcmToken": "cuIe4nGRxVxO4fHTw1lLPy:APA91bH3_T6RrNiSMibeD35EsrZpffCqmOQ3VSSp4g9YZOUrkW8-DKP0gW1odPwzrCg2tlu3T2QrDN3bNEcPY80O69nIp1kF3XlFGJ8JXFZrHa7RNfk4CpYJIeesisNKfmR0BzPOq2rm",
     "title": "Nghỉ học",
     "body": "xxxx"
 }

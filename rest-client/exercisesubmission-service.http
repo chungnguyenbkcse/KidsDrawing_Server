@@ -60,3 +60,9 @@ Content-Type: application/json
 # @name get_contest
 
 GET  {{rest}}/exercise-submission/exercise/1
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercise-submission/class/9

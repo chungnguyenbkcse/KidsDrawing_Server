@@ -46,6 +46,12 @@ public class ExerciseSubmissionController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/class/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseSubmissionByClass(@PathVariable Long id) {
+        return ResponseEntity.ok().body(exerciseSubmissionService.getAllExerciseSubmissionByClassId(id));
+    }
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createExerciseSubmission(@RequestBody CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
         Long exerciseSubmissionId = exerciseSubmissionService.createExerciseSubmission(createExerciseSubmissionRequest);
