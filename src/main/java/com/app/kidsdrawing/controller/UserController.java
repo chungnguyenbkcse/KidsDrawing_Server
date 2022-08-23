@@ -55,6 +55,13 @@ public class UserController {
     } 
 
     @CrossOrigin
+    @GetMapping(value = "/report/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUser(@PathVariable int id) {
+        Long role_id = (long) 2;
+        return ResponseEntity.ok().body(userService.getReportUserNew(id, role_id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/student")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudent() {
         Long role_id = (long) 2;

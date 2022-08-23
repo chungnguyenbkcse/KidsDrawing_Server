@@ -56,6 +56,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final EmailService emailService;
     private final AuthUtil authUtil;
     private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
+    private static int total_user_of_jan = 0;
+    private static int total_user_of_feb = 0;
+    private static int total_user_of_mar = 0;
+    private static int total_user_of_apr = 0;
+    private static int total_user_of_may = 0;
+    private static int total_user_of_jun = 0;
+    private static int total_user_of_jul = 0;
+    private static int total_user_of_aug = 0;
+    private static int total_user_of_sep = 0;
+    private static int total_user_of_oct = 0;
+    private static int total_user_of_nov = 0;
+    private static int total_user_of_dec = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllStudents(Long role_id) {
@@ -88,6 +100,84 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         });
         Map<String, Object> response = new HashMap<>();
         response.put("students", allUserResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getReportUserNew(int year, Long role_id) {
+        List<Integer> allUserResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findAll();
+        Optional<Role> roleOpt = roleRepository.findById(role_id);
+        Role role = roleOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.role.not_found");
+        });
+        total_user_of_jan = 0;
+        total_user_of_feb = 0;
+        total_user_of_mar = 0;
+        total_user_of_apr = 0;
+        total_user_of_may = 0;
+        total_user_of_jun = 0;
+        total_user_of_jul = 0;
+        total_user_of_aug = 0;
+        total_user_of_sep = 0;
+        total_user_of_oct = 0;
+        total_user_of_nov = 0;
+        total_user_of_dec = 0;
+        pageUser.forEach(user -> {
+            if (user.getRoles().contains(role) == true && user.getCreateTime().getYear() == year){
+                if (user.getCreateTime().getMonth().toString() == "JANUARY"){
+                    total_user_of_jan += 1;
+                }
+                else if (user.getCreateTime().getMonth().toString() == "FEBRUARY"){
+                    total_user_of_feb += 1;
+                } 
+                else if (user.getCreateTime().getMonth().toString() == "MARCH"){
+                    total_user_of_mar += 1;
+                } 
+                else if (user.getCreateTime().getMonth().toString() == "APRIL"){
+                    total_user_of_apr += 1;
+                } 
+                else if (user.getCreateTime().getMonth().toString() == "MAY"){
+                    total_user_of_may += 1;
+                } 
+                else if (user.getCreateTime().getMonth().toString() == "JUNE"){
+                    total_user_of_jun += 1;
+                } 
+                else if (user.getCreateTime().getMonth().toString() == "JULY"){
+                    total_user_of_jul += 1;
+                } 
+                else if (user.getCreateTime().getMonth().toString() == "AUGUST"){
+                    total_user_of_aug += 1;
+                } 
+                else if (user.getCreateTime().getMonth().toString() == "SEPTEMBER"){
+                    total_user_of_sep += 1;
+                } 
+                else if (user.getCreateTime().getMonth().toString() == "OCTOBER"){
+                    total_user_of_oct += 1;
+                }
+                else if (user.getCreateTime().getMonth().toString() == "NOVEMBER"){
+                    total_user_of_nov += 1;
+                }
+                else {
+                    total_user_of_dec += 1;
+                }
+            }   
+        });
+        allUserResponses.add(total_user_of_jan);
+        allUserResponses.add(total_user_of_feb);
+        allUserResponses.add(total_user_of_mar);
+        allUserResponses.add(total_user_of_apr);
+        allUserResponses.add(total_user_of_may);
+        allUserResponses.add(total_user_of_jun);
+        allUserResponses.add(total_user_of_jul);
+        allUserResponses.add(total_user_of_aug);
+        allUserResponses.add(total_user_of_sep);
+        allUserResponses.add(total_user_of_oct);
+        allUserResponses.add(total_user_of_nov);
+        allUserResponses.add(total_user_of_dec);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("report_user", allUserResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

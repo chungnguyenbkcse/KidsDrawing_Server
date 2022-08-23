@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateCourseRequest;
 import com.app.kidsdrawing.dto.GetCourseResponse;
 import com.app.kidsdrawing.dto.GetCourseTeacherResponse;
+import com.app.kidsdrawing.dto.GetReportCourseResponse;
 import com.app.kidsdrawing.entity.ArtAge;
 import com.app.kidsdrawing.entity.ArtLevel;
 import com.app.kidsdrawing.entity.ArtType;
@@ -23,6 +24,7 @@ import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.CourseAlreadyCreateException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
@@ -34,6 +36,7 @@ import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
+import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.CourseService;
 
@@ -51,9 +54,11 @@ public class CourseServiceImpl implements CourseService {
     private final ArtLevelRepository artLevelRepository;
     private final ClassRepository classRepository;
     private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
+    private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterCourseRepository;
     private final ScheduleRepository scheduleRepository;
     private static String schedule = "";
+    private static int count = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourse() {
@@ -80,6 +85,43 @@ public class CourseServiceImpl implements CourseService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("courses", allCourseResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getReportCourse(int year) {
+        List<GetReportCourseResponse> allReportCourseResponses = new ArrayList<>();
+        List<Course> pageCourse = courseRepository.findAll();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll();
+        pageCourse.forEach(course -> {
+            count = 0;
+            listUserRegisterJoinSemester.forEach(ele -> {
+                if (ele.getSemesterClass().getSemester().getStart_time().getYear() == year) {
+                    count += 1;
+                }
+            });
+
+            GetReportCourseResponse courseResponse = GetReportCourseResponse.builder()
+                .id(course.getId())
+                .name(course.getName())
+                .description(course.getDescription())
+                .num_of_section(course.getNum_of_section())
+                .image_url(course.getImage_url())
+                .price(course.getPrice())
+                .is_enabled(course.getIs_enabled())
+                .art_age_id(course.getArtAges().getId())
+                .art_type_id(course.getArtTypes().getId())
+                .art_level_id(course.getArtLevels().getId())
+                .creator_id(course.getUser().getId())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
+                .total_register(count)
+                .build();
+            allReportCourseResponses.add(courseResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("report_course", allReportCourseResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

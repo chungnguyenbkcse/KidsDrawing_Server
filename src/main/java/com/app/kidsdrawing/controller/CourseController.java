@@ -58,6 +58,12 @@ public class CourseController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/report/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportCourse(@PathVariable int id) {
+        return ResponseEntity.ok().body(courseService.getReportCourse(id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByTeacherid(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseByTeacherId(id));

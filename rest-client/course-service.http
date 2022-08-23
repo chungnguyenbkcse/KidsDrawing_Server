@@ -62,3 +62,9 @@ GET  {{rest}}/course/id/4
 # @name get_all_user_grade_contest
 
 GET {{rest}}/course/art-level/1?page=0&size=10
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/course/report/2022

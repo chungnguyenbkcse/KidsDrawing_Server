@@ -936,6 +936,13 @@ GET {{rest}}/user/10
 Authorization: Bearer {{student_access_token}}
 
 
+###
+
+# @name get_all_user_by_student
+GET {{rest}}/user/report/2022
+Authorization: Bearer {{student_access_token}}
+
+
 
 
 
