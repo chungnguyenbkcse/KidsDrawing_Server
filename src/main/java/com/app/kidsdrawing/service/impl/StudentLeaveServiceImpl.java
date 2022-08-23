@@ -46,15 +46,47 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                 .id(content.getId())
                 .student_id(content.getStudent().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                 .reviewer_id(content.getReviewer().getId())
                 .section_id(content.getSection().getId())
+                .section_name(content.getSection().getName())
                 .class_id(content.getClass1().getId())
+                .class_name(content.getClass1().getName())
                 .status(content.getStatus())
                 .description(content.getDescription())
                 .create_time(content.getCreate_time())
                 .update_time(content.getUpdate_time())
                 .build();
             allStudentLeaveResponses.add(StudentLeaveResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("student_leave", allStudentLeaveResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(Long id) {
+        List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
+        listStudentLeave.forEach(content -> {
+            if (content.getClass1().getId() == id) {
+                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                    .id(content.getId())
+                    .student_id(content.getStudent().getId())
+                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .reviewer_id(content.getReviewer().getId())
+                    .section_id(content.getSection().getId())
+                    .section_name(content.getSection().getName())
+                    .class_id(content.getClass1().getId())
+                    .class_name(content.getClass1().getName())
+                    .status(content.getStatus())
+                    .description(content.getDescription())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allStudentLeaveResponses.add(StudentLeaveResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -72,9 +104,12 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         return GetStudentLeaveResponse.builder()
             .id(StudentLeave.getId())
             .student_id(StudentLeave.getStudent().getId())
+            .student_name(StudentLeave.getStudent().getFirstName() + " " + StudentLeave.getStudent().getLastName())
             .reviewer_id(StudentLeave.getReviewer().getId())
             .section_id(StudentLeave.getSection().getId())
+            .section_name(StudentLeave.getSection().getName())
             .class_id(StudentLeave.getClass1().getId())
+            .class_name(StudentLeave.getClass1().getName())
             .status(StudentLeave.getStatus())
             .description(StudentLeave.getDescription())
             .create_time(StudentLeave.getCreate_time())

@@ -22,6 +22,8 @@ import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.dto.PnsRequest;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
+import com.app.kidsdrawing.entity.Tutorial;
+import com.app.kidsdrawing.entity.TutorialPage;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.entity.Course;
@@ -39,6 +41,8 @@ import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.SectionTemplateRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
+import com.app.kidsdrawing.repository.TutorialPageRepository;
+import com.app.kidsdrawing.repository.TutorialRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.EmailService;
@@ -62,6 +66,8 @@ public class SemesterServiceImpl implements SemesterService {
     private final HolidayRepository holidayRepository;
     private final EmailService emailService;
     private final FCMService fcmService;
+    private final TutorialRepository tutorialRepository;
+    private final TutorialPageRepository tutorialPageRepository;
 
     private static int counter = 0;
     @Override
@@ -160,6 +166,11 @@ public class SemesterServiceImpl implements SemesterService {
             holidayRepository.save(saveHoliday);
         });
 
+        Optional <User> userOpt = userRepository.findById((long) 1);
+        User creator = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user_creator.not_found");
+        });
+
         allClassOfSemesterClassResponses.forEach( list_class -> {
             List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
             List<SectionTemplate> allSectionTemplate = new ArrayList<>();
@@ -179,6 +190,24 @@ public class SemesterServiceImpl implements SemesterService {
                         .teaching_form(ele_section_tmp.getTeaching_form())
                         .build();
                     sectionRepository.save(savedSection);
+
+                    Tutorial savedTutorial = Tutorial.builder()
+                        .section(savedSection)
+                        .creator(creator)
+                        .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
+                        .description(ele_section_tmp.getTutorialTemplates().getDescription())
+                        .build();
+                    tutorialRepository.save(savedTutorial);
+
+                    ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
+                        TutorialPage savedTutorialPage = TutorialPage.builder()
+                            .tutorial(savedTutorial)
+                            .name(tutorial_page.getName())
+                            .description(tutorial_page.getDescription())
+                            .number(tutorial_page.getNumber())
+                            .build();
+                        tutorialPageRepository.save(savedTutorialPage);
+                    });
                 });
             });
         }); 

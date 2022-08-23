@@ -539,7 +539,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "teacher-1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -932,7 +932,7 @@ Content-Type: application/json
 ###
 
 # @name get_all_user_by_student
-GET {{rest}}/user
+GET {{rest}}/user/10
 Authorization: Bearer {{student_access_token}}
 
 

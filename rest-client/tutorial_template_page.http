@@ -3,12 +3,11 @@
 # @name login_admin
 @admin_access_token = {{login_admin.response.body.accessToken}}
 @admin_refresh_token = {{login_admin.response.body.refreshToken}}
-
 POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "teacher-1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -17,47 +16,20 @@ Content-Type: application/json
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/exercise-level
-Authorization: Bearer {{admin_access_token}}
+POST {{rest}}/tutorial-template-page
 Content-Type: application/json
 
 {
-    "name": "Bài tập",
-    "description": "Phần trăm điểm cho bài tập",
-    "weight": 10
+    "tutorial_id": 1,
+    "name": "Trang 1",
+    "description": "xxx",
+    "number": 1
 }
 
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/exercise-level
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Kiểm tra giữa kì",
-    "description": "Phần trăm điểm cho kiểm tra giữa kì",
-    "weight": 40
-}
-
-### CREATE CONTEST ACTION ###
-# @name create_contest
-
-POST {{rest}}/exercise-level
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Kiểm tra cuối kì",
-    "description": "Phần trăm điểm cho kiểm tra cuối kì",
-    "weight": 50
-}
-
-
-### CREATE CONTEST ACTION ###
-# @name create_contest
-
-POST {{rest}}/exercise-level
+POST {{rest}}/tutorial-template-page
 Content-Type: application/json
 
 {
@@ -72,7 +44,7 @@ Content-Type: application/json
 ### 
 # @name update_contest
 
-PUT {{rest}}/exercise-level/1
+PUT {{rest}}/tutorial-template-page/1
 Content-Type: application/json
 
 {
@@ -87,4 +59,10 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/exercise-level/1
+GET  {{rest}}/tutorial-template-page/1
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/tutorial-template-page/section-template/1

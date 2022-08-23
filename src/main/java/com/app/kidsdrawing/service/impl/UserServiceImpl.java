@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .address(user.getAddress())
                     .createTime(user.getCreateTime())
                     .parent(user.getParent().getUsername())
+                    .parents(user.getParent().getId())
                     .build();
                 allUserResponses.add(userResponse);
             }
@@ -229,6 +230,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .dateOfBirth(user.getDateOfBirth())
                 .sex(user.getSex())
                 .phone(user.getPhone())
+                .parents(user.getParent().getId())
                 .address(user.getAddress())
                 .createTime(user.getCreateTime())
                 .build();
@@ -240,6 +242,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
+        Long a = (long) 0;
+        if (user.getParent() != null) {
+            a = user.getParent().getId();
+        }
 
         return GetUserInfoResponse.builder()
                 .id(user.getId())
@@ -252,6 +258,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .sex(user.getSex())
                 .phone(user.getPhone())
                 .address(user.getAddress())
+                .parents(a)
+                .profile_image_url(user.getProfileImageUrl())
                 .createTime(user.getCreateTime())
                 .build();
     }

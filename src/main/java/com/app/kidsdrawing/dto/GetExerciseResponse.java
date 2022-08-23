@@ -15,6 +15,8 @@ public class GetExerciseResponse {
     private Long id;
     private Long section_id;
     private Long level_id;
+    private String level_name;
+    private String section_name;
     private String name;
     private String description;
     private LocalDateTime create_time;

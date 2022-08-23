@@ -25,5 +25,6 @@ public class GetStudentResponse {
     private String phone;
     private String address;
     private String parent;
+    private Long parents;
     private LocalDateTime createTime;
 }

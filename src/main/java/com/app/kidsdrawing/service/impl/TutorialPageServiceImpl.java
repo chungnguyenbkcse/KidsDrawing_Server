@@ -74,6 +74,28 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionId(Long id) {
+        List<GetTutorialPageResponse> allTutorialPageResponses = new ArrayList<>();
+        List<TutorialPage> listTutorialPage = tutorialPageRepository.findAll();
+        listTutorialPage.forEach(content -> {
+            if (content.getTutorial().getSection().getId() == id){
+                GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
+                    .id(content.getId())
+                    .tutorial_id(content.getTutorial().getId())
+                    .name(content.getName())
+                    .description(content.getDescription())
+                    .number(content.getNumber())
+                    .build();
+                allTutorialPageResponses.add(tutorialPageResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("TutorialPage", allTutorialPageResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public GetTutorialPageResponse getTutorialPageById(Long id) {
         Optional<TutorialPage> tutorialPageOpt = tutorialPageRepository.findById(id);
         TutorialPage tutorialPage = tutorialPageOpt.orElseThrow(() -> {

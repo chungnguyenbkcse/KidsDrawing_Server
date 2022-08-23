@@ -40,6 +40,12 @@ public class TutorialPageController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/section/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialPageBySectionId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(tutorialPageService.getAllTutorialPageBySectionId(id));
+    }
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createTutorialPage(@RequestBody CreateTutorialPageRequest createTutorialPageRequest) {
         Long tutorialPageId = tutorialPageService.createTutorialPage(createTutorialPageRequest);

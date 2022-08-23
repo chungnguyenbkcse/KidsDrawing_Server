@@ -2,7 +2,6 @@ package com.app.kidsdrawing.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +24,6 @@ public class GetUserInfoResponse {
     private String sex;
     private String phone;
     private String address;
-    private List<String> parents;
+    private Long parents;
     private LocalDateTime createTime;
 }

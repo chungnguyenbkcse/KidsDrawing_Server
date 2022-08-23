@@ -14,8 +14,11 @@ import lombok.NoArgsConstructor;
 public class GetStudentLeaveResponse {
     private Long id;
     private Long section_id;
+    private String section_name;
     private Long class_id;
+    private String class_name;
     private Long student_id;
+    private String student_name;
     private Long reviewer_id;
     private String description;
     private String status;

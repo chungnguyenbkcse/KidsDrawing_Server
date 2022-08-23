@@ -46,16 +46,51 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
                 .id(content.getId())
                 .teacher_id(content.getTeacher().getId())
+                .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
                 .reviewer_id(content.getReviewer().getId())
                 .section_id(content.getSection().getId())
+                .section_name(content.getSection().getName())
                 .class_id(content.getClass1().getId())
+                .class_name(content.getClass1().getName())
                 .substitute_teacher_id(content.getSubstitute_teacher().getId())
+                .substitute_teacher_name(content.getSubstitute_teacher().getFirstName() + " " + content.getSubstitute_teacher().getLastName())
                 .status(content.getStatus())
                 .description(content.getDescription())
                 .create_time(content.getCreate_time())
                 .update_time(content.getUpdate_time())
                 .build();
             allTeacherLeaveResponses.add(TeacherLeaveResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("teacher_leave", allTeacherLeaveResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getTeacherLeaveByClassId(Long id) {
+        List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
+        List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
+        listTeacherLeave.forEach(content -> {
+            if (content.getClass1().getId() == id) {
+                GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
+                    .id(content.getId())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                    .reviewer_id(content.getReviewer().getId())
+                    .section_id(content.getSection().getId())
+                    .section_name(content.getSection().getName())
+                    .class_id(content.getClass1().getId())
+                    .class_name(content.getClass1().getName())
+                    .substitute_teacher_id(content.getSubstitute_teacher().getId())
+                    .substitute_teacher_name(content.getSubstitute_teacher().getFirstName() + " " + content.getSubstitute_teacher().getLastName())
+                    .status(content.getStatus())
+                    .description(content.getDescription())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allTeacherLeaveResponses.add(TeacherLeaveResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -73,10 +108,14 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         return GetTeacherLeaveResponse.builder()
             .id(teacherLeave.getId())
             .teacher_id(teacherLeave.getTeacher().getId())
+            .teacher_name(teacherLeave.getTeacher().getFirstName() + " " + teacherLeave.getTeacher().getLastName())
             .reviewer_id(teacherLeave.getReviewer().getId())
             .section_id(teacherLeave.getSection().getId())
+            .section_name(teacherLeave.getSection().getName())
             .class_id(teacherLeave.getClass1().getId())
+            .class_name(teacherLeave.getClass1().getName())
             .substitute_teacher_id(teacherLeave.getSubstitute_teacher().getId())
+            .substitute_teacher_name(teacherLeave.getSubstitute_teacher().getFirstName()  + " " + teacherLeave.getSubstitute_teacher().getLastName())
             .status(teacherLeave.getStatus())
             .description(teacherLeave.getDescription())
             .create_time(teacherLeave.getCreate_time())

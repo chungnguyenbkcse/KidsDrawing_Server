@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "teacher-1",
     "password": "12345678aA@"
 }
 
@@ -17,33 +17,41 @@ Content-Type: application/json
 # @name create_student_register_join_semester
 
 POST {{rest}}/teacher-leave
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "section_id": 1,
-    "teacher_id": 4,
-    "class_id": 18,
-    "substitute_teacher_id": 5,
-    "description": ""
+    "section_id": 66,
+    "teacher_id": 7,
+    "class_id": 9,
+    "substitute_teacher_id": 6,
+    "description": "<p>hfakfakjfa</p>"
 }
 
 ### GET TEACHER GRADE semester ACTION ###
 # @name get_teacher_grade_semester
 
-GET {{rest}}/teacher-leave/17
+GET {{rest}}/teacher-leave/1
 
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 
 GET {{rest}}/teacher-leave
 
+
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/teacher-leave/class/9
+
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
 
 PUT {{rest}}/teacher-leave/admin/1
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "reviewer_id": 3,
-    "status": true
+    "reviewer_id": 1,
+    "status": "Approved"
 }

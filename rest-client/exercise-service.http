@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "teacher-1",
     "password": "12345678aA@"
 }
 
@@ -17,28 +17,28 @@ Content-Type: application/json
 # @name create_contest
 
 POST {{rest}}/exercises
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "section_id": 1,
+    "section_id": 66,
     "level_id": 1,
     "name": "Bài tập 1",
-    "description": ""
+    "description": "<p>Vẽ con chó<p>"
 }
 
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
 POST {{rest}}/exercises
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "name": "Học kì 2 năm học 2022",
-    "description": "",
-    "number": 2,
-    "start_time": "2022-12-12T12:59:11.332",
-    "year": 2022,
-    "creator_id": 3
+    "section_id": 66,
+    "level_id": 1,
+    "name": "Bài tập 2",
+    "description": "<p>Vẽ con mèo<p>"
 }
 
 ### 
@@ -59,4 +59,4 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/exercises/1
+GET  {{rest}}/exercises/section/66

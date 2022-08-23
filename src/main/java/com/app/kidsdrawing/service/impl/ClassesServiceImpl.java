@@ -623,7 +623,8 @@ public class ClassesServiceImpl implements ClassesService {
 
         List<GetStudentResponse> listStudents = new ArrayList<>();
         classes.getUserRegisterJoinSemesters().forEach(content -> {
-            String parent_namex = content.getStudent().getParent().getUsername();
+            Long parent_idx = content.getStudent().getParent().getId();
+            String parent_namex = content.getStudent().getParent().getFirstName() + " " + content.getStudent().getParent().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
                     .id(content.getStudent().getId())
                     .username(content.getStudent().getUsername())
@@ -636,6 +637,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .phone(content.getStudent().getPhone())
                     .address(content.getStudent().getAddress())
                     .parent(parent_namex)
+                    .parents(parent_idx)
                     .createTime(content.getStudent().getCreateTime())
                     .build();
             listStudents.add(student);

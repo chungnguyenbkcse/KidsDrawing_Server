@@ -11,6 +11,7 @@ import com.app.kidsdrawing.dto.GetTeacherLeaveResponse;
 public interface TeacherLeaveService {
     ResponseEntity<Map<String, Object>> getAllTeacherLeave();
     GetTeacherLeaveResponse getTeacherLeaveById(Long id);
+    ResponseEntity<Map<String, Object>> getTeacherLeaveByClassId(Long id);
     Long createTeacherLeave(CreateTeacherLeaveRequest createTeacherLeaveRequest);
     Long removeTeacherLeaveById(Long id);
     Long updateTeacherLeaveById(Long id, CreateTeacherLeaveRequest createTeacherLeaveRequest);

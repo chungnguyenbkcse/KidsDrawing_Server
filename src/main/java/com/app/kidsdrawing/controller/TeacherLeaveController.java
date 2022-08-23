@@ -35,6 +35,12 @@ public class TeacherLeaveController {
     } 
 
     @CrossOrigin
+    @GetMapping(value = "/class/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherLeave(@PathVariable Long id) {
+        return ResponseEntity.ok().body(teacherLeaveService.getTeacherLeaveByClassId(id));
+    } 
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createTeacherLeave(@RequestBody CreateTeacherLeaveRequest createTeacherLeaveRequest) {
         Long teacherLeaveId = teacherLeaveService.createTeacherLeave(createTeacherLeaveRequest);
