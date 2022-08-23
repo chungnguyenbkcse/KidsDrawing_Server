@@ -59,4 +59,4 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/exercise-submission/student/1
+GET  {{rest}}/exercise-submission/exercise/1
