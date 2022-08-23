@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -17,18 +17,19 @@ Content-Type: application/json
 # @name create_contest
 
 POST {{rest}}/contest
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
     "name": "Cuộc thi vẽ tranh gia đình",
     "description": "Vẽ về những người thân trong gia đình",
-    "max_participant": 20,
+    "max_participant": 100,
     "registration_time": "2022-07-12T12:59:11.332",
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
-    "start_time": "2022-08-12T12:59:11.332",
-    "end_time": "2022-09-12T12:59:11.332",
+    "start_time": "2022-09-12T12:59:11.332",
+    "end_time": "2022-10-12T12:59:11.332",
     "is_enabled": true,
-    "creater_id": 3,
+    "creater_id": 1,
     "art_age_id": 1,
     "art_type_id": 1
 }

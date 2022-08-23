@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,16 +29,14 @@ public class UserGradeContestController {
 
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByTeacherId(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(userGradeContestService.getAllUserGradeContestByTeacherId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByTeacherId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userGradeContestService.getAllUserGradeContestByTeacherId(id));
     } 
 
     @CrossOrigin
     @GetMapping(value = "/contest/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByContestId(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(userGradeContestService.getAllUserGradeContestByContestId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByContestId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userGradeContestService.getAllUserGradeContestByContestId(id));
     }
 
     @CrossOrigin

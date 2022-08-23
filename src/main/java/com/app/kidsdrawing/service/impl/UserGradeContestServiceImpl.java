@@ -7,10 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,11 +34,10 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByTeacherId(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByTeacherId(Long id) {
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll(paging);
-        pageUserGradeContest.getContent().forEach(content -> {
+        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
+        pageUserGradeContest.forEach(content -> {
             if (content.getUser().getId() == id){
                 GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
                     .id(content.getId())
@@ -55,18 +50,14 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
 
         Map<String, Object> response = new HashMap<>();
         response.put("teacher_grade_contest", allUserGradeContestResponses);
-        response.put("currentPage", pageUserGradeContest.getNumber());
-        response.put("totalItems", pageUserGradeContest.getTotalElements());
-        response.put("totalPages", pageUserGradeContest.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByContestId(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByContestId(Long id) {
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll(paging);
-        pageUserGradeContest.getContent().forEach(content -> {
+        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
+        pageUserGradeContest.forEach(content -> {
             if (content.getContest().getId() == id){
                 GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
                     .id(content.getId())
@@ -79,9 +70,6 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
 
         Map<String, Object> response = new HashMap<>();
         response.put("teacher_grade_contest", allUserGradeContestResponses);
-        response.put("currentPage", pageUserGradeContest.getNumber());
-        response.put("totalItems", pageUserGradeContest.getTotalElements());
-        response.put("totalPages", pageUserGradeContest.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

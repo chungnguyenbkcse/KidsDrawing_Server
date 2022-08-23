@@ -17,10 +17,11 @@ Content-Type: application/json
 # @name create_contest
 
 POST {{rest}}/exercise-submission
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 1,
+    "student_id": 21,
     "exercise_id": 1,
     "image_url": ""
 }

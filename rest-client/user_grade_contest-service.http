@@ -1,0 +1,42 @@
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345678aA@"
+}
+
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/user-grade-contest
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "teacher_id": 7,
+    "contest_id": 1
+}
+
+### 
+# @name update_contest
+
+PUT {{rest}}/contest/3
+Content-Type: application/json
+
+{
+    "teacher_id": 2,
+    "contest_id": 1
+}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/contest/teacher/2
