@@ -394,6 +394,44 @@ public class SemesterServiceImpl implements SemesterService {
                         .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
                         .build();
                     classRepository.save(savedClass);
+
+                    List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
+                    List<SectionTemplate> allSectionTemplate = new ArrayList<>();
+                    listSectionTemplate.forEach(section_template -> {
+                        if (section_template.getCourse().getId() == savedClass.getTeachSemester().getSemesterClass().getCourse().getId()){
+                            allSectionTemplate.add(section_template);
+                            section_template.getCourse().getNum_of_section();
+                        }
+                    });
+                    allSectionTemplate.forEach(ele_section_tmp -> {
+                        Section savedSection = Section.builder()
+                            .class1(savedClass)
+                            .name(ele_section_tmp.getName())
+                            .description(ele_section_tmp.getDescription())
+                            .number(ele_section_tmp.getNumber())
+                            .teaching_form(ele_section_tmp.getTeaching_form())
+                            .build();
+                        sectionRepository.save(savedSection);
+                    
+                        Tutorial savedTutorial = Tutorial.builder()
+                            .section(savedSection)
+                            .creator(creator)
+                            .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
+                            .description(ele_section_tmp.getTutorialTemplates().getDescription())
+                            .build();
+                        tutorialRepository.save(savedTutorial);
+                    
+                        ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
+                            TutorialPage savedTutorialPage = TutorialPage.builder()
+                                .tutorial(savedTutorial)
+                                .name(tutorial_page.getName())
+                                .description(tutorial_page.getDescription())
+                                .number(tutorial_page.getNumber())
+                                .build();
+                            tutorialPageRepository.save(savedTutorialPage);
+                        });
+                    });
+
                     String msgBody = "Chúc mừng giáo viên "+ savedClass.getTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";
                     EmailDetails details = new EmailDetails(savedClass.getTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");
                     emailService.sendSimpleMail(details);
@@ -433,11 +471,9 @@ public class SemesterServiceImpl implements SemesterService {
                     }
                 }
             }
-        });
 
-        List<Class> listClass_ = classRepository.findAll();
-        List<List<Class>> allClassOfSemesterClassResponses_ = new ArrayList<>();        
-        allSemesterClassResponses.forEach(semester_course -> {
+            /* List<Class> listClass_ = classRepository.findAll();
+            List<List<Class>> allClassOfSemesterClassResponses_ = new ArrayList<>();        
             List<Class> list_class_ = new ArrayList<>();
             listClass_.forEach(ele_class -> {
                 if (ele_class.getTeachSemester().getSemesterClass().getId() == semester_course.getId()){
@@ -445,49 +481,48 @@ public class SemesterServiceImpl implements SemesterService {
                 }
             });
             allClassOfSemesterClassResponses_.add(list_class_);
-        });
 
-        allClassOfSemesterClassResponses_.forEach( list_class -> {
-            List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
-            List<SectionTemplate> allSectionTemplate = new ArrayList<>();
-            listSectionTemplate.forEach(section_template -> {
-                if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterClass().getCourse().getId()){
-                    allSectionTemplate.add(section_template);
-                    section_template.getCourse().getNum_of_section();
-                }
-            });
-            list_class.forEach(ele -> {
-                allSectionTemplate.forEach(ele_section_tmp -> {
-                    Section savedSection = Section.builder()
-                        .class1(ele)
-                        .name(ele_section_tmp.getName())
-                        .description(ele_section_tmp.getDescription())
-                        .number(ele_section_tmp.getNumber())
-                        .teaching_form(ele_section_tmp.getTeaching_form())
-                        .build();
-                    sectionRepository.save(savedSection);
-
-                    Tutorial savedTutorial = Tutorial.builder()
-                        .section(savedSection)
-                        .creator(creator)
-                        .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
-                        .description(ele_section_tmp.getTutorialTemplates().getDescription())
-                        .build();
-                    tutorialRepository.save(savedTutorial);
-
-                    ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
-                        TutorialPage savedTutorialPage = TutorialPage.builder()
-                            .tutorial(savedTutorial)
-                            .name(tutorial_page.getName())
-                            .description(tutorial_page.getDescription())
-                            .number(tutorial_page.getNumber())
+            allClassOfSemesterClassResponses_.forEach( list_class -> {
+                List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
+                List<SectionTemplate> allSectionTemplate = new ArrayList<>();
+                listSectionTemplate.forEach(section_template -> {
+                    if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterClass().getCourse().getId()){
+                        allSectionTemplate.add(section_template);
+                        section_template.getCourse().getNum_of_section();
+                    }
+                });
+                list_class.forEach(ele -> {
+                    allSectionTemplate.forEach(ele_section_tmp -> {
+                        Section savedSection = Section.builder()
+                            .class1(ele)
+                            .name(ele_section_tmp.getName())
+                            .description(ele_section_tmp.getDescription())
+                            .number(ele_section_tmp.getNumber())
+                            .teaching_form(ele_section_tmp.getTeaching_form())
                             .build();
-                        tutorialPageRepository.save(savedTutorialPage);
+                        sectionRepository.save(savedSection);
+
+                        Tutorial savedTutorial = Tutorial.builder()
+                            .section(savedSection)
+                            .creator(creator)
+                            .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
+                            .description(ele_section_tmp.getTutorialTemplates().getDescription())
+                            .build();
+                        tutorialRepository.save(savedTutorial);
+
+                        ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
+                            TutorialPage savedTutorialPage = TutorialPage.builder()
+                                .tutorial(savedTutorial)
+                                .name(tutorial_page.getName())
+                                .description(tutorial_page.getDescription())
+                                .number(tutorial_page.getNumber())
+                                .build();
+                            tutorialPageRepository.save(savedTutorialPage);
+                        });
                     });
                 });
-            });
+            }); */
         });
-
         return id;
     }
 

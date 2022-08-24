@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 5,
+    "parent_id": 6,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -107,7 +107,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 5,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -129,7 +129,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 5,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -151,7 +151,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 5,
+    "parent_id": 9,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -163,9 +163,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-12",
+    "username": "student-20",
     "password": "12345678aA@",
-    "email": "student-12@gmail.com",
+    "email": "student-20@gmail.com",
     "firstName": null,
     "lastName": null,
     "dateOfBirth": null,
@@ -173,7 +173,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 5,
+    "parent_id": 11,
     "roleNames": ["STUDENT_USER"]
 }
 
