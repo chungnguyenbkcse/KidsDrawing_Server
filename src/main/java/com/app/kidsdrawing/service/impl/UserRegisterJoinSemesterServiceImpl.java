@@ -154,8 +154,76 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         allUserRegisterJoinSemesterResponses.add(total_user_of_nov);
         allUserRegisterJoinSemesterResponses.add(total_user_of_dec);
 
+        List<Integer> allReportUserRegisterJoinSemesterLastYearResponses = new ArrayList<>();
+        total_user_of_jan = 0;
+        total_user_of_feb = 0;
+        total_user_of_mar = 0;
+        total_user_of_apr = 0;
+        total_user_of_may = 0;
+        total_user_of_jun = 0;
+        total_user_of_jul = 0;
+        total_user_of_aug = 0;
+        total_user_of_sep = 0;
+        total_user_of_oct = 0;
+        total_user_of_nov = 0;
+        total_user_of_dec = 0;
+        listUserRegisterJoinSemester.forEach(content -> {
+            if (content.getSemesterClass().getSemester().getStart_time().getYear() == year-1){
+                if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JANUARY"){
+                    total_user_of_jan += content.getPrice();
+                }
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "FEBRUARY"){
+                    total_user_of_feb += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "MARCH"){
+                    total_user_of_mar += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "APRIL"){
+                    total_user_of_apr += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "MAY"){
+                    total_user_of_may += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JUNE"){
+                    total_user_of_jun += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JULY"){
+                    total_user_of_jul += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "AUGUST"){
+                    total_user_of_aug += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "SEPTEMBER"){
+                    total_user_of_sep += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "OCTOBER"){
+                    total_user_of_oct += content.getPrice();
+                }
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "NOVEMBER"){
+                    total_user_of_nov += content.getPrice();
+                }
+                else {
+                    total_user_of_dec += content.getPrice();
+                }
+            }
+        });
+
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_jan);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_feb);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_mar);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_apr);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_may);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_jun);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_jul);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_aug);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_sep);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_oct);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_nov);
+        allReportUserRegisterJoinSemesterLastYearResponses.add(total_user_of_dec);
+
         Map<String, Object> response = new HashMap<>();
-        response.put("report_user_register_semester", allUserRegisterJoinSemesterResponses);
+        response.put("report_user_register_semester_now", allUserRegisterJoinSemesterResponses);
+        response.put("report_user_register_semester_last", allReportUserRegisterJoinSemesterLastYearResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
