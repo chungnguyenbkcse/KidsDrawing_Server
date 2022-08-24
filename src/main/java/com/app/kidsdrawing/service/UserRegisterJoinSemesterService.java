@@ -10,6 +10,7 @@ import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
 public interface UserRegisterJoinSemesterService {
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemester();
     GetUserRegisterJoinSemesterResponse getUserRegisterJoinSemesterById(Long id);
+    ResponseEntity<Map<String, Object>> getReportUserRegisterJoinSemester(int year);
     Long createUserRegisterJoinSemester(CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
     Long removeUserRegisterJoinSemesterById(Long id);
     Long updateUserRegisterJoinSemesterById(Long id, CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);

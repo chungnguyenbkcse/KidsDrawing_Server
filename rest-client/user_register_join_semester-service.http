@@ -36,3 +36,9 @@ GET {{rest}}/user-register-join-semester/16
 # @name get_all_user_grade_semester
 
 GET {{rest}}/user-register-join-semester
+
+
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/user-register-join-semester/report/2022

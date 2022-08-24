@@ -34,6 +34,12 @@ public class UserRegisterJoinSemesterController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/report/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUserRegisterJoinSemester(@PathVariable int id) {
+        return ResponseEntity.ok().body(userRegisterJoinSemesterService.getReportUserRegisterJoinSemester(id));
+    }
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserRegisterJoinSemester(@RequestBody CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
         Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.createUserRegisterJoinSemester(createUserRegisterJoinSemesterRequest);

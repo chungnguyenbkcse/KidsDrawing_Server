@@ -33,6 +33,18 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
     private final UserRepository userRepository;
+    private static int total_user_of_jan = 0;
+    private static int total_user_of_feb = 0;
+    private static int total_user_of_mar = 0;
+    private static int total_user_of_apr = 0;
+    private static int total_user_of_may = 0;
+    private static int total_user_of_jun = 0;
+    private static int total_user_of_jul = 0;
+    private static int total_user_of_aug = 0;
+    private static int total_user_of_sep = 0;
+    private static int total_user_of_oct = 0;
+    private static int total_user_of_nov = 0;
+    private static int total_user_of_dec = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemester() {
@@ -70,6 +82,81 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
                 .price(userRegisterJoinSemester.getPrice())
                 .time(userRegisterJoinSemester.getTime())
                 .build();
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getReportUserRegisterJoinSemester(int year) {
+        List<Integer> allUserRegisterJoinSemesterResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll();
+        total_user_of_jan = 0;
+        total_user_of_feb = 0;
+        total_user_of_mar = 0;
+        total_user_of_apr = 0;
+        total_user_of_may = 0;
+        total_user_of_jun = 0;
+        total_user_of_jul = 0;
+        total_user_of_aug = 0;
+        total_user_of_sep = 0;
+        total_user_of_oct = 0;
+        total_user_of_nov = 0;
+        total_user_of_dec = 0;
+        listUserRegisterJoinSemester.forEach(content -> {
+            if (content.getSemesterClass().getSemester().getStart_time().getYear() == year){
+                if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JANUARY"){
+                    total_user_of_jan += content.getPrice();
+                }
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "FEBRUARY"){
+                    total_user_of_feb += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "MARCH"){
+                    total_user_of_mar += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "APRIL"){
+                    total_user_of_apr += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "MAY"){
+                    total_user_of_may += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JUNE"){
+                    total_user_of_jun += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JULY"){
+                    total_user_of_jul += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "AUGUST"){
+                    total_user_of_aug += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "SEPTEMBER"){
+                    total_user_of_sep += content.getPrice();
+                } 
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "OCTOBER"){
+                    total_user_of_oct += content.getPrice();
+                }
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "NOVEMBER"){
+                    total_user_of_nov += content.getPrice();
+                }
+                else {
+                    total_user_of_dec += content.getPrice();
+                }
+            }
+        });
+
+        allUserRegisterJoinSemesterResponses.add(total_user_of_jan);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_feb);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_mar);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_apr);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_may);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_jun);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_jul);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_aug);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_sep);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_oct);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_nov);
+        allUserRegisterJoinSemesterResponses.add(total_user_of_dec);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("report_user_register_semester", allUserRegisterJoinSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
