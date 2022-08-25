@@ -72,4 +72,4 @@ GET  {{rest}}/user-grade-exercise-submission/exercise/1
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/user-grade-exercise-submission/exercise-class/1/9
+GET  {{rest}}/user-grade-exercise-submission/exercise-class/2/23

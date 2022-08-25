@@ -21,7 +21,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "section_id": 66,
+    "section_id": 41,
     "level_id": 1,
     "name": "Bài tập 1",
     "description": "<p>Vẽ con chó<p>"
@@ -35,7 +35,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "section_id": 66,
+    "section_id": 42,
     "level_id": 1,
     "name": "Bài tập 2",
     "description": "<p>Vẽ con mèo<p>"
@@ -55,6 +55,12 @@ Content-Type: application/json
     "year": 2022,
     "creator_id": 3
 }
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercises/section/66
+
 
 ### GET CONTEST ACTION ###
 # @name get_contest

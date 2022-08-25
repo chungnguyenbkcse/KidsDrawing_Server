@@ -61,10 +61,10 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/section/63
+GET  {{rest}}/section
 
 
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/section/class/5
+GET  {{rest}}/section/class/24
