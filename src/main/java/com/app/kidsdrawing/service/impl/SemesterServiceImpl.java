@@ -360,6 +360,8 @@ public class SemesterServiceImpl implements SemesterService {
                 list_total_register_of_teacher.add(counter);
             });
 
+            System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(allUserRegisterTeachSemesters.size()));
+
             for (int i = 0; i < list_total_register_of_teacher.size(); i++) {
                 // Inner nested loop pointing 1 index ahead
                 for (int j = i + 1; j < list_total_register_of_teacher.size(); j++) {
@@ -373,8 +375,11 @@ public class SemesterServiceImpl implements SemesterService {
                 //System.out.print(arr[i] + " ");
             }
 
+            System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(allUserRegisterJoinSemesters.size()));
+
             // Lấy các group có thể chia được
             int[][] list_group = foo(allUserRegisterJoinSemesters.size(), partion, min, max);
+            System.out.println(list_group.length);
             // Số lớp có thể chia
             int total_class = list_group.length;
             for (int i = 0; i < allUserRegisterTeachSemesters.size(); i++) {
@@ -385,7 +390,9 @@ public class SemesterServiceImpl implements SemesterService {
                         int idx = list_group[i][j] - 1;
                         validUserRegisterSemesters.add(allUserRegisterJoinSemesters.get(idx));
                     }
+                    System.out.print("Số học sinh đc xếp: " + String.valueOf(validUserRegisterSemesters.size()));
                     String key = getSaltString();
+                    System.out.print("Lớp thứ: " + String.valueOf(i));
                     Class savedClass = Class.builder()
                         .user(creator)
                         .teachSemester(allUserRegisterTeachSemesters.get(i))

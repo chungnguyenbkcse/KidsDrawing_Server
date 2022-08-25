@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "admin",
     "password": "12345678aA@"
 }
 
@@ -16,14 +16,14 @@ Content-Type: application/json
 ### CREATE LESSON TIME ACTION ###
 # @name create_lesson_time
 
-POST {{rest}}/semester-class
+POST  {{rest}}/semester-class
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "creation_id": 13,
-    "course_id": 4,
-    "schedule_id": 8
-
+    "creation_id": 1,
+    "course_id": 1,
+    "name": "Lớp mầm chì màu 2"
 }
 
 ### CREATE LESSON TIME ACTION ###

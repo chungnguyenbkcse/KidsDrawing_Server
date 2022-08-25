@@ -21,7 +21,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 3,
+    "teacher_id": 6,
     "semester_class_id": 2
 }
 

@@ -21,7 +21,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "lesson_time": 2,
-    "semester_class_id": 1,
-    "date_of_week": 6
+    "lesson_time": 1,
+    "semester_class_id": 2,
+    "date_of_week": 5
 }
