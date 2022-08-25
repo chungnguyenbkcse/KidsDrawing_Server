@@ -402,7 +402,7 @@ public class SemesterServiceImpl implements SemesterService {
                         .build();
                     classRepository.save(savedClass);
 
-                    List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
+                    /* List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
                     List<SectionTemplate> allSectionTemplate = new ArrayList<>();
                     listSectionTemplate.forEach(section_template -> {
                         if (section_template.getCourse().getId() == savedClass.getTeachSemester().getSemesterClass().getCourse().getId()){
@@ -437,7 +437,7 @@ public class SemesterServiceImpl implements SemesterService {
                                 .build();
                             tutorialPageRepository.save(savedTutorialPage);
                         });
-                    });
+                    }); */
 
                     String msgBody = "Chúc mừng giáo viên "+ savedClass.getTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";
                     EmailDetails details = new EmailDetails(savedClass.getTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");
