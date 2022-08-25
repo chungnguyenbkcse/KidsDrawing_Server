@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ public class EmailController {
     @Autowired private EmailService emailService;
  
     // Sending a simple Email
+    @CrossOrigin
     @PostMapping
     public String
     sendMail(@RequestBody EmailDetails details)
@@ -30,6 +32,7 @@ public class EmailController {
         return status;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/admin")
     public String
     sendMailByAdmin(@RequestBody CreateEmailDetailRequest details)
@@ -41,6 +44,7 @@ public class EmailController {
         return status;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/admin/attachment")
     public String
     sendMailWithAttachmentByAdmin(@RequestBody CreateEmailDetailRequest details)
@@ -52,6 +56,7 @@ public class EmailController {
         return status;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/class/{id}")
     public String
     sendMailByClass(@PathVariable Long id, @RequestBody CreateEmailDetailRequest details)
@@ -64,6 +69,7 @@ public class EmailController {
     }
 
 
+    @CrossOrigin
     @PostMapping(value = "/teacher")
     public String
     sendMailToTeacher(@RequestBody CreateEmailDetailRequest details)
@@ -75,6 +81,7 @@ public class EmailController {
         return status;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/teacher/attachment")
     public String
     sendMailAttachmentToTeacher(@RequestBody CreateEmailDetailRequest details)
@@ -86,6 +93,7 @@ public class EmailController {
         return status;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/student")
     public String
     sendMailToStudent(@RequestBody CreateEmailDetailRequest details)
@@ -97,6 +105,7 @@ public class EmailController {
         return status;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/student/attachment")
     public String
     sendMailAttachmentToStudent(@RequestBody CreateEmailDetailRequest details)
@@ -108,6 +117,7 @@ public class EmailController {
         return status;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/class/attachment/{id}")
     public String
     sendMailWithAttachmentByClass(@PathVariable Long id, @RequestBody CreateEmailDetailRequest details)
@@ -120,6 +130,7 @@ public class EmailController {
     }
  
     // Sending email with attachment
+    @CrossOrigin
     @PostMapping("/sendMailWithAttachment")
     public String sendMailWithAttachment(
         @RequestBody EmailDetails details)
