@@ -34,6 +34,12 @@ public class ExerciseController {
     }
     
     @CrossOrigin
+    @GetMapping(value = "/class-student/{class_id}/{student_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseBySectionId(@PathVariable("class_id") Long class_id, @PathVariable("student_id") Long student_id) {
+        return ResponseEntity.ok().body(exerciseService.getAllExerciseByClassAndStudent(class_id, student_id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/section/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseBySectionId(@PathVariable Long id) {
         return ResponseEntity.ok().body(exerciseService.getAllExerciseBySectionId(id));
