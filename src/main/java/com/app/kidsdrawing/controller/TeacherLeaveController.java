@@ -38,7 +38,13 @@ public class TeacherLeaveController {
     @GetMapping(value = "/class/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherLeave(@PathVariable Long id) {
         return ResponseEntity.ok().body(teacherLeaveService.getTeacherLeaveByClassId(id));
-    } 
+    }
+    
+    @CrossOrigin
+    @GetMapping(value = "/teacher/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherLeaveByTeacher(@PathVariable Long id) {
+        return ResponseEntity.ok().body(teacherLeaveService.getTeacherLeaveByTeacher(id));
+    }
 
     @CrossOrigin
     @PostMapping

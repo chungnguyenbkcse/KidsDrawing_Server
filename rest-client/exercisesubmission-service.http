@@ -66,3 +66,9 @@ GET  {{rest}}/exercise-submission/exercise/1
 # @name get_contest
 
 GET  {{rest}}/exercise-submission/class/23
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercise-submission/student/8

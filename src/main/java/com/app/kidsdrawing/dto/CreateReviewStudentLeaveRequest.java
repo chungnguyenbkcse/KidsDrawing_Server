@@ -5,6 +5,5 @@ import lombok.Data;
 
 @Data
 public class CreateReviewStudentLeaveRequest {
-    private Long reviewer_id;
     private String status;
 }

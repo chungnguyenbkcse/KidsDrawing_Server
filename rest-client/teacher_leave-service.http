@@ -21,11 +21,11 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "section_id": 66,
-    "teacher_id": 7,
-    "class_id": 9,
-    "substitute_teacher_id": 6,
-    "description": "<p>hfakfakjfa</p>"
+    "section_id": 42,
+    "teacher_id": 8,
+    "class_id": 23,
+    "substitute_teacher_id": 9,
+    "description": "<p>Yêu cầu dạy thay lớp</p>"
 }
 
 ### GET TEACHER GRADE semester ACTION ###
@@ -42,7 +42,7 @@ GET {{rest}}/teacher-leave
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 
-GET {{rest}}/teacher-leave/class/9
+GET {{rest}}/teacher-leave/teacher/2
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester

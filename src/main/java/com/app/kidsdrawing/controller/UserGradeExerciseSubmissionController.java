@@ -64,6 +64,12 @@ public class UserGradeExerciseSubmissionController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/class-student/{class_id}/{student_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByStudentAndClass(@PathVariable("class_id") Long class_id, @PathVariable("student_id") Long student_id) {
+        return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByStudentAndClass(class_id, student_id));
+    }
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserGradeExerciseSubmission(@RequestBody CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
         Long userGradeExerciseSubmissionId = userGradeExerciseSubmissionService.createUserGradeExerciseSubmission(createUserGradeExerciseSubmissionRequest);

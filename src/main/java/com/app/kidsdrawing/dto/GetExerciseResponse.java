@@ -19,6 +19,7 @@ public class GetExerciseResponse {
     private String section_name;
     private String name;
     private String description;
+    private LocalDateTime deadline;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

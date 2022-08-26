@@ -60,6 +60,9 @@ public class Exercise {
     @CreationTimestamp
     private LocalDateTime create_time = LocalDateTime.now();
 
+    @Column(name = "deadline")
+    private LocalDateTime deadline;
+
     @Builder.Default()
     @Column(name = "update_time")
     @UpdateTimestamp

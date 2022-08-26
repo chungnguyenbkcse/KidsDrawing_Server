@@ -47,6 +47,11 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
             GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                 .student_id(content.getStudent().getId())
                 .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                .time_submit(content.getExerciseSubmission().getUpdate_time())
+                .image_url(content.getExerciseSubmission().getImage_url())
+                .description(content.getExerciseSubmission().getExercise().getDescription())
+                .deadline(content.getExerciseSubmission().getExercise().getDeadline())
                 .exercise_submission_id(content.getExerciseSubmission().getId())
                 .feedback(content.getFeedback())
                 .score(content.getScore())
@@ -70,6 +75,11 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .image_url(content.getExerciseSubmission().getImage_url())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
                     .time(content.getTime())
@@ -93,6 +103,11 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .image_url(content.getExerciseSubmission().getImage_url())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
                     .time(content.getTime())
@@ -116,6 +131,11 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .image_url(content.getExerciseSubmission().getImage_url())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
                     .time(content.getTime())
@@ -139,6 +159,11 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .image_url(content.getExerciseSubmission().getImage_url())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
                     .time(content.getTime())
@@ -162,6 +187,11 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .image_url(content.getExerciseSubmission().getImage_url())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
                     .time(content.getTime())
@@ -190,6 +220,10 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
                     .time(content.getTime())
@@ -206,11 +240,44 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .student_id(student.getStudent().getId())
                     .student_name(student.getStudent().getFirstName() + student.getStudent().getLastName())
                     .exercise_submission_id((long) 0)
+                    .image_url("")
                     .feedback("")
+                    .description("")
                     .score((float) 0)
                     .time(time_now)
                     .build();
                 allUserGradeExerciseSubmissionResponses.add(userGradeExerciseSubmissionResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("UserGradeExerciseSubmission", allUserGradeExerciseSubmissionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndClass(Long class_id, Long student_id) {
+        List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
+        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
+        
+        List<User> student_graded = new ArrayList<>();
+        listUserGradeExerciseSubmission.forEach(content -> {
+            if (content.getExerciseSubmission().getExercise().getSection().getClass1().getId() == class_id && content.getExerciseSubmission().getStudent().getId() == student_id){
+                GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
+                    .student_id(content.getStudent().getId())
+                    .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                    .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .image_url(content.getExerciseSubmission().getImage_url())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
+                    .feedback(content.getFeedback())
+                    .score(content.getScore())
+                    .time(content.getTime())
+                    .build();
+                allUserGradeExerciseSubmissionResponses.add(userGradeExerciseSubmissionResponse);
+                student_graded.add(content.getStudent());
             }
         });
 
@@ -232,6 +299,11 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
             .exercise_submission_id(userGradeExerciseSubmission.getExerciseSubmission().getId())
             .feedback(userGradeExerciseSubmission.getFeedback())
             .score(userGradeExerciseSubmission.getScore())
+            .description(userGradeExerciseSubmission.getExerciseSubmission().getExercise().getDescription())
+            .image_url(userGradeExerciseSubmission.getExerciseSubmission().getImage_url())
+            .exercise_name(userGradeExerciseSubmission.getExerciseSubmission().getExercise().getName())
+            .time_submit(userGradeExerciseSubmission.getExerciseSubmission().getUpdate_time())
+            .deadline(userGradeExerciseSubmission.getExerciseSubmission().getExercise().getDeadline())
             .time(userGradeExerciseSubmission.getTime())
             .build();
     }
@@ -299,6 +371,8 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                 updatedUserGradeExerciseSubmission.setFeedback(createUserGradeExerciseSubmissionRequest.getFeedback());
                 updatedUserGradeExerciseSubmission.setExerciseSubmission(exerciseSubmission);
                 updatedUserGradeExerciseSubmission.setStudent(student);
+
+                userGradeExerciseSubmissionRepository.save(updatedUserGradeExerciseSubmission);
             }
         });
 

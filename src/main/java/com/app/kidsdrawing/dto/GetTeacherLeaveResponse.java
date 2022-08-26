@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class GetTeacherLeaveResponse {
     private Long id;
     private Long section_id;
+    private int section_number;
     private String section_name;
     private Long class_id;
     private String class_name;

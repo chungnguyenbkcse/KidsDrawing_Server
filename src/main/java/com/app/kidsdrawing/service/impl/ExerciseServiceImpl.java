@@ -51,6 +51,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                 .level_id(content.getExerciseLevel().getId())
                 .name(content.getName())
                 .description(content.getDescription())
+                .deadline(content.getDeadline())
                 .create_time(content.getCreate_time())
                 .update_time(content.getUpdate_time())
                 .build();
@@ -95,6 +96,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .section_name(ele.getExercise().getSection().getName())
                     .name(ele.getExercise().getName())
                     .description(ele.getExercise().getDescription())
+                    .deadline(ele.getExercise().getDeadline())
                     .create_time(ele.getExercise().getCreate_time())
                     .update_time(ele.getExercise().getUpdate_time())
                     .build();
@@ -112,6 +114,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .section_name(ele.getSection().getName())
                     .name(ele.getName())
                     .description(ele.getDescription())
+                    .deadline(ele.getDeadline())
                     .create_time(ele.getCreate_time())
                     .update_time(ele.getUpdate_time())
                     .build();
@@ -139,6 +142,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .level_name(content.getExerciseLevel().getWeight().toString())
                     .section_name(content.getSection().getName())
                     .name(content.getName())
+                    .deadline(content.getDeadline())
                     .description(content.getDescription())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -167,6 +171,7 @@ public class ExerciseServiceImpl implements ExerciseService{
             .section_name(exercise.getSection().getName())
             .name(exercise.getName())
             .description(exercise.getDescription())
+            .deadline(exercise.getDeadline())
             .create_time(exercise.getCreate_time())
             .update_time(exercise.getUpdate_time())
             .build();
@@ -190,6 +195,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                 .exerciseLevel(exercise_level)
                 .name(createExerciseRequest.getName())
                 .description(createExerciseRequest.getDescription())
+                .deadline(createExerciseRequest.getDeadline())
                 .build();
         exerciseRepository.save(savedExercise);
 
@@ -228,6 +234,8 @@ public class ExerciseServiceImpl implements ExerciseService{
         updatedExercise.setDescription(createExerciseRequest.getDescription());
         updatedExercise.setSection(section);
         updatedExercise.setExerciseLevel(exercise_level);
+        updatedExercise.setDeadline(createExerciseRequest.getDeadline());
+        exerciseRepository.save(updatedExercise);
 
         return updatedExercise.getId();
     }

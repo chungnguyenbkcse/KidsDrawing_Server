@@ -49,6 +49,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
                 .reviewer_id(content.getReviewer().getId())
                 .section_id(content.getSection().getId())
+                .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
                 .class_id(content.getClass1().getId())
                 .class_name(content.getClass1().getName())
@@ -68,6 +69,38 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getTeacherLeaveByTeacher(Long id) {
+        List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
+        List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
+        listTeacherLeave.forEach(content -> {
+            if (content.getSubstitute_teacher().getId() == id) {
+                GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
+                    .id(content.getId())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                    .reviewer_id(content.getReviewer().getId())
+                    .section_id(content.getSection().getId())
+                    .section_number(content.getSection().getNumber())
+                    .section_name(content.getSection().getName())
+                    .class_id(content.getClass1().getId())
+                    .class_name(content.getClass1().getName())
+                    .substitute_teacher_id(content.getSubstitute_teacher().getId())
+                    .substitute_teacher_name(content.getSubstitute_teacher().getFirstName() + " " + content.getSubstitute_teacher().getLastName())
+                    .status(content.getStatus())
+                    .description(content.getDescription())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allTeacherLeaveResponses.add(TeacherLeaveResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("teacher_leave", allTeacherLeaveResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getTeacherLeaveByClassId(Long id) {
         List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
         List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
@@ -79,6 +112,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                     .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
                     .reviewer_id(content.getReviewer().getId())
                     .section_id(content.getSection().getId())
+                    .section_number(content.getSection().getNumber())
                     .section_name(content.getSection().getName())
                     .class_id(content.getClass1().getId())
                     .class_name(content.getClass1().getName())
@@ -113,6 +147,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             .section_id(teacherLeave.getSection().getId())
             .section_name(teacherLeave.getSection().getName())
             .class_id(teacherLeave.getClass1().getId())
+            .section_number(teacherLeave.getSection().getNumber())
             .class_name(teacherLeave.getClass1().getName())
             .substitute_teacher_id(teacherLeave.getSubstitute_teacher().getId())
             .substitute_teacher_name(teacherLeave.getSubstitute_teacher().getFirstName()  + " " + teacherLeave.getSubstitute_teacher().getLastName())
@@ -128,6 +163,11 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
         Optional <User> teacherOpt = userRepository.findById(createTeacherLeaveRequest.getTeacher_id());
         User teacher = teacherOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user_teacher.not_found");
+        });
+
+        Optional <User> reivewerOpt = userRepository.findById(createTeacherLeaveRequest.getTeacher_id());
+        User reviewer = reivewerOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 
@@ -150,6 +190,8 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 .class1(classes)
                 .section(section)
                 .teacher(teacher)
+                .reviewer(reviewer)
+                .status("Not approved now")
                 .substitute_teacher(substitute_teacher)
                 .description(createTeacherLeaveRequest.getDescription())
                 .build();
@@ -201,6 +243,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         updatedTeacherLeave.setTeacher(teacher);
         updatedTeacherLeave.setSubstitute_teacher(substitute_teacher);
         updatedTeacherLeave.setDescription(createTeacherLeaveRequest.getDescription());
+        teacherLeaveRepository.save(updatedTeacherLeave);
 
         return updatedTeacherLeave.getId();
     }
@@ -212,13 +255,8 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
 
-        Optional <User> reviewerOpt = userRepository.findById(createReviewTeacherLeaveRequest.getReviewer_id());
-        User reviewer = reviewerOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_reviewer.not_found");
-        });
-
         updatedTeacherLeave.setStatus(createReviewTeacherLeaveRequest.getStatus());
-        updatedTeacherLeave.setReviewer(reviewer);
+        teacherLeaveRepository.save(updatedTeacherLeave);
 
         return updatedTeacherLeave.getId();
     }

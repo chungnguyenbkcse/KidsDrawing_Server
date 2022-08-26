@@ -17,13 +17,14 @@ Content-Type: application/json
 # @name create_student_register_join_semester
 
 POST {{rest}}/student-leave
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "section_id": 1,
-    "student_id": 1,
-    "class_id": 18,
-    "description": ""
+    "section_id": 42,
+    "student_id": 8,
+    "class_id": 23,
+    "description": "Em bị ốm"
 }
 
 ### GET student GRADE semester ACTION ###
@@ -35,6 +36,17 @@ GET {{rest}}/student-leave/1
 # @name get_all_user_grade_semester
 
 GET {{rest}}/student-leave
+
+
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/student-leave/class-student/23/8
+
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/student-leave/teacher/2
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
