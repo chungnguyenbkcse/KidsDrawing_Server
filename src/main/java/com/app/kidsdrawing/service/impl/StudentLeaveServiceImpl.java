@@ -94,6 +94,35 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(Long class_id, Long student_id) {
+        List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
+        listStudentLeave.forEach(content -> {
+            if (content.getClass1().getId() == class_id && content.getStudent().getId() == student_id) {
+                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                    .id(content.getId())
+                    .student_id(content.getStudent().getId())
+                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .reviewer_id(content.getReviewer().getId())
+                    .section_id(content.getSection().getId())
+                    .section_name(content.getSection().getName())
+                    .class_id(content.getClass1().getId())
+                    .class_name(content.getClass1().getName())
+                    .status(content.getStatus())
+                    .description(content.getDescription())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allStudentLeaveResponses.add(StudentLeaveResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("student_leave", allStudentLeaveResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Override
     public GetStudentLeaveResponse getStudentLeaveById(Long id) {
         Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById(id);

@@ -122,7 +122,7 @@ public class ExerciseServiceImpl implements ExerciseService{
 
         Map<String, Object> response = new HashMap<>();
         response.put("exercise_not_submit", allExerciseNotSubmitResponses);
-        response.put("exercise_submited", allExerciseSubmitedResponses);
+        response.put("exercise_submitted", allExerciseSubmitedResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
