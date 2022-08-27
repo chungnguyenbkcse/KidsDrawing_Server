@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.app.kidsdrawing.dto.CreateTutorialAdminRequest;
 import com.app.kidsdrawing.dto.CreateTutorialRequest;
 import com.app.kidsdrawing.dto.GetTutorialResponse;
 import com.app.kidsdrawing.entity.Tutorial;
@@ -44,6 +45,7 @@ public class TutorialServiceImpl implements TutorialService{
                 .section_id(content.getSection().getId())
                 .creator_id(content.getCreator().getId())
                 .name(content.getName())
+                .status(content.getStatus())
                 .description(content.getDescription())
                 .create_time(content.getCreate_time())
                 .update_time(content.getUpdate_time())
@@ -67,6 +69,7 @@ public class TutorialServiceImpl implements TutorialService{
                     .section_id(content.getSection().getId())
                     .creator_id(content.getCreator().getId())
                     .name(content.getName())
+                    .status(content.getStatus())
                     .description(content.getDescription())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -91,6 +94,7 @@ public class TutorialServiceImpl implements TutorialService{
                     .section_id(content.getSection().getId())
                     .creator_id(content.getCreator().getId())
                     .name(content.getName())
+                    .status(content.getStatus())
                     .description(content.getDescription())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -115,6 +119,7 @@ public class TutorialServiceImpl implements TutorialService{
                     .section_id(content.getSection().getId())
                     .creator_id(content.getCreator().getId())
                     .name(content.getName())
+                    .status(content.getStatus())
                     .description(content.getDescription())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -140,6 +145,7 @@ public class TutorialServiceImpl implements TutorialService{
             .section_id(tutorial.getSection().getId())
             .creator_id(tutorial.getCreator().getId())
             .name(tutorial.getName())
+            .status(tutorial.getStatus())
             .description(tutorial.getDescription())
             .create_time(tutorial.getCreate_time())
             .update_time(tutorial.getUpdate_time())
@@ -147,7 +153,7 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public Long createTutorial(CreateTutorialRequest createTutorialRequest) {
+    public GetTutorialResponse createTutorial(CreateTutorialRequest createTutorialRequest) {
 
         Optional <Section> sectionOpt = sectionRepository.findById(createTutorialRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
@@ -162,12 +168,22 @@ public class TutorialServiceImpl implements TutorialService{
         Tutorial savedTutorial = Tutorial.builder()
                 .section(section)
                 .creator(creator)
+                .status("Not approved now")
                 .name(createTutorialRequest.getName())
                 .description(createTutorialRequest.getDescription())
                 .build();
         tutorialRepository.save(savedTutorial);
 
-        return savedTutorial.getId();
+        return GetTutorialResponse.builder()
+            .id(savedTutorial.getId())
+            .section_id(savedTutorial.getSection().getId())
+            .creator_id(savedTutorial.getCreator().getId())
+            .name(savedTutorial.getName())
+            .status(savedTutorial.getStatus())
+            .description(savedTutorial.getDescription())
+            .create_time(savedTutorial.getCreate_time())
+            .update_time(savedTutorial.getUpdate_time())
+            .build();
     }
 
     
@@ -183,7 +199,7 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public Long updateTutorialById(Long id, CreateTutorialRequest createTutorialRequest) {
+    public Long updateTutorial(Long id, CreateTutorialRequest createTutorialRequest) {
         Optional<Tutorial> tutorialOpt = tutorialRepository.findById(id);
         Tutorial updatedTutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Tutorial.not_found");
@@ -204,6 +220,28 @@ public class TutorialServiceImpl implements TutorialService{
         updatedTutorial.setSection(section);
         updatedTutorial.setCreator(creator);
 
+        return updatedTutorial.getId();
+    }
+
+    @Override
+    public Long updateTutorialAdmin(Long id, CreateTutorialAdminRequest createTutorialAdminRequest) {
+        Optional<Tutorial> tutorialOpt = tutorialRepository.findById(id);
+        Tutorial updatedTutorial = tutorialOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Tutorial.not_found");
+        });
+
+        updatedTutorial.setStatus(createTutorialAdminRequest.getStatus());
+        tutorialRepository.save(updatedTutorial);
+
+        List<Tutorial> allTutorial = tutorialRepository.findAll();
+        if (updatedTutorial.getStatus() == "Approved"){
+            allTutorial.forEach(ele -> {
+                if (ele.getSection().getId() == updatedTutorial.getSection().getId() && ele.getCreator().getId() == (long)1){
+                    ele.setStatus("Not approved");
+                    tutorialRepository.save(ele);
+                }
+            });
+        }
         return updatedTutorial.getId();
     }
 }

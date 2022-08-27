@@ -194,6 +194,7 @@ public class SemesterServiceImpl implements SemesterService {
                     Tutorial savedTutorial = Tutorial.builder()
                         .section(savedSection)
                         .creator(creator)
+                        .status("Approved")
                         .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
                         .description(ele_section_tmp.getTutorialTemplates().getDescription())
                         .build();

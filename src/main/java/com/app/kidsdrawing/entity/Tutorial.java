@@ -51,6 +51,9 @@ public class Tutorial {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "status")
+    private String status;
+
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp
@@ -63,7 +66,4 @@ public class Tutorial {
 
     @OneToMany(mappedBy="tutorial")
     private Set<TutorialPage> tutorial_pages;
-
-    @OneToMany(mappedBy="tutorial")
-    private Set<TeacherRegisterTutorial> teacherRegisterTutorials;
 }

@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "teacher-1",
     "password": "12345678aA@"
 }
 

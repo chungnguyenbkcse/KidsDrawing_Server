@@ -16,6 +16,7 @@ public class GetTutorialResponse {
     private Long section_id;
     private Long creator_id;
     private String name;
+    private String status;
     private String description;
     private LocalDateTime create_time;
     private LocalDateTime update_time;

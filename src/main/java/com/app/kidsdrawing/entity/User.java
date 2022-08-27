@@ -137,12 +137,6 @@ public class User{
     @OneToMany(mappedBy="creator")
     private Set<Tutorial> tutorials;
 
-    @OneToMany(mappedBy="teacher")
-    private Set<TeacherRegisterTutorial> teacherRegisterTutorials;
-
-    @OneToMany(mappedBy="reviewer")
-    private Set<TeacherRegisterTutorial> teacherRegisterTutorials2;
-
     @OneToMany(mappedBy="student")
     private Set<ExerciseSubmission> exerciseSubmissions;
 

@@ -11,12 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetTeacherRegisterTutorialResponse {
+public class GetTeacherAskedAdjustTutorialResponse {
     private Long id;
     private Long reviewer_id;
     private Long teacher_id;
     private Long tutorial_id;
-    private Long tutorial_template_id;
+    private String tutorial_name;
+    private String teacher_name;
     private String status;
     private LocalDateTime time;
 }
