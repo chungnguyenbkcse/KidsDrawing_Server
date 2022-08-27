@@ -15,6 +15,10 @@ public class GetTutorialResponse {
     private Long id;
     private Long section_id;
     private Long creator_id;
+    private String creator_name;
+    private String class_name;
+    private Long class_id;
+    private int section_number;
     private String name;
     private String status;
     private String description;

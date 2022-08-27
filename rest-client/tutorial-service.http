@@ -15,27 +15,25 @@ Content-Type: application/json
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/tutorial/admin
+POST {{rest}}/tutorial
+Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "creator_id": 3,
-    "section_id": 1,
-    "name": "Giáo án buổi 3",
+    "creator_id": 8,
+    "section_id": 42,
+    "name": "Giáo án giới thiệu chỉnh sửa",
     "description": ""
 }
 
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/tutorial/teacher
+POST {{rest}}/tutorial/admin
 Content-Type: application/json
 
 {
-    "creator_id": 3,
-    "section_id": 1,
-    "name": "Giáo án buổi 1",
-    "description": ""
+    "status": "Approved"
 }
 
 ### 
