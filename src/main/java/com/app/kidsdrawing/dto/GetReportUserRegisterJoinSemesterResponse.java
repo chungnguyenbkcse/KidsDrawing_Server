@@ -15,8 +15,8 @@ public class GetReportUserRegisterJoinSemesterResponse {
     private Long id;
     private Long student_id;
     private String student_name;
-    private Long semester_course_id;
-    private String semester_course_name;
+    private Long semester_class_id;
+    private String semester_class_name;
     private Long payer_id;
     private String payer_name;
     private Float price;

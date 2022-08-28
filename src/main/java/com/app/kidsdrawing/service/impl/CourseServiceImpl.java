@@ -35,7 +35,7 @@ import com.app.kidsdrawing.repository.ClassRepository;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
-import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
+import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.CourseService;
@@ -53,7 +53,7 @@ public class CourseServiceImpl implements CourseService {
     private final ArtTypeRepository artTypeRepository;
     private final ArtLevelRepository artLevelRepository;
     private final ClassRepository classRepository;
-    private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
+    private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterCourseRepository;
     private final ScheduleRepository scheduleRepository;
@@ -217,7 +217,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourseByTeacherId(Long id) {
-        List<UserRegisterTeachSemester> listTeacherTeachSemester = teacherTeachSemesterRepository.findAll();
+        List<UserRegisterTeachSemester> listTeacherTeachSemester = userRegisterTeachSemesterRepository.findAll();
         
         // Danh sach dang ki day cua giao vien
         List<UserRegisterTeachSemester> allTeacherTeachSemesterResponses = new ArrayList<>();

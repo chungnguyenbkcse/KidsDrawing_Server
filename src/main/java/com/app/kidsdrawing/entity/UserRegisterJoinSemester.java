@@ -50,7 +50,7 @@ public class UserRegisterJoinSemester {
     private User payer;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "semester_course_id", referencedColumnName = "id")
+    @JoinColumn(name = "semester_class_id", referencedColumnName = "id")
     private SemesterClass semesterClass;
 
     @Builder.Default()

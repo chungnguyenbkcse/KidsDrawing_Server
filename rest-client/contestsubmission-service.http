@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "student-1",
     "password": "12345678aA@"
 }
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "student_id": 18,
+    "student_id": 20,
     "contest_id": 2,
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png"
 }

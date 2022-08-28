@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -40,7 +41,7 @@ import com.app.kidsdrawing.repository.HolidayRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.SectionTemplateRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
-import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
+import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
@@ -58,7 +59,7 @@ public class SemesterServiceImpl implements SemesterService {
 
     private final SemesterRepository semesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
-    private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
+    private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final ClassRepository classRepository;
     private final UserRepository userRepository;
     private final SectionTemplateRepository sectionTemplateRepository;
@@ -70,6 +71,8 @@ public class SemesterServiceImpl implements SemesterService {
     private final TutorialPageRepository tutorialPageRepository;
 
     private static int counter = 0;
+    private static int check_count = 0;
+    private static int number = 1;
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemester() {
         List<GetSemesterResponse> allSemesterResponses = new ArrayList<>();
@@ -132,26 +135,26 @@ public class SemesterServiceImpl implements SemesterService {
         });
 
         List<Course> allCourseResponses = new ArrayList<>();
-        //List<Course> pageCourse = courseRepository.findAll();
+        //List<Course> pageCourse = classRepository.findAll();
         List<SemesterClass> allSemesterClassResponses = new ArrayList<>();
         List<Schedule> allScheduleResponses = new ArrayList<>();
         //List<Schedule> pageSchedule = scheduleRepository.findAll();
         //List<LessonTime> pageLessonTime = lessonTimeRepository.findAll();
 
-        semester.getSemesterClass().forEach(semester_course -> {
-            allSemesterClassResponses.add(semester_course);
-            semester_course.getSchedules().forEach(ele -> {
+        semester.getSemesterClass().forEach(semester_class -> {
+            allSemesterClassResponses.add(semester_class);
+            semester_class.getSchedules().forEach(ele -> {
                 allScheduleResponses.add(ele);
             });
-            allCourseResponses.add(semester_course.getCourse());
+            allCourseResponses.add(semester_class.getCourse());
         });
 
         List<Class> listClass = classRepository.findAll();
         List<List<Class>> allClassOfSemesterClassResponses = new ArrayList<>();        
-        allSemesterClassResponses.forEach(semester_course -> {
+        allSemesterClassResponses.forEach(semester_class -> {
             List<Class> list_class = new ArrayList<>();
             listClass.forEach(ele_class -> {
-                if (ele_class.getTeachSemester().getSemesterClass().getId() == semester_course.getId()){
+                if (ele_class.getTeachSemester().getSemesterClass().getId() == semester_class.getId()){
                     list_class.add(ele_class);
                 }
             });
@@ -289,33 +292,10 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        List<Course> allCourseResponses = new ArrayList<>();
-        //List<Course> pageCourse = courseRepository.findAll();
-        List<SemesterClass> allSemesterClassResponses = new ArrayList<>();
-        List<Schedule> allScheduleResponses = new ArrayList<>();
-        //List<Schedule> pageSchedule = scheduleRepository.findAll();
-        //List<LessonTime> pageLessonTime = lessonTimeRepository.findAll();
+        Set<SemesterClass> allSemesterClassResponses = semester.getSemesterClass();
 
-        semester.getSemesterClass().forEach(semester_course -> {
-            allSemesterClassResponses.add(semester_course);
-            semester_course.getSchedules().forEach(ele -> {
-                allScheduleResponses.add(ele);
-            });
-            allCourseResponses.add(semester_course.getCourse());
-        });
-
-        List<Class> listClass = classRepository.findAll();
-        List<List<Class>> allClassOfSemesterClassResponses = new ArrayList<>();        
-        allSemesterClassResponses.forEach(semester_course -> {
-            List<Class> list_class = new ArrayList<>();
-            listClass.forEach(ele_class -> {
-                if (ele_class.getTeachSemester().getSemesterClass().getId() == semester_course.getId()){
-                    list_class.add(ele_class);
-                }
-            });
-            allClassOfSemesterClassResponses.add(list_class);
-        });
-
+        List<Class> listClassOfSemesterClass = new ArrayList<>();
+        
         createHolidayResquest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
                 .day(holiday)
@@ -330,50 +310,45 @@ public class SemesterServiceImpl implements SemesterService {
         });
 
         // Danh sách học sinh đăng kí học
-        List<UserRegisterJoinSemester> pageUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findAll();
         // Danh sách giáo viên đăng kí dạy
-        List<UserRegisterTeachSemester> pageUserRegisterTeachSemesters = teacherTeachSemesterRepository.findAll();
-        allSemesterClassResponses.forEach(semester_course -> {
+        check_count = 0;
+        number = 1;
+        allSemesterClassResponses.forEach(semester_class -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
-            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = new ArrayList<>();
-            pageUserRegisterJoinSemesters.forEach(user_register_join_semester -> {
-                if (user_register_join_semester.getSemesterClass().getId() == semester_course.getId()){
-                    allUserRegisterJoinSemesters.add(user_register_join_semester);
-                }
-            });
+            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(semester_class.getId());
 
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
-            List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = new ArrayList<>();
-            pageUserRegisterTeachSemesters.forEach(user_register_teach_semester -> {
-                if (user_register_teach_semester.getSemesterClass().getId() == semester_course.getId()){
-                    allUserRegisterTeachSemesters.add(user_register_teach_semester);
-                }
-            });
+            List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId());
 
             List<Integer> list_total_register_of_teacher = new ArrayList<>();
-            allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
-                counter = 0;
-                listClass.forEach(class_x -> {
-                    if (teacher_register_teach_semester.getTeacher().getId() == class_x.getTeachSemester().getId()){
-                        counter += 1;
-                    }
+            if (check_count == 0){
+                allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
+                    list_total_register_of_teacher.add(0);
                 });
-                list_total_register_of_teacher.add(counter);
-            });
+            }
+            else {
+                allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
+                    counter = 0;
+                    listClassOfSemesterClass.forEach(class_x -> {
+                        if (teacher_register_teach_semester.getTeacher().getId() == class_x.getTeachSemester().getTeacher().getId()){
+                            counter += 1;
+                        }
+                    });
+                    list_total_register_of_teacher.add(counter);
+                });
 
-            System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(allUserRegisterTeachSemesters.size()));
+                System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(allUserRegisterTeachSemesters.size()));
 
-            for (int i = 0; i < list_total_register_of_teacher.size(); i++) {
-                // Inner nested loop pointing 1 index ahead
-                for (int j = i + 1; j < list_total_register_of_teacher.size(); j++) {
-                    // Checking elements
-                    if (list_total_register_of_teacher.get(j) < list_total_register_of_teacher.get(i)) {
-                        Collections.swap(list_total_register_of_teacher, i, j);
-                        Collections.swap(allUserRegisterTeachSemesters, i, j);
+                for (int i = 0; i < list_total_register_of_teacher.size(); i++) {
+                    // Inner nested loop pointing 1 index ahead
+                    for (int j = i + 1; j < list_total_register_of_teacher.size(); j++) {
+                        // Checking elements
+                        if (list_total_register_of_teacher.get(j) < list_total_register_of_teacher.get(i)) {
+                            Collections.swap(list_total_register_of_teacher, i, j);
+                            Collections.swap(allUserRegisterTeachSemesters, i, j);
+                        }
                     }
                 }
-                // Printing sorted array elements
-                //System.out.print(arr[i] + " ");
             }
 
             System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(allUserRegisterJoinSemesters.size()));
@@ -398,47 +373,41 @@ public class SemesterServiceImpl implements SemesterService {
                         .user(creator)
                         .teachSemester(allUserRegisterTeachSemesters.get(i))
                         .security_code(key)
-                        .name(key)
+                        .name(semester_class.getName() + "-" +  number + " thuộc học kì " + semester.getNumber() + " năm học " + semester.getYear())
                         .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
                         .build();
                     classRepository.save(savedClass);
+                    number ++;
+                    listClassOfSemesterClass.add(savedClass);
 
-                    List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
-                    List<SectionTemplate> allSectionTemplate = new ArrayList<>();
-                    listSectionTemplate.forEach(section_template -> {
-                        if (section_template.getCourse().getId() == savedClass.getTeachSemester().getSemesterClass().getCourse().getId()){
-                            allSectionTemplate.add(section_template);
-                            section_template.getCourse().getNum_of_section();
-                        }
+                    SectionTemplate sectionTemplate = sectionTemplateRepository.findByCourseId(semester_class.getCourse().getId());
+                    
+                    Section savedSection = Section.builder()
+                        .class1(savedClass)
+                        .name(sectionTemplate.getName())
+                        .description(sectionTemplate.getDescription())
+                        .number(sectionTemplate.getNumber())
+                        .teaching_form(sectionTemplate.getTeaching_form())
+                        .build();
+                    sectionRepository.save(savedSection);
+                    
+                    Tutorial savedTutorial = Tutorial.builder()
+                        .section(savedSection)
+                        .creator(creator)
+                        .name("Giáo trình " + sectionTemplate.getTutorialTemplates().getName())
+                        .description(sectionTemplate.getTutorialTemplates().getDescription())
+                        .build();
+                    tutorialRepository.save(savedTutorial);
+                    
+                    sectionTemplate.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
+                        TutorialPage savedTutorialPage = TutorialPage.builder()
+                            .tutorial(savedTutorial)
+                            .name(tutorial_page.getName())
+                            .description(tutorial_page.getDescription())
+                            .number(tutorial_page.getNumber())
+                            .build();
+                        tutorialPageRepository.save(savedTutorialPage);
                     });
-                    allSectionTemplate.forEach(ele_section_tmp -> {
-                        Section savedSection = Section.builder()
-                            .class1(savedClass)
-                            .name(ele_section_tmp.getName())
-                            .description(ele_section_tmp.getDescription())
-                            .number(ele_section_tmp.getNumber())
-                            .teaching_form(ele_section_tmp.getTeaching_form())
-                            .build();
-                        sectionRepository.save(savedSection);
-                    
-                        Tutorial savedTutorial = Tutorial.builder()
-                            .section(savedSection)
-                            .creator(creator)
-                            .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
-                            .description(ele_section_tmp.getTutorialTemplates().getDescription())
-                            .build();
-                        tutorialRepository.save(savedTutorial);
-                    
-                        ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
-                            TutorialPage savedTutorialPage = TutorialPage.builder()
-                                .tutorial(savedTutorial)
-                                .name(tutorial_page.getName())
-                                .description(tutorial_page.getDescription())
-                                .number(tutorial_page.getNumber())
-                                .build();
-                            tutorialPageRepository.save(savedTutorialPage);
-                        });
-                    }); 
 
                     String msgBody = "Chúc mừng giáo viên "+ savedClass.getTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";
                     EmailDetails details = new EmailDetails(savedClass.getTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");
@@ -466,7 +435,7 @@ public class SemesterServiceImpl implements SemesterService {
                     });
                 }
                 else {
-                    String msgBody = "Xin thông báo giáo viên "+ allUserRegisterTeachSemesters.get(i).getTeacher().getFirstName() + " "+ allUserRegisterTeachSemesters.get(i).getTeacher().getLastName() + " đã không được phân công giảng dạy lớp " + semester_course.getName() + " trên KidsDrawing.\n ;ý do: Vì số lượng học sinh đăng kí không đủ để xếp lớp!\n Rất mong sự thông cảm của giáo viên!\n Chúng tôi trân thành cảm ơn bạn đã đăng kí!\n";
+                    String msgBody = "Xin thông báo giáo viên "+ allUserRegisterTeachSemesters.get(i).getTeacher().getFirstName() + " "+ allUserRegisterTeachSemesters.get(i).getTeacher().getLastName() + " đã không được phân công giảng dạy lớp " + semester_class.getName() + " trên KidsDrawing.\n ;ý do: Vì số lượng học sinh đăng kí không đủ để xếp lớp!\n Rất mong sự thông cảm của giáo viên!\n Chúng tôi trân thành cảm ơn bạn đã đăng kí!\n";
                     EmailDetails details = new EmailDetails(allUserRegisterTeachSemesters.get(i).getTeacher().getEmail(), msgBody, "Thông báo xếp lớp không thành công", "");
                     emailService.sendSimpleMail(details);
 
@@ -479,57 +448,7 @@ public class SemesterServiceImpl implements SemesterService {
                     }
                 }
             }
-
-            /* List<Class> listClass_ = classRepository.findAll();
-            List<List<Class>> allClassOfSemesterClassResponses_ = new ArrayList<>();        
-            List<Class> list_class_ = new ArrayList<>();
-            listClass_.forEach(ele_class -> {
-                if (ele_class.getTeachSemester().getSemesterClass().getId() == semester_course.getId()){
-                    list_class_.add(ele_class);
-                }
-            });
-            allClassOfSemesterClassResponses_.add(list_class_);
-
-            allClassOfSemesterClassResponses_.forEach( list_class -> {
-                List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
-                List<SectionTemplate> allSectionTemplate = new ArrayList<>();
-                listSectionTemplate.forEach(section_template -> {
-                    if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterClass().getCourse().getId()){
-                        allSectionTemplate.add(section_template);
-                        section_template.getCourse().getNum_of_section();
-                    }
-                });
-                list_class.forEach(ele -> {
-                    allSectionTemplate.forEach(ele_section_tmp -> {
-                        Section savedSection = Section.builder()
-                            .class1(ele)
-                            .name(ele_section_tmp.getName())
-                            .description(ele_section_tmp.getDescription())
-                            .number(ele_section_tmp.getNumber())
-                            .teaching_form(ele_section_tmp.getTeaching_form())
-                            .build();
-                        sectionRepository.save(savedSection);
-
-                        Tutorial savedTutorial = Tutorial.builder()
-                            .section(savedSection)
-                            .creator(creator)
-                            .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
-                            .description(ele_section_tmp.getTutorialTemplates().getDescription())
-                            .build();
-                        tutorialRepository.save(savedTutorial);
-
-                        ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
-                            TutorialPage savedTutorialPage = TutorialPage.builder()
-                                .tutorial(savedTutorial)
-                                .name(tutorial_page.getName())
-                                .description(tutorial_page.getDescription())
-                                .number(tutorial_page.getNumber())
-                                .build();
-                            tutorialPageRepository.save(savedTutorialPage);
-                        });
-                    });
-                });
-            }); */
+            check_count ++;
         });
         return id;
     }

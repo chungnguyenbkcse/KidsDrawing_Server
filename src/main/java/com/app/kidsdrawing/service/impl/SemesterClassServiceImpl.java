@@ -23,7 +23,7 @@ import com.app.kidsdrawing.exception.SemesterClassAlreadyCreateException;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
-import com.app.kidsdrawing.repository.TeacherTeachSemesterRepository;
+import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.service.SemesterClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private final SemesterClassRepository semesterClassRepository;
     private final SemesterRepository semesterRepository;
     private final CourseRepository courseRepository;
-    private final TeacherTeachSemesterRepository teacherTeachSemesterRepository;
+    private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClass() {
@@ -218,7 +218,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
 
-        List<UserRegisterTeachSemester> pageUserRegisterTeachSemesters = teacherTeachSemesterRepository.findAll();
+        List<UserRegisterTeachSemester> pageUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findAll();
         List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = new ArrayList<>();
         pageUserRegisterTeachSemesters.forEach(user_register_teach_semester -> {
             if (user_register_teach_semester.getSemesterClass().getId() == id){

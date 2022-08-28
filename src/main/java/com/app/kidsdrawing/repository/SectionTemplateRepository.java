@@ -10,6 +10,7 @@ import com.app.kidsdrawing.entity.SectionTemplate;
 @Repository
 public interface SectionTemplateRepository extends JpaRepository <SectionTemplate, Long>{
     Page<SectionTemplate> findAll(Pageable pageable);
+    SectionTemplate findByCourseId(Long id);
     boolean existsById(Long id);
     void deleteById(Long id);
 }
