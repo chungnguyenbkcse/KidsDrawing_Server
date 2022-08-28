@@ -32,9 +32,9 @@ public class UserGradeContestSubmission {
     UserGradeContestSubmissionKey id;
 
     @ManyToOne
-    @MapsId("studentId")
-    @JoinColumn(name = "student_id")
-    User student;
+    @MapsId("teacherId")
+    @JoinColumn(name = "teacher_id")
+    User teacher;
 
     @ManyToOne
     @MapsId("submissionId")

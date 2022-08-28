@@ -33,9 +33,9 @@ public class UserGradeExerciseSubmission {
     UserGradeExerciseSubmissionKey id;
 
     @OneToOne
-    @MapsId("studentId")
-    @JoinColumn(name = "student_id")
-    User student;
+    @MapsId("teacherId")
+    @JoinColumn(name = "teacher_id")
+    User teacher;
 
     @ManyToOne
     @MapsId("submissionId")

@@ -18,11 +18,12 @@ Content-Type: application/json
 
 POST {{rest}}/contest-submission
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
-    "student_id": 1,
-    "contest_id": 1,
-    "image_url": ""
+    "student_id": 18,
+    "contest_id": 2,
+    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png"
 }
 
 ### CREATE CONTEST ACTION ###

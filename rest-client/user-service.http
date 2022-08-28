@@ -9,99 +9,11 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "student-1",
     "password": "12345678aA@",
-    "email": "student-1_1@gmail.com",
-    "firstName": null,
-    "lastName": null,
-    "dateOfBirth": null,
-    "profile_image_url": null,
-    "sex": null,
-    "phone": null,
-    "address": null,
-    "parent_id": 6,
-    "roleNames": ["STUDENT_USER"]
-}
-
-### REGISTER ACTION ###
-
-# @name student_register
-
-POST {{rest}}/registration
-Content-Type: application/json
-
-{
-    "username": "student-1_2",
-    "password": "12345678aA@",
-    "email": "student-1_2@gmail.com",
-    "firstName": null,
-    "lastName": null,
-    "dateOfBirth": null,
-    "profile_image_url": null,
-    "sex": null,
-    "phone": null,
-    "address": null,
-    "parent_id": 6,
-    "roleNames": ["STUDENT_USER"]
-}
-
-### REGISTER ACTION ###
-
-# @name student_register
-
-POST {{rest}}/registration
-Content-Type: application/json
-
-{
-    "username": "student-2_1",
-    "password": "12345678aA@",
-    "email": "student-2_1@gmail.com",
-    "firstName": null,
-    "lastName": null,
-    "dateOfBirth": null,
-    "profile_image_url": null,
-    "sex": null,
-    "phone": null,
-    "address": null,
-    "parent_id": 7,
-    "roleNames": ["STUDENT_USER"]
-}
-
-### REGISTER ACTION ###
-
-# @name student_register
-
-POST {{rest}}/registration
-Content-Type: application/json
-
-{
-    "username": "student-2_2",
-    "password": "12345678aA@",
-    "email": "student-2_2@gmail.com",
-    "firstName": null,
-    "lastName": null,
-    "dateOfBirth": null,
-    "profile_image_url": null,
-    "sex": null,
-    "phone": null,
-    "address": null,
-    "parent_id": 7,
-    "roleNames": ["STUDENT_USER"]
-}
-
-### REGISTER ACTION ###
-
-# @name student_register
-
-POST {{rest}}/registration
-Content-Type: application/json
-
-{
-    "username": "student-3_1",
-    "password": "12345678aA@",
-    "email": "student-3_1@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "email": "student-1@gmail.com",
+    "firstName": "student",
+    "lastName": "1",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -119,11 +31,11 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-3_2",
+    "username": "student-2",
     "password": "12345678aA@",
-    "email": "student-3_2@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "email": "student-2@gmail.com",
+    "firstName": "student",
+    "lastName": "2",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -141,11 +53,11 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "thanhtrung",
-    "password": "a8726357",
-    "email": "thanhtrunga370qx@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "username": "student-3",
+    "password": "12345678aA@",
+    "email": "student-3@gmail.com",
+    "firstName": "student",
+    "lastName": "3",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -163,17 +75,332 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-20",
+    "username": "student-4",
     "password": "12345678aA@",
-    "email": "student-20@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "email": "student-4@gmail.com",
+    "firstName": "student",
+    "lastName": "4",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 9,
+    "roleNames": ["STUDENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-5",
+    "password": "12345678aA@",
+    "email": "student-5@gmail.com",
+    "firstName": "student",
+    "lastName": "5",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 10,
+    "roleNames": ["STUDENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-6",
+    "password": "12345678aA@",
+    "email": "student-6@gmail.com",
+    "firstName": "student",
+    "lastName": "6",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 10,
+    "roleNames": ["STUDENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-7",
+    "password": "a8726357",
+    "email": "thanhtrunga370qx@gmail.com",
+    "firstName": "student",
+    "lastName": "7",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
     "phone": null,
     "address": null,
     "parent_id": 11,
+    "roleNames": ["STUDENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-8",
+    "password": "12345678aA@",
+    "email": "student-8@gmail.com",
+    "firstName": "student",
+    "lastName": "8",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 11,
+    "roleNames": ["STUDENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-9",
+    "password": "12345678aA@",
+    "email": "student-9@gmail.com",
+    "firstName": "student",
+    "lastName": "9",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 12,
+    "roleNames": ["STUDENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-10",
+    "password": "12345678aA@",
+    "email": "student-10@gmail.com",
+    "firstName": "student",
+    "lastName": "10",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 12,
+    "roleNames": ["STUDENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-11",
+    "password": "12345678aA@",
+    "email": "student-11@gmail.com",
+    "firstName": "student",
+    "lastName": "11",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 13,
+    "roleNames": ["STUDENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-12",
+    "password": "12345678aA@",
+    "email": "student-12@gmail.com",
+    "firstName": "student",
+    "lastName": "12",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 13,
+    "roleNames": ["STUDENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-13",
+    "password": "12345678aA@",
+    "email": "student-13@gmail.com",
+    "firstName": "student",
+    "lastName": "13",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 14,
+    "roleNames": ["STUDENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-14",
+    "password": "12345678aA@",
+    "email": "student-14@gmail.com",
+    "firstName": "student",
+    "lastName": "14",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 14,
+    "roleNames": ["STUDENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-16",
+    "password": "12345678aA@",
+    "email": "student-16@gmail.com",
+    "firstName": "student",
+    "lastName": "16",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 15,
+    "roleNames": ["STUDENT_USER"]
+}
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-17",
+    "password": "12345678aA@",
+    "email": "student-17@gmail.com",
+    "firstName": "student",
+    "lastName": "17",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 16,
+    "roleNames": ["STUDENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-18",
+    "password": "12345678aA@",
+    "email": "student-18@gmail.com",
+    "firstName": "student",
+    "lastName": "18",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 16,
+    "roleNames": ["STUDENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-20",
+    "password": "12345678aA@",
+    "email": "student-20@gmail.com",
+    "firstName": "student",
+    "lastName": "20",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 17,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -188,8 +415,8 @@ Content-Type: application/json
     "username": "parent-1",
     "password": "a8726357",
     "email": "chungnguyen10012000@gmail.com",
-    "firstName": "Chung",
-    "lastName": "Nguyen",
+    "firstName": "parent",
+    "lastName": "1",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -208,8 +435,8 @@ Content-Type: application/json
     "username": "parent-2",
     "password": "12345678aA@",
     "email": "parent-2@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "2",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -229,8 +456,8 @@ Content-Type: application/json
     "username": "parent-3",
     "password": "12345678aA@",
     "email": "parent-3@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "3",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -250,8 +477,8 @@ Content-Type: application/json
     "username": "parent-4",
     "password": "12345678aA@",
     "email": "parent-4@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "4",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -271,8 +498,8 @@ Content-Type: application/json
     "username": "parent-5",
     "password": "12345678aA@",
     "email": "parent-5@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "5",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -293,8 +520,8 @@ Content-Type: application/json
     "username": "parent-6",
     "password": "12345678aA@",
     "email": "parent-6@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "6",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -315,8 +542,8 @@ Content-Type: application/json
     "username": "parent-7",
     "password": "12345678aA@",
     "email": "parent-7@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "7",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -336,8 +563,8 @@ Content-Type: application/json
     "username": "parent-8",
     "password": "12345678aA@",
     "email": "parent-8@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "8",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -358,8 +585,8 @@ Content-Type: application/json
     "username": "parent-9",
     "password": "12345678aA@",
     "email": "parent-9@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "9",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -380,8 +607,8 @@ Content-Type: application/json
     "username": "parent-10",
     "password": "12345678aA@",
     "email": "parent-10@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "parent",
+    "lastName": "10",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -400,9 +627,9 @@ Content-Type: application/json
 {
     "username": "admin",
     "password": "12345678aA@",
-    "email": "admin@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "email": "kidsdrawing@gmail.com",
+    "firstName": "admin",
+    "lastName": "1",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -421,8 +648,8 @@ Content-Type: application/json
     "username": "teacher-1",
     "password": "12345678aA@",
     "email": "teacher-1@gmail.com",
-    "firstName": "Le",
-    "lastName": "Thao",
+    "firstName": "teache",
+    "lastName": "1",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -441,8 +668,8 @@ Content-Type: application/json
     "username": "teacher-2",
     "password": "12345678aA@",
     "email": "teacher-2@gmail.com",
-    "firstName": "Thanh",
-    "lastName": "Trung",
+    "firstName": "teacher",
+    "lastName": "2",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -461,8 +688,8 @@ Content-Type: application/json
     "username": "teacher-3",
     "password": "12345678aA@",
     "email": "teacher-3@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "teacher",
+    "lastName": "3",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -481,8 +708,8 @@ Content-Type: application/json
     "username": "teacher-4",
     "password": "12345678aA@",
     "email": "teacher-4@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "teacher",
+    "lastName": "4",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -501,8 +728,8 @@ Content-Type: application/json
     "username": "teacher-5",
     "password": "12345678aA@",
     "email": "teacher-5@gmail.com",
-    "firstName": null,
-    "lastName": null,
+    "firstName": "teacher",
+    "lastName": "5",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,

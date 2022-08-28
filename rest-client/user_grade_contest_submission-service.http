@@ -1,16 +1,30 @@
-v
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "teacher-1",
+    "password": "12345678aA@"
+}
+
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
 
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
 POST {{rest}}/user-grade-contest-submission
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
-    "student_id": 1,
+    "teacher_id": 2,
     "contest_submission_id": 1,
-    "feedback": "",
-    "score": 1
+    "feedback": "Bài làm tốt",
+    "score": 9
 }
 
 ### CREATE CONTEST ACTION ###
@@ -18,12 +32,13 @@ Content-Type: application/json
 
 POST {{rest}}/user-grade-contest-submission
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
-    "student_id": 1,
-    "contest_submission_id": 1,
-    "feedback": "",
-    "score": 1
+    "teacher_id": 7,
+    "contest_submission_id": 3,
+    "feedback": "Bai lam kha",
+    "score": 7
 }
 
 ### 
@@ -31,9 +46,10 @@ Content-Type: application/json
 
 PUT {{rest}}/user-grade-contest-submission/1/1
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
-    "student_id": 1,
+    "teacher_id": 1,
     "contest_submission_id": 1,
     "feedback": "xx",
     "score": 10
@@ -42,4 +58,10 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/user-grade-contest-submission
+GET  {{rest}}/user-grade-contest-submission/contest/2
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-grade-contest-submission/teacher/2

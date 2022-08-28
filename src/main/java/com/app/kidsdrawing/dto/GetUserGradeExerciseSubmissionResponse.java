@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class GetUserGradeExerciseSubmissionResponse {
     private Long student_id;
     private String student_name;
+    private Long teacher_id;
+    private String teacher_name;
     private String exercise_name;
     private LocalDateTime time_submit;
     private LocalDateTime deadline;

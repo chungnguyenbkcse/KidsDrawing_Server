@@ -41,7 +41,36 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
         listUserGradeContestSubmission.forEach(content -> {
             GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                .student_id(content.getStudent().getId())
+                .teacher_id(content.getTeacher().getId())
+                .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                .student_id(content.getContestSubmission().getStudent().getId())
+                .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                .contest_id(content.getContestSubmission().getContest().getId())
+                .contest_name(content.getContestSubmission().getContest().getName())
+                .contest_submission_id(content.getContestSubmission().getId())
+                .feedback(content.getFeedback())
+                .score(content.getScore())
+                .time(content.getTime())
+                .build();
+            allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("UserGradeContestSubmission", allUserGradeContestSubmissionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByTeacherId(Long id) {
+        List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
+        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByTeacherId(id);
+        listUserGradeContestSubmission.forEach(content -> {
+            GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                .teacher_id(content.getTeacher().getId())
+                .student_id(content.getContestSubmission().getStudent().getId())
+                .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                .contest_id(content.getContestSubmission().getContest().getId())
+                .contest_name(content.getContestSubmission().getContest().getName())
                 .contest_submission_id(content.getContestSubmission().getId())
                 .feedback(content.getFeedback())
                 .score(content.getScore())
@@ -60,9 +89,13 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
         listUserGradeContestSubmission.forEach(content -> {
-            if (content.getStudent().getId() == id){
+            if (content.getContestSubmission().getStudent().getId() == id){
                 GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
+                    .teacher_id(content.getTeacher().getId())
+                    .student_id(content.getContestSubmission().getStudent().getId())
+                    .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                    .contest_id(content.getContestSubmission().getContest().getId())
+                    .contest_name(content.getContestSubmission().getContest().getName())
                     .contest_submission_id(content.getContestSubmission().getId())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
@@ -91,7 +124,11 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         listUserGradeContestSubmission.forEach(content -> {
             if (allContestSubmissionResponses.contains(content.getContestSubmission())){
                 GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
+                    .teacher_id(content.getTeacher().getId())
+                    .student_id(content.getContestSubmission().getStudent().getId())
+                    .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                    .contest_id(content.getContestSubmission().getContest().getId())
+                    .contest_name(content.getContestSubmission().getContest().getName())
                     .contest_submission_id(content.getContestSubmission().getId())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
@@ -114,7 +151,11 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         });
 
         return GetUserGradeContestSubmissionResponse.builder()
-            .student_id(userGradeContestSubmission.getStudent().getId())
+            .teacher_id(userGradeContestSubmission.getTeacher().getId())
+            .student_id(userGradeContestSubmission.getContestSubmission().getStudent().getId())
+            .student_name(userGradeContestSubmission.getContestSubmission().getStudent().getFirstName() + " " + userGradeContestSubmission.getContestSubmission().getStudent().getLastName())
+            .contest_id(userGradeContestSubmission.getContestSubmission().getContest().getId())
+            .contest_name(userGradeContestSubmission.getContestSubmission().getContest().getName())
             .contest_submission_id(userGradeContestSubmission.getContestSubmission().getId())
             .feedback(userGradeContestSubmission.getFeedback())
             .score(userGradeContestSubmission.getScore())
@@ -125,9 +166,9 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     @Override
     public Long createUserGradeContestSubmission(CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
 
-        Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getStudent_id());
-        User student = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_student.not_found");
+        Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getTeacher_id());
+        User teacher = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 
         Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(createUserGradeContestSubmissionRequest.getContest_submission_id());
@@ -135,18 +176,18 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
 
-        UserGradeContestSubmissionKey id = new UserGradeContestSubmissionKey(student.getId(),contestSubmission.getId());
+        UserGradeContestSubmissionKey id = new UserGradeContestSubmissionKey(teacher.getId(),contestSubmission.getId());
         
         UserGradeContestSubmission savedUserGradeContestSubmission = UserGradeContestSubmission.builder()
                 .id(id)
-                .student(student)
+                .teacher(teacher)
                 .contestSubmission(contestSubmission)
                 .score(createUserGradeContestSubmissionRequest.getScore())
                 .feedback(createUserGradeContestSubmissionRequest.getFeedback())
                 .build();
         userGradeContestSubmissionRepository.save(savedUserGradeContestSubmission);
 
-        return savedUserGradeContestSubmission.getStudent().getId();
+        return savedUserGradeContestSubmission.getTeacher().getId();
     }
 
     @Override
@@ -161,16 +202,16 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public Long updateUserGradeContestSubmissionById(Long student_id, Long submission_id, CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
-        //UserGradeContestSubmissionKey index = new UserGradeContestSubmissionKey(student_id, submission_id);
+    public Long updateUserGradeContestSubmissionById(Long teacher_id, Long submission_id, CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
+        //UserGradeContestSubmissionKey index = new UserGradeContestSubmissionKey(teacher_id, submission_id);
 
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
         listUserGradeContestSubmission.forEach(content-> {
-            if (content.getStudent().getId() == student_id && content.getContestSubmission().getId() == submission_id){
+            if (content.getTeacher().getId() == teacher_id && content.getContestSubmission().getId() == submission_id){
                 UserGradeContestSubmission updatedUserGradeContestSubmission = content;
-                Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getStudent_id());
-                User student = userOpt.orElseThrow(() -> {
-                    throw new EntityNotFoundException("exception.user_student.not_found");
+                Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getTeacher_id());
+                User teacher = userOpt.orElseThrow(() -> {
+                    throw new EntityNotFoundException("exception.user_teacher.not_found");
                 });
             
                 Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(createUserGradeContestSubmissionRequest.getContest_submission_id());
@@ -178,16 +219,16 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
                     throw new EntityNotFoundException("exception.ContestSubmission.not_found");
                 });
             
-                UserGradeContestSubmissionKey idx = new UserGradeContestSubmissionKey(student.getId(), contestSubmission.getId());
+                UserGradeContestSubmissionKey idx = new UserGradeContestSubmissionKey(teacher.getId(), contestSubmission.getId());
             
                 updatedUserGradeContestSubmission.setScore(createUserGradeContestSubmissionRequest.getScore());
                 updatedUserGradeContestSubmission.setId(idx);
                 updatedUserGradeContestSubmission.setFeedback(createUserGradeContestSubmissionRequest.getFeedback());
                 updatedUserGradeContestSubmission.setContestSubmission(contestSubmission);
-                updatedUserGradeContestSubmission.setStudent(student);
+                updatedUserGradeContestSubmission.setTeacher(teacher);
             }
         });
 
-        return student_id;
+        return teacher_id;
     }
 }

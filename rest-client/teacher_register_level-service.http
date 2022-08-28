@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "teacher-1",
     "password": "12345678aA@"
 }
 
@@ -18,9 +18,10 @@ Content-Type: application/json
 
 POST {{rest}}/teacher-register-level
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
-    "teacher_id": 3,
+    "teacher_id": 2,
     "course_id": 1,
     "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
     "status": "Approved"

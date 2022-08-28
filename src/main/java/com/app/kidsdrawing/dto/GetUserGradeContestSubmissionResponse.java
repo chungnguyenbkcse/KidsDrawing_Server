@@ -12,7 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetUserGradeContestSubmissionResponse {
+    private Long teacher_id;
+    private String teacher_name;
+    private String student_name;
     private Long student_id;
+    private Long contest_id;
+    private String contest_name;
     private Long contest_submission_id;
     private String feedback;
     private Float score;

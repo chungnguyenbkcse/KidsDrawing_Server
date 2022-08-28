@@ -45,8 +45,10 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content -> {
             GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
-                .student_id(content.getStudent().getId())
-                .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                .teacher_id(content.getTeacher().getId())
+                .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                .student_id(content.getExerciseSubmission().getStudent().getId())
+                .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
                 .exercise_name(content.getExerciseSubmission().getExercise().getName())
                 .time_submit(content.getExerciseSubmission().getUpdate_time())
                 .image_url(content.getExerciseSubmission().getImage_url())
@@ -66,14 +68,16 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByTeacherId(Long id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getStudent().getId() == id){
+            if (content.getTeacher().getId() == id){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                    .student_id(content.getExerciseSubmission().getStudent().getId())
+                    .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
                     .description(content.getExerciseSubmission().getExercise().getDescription())
                     .exercise_name(content.getExerciseSubmission().getExercise().getName())
@@ -94,14 +98,16 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByTeacherId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentId(Long id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getExercise().getSection().getClass1().getTeachSemester().getTeacher().getId() == id){
+            if (content.getExerciseSubmission().getStudent().getId() == id){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                    .student_id(content.getExerciseSubmission().getStudent().getId())
+                    .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
                     .description(content.getExerciseSubmission().getExercise().getDescription())
                     .image_url(content.getExerciseSubmission().getImage_url())
@@ -128,8 +134,10 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         listUserGradeExerciseSubmission.forEach(content -> {
             if (content.getExerciseSubmission().getExercise().getSection().getClass1().getId() == id){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                    .student_id(content.getExerciseSubmission().getStudent().getId())
+                    .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
                     .description(content.getExerciseSubmission().getExercise().getDescription())
                     .image_url(content.getExerciseSubmission().getImage_url())
@@ -156,8 +164,10 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         listUserGradeExerciseSubmission.forEach(content -> {
             if (content.getExerciseSubmission().getExercise().getId() == id){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                    .student_id(content.getExerciseSubmission().getStudent().getId())
+                    .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
                     .description(content.getExerciseSubmission().getExercise().getDescription())
                     .image_url(content.getExerciseSubmission().getImage_url())
@@ -184,8 +194,10 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         listUserGradeExerciseSubmission.forEach(content -> {
             if (content.getExerciseSubmission().getId() == id){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                    .student_id(content.getExerciseSubmission().getStudent().getId())
+                    .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
                     .description(content.getExerciseSubmission().getExercise().getDescription())
                     .exercise_name(content.getExerciseSubmission().getExercise().getName())
@@ -213,12 +225,14 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         Class classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
-        List<User> student_graded = new ArrayList<>();
+        List<User> user_graded = new ArrayList<>();
         listUserGradeExerciseSubmission.forEach(content -> {
             if (content.getExerciseSubmission().getExercise().getSection().getClass1().getId() == class_id && content.getExerciseSubmission().getExercise().getId() == exercise_id){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                    .student_id(content.getExerciseSubmission().getStudent().getId())
+                    .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
                     .exercise_name(content.getExerciseSubmission().getExercise().getName())
                     .description(content.getExerciseSubmission().getExercise().getDescription())
@@ -229,16 +243,18 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .time(content.getTime())
                     .build();
                 allUserGradeExerciseSubmissionResponses.add(userGradeExerciseSubmissionResponse);
-                student_graded.add(content.getStudent());
+                user_graded.add(content.getExerciseSubmission().getStudent());
             }
         });
 
         classes.getUserRegisterJoinSemesters().forEach(student -> {
             LocalDateTime time_now = LocalDateTime.now();
-            if (student_graded.contains(student.getStudent()) == false){
+            if (user_graded.contains(student.getStudent()) == false){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .student_id(student.getStudent().getId())
-                    .student_name(student.getStudent().getFirstName() + student.getStudent().getLastName())
+                    .student_name(student.getStudent().getFirstName() + " " + student.getStudent().getLastName())
+                    .teacher_id(classes.getTeachSemester().getTeacher().getId())
+                    .teacher_name(classes.getTeachSemester().getTeacher().getFirstName() + " " + classes.getTeachSemester().getTeacher().getLastName())
                     .exercise_submission_id((long) 0)
                     .image_url("")
                     .feedback("")
@@ -260,12 +276,12 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         
-        List<User> student_graded = new ArrayList<>();
+        List<User> teacher_graded = new ArrayList<>();
         listUserGradeExerciseSubmission.forEach(content -> {
             if (content.getExerciseSubmission().getExercise().getSection().getClass1().getId() == class_id && content.getExerciseSubmission().getStudent().getId() == student_id){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + content.getStudent().getLastName())
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
                     .exercise_submission_id(content.getExerciseSubmission().getId())
                     .description(content.getExerciseSubmission().getExercise().getDescription())
                     .exercise_name(content.getExerciseSubmission().getExercise().getName())
@@ -277,7 +293,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .time(content.getTime())
                     .build();
                 allUserGradeExerciseSubmissionResponses.add(userGradeExerciseSubmissionResponse);
-                student_graded.add(content.getStudent());
+                teacher_graded.add(content.getTeacher());
             }
         });
 
@@ -294,8 +310,8 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         });
 
         return GetUserGradeExerciseSubmissionResponse.builder()
-            .student_id(userGradeExerciseSubmission.getStudent().getId())
-            .student_name(userGradeExerciseSubmission.getStudent().getFirstName() + userGradeExerciseSubmission.getStudent().getLastName())
+            .teacher_id(userGradeExerciseSubmission.getTeacher().getId())
+            .teacher_name(userGradeExerciseSubmission.getTeacher().getFirstName() + userGradeExerciseSubmission.getTeacher().getLastName())
             .exercise_submission_id(userGradeExerciseSubmission.getExerciseSubmission().getId())
             .feedback(userGradeExerciseSubmission.getFeedback())
             .score(userGradeExerciseSubmission.getScore())
@@ -311,9 +327,9 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     @Override
     public Long createUserGradeExerciseSubmission(CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
 
-        Optional <User> userOpt = userRepository.findById(createUserGradeExerciseSubmissionRequest.getStudent_id());
-        User student = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_student.not_found");
+        Optional <User> userOpt = userRepository.findById(createUserGradeExerciseSubmissionRequest.getTeacher_id());
+        User teacher = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 
         Optional <ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById(createUserGradeExerciseSubmissionRequest.getExercise_submission_id());
@@ -321,18 +337,18 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
 
-        UserGradeExerciseSubmissionKey id = new UserGradeExerciseSubmissionKey(student.getId(),exerciseSubmission.getId());
+        UserGradeExerciseSubmissionKey id = new UserGradeExerciseSubmissionKey(teacher.getId(),exerciseSubmission.getId());
         
         UserGradeExerciseSubmission savedUserGradeExerciseSubmission = UserGradeExerciseSubmission.builder()
                 .id(id)
-                .student(student)
+                .teacher(teacher)
                 .exerciseSubmission(exerciseSubmission)
                 .score(createUserGradeExerciseSubmissionRequest.getScore())
                 .feedback(createUserGradeExerciseSubmissionRequest.getFeedback())
                 .build();
         userGradeExerciseSubmissionRepository.save(savedUserGradeExerciseSubmission);
 
-        return savedUserGradeExerciseSubmission.getStudent().getId();
+        return savedUserGradeExerciseSubmission.getTeacher().getId();
     }
 
     @Override
@@ -347,16 +363,16 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public Long updateUserGradeExerciseSubmissionById(Long student_id, Long submission_id, CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
-        //UserGradeExerciseSubmissionKey index = new UserGradeExerciseSubmissionKey(student_id, submission_id);
+    public Long updateUserGradeExerciseSubmissionById(Long teacher_id, Long submission_id, CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
+        //UserGradeExerciseSubmissionKey index = new UserGradeExerciseSubmissionKey(teacher_id, submission_id);
 
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content-> {
-            if (content.getStudent().getId() == student_id && content.getExerciseSubmission().getId() == submission_id){
+            if (content.getTeacher().getId() == teacher_id && content.getExerciseSubmission().getId() == submission_id){
                 UserGradeExerciseSubmission updatedUserGradeExerciseSubmission = content;
-                Optional <User> userOpt = userRepository.findById(createUserGradeExerciseSubmissionRequest.getStudent_id());
-                User student = userOpt.orElseThrow(() -> {
-                    throw new EntityNotFoundException("exception.user_student.not_found");
+                Optional <User> userOpt = userRepository.findById(createUserGradeExerciseSubmissionRequest.getTeacher_id());
+                User teacher = userOpt.orElseThrow(() -> {
+                    throw new EntityNotFoundException("exception.user_teacher.not_found");
                 });
             
                 Optional <ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById(createUserGradeExerciseSubmissionRequest.getExercise_submission_id());
@@ -364,18 +380,18 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
                 });
             
-                UserGradeExerciseSubmissionKey idx = new UserGradeExerciseSubmissionKey(student.getId(), exerciseSubmission.getId());
+                UserGradeExerciseSubmissionKey idx = new UserGradeExerciseSubmissionKey(teacher.getId(), exerciseSubmission.getId());
             
                 updatedUserGradeExerciseSubmission.setScore(createUserGradeExerciseSubmissionRequest.getScore());
                 updatedUserGradeExerciseSubmission.setId(idx);
                 updatedUserGradeExerciseSubmission.setFeedback(createUserGradeExerciseSubmissionRequest.getFeedback());
                 updatedUserGradeExerciseSubmission.setExerciseSubmission(exerciseSubmission);
-                updatedUserGradeExerciseSubmission.setStudent(student);
+                updatedUserGradeExerciseSubmission.setTeacher(teacher);
 
                 userGradeExerciseSubmissionRepository.save(updatedUserGradeExerciseSubmission);
             }
         });
 
-        return student_id;
+        return teacher_id;
     }
 }

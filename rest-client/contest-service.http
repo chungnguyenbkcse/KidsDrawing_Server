@@ -21,16 +21,16 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "name": "Cuộc thi vẽ tranh gia đình",
-    "description": "Vẽ về những người thân trong gia đình",
+    "name": "Cuộc thi vẽ tranh đề tài mỗi trường",
+    "description": "Vẽ về những thứ xung quanh chúng ta",
     "max_participant": 100,
     "registration_time": "2022-07-12T12:59:11.332",
-    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
-    "start_time": "2022-09-12T12:59:11.332",
-    "end_time": "2022-10-12T12:59:11.332",
+    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1660037600/mmjhxh9dun1secngcljk.png",
+    "start_time": "2022-07-12T12:59:11.332",
+    "end_time": "2022-08-12T12:59:11.332",
     "is_enabled": true,
     "creater_id": 1,
-    "art_age_id": 1,
+    "art_age_id": 2,
     "art_type_id": 1
 }
 

@@ -25,6 +25,25 @@ Authorization: Bearer {{admin_access_token}}
     "description": "",
     "number": 1,
     "start_time": "2022-09-01T00:00:00",
+    "end_time": "2022-11-01T00:00:00",
+    "year": 2022,
+    "creator_id": 1
+}
+
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/semester
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "name": "Học kì 2 năm học 2022",
+    "description": "",
+    "number": 2,
+    "start_time": "2022-10-01T00:00:00",
+    "end_time": "2022-12-01T00:00:00",
     "year": 2022,
     "creator_id": 1
 }

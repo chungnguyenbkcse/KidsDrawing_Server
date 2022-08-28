@@ -27,10 +27,10 @@ Authorization: Bearer {{admin_access_token}}
     "price": 2000000,
     "image_url": "",
     "is_enabled": false,
-    "creator_id": 3,
+    "creator_id": 1,
     "art_age_id": 1,
     "art_type_id": 1,
-    "art_level_id": 2
+    "art_level_id": 1
 }
 
 ### 

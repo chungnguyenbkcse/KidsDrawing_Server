@@ -19,8 +19,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserGradeContestSubmissionKey implements Serializable {
 
-    @Column(name = "student_id")
-    Long studentId;
+    @Column(name = "teacher_id")
+    Long teacherId;
 
     @Column(name = "submission_id")
     Long submissionId;

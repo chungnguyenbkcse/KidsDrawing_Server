@@ -37,6 +37,31 @@ Authorization: Bearer {{admin_access_token}}
     "end_time": "08:45:00"
 }
 
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/lesson-time
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "start_time": "09:00:00",
+    "end_time": "09:45:00"
+}
+
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/lesson-time
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "start_time": "10:00:00",
+    "end_time": "10:45:00"
+}
+
 ### UPDATE ART TYPE ACTION ###
 # @name update_art_type
 

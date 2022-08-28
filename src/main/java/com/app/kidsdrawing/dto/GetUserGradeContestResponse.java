@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class GetUserGradeContestResponse {
     private Long id;
     private Long teacher_id;
+    private String teacher_name;
     private Long contest_id;
+    private String contest_name;
 }
