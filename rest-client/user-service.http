@@ -314,6 +314,30 @@ Content-Type: application/json
     "roleNames": ["STUDENT_USER"]
 }
 
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-15",
+    "password": "12345678aA@",
+    "email": "student-15@gmail.com",
+    "firstName": "student",
+    "lastName": "15",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 15,
+    "roleNames": ["STUDENT_USER"]
+}
+
 ### REGISTER ACTION ###
 
 # @name student_register
@@ -381,6 +405,28 @@ Content-Type: application/json
     "roleNames": ["STUDENT_USER"]
 }
 
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-19",
+    "password": "12345678aA@",
+    "email": "student-19@gmail.com",
+    "firstName": "student",
+    "lastName": "19",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 17,
+    "roleNames": ["STUDENT_USER"]
+}
+
 
 ### REGISTER ACTION ###
 
@@ -395,6 +441,29 @@ Content-Type: application/json
     "email": "student-20@gmail.com",
     "firstName": "student",
     "lastName": "20",
+    "dateOfBirth": null,
+    "profile_image_url": null,
+    "sex": null,
+    "phone": null,
+    "address": null,
+    "parent_id": 17,
+    "roleNames": ["STUDENT_USER"]
+}
+
+
+### REGISTER ACTION ###
+
+# @name student_register
+
+POST {{rest}}/registration
+Content-Type: application/json
+
+{
+    "username": "student-23",
+    "password": "12345678aA@",
+    "email": "student-23@gmail.com",
+    "firstName": "student",
+    "lastName": "23",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -969,142 +1038,7 @@ Content-Type: application/json
     "teaching_form": true
 }
 
-### CREATE CONTEST ACTION ###
-# @name create_contest
 
-POST {{rest}}/contest
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Cuộc thi vẽ tranh gia đình",
-    "description": "Vẽ về những người thân trong gia đình",
-    "max_participant": 20,
-    "registration_time": "2022-07-12T12:59:11.332",
-    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
-    "start_time": "2022-08-12T12:59:11.332",
-    "end_time": "2022-09-12T12:59:11.332",
-    "is_enabled": true,
-    "creater_id": 1,
-    "art_age_id": 1,
-    "art_type_id": 1
-}
-
-### GET ART TYPE ACTION ###
-# @name get_all_art_type
-
-GET {{rest}}/semester-class?page=0&size=10
-
-
-### GET ART TYPE ACTION ###
-# @name get_all_art_type
-
-GET {{rest}}/classes/teacher/2
-
-
-
-### GET ART TYPE ACTION ###
-# @name get_all_art_type
-
-GET {{rest}}/course/teacher/33
-
-
-
-### CREATE COURSE ACTION ###
-# @name create_course
-
-### CREATE ART AGE ACTION ###
-# @name create_art_age
-
-POST {{rest}}/art-age
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "4-6 tuổi",
-    "description": "Độ tuổi từ 4-6 tuổi"
-}
-
-### CREATE ART AGE ACTION ###
-# @name create_art_age
-
-POST {{rest}}/art-age
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "5-10 tuổi",
-    "description": "Độ tuổi từ 5-10 tuổi"
-}
-
-
-### CREATE ART AGE ACTION ###
-# @name create_art_age
-
-POST {{rest}}/art-level
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Cơ bản",
-    "description": "Dành cho bạn mới bắt đầu"
-}
-
-### CREATE ART AGE ACTION ###
-# @name create_art_age
-
-POST {{rest}}/art-level
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Nâng cao",
-    "description": "Dành cho bạn mới bắt đầu"
-}
-
-### CREATE ART TYPE ACTION ###
-# @name create_art_type
-
-POST {{rest}}/art-type
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Sơn dầu",
-    "description": "Thể loại sơn dầu"
-}
-
-### CREATE ART TYPE ACTION ###
-# @name create_art_type
-
-POST {{rest}}/art-type
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Chì màu",
-    "description": "Thể loại chì màu"
-}
-
-### CREATE ART TYPE ACTION ###
-# @name create_art_type
-
-POST {{rest}}/course
-Authorization: Bearer {{admin_access_token}}
-Content-Type: application/json
-
-{
-    "name": "Khóa học mầm chì màu cơ bản",
-    "description": "<p>hello nguyen van chung</p>",
-    "num_of_section": 10,
-    "price": 2000000,
-    "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344893/lop-day-hoc-ve-tre-em-be-thieu-nhi-370x255_natvks.png",
-    "is_enabled": false,
-    "creator_id": 1,
-    "art_age_id": 1,
-    "art_type_id": 1,
-    "art_level_id": 1
-}
 
 ###
 
