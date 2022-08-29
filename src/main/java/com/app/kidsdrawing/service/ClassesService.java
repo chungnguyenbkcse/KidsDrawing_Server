@@ -11,6 +11,7 @@ public interface ClassesService {
     ResponseEntity<Map<String, Object>> getAllClass();
     ResponseEntity<Map<String, Object>> getInforDetailAllClass();
     ResponseEntity<Map<String, Object>> getInforDetailOfClass(Long id);
+    ResponseEntity<Map<String, Object>> getInforScheduleAllClass(Long id);
     ResponseEntity<Map<String, Object>> getInforDetailOfClassByTeacherId(Long id);
     GetClassResponse getClassById(Long id);
     Long createClass(CreateClassRequest createClassRequest);

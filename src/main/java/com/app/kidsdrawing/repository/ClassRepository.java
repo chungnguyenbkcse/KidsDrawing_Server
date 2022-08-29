@@ -10,4 +10,6 @@ public interface ClassRepository extends JpaRepository <Class, Long>{
     boolean existsById(Long id);
     Boolean existsByName(String name);
     void deleteById(Long id);
+    Boolean existsByRegistrationId(Long id);
+    Class findByRegistrationId(Long id);
 }

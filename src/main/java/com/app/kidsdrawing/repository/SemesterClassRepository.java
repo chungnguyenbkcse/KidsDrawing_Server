@@ -1,5 +1,7 @@
 package com.app.kidsdrawing.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +15,5 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, L
     boolean existsById(Long id);
     boolean existsByName(String name);
     void deleteById(Long id);
+    List<SemesterClass> findByCreationId(Long id);
 }

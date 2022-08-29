@@ -32,6 +32,7 @@ import com.app.kidsdrawing.dto.GetUserResponse;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.entity.LessonTime;
+import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
@@ -41,6 +42,7 @@ import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.ClassRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
+import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ClassesService;
 
@@ -55,8 +57,9 @@ public class ClassesServiceImpl implements ClassesService {
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRepository userRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
-    private final SemesterClassRepository semesterCourseRepository;
+    private final SemesterClassRepository semesterClassRepository;
     private final ScheduleRepository scheduleRepository;
+    private final SemesterRepository semesterRepository;
 
     private static int total_section_count = 0;
     private static int week_count = 0;
@@ -229,7 +232,7 @@ public class ClassesServiceImpl implements ClassesService {
                 throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
             });
 
-            Optional<SemesterClass> semester_classOpt = semesterCourseRepository
+            Optional<SemesterClass> semester_classOpt = semesterClassRepository
                     .findById(userRegisterTeachSemester.getSemesterClass().getId());
             SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.semester_class.not_found");
@@ -293,6 +296,32 @@ public class ClassesServiceImpl implements ClassesService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Map<String, Object>> getInforScheduleAllClass(Long id) {
+        LocalDateTime time_now = LocalDateTime.now();
+        List<Semester> allSemesters = semesterRepository.findAll();
+        List<Class> allClassDoing = new ArrayList<>();
+        allSemesters.forEach(semester  -> {
+            if (semester.getEnd_time().isAfter(time_now)){
+                semesterClassRepository.findByCreationId(semester.getId()).forEach(semester_class -> {
+                    userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId()).forEach(user_register_teache_semester -> {
+                        if (classRepository.existsByRegistrationId(user_register_teache_semester.getId())){
+                            allClassDoing.add(classRepository.findByRegistrationId(user_register_teache_semester.getId()));
+                        }
+                    });
+                });
+            }
+        });
+
+        List<List<Map<String, List<List<LocalDateTime>>>>> allScheduleForAllClass = new ArrayList<>();
+        allClassDoing.forEach(class_ele -> {
+            allScheduleForAllClass.add(getScheduleDetailOfClass(class_ele.getId()));
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("schedules", allScheduleForAllClass);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     public LocalDateTime getEndSectionOfClass(Long id) {
         Optional<Class> classOpt = classRepository.findById(id);
         Class classes = classOpt.orElseThrow(() -> {
@@ -306,7 +335,7 @@ public class ClassesServiceImpl implements ClassesService {
         });
 
 
-        Optional<SemesterClass> semester_classOpt = semesterCourseRepository
+        Optional<SemesterClass> semester_classOpt = semesterClassRepository
                 .findById(userRegisterTeachSemester.getSemesterClass().getId());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
@@ -429,7 +458,7 @@ public class ClassesServiceImpl implements ClassesService {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
 
-        Optional<SemesterClass> semester_classOpt = semesterCourseRepository
+        Optional<SemesterClass> semester_classOpt = semesterClassRepository
                 .findById(userRegisterTeachSemester.getSemesterClass().getId());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
@@ -587,7 +616,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .createTime(userRegisterTeachSemester.getTeacher().getCreateTime())
                 .build());
 
-        Optional<SemesterClass> semester_classOpt = semesterCourseRepository
+        Optional<SemesterClass> semester_classOpt = semesterClassRepository
                 .findById(userRegisterTeachSemester.getSemesterClass().getId());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
