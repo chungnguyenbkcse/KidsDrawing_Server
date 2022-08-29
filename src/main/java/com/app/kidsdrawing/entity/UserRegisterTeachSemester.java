@@ -46,7 +46,7 @@ public class UserRegisterTeachSemester {
     @JoinColumn(name = "semester_class_id", referencedColumnName = "id")
     private SemesterClass semesterClass;
 
-    @OneToOne(mappedBy = "teachSemester")
+    @OneToOne(mappedBy = "userRegisterTeachSemester")
     private Class class1;
 
     @Builder.Default()

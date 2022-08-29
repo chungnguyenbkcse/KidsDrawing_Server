@@ -283,9 +283,9 @@ public class CourseServiceImpl implements CourseService {
         List<SemesterClass> allRegisterSuccessfullSemesterClass = new ArrayList<>();
         // Danh sach dang ki nhung khong duoc xep lop
         listClass.forEach(ele -> {
-            if (allTeacherTeachSemesterResponses.contains(ele.getTeachSemester())){
-                allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getTeachSemester());
-                allRegisterSuccessfullSemesterClass.add(ele.getTeachSemester().getSemesterClass());
+            if (allTeacherTeachSemesterResponses.contains(ele.getUserRegisterTeachSemester())){
+                allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getUserRegisterTeachSemester());
+                allRegisterSuccessfullSemesterClass.add(ele.getUserRegisterTeachSemester().getSemesterClass());
                 allClassResponses.add(ele);
             }
         });

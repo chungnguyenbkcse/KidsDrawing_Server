@@ -101,7 +101,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
         List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
         listStudentLeave.forEach(content -> {
-            if (content.getClass1().getTeachSemester().getTeacher().getId() == id) {
+            if (content.getClass1().getUserRegisterTeachSemester().getTeacher().getId() == id) {
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())

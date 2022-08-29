@@ -46,8 +46,8 @@ public class Class {
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "registration_id", referencedColumnName = "id")
-    private UserRegisterTeachSemester teachSemester;
+    @JoinColumn(name = "user_register_teach_semester_id", referencedColumnName = "id")
+    private UserRegisterTeachSemester userRegisterTeachSemester;
 
     @Column(name = "security_code", nullable = false, unique = true)
     private String security_code;

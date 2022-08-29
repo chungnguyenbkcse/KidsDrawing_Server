@@ -154,7 +154,7 @@ public class SemesterServiceImpl implements SemesterService {
         allSemesterClassResponses.forEach(semester_class -> {
             List<Class> list_class = new ArrayList<>();
             listClass.forEach(ele_class -> {
-                if (ele_class.getTeachSemester().getSemesterClass().getId() == semester_class.getId()){
+                if (ele_class.getUserRegisterTeachSemester().getSemesterClass().getId() == semester_class.getId()){
                     list_class.add(ele_class);
                 }
             });
@@ -178,7 +178,7 @@ public class SemesterServiceImpl implements SemesterService {
             List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
             List<SectionTemplate> allSectionTemplate = new ArrayList<>();
             listSectionTemplate.forEach(section_template -> {
-                if (section_template.getCourse().getId() == list_class.get(0).getTeachSemester().getSemesterClass().getCourse().getId()){
+                if (section_template.getCourse().getId() == list_class.get(0).getUserRegisterTeachSemester().getSemesterClass().getCourse().getId()){
                     allSectionTemplate.add(section_template);
                     section_template.getCourse().getNum_of_section();
                 }
@@ -330,7 +330,7 @@ public class SemesterServiceImpl implements SemesterService {
                 allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
                     counter = 0;
                     listClassOfSemesterClass.forEach(class_x -> {
-                        if (teacher_register_teach_semester.getTeacher().getId() == class_x.getTeachSemester().getTeacher().getId()){
+                        if (teacher_register_teach_semester.getTeacher().getId() == class_x.getUserRegisterTeachSemester().getTeacher().getId()){
                             counter += 1;
                         }
                     });
@@ -371,7 +371,7 @@ public class SemesterServiceImpl implements SemesterService {
                     System.out.print("Lớp thứ: " + String.valueOf(i));
                     Class savedClass = Class.builder()
                         .user(creator)
-                        .teachSemester(allUserRegisterTeachSemesters.get(i))
+                        .userRegisterTeachSemester(allUserRegisterTeachSemesters.get(i))
                         .security_code(key)
                         .name(semester_class.getName() + "-" +  number + " thuộc học kì " + semester.getNumber() + " năm học " + semester.getYear())
                         .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
@@ -409,20 +409,20 @@ public class SemesterServiceImpl implements SemesterService {
                         tutorialPageRepository.save(savedTutorialPage);
                     });
 
-                    String msgBody = "Chúc mừng giáo viên "+ savedClass.getTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";
-                    EmailDetails details = new EmailDetails(savedClass.getTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");
+                    String msgBody = "Chúc mừng giáo viên "+ savedClass.getUserRegisterTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getUserRegisterTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";
+                    EmailDetails details = new EmailDetails(savedClass.getUserRegisterTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");
                     emailService.sendSimpleMail(details);
 
-                    if (savedClass.getTeachSemester().getTeacher().getStatus() != null && savedClass.getTeachSemester().getTeacher().getStatus() != ""){
+                    if (savedClass.getUserRegisterTeachSemester().getTeacher().getStatus() != null && savedClass.getUserRegisterTeachSemester().getTeacher().getStatus() != ""){
                         PnsRequest pnsRequest = new PnsRequest();
-                        pnsRequest.setFcmToken(savedClass.getTeachSemester().getTeacher().getStatus());
+                        pnsRequest.setFcmToken(savedClass.getUserRegisterTeachSemester().getTeacher().getStatus());
                         pnsRequest.setTitle("Thông báo xếp lớp thành công");
                         pnsRequest.setBody(msgBody);
                         fcmService.pushNotification(pnsRequest);
                     }
 
                     validUserRegisterSemesters.forEach(ele -> {
-                        String msgBodyStudent = "Chúc mừng học sinh "+ ele.getStudent().getFirstName() + " "+ ele.getStudent().getLastName() + "đã được xếp lớp thành công vào lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + ele.getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + ele.getSemesterClass().getCourse().getName() + "\n" + "Giáo viên dạy: " + savedClass.getTeachSemester().getTeacher().getFirstName() + " " + savedClass.getTeachSemester().getTeacher().getLastName() + "\n";
+                        String msgBodyStudent = "Chúc mừng học sinh "+ ele.getStudent().getFirstName() + " "+ ele.getStudent().getLastName() + "đã được xếp lớp thành công vào lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + ele.getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + ele.getSemesterClass().getCourse().getName() + "\n" + "Giáo viên dạy: " + savedClass.getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + savedClass.getUserRegisterTeachSemester().getTeacher().getLastName() + "\n";
                         EmailDetails student_details = new EmailDetails(ele.getStudent().getEmail(), msgBodyStudent, "Thông báo xếp lớp thành công", "");
                         emailService.sendSimpleMail(student_details);
                         if (ele.getStudent().getStatus() != null && ele.getStudent().getStatus() != ""){
