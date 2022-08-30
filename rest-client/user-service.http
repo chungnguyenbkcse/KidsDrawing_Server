@@ -947,7 +947,7 @@ Content-Type: application/json
 {
     "name": "Lớp CM-1",
     "creator_id": 1,
-    "registration_id": 1,
+    "user_register_teach_semester": 1,
     "security_code": "CM-1HK2022",
     "user_register_join_semester": [1,2,3,4,5,6]
 
@@ -1002,7 +1002,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "creation_id": 1,
+    "semester_id": 1,
     "course_id": 1,
     "name": "Lớp mầm chì màu 1"
 }

@@ -21,7 +21,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "creation_id": 1,
+    "semester_id": 1,
     "course_id": 1,
     "name": "Lớp mầm chì màu 2"
 }

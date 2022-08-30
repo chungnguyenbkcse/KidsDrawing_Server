@@ -68,7 +68,7 @@ public class Class {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(name = "class_has_register_join_semester",
             joinColumns = { @JoinColumn(name = "class_id") },
-            inverseJoinColumns = { @JoinColumn(name = "join_registration_id") })
+            inverseJoinColumns = { @JoinColumn(name = "join_user_register_teach_semester") })
     private Set<UserRegisterJoinSemester> userRegisterJoinSemesters;
 
     @OneToMany(mappedBy="class1")

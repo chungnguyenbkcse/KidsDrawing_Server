@@ -72,7 +72,7 @@ public class ClassesServiceImpl implements ClassesService {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
                     .creator_id(content.getUser().getId())
-                    .registration_id(content.getUserRegisterTeachSemester().getId())
+                    .user_register_teach_semester(content.getUserRegisterTeachSemester().getId())
                     .security_code(content.getSecurity_code())
                     .name(content.getName())
                     .create_time(content.getCreate_time())
@@ -117,7 +117,7 @@ public class ClassesServiceImpl implements ClassesService {
                     allScheduleTime.add(x);
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
-                        .registration_id(ele.getUserRegisterTeachSemester().getId())
+                        .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
                         .security_code(ele.getSecurity_code())
                         .name(ele.getName())
                         .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
@@ -158,7 +158,7 @@ public class ClassesServiceImpl implements ClassesService {
                 else {
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
-                        .registration_id(ele.getUserRegisterTeachSemester().getId())
+                        .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
                         .security_code(ele.getSecurity_code())
                         .name(ele.getName())
                         .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
@@ -218,7 +218,7 @@ public class ClassesServiceImpl implements ClassesService {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
                     .creator_id(content.getUser().getId())
-                    .registration_id(content.getUserRegisterTeachSemester().getId())
+                    .user_register_teach_semester(content.getUserRegisterTeachSemester().getId())
                     .security_code(content.getSecurity_code())
                     .name(content.getName())
                     .create_time(content.getCreate_time())
@@ -589,7 +589,7 @@ public class ClassesServiceImpl implements ClassesService {
         response.put("classes", GetClassResponse.builder()
                 .id(classes.getId())
                 .creator_id(classes.getUser().getId())
-                .registration_id(classes.getUserRegisterTeachSemester().getId())
+                .user_register_teach_semester(classes.getUserRegisterTeachSemester().getId())
                 .security_code(classes.getSecurity_code())
                 .name(classes.getName())
                 .create_time(classes.getCreate_time())
@@ -816,7 +816,7 @@ public class ClassesServiceImpl implements ClassesService {
         return GetClassResponse.builder()
                 .id(classes.getId())
                 .creator_id(classes.getUser().getId())
-                .registration_id(classes.getUserRegisterTeachSemester().getId())
+                .user_register_teach_semester(classes.getUserRegisterTeachSemester().getId())
                 .security_code(classes.getSecurity_code())
                 .name(classes.getName())
                 .create_time(classes.getCreate_time())
@@ -827,7 +827,7 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public Long createClass(CreateClassRequest createClassRequest) {
         Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                .findById(createClassRequest.getRegistration_id());
+                .findById(createClassRequest.getUser_register_teach_semester());
         UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.teacher_teach_semester.not_found");
         });
@@ -879,7 +879,7 @@ public class ClassesServiceImpl implements ClassesService {
         });
 
         Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                .findById(createClassRequest.getRegistration_id());
+                .findById(createClassRequest.getUser_register_teach_semester());
         UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.teacher_teach_semester.not_found");
         });

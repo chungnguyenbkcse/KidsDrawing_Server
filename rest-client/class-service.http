@@ -22,7 +22,7 @@ Content-Type: application/json
 {
     "name": "Lớp mầm chì màu 4 đến 6 tuổi 1",
     "creator_id": 3,
-    "registration_id": 1,
+    "user_register_teach_semester": 1,
     "security_code": "CM-1HK2022"
 }
 

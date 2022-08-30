@@ -46,7 +46,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                     .id(semesterClass.getId())
                     .name(semesterClass.getName())
-                    .creation_id(semesterClass.getSemester().getId())
+                    .semester_id(semesterClass.getSemester().getId())
                     .semester_name(semesterClass.getSemester().getName())
                     .course_id(semesterClass.getCourse().getId())
                     .course_name(semesterClass.getCourse().getName())
@@ -71,7 +71,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         return GetSemesterClassResponse.builder()
             .id(semesterClass.getId())
             .name(semesterClass.getName())
-            .creation_id(semesterClass.getSemester().getId())
+            .semester_id(semesterClass.getSemester().getId())
             .semester_name(semesterClass.getSemester().getName())
             .course_id(semesterClass.getCourse().getId())
             .course_name(semesterClass.getCourse().getName())
@@ -89,7 +89,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                     .id(semesterClass.getId())
                     .name(semesterClass.getName())
-                    .creation_id(semesterClass.getSemester().getId())
+                    .semester_id(semesterClass.getSemester().getId())
                     .semester_name(semesterClass.getSemester().getName())
                     .course_id(semesterClass.getCourse().getId())
                     .course_name(semesterClass.getCourse().getName())
@@ -114,7 +114,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                     .id(semesterClass.getId())
                     .name(semesterClass.getName())
-                    .creation_id(semesterClass.getSemester().getId())
+                    .semester_id(semesterClass.getSemester().getId())
                     .semester_name(semesterClass.getSemester().getName())
                     .course_id(semesterClass.getCourse().getId())
                     .course_name(semesterClass.getCourse().getName())
@@ -132,7 +132,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
     @Override
     public GetSemesterClassResponse  createSemesterClass(CreateSemesterClassRequest createSemesterClassRequest) {
-        Optional<Semester> semesterOpt = semesterRepository.findById(createSemesterClassRequest.getCreation_id());
+        Optional<Semester> semesterOpt = semesterRepository.findById(createSemesterClassRequest.getSemester_id());
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester.not_found");
         });
@@ -157,7 +157,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
             .id(savedSemesterClass.getId())
             .name(savedSemesterClass.getName())
-            .creation_id(savedSemesterClass.getSemester().getId())
+            .semester_id(savedSemesterClass.getSemester().getId())
             .semester_name(savedSemesterClass.getSemester().getName())
             .course_id(savedSemesterClass.getCourse().getId())
             .course_name(savedSemesterClass.getCourse().getName())
@@ -186,7 +186,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
 
-        Optional<Semester> semesterOpt = semesterRepository.findById(createSemesterClassRequest.getCreation_id());
+        Optional<Semester> semesterOpt = semesterRepository.findById(createSemesterClassRequest.getSemester_id());
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester.not_found");
         });
