@@ -380,33 +380,36 @@ public class SemesterServiceImpl implements SemesterService {
                     number ++;
                     listClassOfSemesterClass.add(savedClass);
 
-                    SectionTemplate sectionTemplate = sectionTemplateRepository.findByCourseId(semester_class.getCourse().getId());
+                    List<SectionTemplate> sectionTemplate = sectionTemplateRepository.findByCourseId(semester_class.getCourse().getId());
                     
-                    Section savedSection = Section.builder()
-                        .class1(savedClass)
-                        .name(sectionTemplate.getName())
-                        .description(sectionTemplate.getDescription())
-                        .number(sectionTemplate.getNumber())
-                        .teaching_form(sectionTemplate.getTeaching_form())
-                        .build();
-                    sectionRepository.save(savedSection);
-                    
-                    Tutorial savedTutorial = Tutorial.builder()
-                        .section(savedSection)
-                        .creator(creator)
-                        .name("Giáo trình " + sectionTemplate.getTutorialTemplates().getName())
-                        .description(sectionTemplate.getTutorialTemplates().getDescription())
-                        .build();
-                    tutorialRepository.save(savedTutorial);
-                    
-                    sectionTemplate.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
-                        TutorialPage savedTutorialPage = TutorialPage.builder()
-                            .tutorial(savedTutorial)
-                            .name(tutorial_page.getName())
-                            .description(tutorial_page.getDescription())
-                            .number(tutorial_page.getNumber())
+                    sectionTemplate.forEach(section_template -> {
+                        Section savedSection = Section.builder()
+                            .class1(savedClass)
+                            .name(section_template.getName())
+                            .description(section_template.getDescription())
+                            .number(section_template.getNumber())
+                            .teaching_form(section_template.getTeaching_form())
                             .build();
-                        tutorialPageRepository.save(savedTutorialPage);
+                        sectionRepository.save(savedSection);
+                        
+                        Tutorial savedTutorial = Tutorial.builder()
+                            .section(savedSection)
+                            .creator(creator)
+                            .status("Approved")
+                            .name("Giáo trình " + section_template.getTutorialTemplates().getName())
+                            .description(section_template.getTutorialTemplates().getDescription())
+                            .build();
+                        tutorialRepository.save(savedTutorial);
+                        
+                        section_template.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
+                            TutorialPage savedTutorialPage = TutorialPage.builder()
+                                .tutorial(savedTutorial)
+                                .name(tutorial_page.getName())
+                                .description(tutorial_page.getDescription())
+                                .number(tutorial_page.getNumber())
+                                .build();
+                            tutorialPageRepository.save(savedTutorialPage);
+                        });
                     });
 
                     String msgBody = "Chúc mừng giáo viên "+ savedClass.getUserRegisterTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getUserRegisterTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";

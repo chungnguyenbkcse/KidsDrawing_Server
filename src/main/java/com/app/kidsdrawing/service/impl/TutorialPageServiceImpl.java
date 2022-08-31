@@ -78,7 +78,7 @@ public class TutorialPageServiceImpl implements TutorialPageService{
         List<GetTutorialPageResponse> allTutorialPageResponses = new ArrayList<>();
         List<TutorialPage> listTutorialPage = tutorialPageRepository.findAll();
         listTutorialPage.forEach(content -> {
-            if (content.getTutorial().getSection().getId() == id && content.getTutorial().getStatus() == "Approved"){
+            if (content.getTutorial().getSection().getId() == id && content.getTutorial().getStatus().equals("Approved")){
                 GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
                     .id(content.getId())
                     .tutorial_id(content.getTutorial().getId())

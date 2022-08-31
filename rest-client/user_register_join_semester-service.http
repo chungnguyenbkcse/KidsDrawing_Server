@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "student-1",
     "password": "12345678aA@"
 }
 
@@ -21,7 +21,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 18,
+    "student_id": 40,
     "semester_class_id": 2,
     "payer_id": 7,
     "price": 2000000
