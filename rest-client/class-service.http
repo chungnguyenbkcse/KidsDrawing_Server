@@ -50,3 +50,10 @@ Content-Type: application/json
 # @name get_classes
 
 GET  {{rest}}/classes
+
+
+
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/classes/schedule-all/1

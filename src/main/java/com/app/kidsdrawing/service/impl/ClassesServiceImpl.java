@@ -305,17 +305,19 @@ public class ClassesServiceImpl implements ClassesService {
             if (semester.getEnd_time().isAfter(time_now)){
                 semesterClassRepository.findBySemesterId(semester.getId()).forEach(semester_class -> {
                     userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId()).forEach(user_register_teache_semester -> {
-                        if (classRepository.existsByUserRegisterTeachSemester(user_register_teache_semester.getId())){
-                            allClassDoing.add(classRepository.findByUserRegisterTeachSemester(user_register_teache_semester.getId()));
+                        if (classRepository.existsByUserRegisterTeachSemesterId(user_register_teache_semester.getId())){
+                            allClassDoing.add(classRepository.findByUserRegisterTeachSemesterId(user_register_teache_semester.getId()));
                         }
                     });
                 });
             }
         });
 
-        List<List<Map<String, List<List<LocalDateTime>>>>> allScheduleForAllClass = new ArrayList<>();
+        List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allScheduleForAllClass = new ArrayList<>();
         allClassDoing.forEach(class_ele -> {
-            allScheduleForAllClass.add(getScheduleDetailOfClass(class_ele.getId()));
+            Map<String, List<Map<String, List<List<LocalDateTime>>>>> res = new HashMap<>();
+            res.put(class_ele.getName(), getScheduleDetailOfClass(class_ele.getId()));
+            allScheduleForAllClass.add(res);
         });
         Map<String, Object> response = new HashMap<>();
         response.put("schedules", allScheduleForAllClass);
