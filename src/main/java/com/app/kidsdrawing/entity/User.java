@@ -137,6 +137,9 @@ public class User{
     @OneToMany(mappedBy="creator")
     private Set<Tutorial> tutorials;
 
+    @OneToMany(mappedBy="creator")
+    private Set<UserRegisterTutorial> userRegisterTutorials;
+
     @OneToMany(mappedBy="student")
     private Set<ExerciseSubmission> exerciseSubmissions;
 

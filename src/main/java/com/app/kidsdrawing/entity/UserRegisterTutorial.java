@@ -11,13 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -32,36 +30,26 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "section")
-public class Section {
+@Table(name = "user_register_tutorial")
+public class UserRegisterTutorial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "class_id", referencedColumnName = "id")
-    private Class class1;
+    @JoinColumn(name = "section_id", referencedColumnName = "id")
+    private Section section;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private User creator;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description")
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    private String description;
-
-    @Column(name = "number")
-    private Integer number;
-
-    @Column(name = "teaching_form")
-    private Boolean teaching_form;
-
-    @Column(name = "recording")
-    private String recording;
-
-    @Column(name = "message")
-    private String message;
+    @Column(name = "status")
+    private String status;
 
     @Builder.Default()
     @Column(name = "create_time")
@@ -73,18 +61,6 @@ public class Section {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @OneToMany(mappedBy="section")
-    private Set<TeacherLeave> teacherLeaves;
-
-    @OneToMany(mappedBy="section")
-    private Set<StudentLeave> studentLeaves;
-
-    @OneToMany(mappedBy="section")
-    private Set<Exercise> exercises;
-
-    @OneToMany(mappedBy="section")
-    private Set<Tutorial> tutorials;
-
-    @OneToMany(mappedBy="section")
-    private Set<UserRegisterTutorial> userRegisterTutorials;
+    @OneToMany(mappedBy="userRegisterTutorial")
+    private Set<UserRegisterTutorialPage> userRegisterTutorials;
 }
