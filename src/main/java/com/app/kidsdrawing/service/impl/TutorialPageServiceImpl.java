@@ -54,18 +54,16 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialPageByTutorialId(Long id) {
         List<GetTutorialPageResponse> allTutorialPageResponses = new ArrayList<>();
-        List<TutorialPage> listTutorialPage = tutorialPageRepository.findAll();
+        List<TutorialPage> listTutorialPage = tutorialPageRepository.findByTutorialId(id);
         listTutorialPage.forEach(content -> {
-            if (content.getTutorial().getId() == id){
-                GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
-                    .id(content.getId())
-                    .tutorial_id(content.getTutorial().getId())
-                    .name(content.getName())
-                    .description(content.getDescription())
-                    .number(content.getNumber())
-                    .build();
-                allTutorialPageResponses.add(tutorialPageResponse);
-            }
+            GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
+                .id(content.getId())
+                .tutorial_id(content.getTutorial().getId())
+                .name(content.getName())
+                .description(content.getDescription())
+                .number(content.getNumber())
+                .build();
+            allTutorialPageResponses.add(tutorialPageResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -76,7 +74,7 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionId(Long id) {
         List<GetTutorialPageResponse> allTutorialPageResponses = new ArrayList<>();
-        List<TutorialPage> listTutorialPage = tutorialPageRepository.findAll();
+        List<TutorialPage> listTutorialPage = tutorialPageRepository.findByTutorialId(id);
         listTutorialPage.forEach(content -> {
             if (content.getTutorial().getSection().getId() == id){
                 GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()

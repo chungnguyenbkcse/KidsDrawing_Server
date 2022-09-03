@@ -15,10 +15,16 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateUserRegisterTutorialRequest;
 import com.app.kidsdrawing.dto.GetUserRegisterTutorialResponse;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.Tutorial;
+import com.app.kidsdrawing.entity.TutorialPage;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterTutorial;
+import com.app.kidsdrawing.entity.UserRegisterTutorialPage;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.SectionRepository;
+import com.app.kidsdrawing.repository.TutorialPageRepository;
+import com.app.kidsdrawing.repository.TutorialRepository;
+import com.app.kidsdrawing.repository.UserRegisterTutorialPageRepository;
 import com.app.kidsdrawing.repository.UserRegisterTutorialRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.UserRegisterTutorialService;
@@ -33,6 +39,9 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     private final UserRegisterTutorialRepository userRegisterTutorialRepository;
     private final UserRepository userRepository;
     private final SectionRepository sectionRepository;
+    private final TutorialRepository tutorialRepository;
+    private final TutorialPageRepository tutorialPageRepository;
+    private final UserRegisterTutorialPageRepository userRegisterTutorialPageRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorial() {
@@ -153,12 +162,50 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
-        updatedUserRegisterTutorial.setCreator(creator);
-        updatedUserRegisterTutorial.setSection(section);
-        updatedUserRegisterTutorial.setName(createUserRegisterTutorialRequest.getName());
-        updatedUserRegisterTutorial.setStatus(createUserRegisterTutorialRequest.getStatus());
+        if (createUserRegisterTutorialRequest.getStatus() == "Approved") {
+            updatedUserRegisterTutorial.setCreator(creator);
+            updatedUserRegisterTutorial.setSection(section);
+            updatedUserRegisterTutorial.setName(createUserRegisterTutorialRequest.getName());
+            updatedUserRegisterTutorial.setStatus(createUserRegisterTutorialRequest.getStatus());
 
-        userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
+            userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
+
+            Optional<Tutorial> tutorialOpt = tutorialRepository.findById(section.getId());
+            Tutorial updatedTutorial = tutorialOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.Tutorial.not_found");
+            });
+
+            updatedTutorial.setName(updatedUserRegisterTutorial.getName());
+            updatedTutorial.setSection(section);
+            updatedTutorial.setCreator(creator);
+
+            tutorialRepository.save(updatedTutorial);
+
+            List<TutorialPage> listTutorialPage = tutorialPageRepository.findByTutorialId(id);
+            listTutorialPage.forEach(tutorial_page -> {
+                tutorialPageRepository.deleteById(tutorial_page.getId());
+            });
+
+            List<UserRegisterTutorialPage> listUserRegisterTutorialPage = userRegisterTutorialPageRepository.findByUserRegisterTutorial(updatedUserRegisterTutorial.getId());
+            listUserRegisterTutorialPage.forEach(user_register_tutorial_page -> {
+                TutorialPage savedTutorialPage = TutorialPage.builder()
+                    .tutorial(updatedTutorial)
+                    .name(user_register_tutorial_page.getName())
+                    .description(user_register_tutorial_page.getDescription())
+                    .number(user_register_tutorial_page.getNumber())
+                    .build();
+                tutorialPageRepository.save(savedTutorialPage);
+            });
+            
+        }
+        else {
+            updatedUserRegisterTutorial.setCreator(creator);
+            updatedUserRegisterTutorial.setSection(section);
+            updatedUserRegisterTutorial.setName(createUserRegisterTutorialRequest.getName());
+            updatedUserRegisterTutorial.setStatus(createUserRegisterTutorialRequest.getStatus());
+    
+            userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
+        }
 
         return updatedUserRegisterTutorial.getId();
     }
