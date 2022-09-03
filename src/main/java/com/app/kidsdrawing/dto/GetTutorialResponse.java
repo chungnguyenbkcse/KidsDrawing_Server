@@ -20,8 +20,6 @@ public class GetTutorialResponse {
     private Long class_id;
     private int section_number;
     private String name;
-    private String status;
-    private String description;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

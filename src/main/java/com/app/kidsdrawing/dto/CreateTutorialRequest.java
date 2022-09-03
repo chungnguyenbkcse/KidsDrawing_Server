@@ -7,5 +7,4 @@ public class CreateTutorialRequest {
     private Long section_id;
     private Long creator_id;
     private String name;
-    private String description; 
 }

@@ -49,9 +49,6 @@ public class TutorialTemplate {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "is_tutorial_nomal")
     private Boolean is_tutorial_nomal;
 

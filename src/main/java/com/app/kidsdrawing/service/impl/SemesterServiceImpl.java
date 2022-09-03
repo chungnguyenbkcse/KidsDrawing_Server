@@ -188,7 +188,6 @@ public class SemesterServiceImpl implements SemesterService {
                     Section savedSection = Section.builder()
                         .class1(ele)
                         .name(ele_section_tmp.getName())
-                        .description(ele_section_tmp.getDescription())
                         .number(ele_section_tmp.getNumber())
                         .teaching_form(ele_section_tmp.getTeaching_form())
                         .build();
@@ -197,9 +196,7 @@ public class SemesterServiceImpl implements SemesterService {
                     Tutorial savedTutorial = Tutorial.builder()
                         .section(savedSection)
                         .creator(creator)
-                        .status("Approved")
                         .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
-                        .description(ele_section_tmp.getTutorialTemplates().getDescription())
                         .build();
                     tutorialRepository.save(savedTutorial);
 
@@ -386,7 +383,6 @@ public class SemesterServiceImpl implements SemesterService {
                         Section savedSection = Section.builder()
                             .class1(savedClass)
                             .name(section_template.getName())
-                            .description(section_template.getDescription())
                             .number(section_template.getNumber())
                             .teaching_form(section_template.getTeaching_form())
                             .build();
@@ -395,9 +391,7 @@ public class SemesterServiceImpl implements SemesterService {
                         Tutorial savedTutorial = Tutorial.builder()
                             .section(savedSection)
                             .creator(creator)
-                            .status("Approved")
                             .name("Giáo trình " + section_template.getTutorialTemplates().getName())
-                            .description(section_template.getTutorialTemplates().getDescription())
                             .build();
                         tutorialRepository.save(savedTutorial);
                         

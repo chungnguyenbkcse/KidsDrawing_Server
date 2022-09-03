@@ -40,7 +40,6 @@ public class SectionServiceImpl implements SectionService{
                 .id(content.getId())
                 .class_id(content.getClass1().getId())
                 .name(content.getName())
-                .description(content.getDescription())
                 .number(content.getNumber())
                 .teach_form(content.getTeaching_form())
                 .recording(content.getRecording())
@@ -66,7 +65,6 @@ public class SectionServiceImpl implements SectionService{
                     .id(content.getId())
                     .class_id(content.getClass1().getId())
                     .name(content.getName())
-                    .description(content.getDescription())
                     .number(content.getNumber())
                     .recording(content.getRecording())
                     .message(content.getMessage())
@@ -94,7 +92,6 @@ public class SectionServiceImpl implements SectionService{
             .id(section.getId())
             .class_id(section.getClass1().getId())
             .name(section.getName())
-            .description(section.getDescription())
             .number(section.getNumber())
             .recording(section.getRecording())
             .message(section.getMessage())
@@ -115,7 +112,6 @@ public class SectionServiceImpl implements SectionService{
         Section savedSection = Section.builder()
                 .class1(classes)
                 .name(createSectionRequest.getName())
-                .description(createSectionRequest.getDescription())
                 .number(createSectionRequest.getNumber())
                 .recording(createSectionRequest.getRecording())
                 .message(createSectionRequest.getMessage())
@@ -150,7 +146,6 @@ public class SectionServiceImpl implements SectionService{
 
         updatedSection.setName(createSectionRequest.getName());
         updatedSection.setClass1(classes);
-        updatedSection.setDescription(createSectionRequest.getDescription());
         updatedSection.setRecording(createSectionRequest.getRecording());
         updatedSection.setMessage(createSectionRequest.getMessage());
         updatedSection.setNumber(createSectionRequest.getNumber());

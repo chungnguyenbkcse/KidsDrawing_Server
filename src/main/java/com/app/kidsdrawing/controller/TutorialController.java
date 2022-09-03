@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.app.kidsdrawing.dto.CreateTutorialAdminRequest;
 import com.app.kidsdrawing.dto.CreateTutorialRequest;
 import com.app.kidsdrawing.dto.GetTutorialResponse;
 import com.app.kidsdrawing.service.TutorialService;
@@ -63,16 +62,6 @@ public class TutorialController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateTutorial(@PathVariable Long id, @RequestBody CreateTutorialRequest createTutorialRequest) {
         Long tutorialId = tutorialService.updateTutorial(id,createTutorialRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-                .buildAndExpand(tutorialId).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-
-    @CrossOrigin
-    @PutMapping(value = "/admin/{id}")
-    public ResponseEntity<String> updateTutorialAdmin(@PathVariable Long id, @RequestBody CreateTutorialAdminRequest createTutorialAdminRequest) {
-        Long tutorialId = tutorialService.updateTutorialAdmin(id,createTutorialAdminRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(tutorialId).toUri();
         return ResponseEntity.created(location).build();

@@ -40,7 +40,6 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
                 .id(content.getId())
                 .section_template_id(content.getSectionTemplate().getId())
                 .name(content.getName())
-                .description(content.getDescription())
                 .create_time(content.getCreate_time())
                 .update_time(content.getUpdate_time())
                 .build();
@@ -62,7 +61,6 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
                     .id(content.getId())
                     .section_template_id(id)
                     .name(content.getName())
-                    .description(content.getDescription())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
                     .build();
@@ -86,7 +84,6 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
             .id(tutorialTemplate.getId())
             .section_template_id(tutorialTemplate.getSectionTemplate().getId())
             .name(tutorialTemplate.getName())
-            .description(tutorialTemplate.getDescription())
             .create_time(tutorialTemplate.getCreate_time())
             .update_time(tutorialTemplate.getUpdate_time())
             .build();
@@ -103,7 +100,6 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
         TutorialTemplate savedTutorialTemplate = TutorialTemplate.builder()
                 .sectionTemplate(sectionTemplate)
                 .name(createTutorialTemplateRequest.getName())
-                .description(createTutorialTemplateRequest.getDescription())
                 .build();
         tutorialTemplateRepository.save(savedTutorialTemplate);
 
@@ -135,7 +131,6 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
         });
 
         updatedTutorialTemplate.setName(createTutorialTemplateRequest.getName());
-        updatedTutorialTemplate.setDescription(createTutorialTemplateRequest.getDescription());
         updatedTutorialTemplate.setSectionTemplate(sectionTemplate);
 
         return updatedTutorialTemplate.getId();

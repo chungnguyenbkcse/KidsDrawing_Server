@@ -44,7 +44,6 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
                 .creator_id(content.getUser().getId())
                 .course_id(content.getCourse().getId())
                 .name(content.getName())
-                .description(content.getDescription())
                 .number(content.getNumber())
                 .teaching_form(content.getTeaching_form())
                 .create_time(content.getCreate_time())
@@ -68,8 +67,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
                     .id(content.getId())
                     .creator_id(content.getUser().getId())
                     .course_id(id)
-                    .name(content.getName())
-                    .description(content.getDescription())
+                    .name(content.getName())   
                     .number(content.getNumber())
                     .teaching_form(content.getTeaching_form())
                     .create_time(content.getCreate_time())
@@ -96,7 +94,6 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
             .creator_id(section.getUser().getId())
             .course_id(section.getCourse().getId())
             .name(section.getName())
-            .description(section.getDescription())
             .number(section.getNumber())
             .teaching_form(section.getTeaching_form())
             .create_time(section.getCreate_time())
@@ -121,7 +118,6 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
                 .course(course)
                 .user(creator)
                 .name(createSectionTemplateRequest.getName())
-                .description(createSectionTemplateRequest.getDescription())
                 .number(createSectionTemplateRequest.getNumber())
                 .teaching_form(createSectionTemplateRequest.getTeaching_form())
                 .build();
@@ -160,7 +156,6 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
 
         updatedSectionTemplate.setName(createSectionTemplateRequest.getName());
         updatedSectionTemplate.setCourse(course);
-        updatedSectionTemplate.setDescription(createSectionTemplateRequest.getDescription());
         updatedSectionTemplate.setUser(creator);
         updatedSectionTemplate.setTeaching_form(createSectionTemplateRequest.getTeaching_form());
         updatedSectionTemplate.setNumber(createSectionTemplateRequest.getNumber());
