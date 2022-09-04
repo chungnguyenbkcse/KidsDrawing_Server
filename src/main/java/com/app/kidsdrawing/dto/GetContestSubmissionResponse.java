@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class GetContestSubmissionResponse {
     private Long id;
     private Long contest_id;
+    private String student_name;
+    private String contest_name;
     private Long student_id;
     private String image_url;
     private LocalDateTime create_time;

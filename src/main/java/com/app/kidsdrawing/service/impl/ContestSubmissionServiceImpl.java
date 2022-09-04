@@ -20,6 +20,7 @@ import com.app.kidsdrawing.entity.Contest;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.ContestSubmissionRepository;
+import com.app.kidsdrawing.repository.UserGradeContestSubmissionRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ContestSubmissionService;
 
@@ -33,6 +34,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     private final ContestSubmissionRepository contestSubmissionRepository;
     private final ContestRepository contestRepository;
     private final UserRepository userRepository;
+    private final UserGradeContestSubmissionRepository userGradeContestSubmissionRepository;
 
 
     @Override
@@ -66,6 +68,8 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     .id(content.getId())
                     .contest_id(content.getContest().getId())
                     .student_id(content.getStudent().getId())
+                    .contest_name(content.getContest().getName())
+                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -81,24 +85,41 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllContestSubmissionByContestId(Long id) {
-        List<GetContestSubmissionResponse> allContestSubmissionResponses = new ArrayList<>();
-        List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findAll();
-        listContestSubmission.forEach(content -> {
-            if (content.getContest().getId() == id){
+        List<GetContestSubmissionResponse> allContestSubmissionGradedResponses = new ArrayList<>();
+        List<GetContestSubmissionResponse> allContestSubmissionNotGradedResponses = new ArrayList<>();
+        List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(id);
+        listContestSubmissionByContest.forEach(contest_submission -> {
+            if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
                 GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
-                    .id(content.getId())
-                    .contest_id(content.getContest().getId())
-                    .student_id(content.getStudent().getId())
-                    .image_url(content.getImage_url())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
+                    .id(contest_submission.getId())
+                    .contest_id(contest_submission.getContest().getId())
+                    .student_id(contest_submission.getStudent().getId())
+                    .contest_name(contest_submission.getContest().getName())
+                    .student_name(contest_submission.getStudent().getFirstName() + " " + contest_submission.getStudent().getLastName())
+                    .image_url(contest_submission.getImage_url())
+                    .create_time(contest_submission.getCreate_time())
+                    .update_time(contest_submission.getUpdate_time())
                     .build();
-                allContestSubmissionResponses.add(contestSubmissionResponse);
+                allContestSubmissionGradedResponses.add(contestSubmissionResponse);
+            }
+            else {
+                GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                    .id(contest_submission.getId())
+                    .contest_id(contest_submission.getContest().getId())
+                    .student_id(contest_submission.getStudent().getId())
+                    .contest_name(contest_submission.getContest().getName())
+                    .student_name(contest_submission.getStudent().getFirstName() + " " + contest_submission.getStudent().getLastName())
+                    .image_url(contest_submission.getImage_url())
+                    .create_time(contest_submission.getCreate_time())
+                    .update_time(contest_submission.getUpdate_time())
+                    .build();
+                allContestSubmissionNotGradedResponses.add(contestSubmissionResponse);
             }
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("ContestSubmission", allContestSubmissionResponses);
+        response.put("contest_not_graded", allContestSubmissionNotGradedResponses);
+        response.put("contest_graded", allContestSubmissionGradedResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -113,6 +134,8 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             .id(contestSubmission.getId())
             .contest_id(contestSubmission.getContest().getId())
             .student_id(contestSubmission.getStudent().getId())
+            .contest_name(contestSubmission.getContest().getName())
+            .student_name(contestSubmission.getStudent().getFirstName() + " " + contestSubmission.getStudent().getLastName())
             .image_url(contestSubmission.getImage_url())
             .create_time(contestSubmission.getCreate_time())
             .update_time(contestSubmission.getUpdate_time())
