@@ -22,9 +22,9 @@ Authorization: Bearer {{admin_access_token}}
 
 {
     "teacher_id": 2,
-    "contest_submission_id": 1,
-    "feedback": "Bài làm tốt",
-    "score": 9
+    "contest_submission_id": 3,
+    "feedback": "Bài thi kha",
+    "score": 7
 }
 
 ### CREATE CONTEST ACTION ###

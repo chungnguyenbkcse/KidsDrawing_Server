@@ -10,6 +10,7 @@ import com.app.kidsdrawing.entity.UserGradeContestSubmission;
 @Repository
 public interface UserGradeContestSubmissionRepository extends JpaRepository <UserGradeContestSubmission, Long>{
     boolean existsById(Long id);
+    boolean existsByContestSubmissionId(Long id);
     void deleteById(Long id);
     List<UserGradeContestSubmission> findByTeacherId(Long id);
 }

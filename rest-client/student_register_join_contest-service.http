@@ -21,8 +21,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 20,
-    "contest_id": 2
+    "student_id": 40,
+    "contest_id": 3
 }
 
 ### GET TEACHER GRADE CONTEST ACTION ###

@@ -459,11 +459,11 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-23",
+    "username": "student-27",
     "password": "12345678aA@",
-    "email": "student-23@gmail.com",
+    "email": "student-27@gmail.com",
     "firstName": "student",
-    "lastName": "23",
+    "lastName": "27",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -1094,7 +1094,7 @@ Content-Type: application/json
 ###
 
 # @name get_all_user_by_student
-GET {{rest}}/user/10
+GET {{rest}}/user/teacher
 Authorization: Bearer {{student_access_token}}
 
 

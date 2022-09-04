@@ -22,14 +22,19 @@ import com.app.kidsdrawing.dto.GetContestTeacherResponse;
 import com.app.kidsdrawing.entity.ArtAge;
 import com.app.kidsdrawing.entity.ArtType;
 import com.app.kidsdrawing.entity.Contest;
+import com.app.kidsdrawing.entity.ContestSubmission;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserGradeContest;
+import com.app.kidsdrawing.entity.UserRegisterJoinContest;
 import com.app.kidsdrawing.exception.ContestAlreadyCreateException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtAgeRepository;
 import com.app.kidsdrawing.repository.ArtTypeRepository;
 import com.app.kidsdrawing.repository.ContestRepository;
+import com.app.kidsdrawing.repository.ContestSubmissionRepository;
 import com.app.kidsdrawing.repository.UserGradeContestRepository;
+import com.app.kidsdrawing.repository.UserGradeContestSubmissionRepository;
+import com.app.kidsdrawing.repository.UserRegisterJoinContestRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ContestService;
 
@@ -45,6 +50,10 @@ public class ContestServiceImpl implements ContestService {
     private final ArtAgeRepository artAgeRepository;
     private final ArtTypeRepository artTypeRepository;
     private final UserGradeContestRepository userGradeContestRepository;
+    private final UserRegisterJoinContestRepository userRegisterJoinContestRepository;
+    private final ContestSubmissionRepository contestSubmissionRepository;
+    private final UserGradeContestSubmissionRepository userGradeContestSubmissionRepository;
+    private static int total = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllContestByTeacher(Long id) {
@@ -63,6 +72,15 @@ public class ContestServiceImpl implements ContestService {
                     teachers.add(user_grade_contest.getUser().getId());
                 }
             });
+
+            total = 0;
+            List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId(contest.getId());
+            List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(contest.getId());
+            listContestSubmissionByContest.forEach(contest_submission -> {
+                if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
+                    total = total + 1;
+                }
+            });
             if (teachers.contains(id)){
                 if (time_now.isAfter(contest.getStart_time()) == false){
                     GetContestTeacherResponse contestNotOpenNowResponse = GetContestTeacherResponse.builder()
@@ -70,6 +88,9 @@ public class ContestServiceImpl implements ContestService {
                         .name(contest.getName())
                         .description(contest.getDescription())
                         .max_participant(contest.getMax_participant())
+                        .total_register_contest(listUserRegisterContestByContest.size())
+                        .total_contest_submission(listContestSubmissionByContest.size())
+                        .total_const_submission_graded(total)
                         .registration_time(contest.getRegistration_time())
                         .image_url(contest.getImage_url())
                         .start_time(contest.getStart_time())
@@ -86,6 +107,9 @@ public class ContestServiceImpl implements ContestService {
                         .name(contest.getName())
                         .description(contest.getDescription())
                         .max_participant(contest.getMax_participant())
+                        .total_register_contest(listUserRegisterContestByContest.size())
+                        .total_contest_submission(listContestSubmissionByContest.size())
+                        .total_const_submission_graded(total)
                         .registration_time(contest.getRegistration_time())
                         .image_url(contest.getImage_url())
                         .start_time(contest.getStart_time())
@@ -102,6 +126,9 @@ public class ContestServiceImpl implements ContestService {
                         .name(contest.getName())
                         .description(contest.getDescription())
                         .max_participant(contest.getMax_participant())
+                        .total_register_contest(listUserRegisterContestByContest.size())
+                        .total_contest_submission(listContestSubmissionByContest.size())
+                        .total_const_submission_graded(total)
                         .registration_time(contest.getRegistration_time())
                         .image_url(contest.getImage_url())
                         .start_time(contest.getStart_time())
@@ -120,6 +147,9 @@ public class ContestServiceImpl implements ContestService {
                         .name(contest.getName())
                         .description(contest.getDescription())
                         .max_participant(contest.getMax_participant())
+                        .total_register_contest(listUserRegisterContestByContest.size())
+                        .total_contest_submission(listContestSubmissionByContest.size())
+                        .total_const_submission_graded(total)
                         .registration_time(contest.getRegistration_time())
                         .image_url(contest.getImage_url())
                         .start_time(contest.getStart_time())
@@ -147,11 +177,23 @@ public class ContestServiceImpl implements ContestService {
         Pageable paging = PageRequest.of(page, size);
         Page<Contest> pageContest = contestRepository.findAll(paging);
         pageContest.getContent().forEach(contest -> {
+            total = 0;
+            List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId(contest.getId());
+            List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(contest.getId());
+            listContestSubmissionByContest.forEach(contest_submission -> {
+                if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
+                    total = total + 1;
+                }
+            });
+
             GetContestResponse contestResponse = GetContestResponse.builder()
                     .id(contest.getId())
                     .name(contest.getName())
                     .description(contest.getDescription())
                     .max_participant(contest.getMax_participant())
+                    .total_register_contest(listUserRegisterContestByContest.size())
+                    .total_contest_submission(listContestSubmissionByContest.size())
+                    .total_const_submission_graded(total)
                     .registration_time(contest.getRegistration_time())
                     .image_url(contest.getImage_url())
                     .start_time(contest.getStart_time())
@@ -181,11 +223,23 @@ public class ContestServiceImpl implements ContestService {
         Page<Contest> pageContest = contestRepository.findAll(paging);
         pageContest.getContent().forEach(contest -> {
             if (contest.getArtTypes().getId() == id) {
+                total = 0;
+                List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId(contest.getId());
+                List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(contest.getId());
+                listContestSubmissionByContest.forEach(contest_submission -> {
+                    if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
+                        total = total + 1;
+                    }
+                });
+
                 GetContestResponse contestResponse = GetContestResponse.builder()
                     .id(contest.getId())
                     .name(contest.getName())
                     .description(contest.getDescription())
                     .max_participant(contest.getMax_participant())
+                    .total_register_contest(listUserRegisterContestByContest.size())
+                    .total_contest_submission(listContestSubmissionByContest.size())
+                    .total_const_submission_graded(total)
                     .registration_time(contest.getRegistration_time())
                     .image_url(contest.getImage_url())
                     .start_time(contest.getStart_time())
@@ -216,11 +270,22 @@ public class ContestServiceImpl implements ContestService {
         Page<Contest> pageContest = contestRepository.findAll(paging);
         pageContest.getContent().forEach(contest -> {
             if (contest.getArtAges().getId() == id) {
+                total = 0;
+                List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId(contest.getId());
+                List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(contest.getId());
+                listContestSubmissionByContest.forEach(contest_submission -> {
+                    if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
+                        total = total + 1;
+                    }
+                });
                 GetContestResponse contestResponse = GetContestResponse.builder()
                     .id(contest.getId())
                     .name(contest.getName())
                     .description(contest.getDescription())
                     .max_participant(contest.getMax_participant())
+                    .total_register_contest(listUserRegisterContestByContest.size())
+                    .total_contest_submission(listContestSubmissionByContest.size())
+                    .total_const_submission_graded(total)
                     .registration_time(contest.getRegistration_time())
                     .image_url(contest.getImage_url())
                     .start_time(contest.getStart_time())
@@ -251,11 +316,23 @@ public class ContestServiceImpl implements ContestService {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
 
+        total = 0;
+        List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId(contest.getId());
+        List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(contest.getId());
+        listContestSubmissionByContest.forEach(contest_submission -> {
+            if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
+                total = total + 1;
+            }
+        });
+
         return GetContestResponse.builder()
                 .id(contest.getId())
                 .name(contest.getName())
                 .description(contest.getDescription())
                 .max_participant(contest.getMax_participant())
+                .total_register_contest(listUserRegisterContestByContest.size())
+                .total_contest_submission(listContestSubmissionByContest.size())
+                .total_const_submission_graded(total)
                 .registration_time(contest.getRegistration_time())
                 .image_url(contest.getImage_url())
                 .start_time(contest.getStart_time())
@@ -276,11 +353,23 @@ public class ContestServiceImpl implements ContestService {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
 
+        total = 0;
+        List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId(contest.getId());
+        List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(contest.getId());
+        listContestSubmissionByContest.forEach(contest_submission -> {
+            if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
+                total = total + 1;
+            }
+        });
+
         return GetContestResponse.builder()
                 .id(contest.getId())
                 .name(contest.getName())
                 .description(contest.getDescription())
                 .max_participant(contest.getMax_participant())
+                .total_register_contest(listUserRegisterContestByContest.size())
+                .total_contest_submission(listContestSubmissionByContest.size())
+                .total_const_submission_graded(total)
                 .registration_time(contest.getRegistration_time())
                 .image_url(contest.getImage_url())
                 .start_time(contest.getStart_time())

@@ -229,7 +229,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public ResponseEntity<Map<String, Object>> getAllTeacher() {
         List<GetTeacherResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById((long) 4);
+        Optional<Role> roleOpt = roleRepository.findById((long) 2);
         Role role = roleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.role.not_found");
         });
