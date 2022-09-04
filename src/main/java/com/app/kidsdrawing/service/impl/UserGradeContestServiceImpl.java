@@ -43,6 +43,8 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
                     .id(content.getId())
                     .teacher_id(id)
                     .contest_id(content.getContest().getId())
+                    .teacher_name(content.getUser().getFirstName() + " " + content.getUser().getLastName())
+                    .contest_name(content.getContest().getName())
                     .build();
                     allUserGradeContestResponses.add(userGradeContestResponse);
             }
@@ -63,6 +65,8 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
                     .id(content.getId())
                     .teacher_id(content.getUser().getId())
                     .contest_id(id)
+                    .teacher_name(content.getUser().getFirstName() + " " + content.getUser().getLastName())
+                    .contest_name(content.getContest().getName())
                     .build();
                     allUserGradeContestResponses.add(userGradeContestResponse);
             }
@@ -84,6 +88,8 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
                 .id(userGradeContest.getId())
                 .teacher_id(userGradeContest.getUser().getId())
                 .contest_id(userGradeContest.getContest().getId())
+                .teacher_name(userGradeContest.getUser().getFirstName() + " " + userGradeContest.getUser().getLastName())
+                .contest_name(userGradeContest.getContest().getName())
                 .build();
     }
 
