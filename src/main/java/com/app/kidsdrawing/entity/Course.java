@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -84,6 +85,6 @@ public class Course {
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User user;
 
-    @OneToOne(mappedBy = "course")
-    private SectionTemplate sectionTemplates;
+    @OneToMany(mappedBy = "course")
+    private Set<SectionTemplate> sectionTemplates;
 }

@@ -41,11 +41,8 @@ public class UserRegisterTutorialController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createUserRegisterTutorial(@RequestBody CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
-        Long userRegisterTutorialId = userRegisterTutorialService.createUserRegisterTutorial(createUserRegisterTutorialRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterTutorialId}")
-                .buildAndExpand(userRegisterTutorialId).toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<GetUserRegisterTutorialResponse> createUserRegisterTutorial(@RequestBody CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
+        return ResponseEntity.ok().body(userRegisterTutorialService.createUserRegisterTutorial(createUserRegisterTutorialRequest));
     }
 
     @CrossOrigin

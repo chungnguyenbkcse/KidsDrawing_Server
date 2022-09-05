@@ -377,11 +377,8 @@ public class SemesterServiceImpl implements SemesterService {
                     number ++;
                     listClassOfSemesterClass.add(savedClass);
 
-                    Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId(semester_class.getCourse().getId());
-                    SectionTemplate section_template = sectionTemplateOpt.orElseThrow(() -> {
-                        throw new EntityNotFoundException("exception.section.not_found");
-                    });
-                    
+                    List<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId(semester_class.getCourse().getId());
+                    sectionTemplateOpt.forEach(section_template -> {
                         Section savedSection = Section.builder()
                             .class1(savedClass)
                             .name(section_template.getName())
@@ -406,6 +403,8 @@ public class SemesterServiceImpl implements SemesterService {
                                 .build();
                             tutorialPageRepository.save(savedTutorialPage);
                         });
+                    });
+                
 
                     String msgBody = "Chúc mừng giáo viên "+ savedClass.getUserRegisterTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getUserRegisterTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";
                     EmailDetails details = new EmailDetails(savedClass.getUserRegisterTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");

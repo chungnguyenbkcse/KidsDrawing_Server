@@ -10,7 +10,7 @@ public interface UserRegisterTutorialService {
     ResponseEntity<Map<String, Object>> getAllUserRegisterTutorial();
     ResponseEntity<Map<String, Object>> getAllUserRegisterTutorialBySection(Long id);
     GetUserRegisterTutorialResponse getUserRegisterTutorialById(Long id);
-    Long createUserRegisterTutorial(CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest);
+    GetUserRegisterTutorialResponse createUserRegisterTutorial(CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest);
     Long removeUserRegisterTutorialById(Long id);
     Long updateUserRegisterTutorialById(Long id, CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest);
 }

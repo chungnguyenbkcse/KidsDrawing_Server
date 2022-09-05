@@ -31,7 +31,6 @@ import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
 import com.app.kidsdrawing.repository.TutorialTemplatePageRepository;
 import com.app.kidsdrawing.repository.TutorialTemplateRepository;
-import com.app.kidsdrawing.repository.UserRegisterTutorialPageRepository;
 import com.app.kidsdrawing.repository.UserRegisterTutorialRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.UserRegisterTutorialService;
@@ -48,7 +47,6 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     private final SectionRepository sectionRepository;
     private final TutorialRepository tutorialRepository;
     private final TutorialPageRepository tutorialPageRepository;
-    private final UserRegisterTutorialPageRepository userRegisterTutorialPageRepository;
     private final TutorialTemplateRepository tutorialTemplateRepository;
     private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
     private final SectionTemplateRepository sectionTemplateRepository;
@@ -62,6 +60,9 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
                 .id(content.getId())
                 .section_id(content.getSection().getId())
                 .section_name(content.getSection().getName())
+                .section_number(content.getSection().getNumber())
+                .class_id(content.getSection().getClass1().getId())
+                .class_name(content.getSection().getClass1().getName())
                 .creator_id(content.getCreator().getId())
                 .creator_name(content.getCreator().getFirstName() + " " + content.getCreator().getLastName())
                 .name(content.getName())
@@ -86,6 +87,9 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
                 .id(content.getId())
                 .section_id(content.getSection().getId())
                 .section_name(content.getSection().getName())
+                .section_number(content.getSection().getNumber())
+                .class_id(content.getSection().getClass1().getId())
+                .class_name(content.getSection().getClass1().getName())
                 .creator_id(content.getCreator().getId())
                 .creator_name(content.getCreator().getFirstName() + " " + content.getCreator().getLastName())
                 .name(content.getName())
@@ -112,6 +116,9 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
             .id(UserRegisterTutorial.getId())
             .section_id(UserRegisterTutorial.getSection().getId())
             .section_name(UserRegisterTutorial.getSection().getName())
+            .section_number(UserRegisterTutorial.getSection().getNumber())
+            .class_id(UserRegisterTutorial.getSection().getClass1().getId())
+            .class_name(UserRegisterTutorial.getSection().getClass1().getName())
             .creator_id(UserRegisterTutorial.getCreator().getId())
             .creator_name(UserRegisterTutorial.getCreator().getFirstName() + " " + UserRegisterTutorial.getCreator().getLastName())
             .name(UserRegisterTutorial.getName())
@@ -122,7 +129,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     }
 
     @Override
-    public Long createUserRegisterTutorial(CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
+    public GetUserRegisterTutorialResponse createUserRegisterTutorial(CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
         Optional <Section> sectionOpt = sectionRepository.findById(createUserRegisterTutorialRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
@@ -141,7 +148,20 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
                 .build();
         userRegisterTutorialRepository.save(savedUserRegisterTutorial);
 
-        return savedUserRegisterTutorial.getId();
+        return GetUserRegisterTutorialResponse.builder()
+        .id(savedUserRegisterTutorial.getId())
+        .section_id(savedUserRegisterTutorial.getSection().getId())
+        .section_name(savedUserRegisterTutorial.getSection().getName())
+        .section_number(savedUserRegisterTutorial.getSection().getNumber())
+        .class_id(savedUserRegisterTutorial.getSection().getClass1().getId())
+        .class_name(savedUserRegisterTutorial.getSection().getClass1().getName())
+        .creator_id(savedUserRegisterTutorial.getCreator().getId())
+        .creator_name(savedUserRegisterTutorial.getCreator().getFirstName() + " " + savedUserRegisterTutorial.getCreator().getLastName())
+        .name(savedUserRegisterTutorial.getName())
+        .status(savedUserRegisterTutorial.getStatus())
+        .create_time(savedUserRegisterTutorial.getCreate_time())
+        .update_time(savedUserRegisterTutorial.getUpdate_time())
+        .build();
     }
 
     @Override
@@ -188,12 +208,12 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
             tutorialRepository.save(updatedTutorial);
 
-            List<TutorialPage> listTutorialPage = tutorialPageRepository.findByTutorialId(id);
+            Set<TutorialPage> listTutorialPage = updatedTutorial.getTutorial_pages();
             listTutorialPage.forEach(tutorial_page -> {
                 tutorialPageRepository.deleteById(tutorial_page.getId());
             });
 
-            List<UserRegisterTutorialPage> listUserRegisterTutorialPage = userRegisterTutorialPageRepository.findByUserRegisterTutorial(updatedUserRegisterTutorial.getId());
+            Set<UserRegisterTutorialPage> listUserRegisterTutorialPage = updatedUserRegisterTutorial.getUserRegisterTutorials();
             listUserRegisterTutorialPage.forEach(user_register_tutorial_page -> {
                 TutorialPage savedTutorialPage = TutorialPage.builder()
                     .tutorial(updatedTutorial)
@@ -213,7 +233,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
             userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
 
-            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId(section.getClass1().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId());
+            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber(section.getClass1().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId(), section.getNumber());
             SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.section.not_found");
             });
@@ -231,7 +251,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
                 tutorialTemplatePageRepository.deleteById(tutorial_page.getId());
             });
 
-            List<UserRegisterTutorialPage> listUserRegisterTutorialPage = userRegisterTutorialPageRepository.findByUserRegisterTutorial(updatedUserRegisterTutorial.getId());
+            Set<UserRegisterTutorialPage> listUserRegisterTutorialPage = updatedUserRegisterTutorial.getUserRegisterTutorials();
             listUserRegisterTutorialPage.forEach(user_register_tutorial_page -> {
                 TutorialTemplatePage savedTutorialTemplatePage = TutorialTemplatePage.builder()
                     .tutorialTemplate(updatedTutorialTemplate)

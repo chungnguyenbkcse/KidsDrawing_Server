@@ -37,7 +37,7 @@ public class UserRegisterTutorialPage {
     @JoinColumn(name = "user_register_tutorial_id", referencedColumnName = "id")
     private UserRegisterTutorial userRegisterTutorial;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description")

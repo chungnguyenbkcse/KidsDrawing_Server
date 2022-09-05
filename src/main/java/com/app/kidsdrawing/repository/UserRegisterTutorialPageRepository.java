@@ -11,5 +11,5 @@ import com.app.kidsdrawing.entity.UserRegisterTutorialPage;
 public interface UserRegisterTutorialPageRepository extends JpaRepository <UserRegisterTutorialPage, Long>{
     boolean existsById(Long id);
     void deleteById(Long id);
-    List<UserRegisterTutorialPage> findByUserRegisterTutorial(Long id);
+    List<UserRegisterTutorialPage> findByUserRegisterTutorialId(Long id);
 }

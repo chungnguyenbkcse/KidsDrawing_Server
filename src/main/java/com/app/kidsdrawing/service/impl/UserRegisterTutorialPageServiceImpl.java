@@ -54,7 +54,7 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorialPageByUserRegiseterTutorial(Long id) {
         List<GetUserRegisterTutorialPageResponse> allUserRegisterTutorialPageResponses = new ArrayList<>();
-        List<UserRegisterTutorialPage> listUserRegisterTutorialPage = userRegisterTutorialPageRepository.findByUserRegisterTutorial(id);
+        List<UserRegisterTutorialPage> listUserRegisterTutorialPage = userRegisterTutorialPageRepository.findByUserRegisterTutorialId(id);
         listUserRegisterTutorialPage.forEach(content -> {
             GetUserRegisterTutorialPageResponse UserRegisterTutorialPageResponse = GetUserRegisterTutorialPageResponse.builder()
                 .id(content.getId())
