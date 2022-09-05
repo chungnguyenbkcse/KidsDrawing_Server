@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -75,8 +76,8 @@ public class Section {
     @OneToMany(mappedBy="section")
     private Set<Exercise> exercises;
 
-    @OneToMany(mappedBy="section")
-    private Set<Tutorial> tutorials;
+    @OneToOne(mappedBy="section")
+    private Tutorial tutorial;
 
     @OneToMany(mappedBy="section")
     private Set<UserRegisterTutorial> userRegisterTutorials;

@@ -1,6 +1,6 @@
 package com.app.kidsdrawing.repository;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,7 @@ import com.app.kidsdrawing.entity.SectionTemplate;
 @Repository
 public interface SectionTemplateRepository extends JpaRepository <SectionTemplate, Long>{
     Page<SectionTemplate> findAll(Pageable pageable);
-    List<SectionTemplate> findByCourseId(Long id);
+    Optional<SectionTemplate> findByCourseId(Long id);
     boolean existsById(Long id);
     void deleteById(Long id);
 }

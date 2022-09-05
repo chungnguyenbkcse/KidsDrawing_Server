@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -15,15 +16,21 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateUserRegisterTutorialRequest;
 import com.app.kidsdrawing.dto.GetUserRegisterTutorialResponse;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.Tutorial;
 import com.app.kidsdrawing.entity.TutorialPage;
+import com.app.kidsdrawing.entity.TutorialTemplate;
+import com.app.kidsdrawing.entity.TutorialTemplatePage;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterTutorial;
 import com.app.kidsdrawing.entity.UserRegisterTutorialPage;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.SectionRepository;
+import com.app.kidsdrawing.repository.SectionTemplateRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
+import com.app.kidsdrawing.repository.TutorialTemplatePageRepository;
+import com.app.kidsdrawing.repository.TutorialTemplateRepository;
 import com.app.kidsdrawing.repository.UserRegisterTutorialPageRepository;
 import com.app.kidsdrawing.repository.UserRegisterTutorialRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -42,6 +49,9 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     private final TutorialRepository tutorialRepository;
     private final TutorialPageRepository tutorialPageRepository;
     private final UserRegisterTutorialPageRepository userRegisterTutorialPageRepository;
+    private final TutorialTemplateRepository tutorialTemplateRepository;
+    private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
+    private final SectionTemplateRepository sectionTemplateRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorial() {
@@ -162,7 +172,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
-        if (createUserRegisterTutorialRequest.getStatus() == "Approved") {
+        if (createUserRegisterTutorialRequest.getStatus().equals("Approved")){
             updatedUserRegisterTutorial.setCreator(creator);
             updatedUserRegisterTutorial.setSection(section);
             updatedUserRegisterTutorial.setName(createUserRegisterTutorialRequest.getName());
@@ -170,10 +180,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
             userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
 
-            Optional<Tutorial> tutorialOpt = tutorialRepository.findById(section.getId());
-            Tutorial updatedTutorial = tutorialOpt.orElseThrow(() -> {
-                throw new EntityNotFoundException("exception.Tutorial.not_found");
-            });
+            Tutorial updatedTutorial = section.getTutorial();
 
             updatedTutorial.setName(updatedUserRegisterTutorial.getName());
             updatedTutorial.setSection(section);
@@ -196,7 +203,44 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
                     .build();
                 tutorialPageRepository.save(savedTutorialPage);
             });
-            
+        }
+
+        else if (createUserRegisterTutorialRequest.getStatus().equals("Approved to tutorial template")) {
+            updatedUserRegisterTutorial.setCreator(creator);
+            updatedUserRegisterTutorial.setSection(section);
+            updatedUserRegisterTutorial.setName(createUserRegisterTutorialRequest.getName());
+            updatedUserRegisterTutorial.setStatus(createUserRegisterTutorialRequest.getStatus());
+
+            userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
+
+            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId(section.getClass1().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId());
+            SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.section.not_found");
+            });
+
+            TutorialTemplate updatedTutorialTemplate = sectionTemplate.getTutorialTemplates();
+
+            updatedTutorialTemplate.setName(updatedUserRegisterTutorial.getName());
+            updatedTutorialTemplate.setSectionTemplate(sectionTemplate);
+            updatedTutorialTemplate.setCreator(creator);
+
+            tutorialTemplateRepository.save(updatedTutorialTemplate);
+
+            Set<TutorialTemplatePage> listTutorialTemplatePage = updatedTutorialTemplate.getTutorialTemplatePages();
+            listTutorialTemplatePage.forEach(tutorial_page -> {
+                tutorialTemplatePageRepository.deleteById(tutorial_page.getId());
+            });
+
+            List<UserRegisterTutorialPage> listUserRegisterTutorialPage = userRegisterTutorialPageRepository.findByUserRegisterTutorial(updatedUserRegisterTutorial.getId());
+            listUserRegisterTutorialPage.forEach(user_register_tutorial_page -> {
+                TutorialTemplatePage savedTutorialTemplatePage = TutorialTemplatePage.builder()
+                    .tutorialTemplate(updatedTutorialTemplate)
+                    .name(user_register_tutorial_page.getName())
+                    .description(user_register_tutorial_page.getDescription())
+                    .number(user_register_tutorial_page.getNumber())
+                    .build();
+                tutorialTemplatePageRepository.save(savedTutorialTemplatePage);
+            });
         }
         else {
             updatedUserRegisterTutorial.setCreator(creator);
