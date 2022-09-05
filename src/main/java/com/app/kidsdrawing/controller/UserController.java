@@ -3,6 +3,7 @@ package com.app.kidsdrawing.controller;
 import java.net.URI;
 import java.util.Map;
 
+import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
@@ -86,6 +87,16 @@ public class UserController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateUserInfoById(@PathVariable Long id, @RequestBody CreateUserRequest createUserRequest) {
         Long userId = userService.updateUser(id, createUserRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(userId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+
+    @CrossOrigin
+    @PutMapping(value = "/change-password/{id}")
+    public ResponseEntity<String> updatePasswordById(@PathVariable Long id, @RequestBody CreateChangePassowrdRequest createChangePassowrdRequest) {
+        Long userId = userService.updatePassword(id, createChangePassowrdRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();

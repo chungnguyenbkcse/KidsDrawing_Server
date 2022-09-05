@@ -1073,6 +1073,8 @@ Content-Type: application/json
     "refreshToken": "{{admin_refresh_token}}"
 }
 
+
+
 ###
 
 # @name get_all_user_after_refresh
@@ -1103,6 +1105,18 @@ Authorization: Bearer {{student_access_token}}
 # @name get_all_user_by_student
 GET {{rest}}/user/report/2022
 Authorization: Bearer {{student_access_token}}
+
+
+### 
+# @name update_contest
+
+PUT {{rest}}/user/change-password/1
+Content-Type: application/json
+
+{
+    "pre_password": "12345678aA@",
+    "new_password": "a8726357"
+}
 
 
 

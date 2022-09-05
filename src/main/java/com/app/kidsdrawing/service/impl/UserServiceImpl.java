@@ -12,6 +12,7 @@ import java.util.Random;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
+import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
@@ -41,6 +42,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -521,40 +523,50 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Long updateUser(Long id, CreateUserRequest createUserRequest) {
-        String encodedPassword = passwordEncoder.encode(createUserRequest.getPassword());
         Optional<User> userOpt = userRepository.findById(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
-        Optional<User> parentOpt = userRepository.findById(createUserRequest.getParent_id());
-        User parent = parentOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.parent.not_found");
-        });
+        if (createUserRequest.getPassword().equals("")){
+            user.setUsername(createUserRequest.getUsername());
+            user.setEmail(createUserRequest.getEmail());
+            user.setFirstName(createUserRequest.getFirstName());
+            user.setLastName(createUserRequest.getLastName());
+            user.setAddress(createUserRequest.getAddress());
+            user.setDateOfBirth(createUserRequest.getDateOfBirth());
+            user.setProfileImageUrl(createUserRequest.getProfile_image_url());
+            user.setSex(createUserRequest.getSex());
+            user.setPhone(createUserRequest.getPhone());
+    
+            userRepository.save(user);
+        }
+        else {
+            String encodedPassword = passwordEncoder.encode(createUserRequest.getPassword());
+            user.setPassword(encodedPassword);
 
-        List<Role> validRoles = new ArrayList<>();
-        createUserRequest.getRoleNames().forEach(roleName -> {
-            roleRepository.findByName(roleName).<Runnable>map(role -> () -> validRoles.add(role))
-                    .orElseThrow(() -> {
-                        throw new EntityNotFoundException(String.format("exception.role.invalid", roleName));
-                    })
-                    .run();
+            userRepository.save(user);
+        }
+        return user.getId();
+    }
+
+
+    @Override
+    public Long updatePassword(Long id, CreateChangePassowrdRequest createChangePassowrdRequest) {
+        Optional<User> userOpt = userRepository.findById(id);
+        User user = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
         });
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         
-        user.setUsername(createUserRequest.getUsername());
-        user.setEmail(createUserRequest.getEmail());
-        user.setPassword(encodedPassword);
-        user.setFirstName(createUserRequest.getFirstName());
-        user.setLastName(createUserRequest.getLastName());
-        user.setAddress(createUserRequest.getAddress());
-        user.setDateOfBirth(createUserRequest.getDateOfBirth());
-        user.setProfileImageUrl(createUserRequest.getProfile_image_url());
-        user.setSex(createUserRequest.getSex());
-        user.setPhone(createUserRequest.getPhone());
-        user.setParent(parent);
-        user.setRoles(new HashSet<>(validRoles));
-
-        userRepository.save(user);
+        if (passwordEncoder.matches(createChangePassowrdRequest.getPre_password(), user.getPassword()) ){
+            String encodedPassword = passwordEncoder.encode(createChangePassowrdRequest.getNew_password());
+            user.setPassword(encodedPassword);
+            userRepository.save(user);
+        }
+        else {
+            throw new EntityNotFoundException("exception.user.not_found");
+        }
         return user.getId();
     }
 

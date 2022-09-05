@@ -2,6 +2,7 @@ package com.app.kidsdrawing.service;
 
 import java.util.Map;
 
+import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
@@ -33,6 +34,7 @@ public interface UserService {
 
     Long updateUser(Long id, CreateUserRequest createUserRequest);
     Long updateUserStatus(Long id, CreateUserStatusRequest createUserStatusRequest);
+    Long updatePassword(Long id, CreateChangePassowrdRequest createChangePassowrdRequest);
 
     Long removeUser(Long id);
 }
