@@ -33,14 +33,14 @@ public class UserReadNotificationController {
     }
     
     @CrossOrigin
-    @GetMapping(value = "/student/{id}")
+    @GetMapping(value = "/user/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserReadNotificationByStudentId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userReadNotificationService.getAllUserReadNotificationByUserId(id));
     }
 
     @CrossOrigin
-    @GetMapping(value = "/exercise-submission/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserReadNotificationByExerciseSubmissionId(@PathVariable Long id) {
+    @GetMapping(value = "/notification/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserReadNotificationByNotificationId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userReadNotificationService.getAllUserReadNotificationBynNotificationId(id));
     }
 
