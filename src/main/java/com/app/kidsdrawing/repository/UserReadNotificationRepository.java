@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,6 @@ public interface UserReadNotificationRepository extends JpaRepository <UserReadN
     boolean existsByUserId(Long id);
     boolean existsByNotificationId(Long id);
     Optional<UserReadNotification> findByNotificationId(Long id);
-    Optional<UserReadNotification> findAllByUserId(Long id);
+    List<UserReadNotification> findByUserId(Long id);
     void deleteById(Long id);
 }

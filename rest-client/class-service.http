@@ -57,3 +57,9 @@ GET  {{rest}}/classes
 # @name get_classes
 
 GET  {{rest}}/classes/info/1
+
+
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/classes/schedule-all/1

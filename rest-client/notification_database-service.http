@@ -1,0 +1,33 @@
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345678aA@"
+}
+
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/notification-database
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "name": "Thông báo nghỉ học",
+    "description": "Xin thông báo ...."
+}
+
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+GET {{rest}}/notification-database
+
