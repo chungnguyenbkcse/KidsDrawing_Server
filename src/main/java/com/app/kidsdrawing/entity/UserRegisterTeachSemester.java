@@ -43,11 +43,11 @@ public class UserRegisterTeachSemester {
     private User teacher;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "semester_class_id", referencedColumnName = "id")
+    @JoinColumn(name = "semester_classes_id", referencedColumnName = "id")
     private SemesterClass semesterClass;
 
     @OneToOne(mappedBy = "userRegisterTeachSemester")
-    private Class class1;
+    private Classes classes;
 
     @Builder.Default()
     @Column(name = "time")

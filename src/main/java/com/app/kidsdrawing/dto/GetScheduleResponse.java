@@ -13,6 +13,6 @@ public class GetScheduleResponse {
     private Long id;
     private String lesson_time;
     private Long lesson_time_id;
-    private Long semester_class_id;
+    private Long semester_classes_id;
     private Integer date_of_week; 
 }

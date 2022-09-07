@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +25,8 @@ import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.Tutorial;
 import com.app.kidsdrawing.entity.TutorialPage;
 import com.app.kidsdrawing.entity.User;
-import com.app.kidsdrawing.entity.Class;
+import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.entity.Holiday;
@@ -36,7 +36,8 @@ import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.ClassRepository;
+import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.HolidayRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.SectionTemplateRepository;
@@ -60,7 +61,7 @@ public class SemesterServiceImpl implements SemesterService {
     private final SemesterRepository semesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
-    private final ClassRepository classRepository;
+    private final ClassesRepository classRepository;
     private final UserRepository userRepository;
     private final SectionTemplateRepository sectionTemplateRepository;
     private final SectionRepository sectionRepository;
@@ -69,6 +70,7 @@ public class SemesterServiceImpl implements SemesterService {
     private final FCMService fcmService;
     private final TutorialRepository tutorialRepository;
     private final TutorialPageRepository tutorialPageRepository;
+    private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
     private static int counter = 0;
     private static int check_count = 0;
@@ -149,10 +151,10 @@ public class SemesterServiceImpl implements SemesterService {
             allCourseResponses.add(semester_class.getCourse());
         });
 
-        List<Class> listClass = classRepository.findAll();
-        List<List<Class>> allClassOfSemesterClassResponses = new ArrayList<>();        
+        List<Classes> listClass = classRepository.findAll();
+        List<List<Classes>> allClassOfSemesterClassResponses = new ArrayList<>();        
         allSemesterClassResponses.forEach(semester_class -> {
-            List<Class> list_class = new ArrayList<>();
+            List<Classes> list_class = new ArrayList<>();
             listClass.forEach(ele_class -> {
                 if (ele_class.getUserRegisterTeachSemester().getSemesterClass().getId() == semester_class.getId()){
                     list_class.add(ele_class);
@@ -186,7 +188,7 @@ public class SemesterServiceImpl implements SemesterService {
             list_class.forEach(ele -> {
                 allSectionTemplate.forEach(ele_section_tmp -> {
                     Section savedSection = Section.builder()
-                        .class1(ele)
+                        .classes(ele)
                         .name(ele_section_tmp.getName())
                         .number(ele_section_tmp.getNumber())
                         .teaching_form(ele_section_tmp.getTeaching_form())
@@ -291,7 +293,7 @@ public class SemesterServiceImpl implements SemesterService {
 
         Set<SemesterClass> allSemesterClassResponses = semester.getSemesterClass();
 
-        List<Class> listClassOfSemesterClass = new ArrayList<>();
+        List<Classes> listClassOfSemesterClass = new ArrayList<>();
         
         createHolidayResquest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
@@ -366,21 +368,29 @@ public class SemesterServiceImpl implements SemesterService {
                     System.out.print("Số học sinh đc xếp: " + String.valueOf(validUserRegisterSemesters.size()));
                     String key = getSaltString();
                     System.out.print("Lớp thứ: " + String.valueOf(i));
-                    Class savedClass = Class.builder()
+                    Classes savedClass = Classes.builder()
                         .user(creator)
                         .userRegisterTeachSemester(allUserRegisterTeachSemesters.get(i))
                         .security_code(key)
                         .name(semester_class.getName() + "-" +  number + " thuộc học kì " + semester.getNumber() + " năm học " + semester.getYear())
-                        .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
                         .build();
                     classRepository.save(savedClass);
+
+                    validUserRegisterSemesters.forEach(user_register_semester -> {
+                        ClassHasRegisterJoinSemesterClass savedClassHasRegisterJoinSemesterClass = ClassHasRegisterJoinSemesterClass.builder()
+                            .classes(savedClass)
+                            .userRegisterJoinSemester(user_register_semester)
+                            .review_star(0)
+                            .build();
+                        classHasRegisterJoinSemesterClassRepository.save(savedClassHasRegisterJoinSemesterClass);
+                    });
                     number ++;
                     listClassOfSemesterClass.add(savedClass);
 
                     List<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId(semester_class.getCourse().getId());
                     sectionTemplateOpt.forEach(section_template -> {
                         Section savedSection = Section.builder()
-                            .class1(savedClass)
+                            .classes(savedClass)
                             .name(section_template.getName())
                             .number(section_template.getNumber())
                             .teaching_form(section_template.getTeaching_form())
@@ -406,7 +416,7 @@ public class SemesterServiceImpl implements SemesterService {
                     });
                 
 
-                    String msgBody = "Chúc mừng giáo viên "+ savedClass.getUserRegisterTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getUserRegisterTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + savedClass.getUserRegisterJoinSemesters().size() + "\n";
+                    String msgBody = "Chúc mừng giáo viên "+ savedClass.getUserRegisterTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getUserRegisterTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + validUserRegisterSemesters.size() + "\n";
                     EmailDetails details = new EmailDetails(savedClass.getUserRegisterTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");
                     emailService.sendSimpleMail(details);
 

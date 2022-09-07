@@ -17,7 +17,7 @@ public class GetUserRegisterTutorialResponse {
     private Long section_id;
     private int section_number;
     private String class_name;
-    private Long class_id;
+    private Long classes_id;
     private String creator_name;
     private String section_name;
     private String name;

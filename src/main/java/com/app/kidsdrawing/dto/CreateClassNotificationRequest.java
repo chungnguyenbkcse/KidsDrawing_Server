@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class CreateClassNotificationRequest {
     private Long notification_id;
-    private Long class_id;
+    private Long classes_id;
 }

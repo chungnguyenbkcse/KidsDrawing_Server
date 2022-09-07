@@ -11,8 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -34,8 +32,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "class")
-public class Class {
+@Table(name = "classes")
+public class Classes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -65,18 +63,15 @@ public class Class {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinTable(name = "class_has_register_join_semester",
-            joinColumns = { @JoinColumn(name = "class_id") },
-            inverseJoinColumns = { @JoinColumn(name = "join_user_register_teach_semester") })
-    private Set<UserRegisterJoinSemester> userRegisterJoinSemesters;
-
-    @OneToMany(mappedBy="class1")
+    @OneToMany(mappedBy="classes")
     private Set<Section> sections;
 
-    @OneToMany(mappedBy="class1")
+    @OneToMany(mappedBy="classes")
     private Set<TeacherLeave> teacherLeaves;
 
-    @OneToMany(mappedBy="class1")
+    @OneToMany(mappedBy="classes")
     private Set<StudentLeave> studentLeaves;
+
+    @OneToMany(mappedBy="classes")
+    private Set<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClasses;
 }

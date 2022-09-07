@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateExerciseRequest;
 import com.app.kidsdrawing.dto.GetExerciseResponse;
 import com.app.kidsdrawing.entity.Exercise;
-import com.app.kidsdrawing.entity.Class;
+import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ExerciseLevel;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.ClassRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.ExerciseLevelRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
@@ -38,7 +38,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
     private final SectionRepository sectionRepository;
     private final ExerciseLevelRepository exerciseLevelRepository;
-    private final ClassRepository classRepository;
+    private final ClassesRepository classRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExercise() {
@@ -64,12 +64,12 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndStudent(Long class_id, Long student_id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndStudent(Long classes_id, Long student_id) {
         List<GetExerciseResponse> allExerciseNotSubmitResponses = new ArrayList<>();
         List<GetExerciseResponse> allExerciseSubmitedResponses = new ArrayList<>();
 
-        Optional<Class> classOpt = classRepository.findById(class_id);
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional<Classes> classOpt = classRepository.findById(classes_id);
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
@@ -77,7 +77,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<Exercise> listExerciseForClass = new ArrayList<>();
 
         listExercise.forEach(content -> {
-            if (content.getSection().getClass1() == classes){
+            if (content.getSection().getClasses() == classes){
                 listExerciseForClass.add(content);
             }
             

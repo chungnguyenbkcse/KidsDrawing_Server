@@ -24,8 +24,10 @@ import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserReadNotification;
 import com.app.kidsdrawing.entity.UserReadNotificationKey;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.entity.Class;
-import com.app.kidsdrawing.repository.ClassRepository;
+import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
+import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -39,9 +41,10 @@ public class EmailServiceImpl implements EmailService {
  
     @Autowired private JavaMailSender javaMailSender;
     @Autowired private UserRepository userRepository;
-    @Autowired private ClassRepository classRepository;
+    @Autowired private ClassesRepository classRepository;
     @Autowired private NotificationRepository notificationRepository;
     @Autowired private UserReadNotificationRepository uuserReadNotificationRepository;
+    @Autowired private ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
  
     @Value("${spring.mail.username}") private String sender;
  
@@ -121,8 +124,8 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public String sendMailByClass(CreateEmailDetailRequest details, Long id) {
-        Optional<Class> classOpt = classRepository.findById(id);
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional<Classes> classOpt = classRepository.findById(id);
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
@@ -132,33 +135,35 @@ public class EmailServiceImpl implements EmailService {
             .build();
         notificationRepository.save(savedNotification);
 
-        classes.getUserRegisterJoinSemesters().forEach(ele -> {
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+
+        listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             EmailDetails email = new EmailDetails();
-            email.setRecipient(ele.getStudent().getEmail());
+            email.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getEmail());
             email.setSubject(details.getSubject());
             email.setMsgBody(details.getMsgBody());
             sendSimpleMail(email);
 
             EmailDetails email_1 = new EmailDetails();
-            email_1.setRecipient(ele.getStudent().getParent().getEmail());
+            email_1.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getParent().getEmail());
             email_1.setSubject(details.getSubject());
             email_1.setMsgBody(details.getMsgBody());
             sendSimpleMail(email_1);
 
-            UserReadNotificationKey idx = new UserReadNotificationKey(ele.getStudent().getId(), savedNotification.getId());
+            UserReadNotificationKey idx = new UserReadNotificationKey(ele.getUserRegisterJoinSemester().getStudent().getId(), savedNotification.getId());
             UserReadNotification savedUserReadNotification = UserReadNotification.builder()
                 .id(idx)
                 .notification(savedNotification)
-                .user(ele.getStudent())
+                .user(ele.getUserRegisterJoinSemester().getStudent())
                 .is_read(false)
                 .build();
             uuserReadNotificationRepository.save(savedUserReadNotification);
 
-            UserReadNotificationKey id_1 = new UserReadNotificationKey(ele.getStudent().getParent().getId(), savedNotification.getId());
+            UserReadNotificationKey id_1 = new UserReadNotificationKey(ele.getUserRegisterJoinSemester().getStudent().getParent().getId(), savedNotification.getId());
             UserReadNotification savedUserReadNotification_1 = UserReadNotification.builder()
                 .id(id_1)
                 .notification(savedNotification)
-                .user(ele.getStudent().getParent())
+                .user(ele.getUserRegisterJoinSemester().getStudent().getParent())
                 .is_read(false)
                 .build();
             uuserReadNotificationRepository.save(savedUserReadNotification_1);
@@ -167,21 +172,23 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, Long id) {
-        Optional<Class> classOpt = classRepository.findById(id);
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional<Classes> classOpt = classRepository.findById(id);
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        classes.getUserRegisterJoinSemesters().forEach(ele -> {
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+
+        listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             EmailDetails email = new EmailDetails();
-            email.setRecipient(ele.getStudent().getEmail());
+            email.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getEmail());
             email.setSubject(details.getSubject());
             email.setMsgBody(details.getMsgBody());
             email.setAttachment(details.getAttachment());
             sendSimpleMail(email);
 
             EmailDetails email_1 = new EmailDetails();
-            email_1.setRecipient(ele.getStudent().getParent().getEmail());
+            email_1.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getParent().getEmail());
             email_1.setSubject(details.getSubject());
             email_1.setMsgBody(details.getMsgBody());
             email_1.setAttachment(details.getAttachment());

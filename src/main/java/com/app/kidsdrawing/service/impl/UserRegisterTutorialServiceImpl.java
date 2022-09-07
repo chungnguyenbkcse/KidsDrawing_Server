@@ -61,8 +61,8 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
                 .section_id(content.getSection().getId())
                 .section_name(content.getSection().getName())
                 .section_number(content.getSection().getNumber())
-                .class_id(content.getSection().getClass1().getId())
-                .class_name(content.getSection().getClass1().getName())
+                .classes_id(content.getSection().getClasses().getId())
+                .class_name(content.getSection().getClasses().getName())
                 .creator_id(content.getCreator().getId())
                 .creator_name(content.getCreator().getFirstName() + " " + content.getCreator().getLastName())
                 .name(content.getName())
@@ -88,8 +88,8 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
                 .section_id(content.getSection().getId())
                 .section_name(content.getSection().getName())
                 .section_number(content.getSection().getNumber())
-                .class_id(content.getSection().getClass1().getId())
-                .class_name(content.getSection().getClass1().getName())
+                .classes_id(content.getSection().getClasses().getId())
+                .class_name(content.getSection().getClasses().getName())
                 .creator_id(content.getCreator().getId())
                 .creator_name(content.getCreator().getFirstName() + " " + content.getCreator().getLastName())
                 .name(content.getName())
@@ -117,8 +117,8 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
             .section_id(UserRegisterTutorial.getSection().getId())
             .section_name(UserRegisterTutorial.getSection().getName())
             .section_number(UserRegisterTutorial.getSection().getNumber())
-            .class_id(UserRegisterTutorial.getSection().getClass1().getId())
-            .class_name(UserRegisterTutorial.getSection().getClass1().getName())
+            .classes_id(UserRegisterTutorial.getSection().getClasses().getId())
+            .class_name(UserRegisterTutorial.getSection().getClasses().getName())
             .creator_id(UserRegisterTutorial.getCreator().getId())
             .creator_name(UserRegisterTutorial.getCreator().getFirstName() + " " + UserRegisterTutorial.getCreator().getLastName())
             .name(UserRegisterTutorial.getName())
@@ -153,8 +153,8 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
         .section_id(savedUserRegisterTutorial.getSection().getId())
         .section_name(savedUserRegisterTutorial.getSection().getName())
         .section_number(savedUserRegisterTutorial.getSection().getNumber())
-        .class_id(savedUserRegisterTutorial.getSection().getClass1().getId())
-        .class_name(savedUserRegisterTutorial.getSection().getClass1().getName())
+        .classes_id(savedUserRegisterTutorial.getSection().getClasses().getId())
+        .class_name(savedUserRegisterTutorial.getSection().getClasses().getName())
         .creator_id(savedUserRegisterTutorial.getCreator().getId())
         .creator_name(savedUserRegisterTutorial.getCreator().getFirstName() + " " + savedUserRegisterTutorial.getCreator().getLastName())
         .name(savedUserRegisterTutorial.getName())
@@ -233,7 +233,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
             userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
 
-            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber(section.getClass1().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId(), section.getNumber());
+            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber(section.getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId(), section.getNumber());
             SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.section.not_found");
             });

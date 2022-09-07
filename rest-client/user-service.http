@@ -907,7 +907,7 @@ Content-Type: application/json
 
 {
     "teacher_id": 7,
-    "semester_class_id": 1
+    "semester_classes_id": 1
 }
 
 
@@ -920,7 +920,7 @@ Content-Type: application/json
 
 {
     "student_id": 18,
-    "semester_class_id": 1,
+    "semester_classes_id": 1,
     "payer_id": null,
     "price": null
 }
@@ -935,7 +935,7 @@ Content-Type: application/json
 
 {
     "teacher_id": 3,
-    "semester_class_id": 1
+    "semester_classes_id": 1
 }
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
@@ -1017,7 +1017,7 @@ Content-Type: application/json
 {
     "section_id": 1,
     "teacher_id": 4,
-    "class_id": 1,
+    "classes_id": 1,
     "substitute_teacher_id": 5,
     "description": ""
 }

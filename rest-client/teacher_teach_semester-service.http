@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
     "teacher_id": 5,
-    "semester_class_id": 2
+    "semester_classes_id": 2
 }
 
 ### GET TEACHER GRADE semester ACTION ###

@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateSectionRequest;
 import com.app.kidsdrawing.dto.GetSectionResponse;
 import com.app.kidsdrawing.entity.Section;
-import com.app.kidsdrawing.entity.Class;
+import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.ClassRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.service.SectionService;
 
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class SectionServiceImpl implements SectionService{
     
     private final SectionRepository sectionRepository;
-    private final ClassRepository classRepository;
+    private final ClassesRepository classRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSection() {
@@ -38,7 +38,7 @@ public class SectionServiceImpl implements SectionService{
         listSection.forEach(content -> {
             GetSectionResponse sectionResponse = GetSectionResponse.builder()
                 .id(content.getId())
-                .class_id(content.getClass1().getId())
+                .classes_id(content.getClasses().getId())
                 .name(content.getName())
                 .number(content.getNumber())
                 .teach_form(content.getTeaching_form())
@@ -60,10 +60,10 @@ public class SectionServiceImpl implements SectionService{
         List<GetSectionResponse> allSectionResponses = new ArrayList<>();
         List<Section> listSection = sectionRepository.findAll();
         listSection.forEach(content -> {
-            if (content.getClass1().getId() == id){
+            if (content.getClasses().getId() == id){
                 GetSectionResponse sectionResponse = GetSectionResponse.builder()
                     .id(content.getId())
-                    .class_id(content.getClass1().getId())
+                    .classes_id(content.getClasses().getId())
                     .name(content.getName())
                     .number(content.getNumber())
                     .recording(content.getRecording())
@@ -90,7 +90,7 @@ public class SectionServiceImpl implements SectionService{
 
         return GetSectionResponse.builder()
             .id(section.getId())
-            .class_id(section.getClass1().getId())
+            .classes_id(section.getClasses().getId())
             .name(section.getName())
             .number(section.getNumber())
             .recording(section.getRecording())
@@ -104,13 +104,13 @@ public class SectionServiceImpl implements SectionService{
     @Override
     public Long createSection(CreateSectionRequest createSectionRequest) {
 
-        Optional <Class> classOpt = classRepository.findById(createSectionRequest.getClass_id());
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional <Classes> classOpt = classRepository.findById(createSectionRequest.getClasses_id());
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });
         
         Section savedSection = Section.builder()
-                .class1(classes)
+                .classes(classes)
                 .name(createSectionRequest.getName())
                 .number(createSectionRequest.getNumber())
                 .recording(createSectionRequest.getRecording())
@@ -139,13 +139,13 @@ public class SectionServiceImpl implements SectionService{
             throw new EntityNotFoundException("exception.Section.not_found");
         });
 
-        Optional <Class> classOpt = classRepository.findById(createSectionRequest.getClass_id());
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional <Classes> classOpt = classRepository.findById(createSectionRequest.getClasses_id());
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });
 
         updatedSection.setName(createSectionRequest.getName());
-        updatedSection.setClass1(classes);
+        updatedSection.setClasses(classes);
         updatedSection.setRecording(createSectionRequest.getRecording());
         updatedSection.setMessage(createSectionRequest.getMessage());
         updatedSection.setNumber(createSectionRequest.getNumber());

@@ -39,6 +39,6 @@ public class Schedule {
     private LessonTime lessonTime;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "semester_class_id", referencedColumnName = "id")
+    @JoinColumn(name = "semester_classes_id", referencedColumnName = "id")
     private SemesterClass semesterClass;
 }

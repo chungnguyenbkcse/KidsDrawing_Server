@@ -38,8 +38,8 @@ public class TeacherLeave {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "class_id", referencedColumnName = "id")
-    private Class class1;
+    @JoinColumn(name = "classes_id", referencedColumnName = "id")
+    private Classes classes;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "section_id", referencedColumnName = "id")

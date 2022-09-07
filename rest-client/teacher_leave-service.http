@@ -23,7 +23,7 @@ Content-Type: application/json
 {
     "section_id": 42,
     "teacher_id": 8,
-    "class_id": 23,
+    "classes_id": 23,
     "substitute_teacher_id": 9,
     "description": "<p>Yêu cầu dạy thay lớp</p>"
 }

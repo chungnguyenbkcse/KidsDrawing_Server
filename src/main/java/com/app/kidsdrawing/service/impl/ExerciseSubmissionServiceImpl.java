@@ -165,7 +165,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             exersiceGraded.add(ele.getExerciseSubmission());
         });
         listExerciseSubmission.forEach(content -> {
-            if (content.getExercise().getSection().getClass1().getId() == id){
+            if (content.getExercise().getSection().getClasses().getId() == id){
                 if (exersiceGraded.contains(content)) {
                     GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
                         .id(content.getId())

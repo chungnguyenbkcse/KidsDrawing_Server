@@ -43,7 +43,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .id(schedule.getId())
                     .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")
                     .lesson_time_id(schedule.getLessonTime().getId())
-                    .semester_class_id(schedule.getSemesterClass().getId())
+                    .semester_classes_id(schedule.getSemesterClass().getId())
                     .date_of_week(schedule.getDate_of_week())
                     .build();
             allScheduleResponses.add(scheduleResponse);
@@ -64,7 +64,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .id(schedule.getId())
                     .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")
                     .lesson_time_id(schedule.getLessonTime().getId())
-                    .semester_class_id(schedule.getSemesterClass().getId())
+                    .semester_classes_id(schedule.getSemesterClass().getId())
                     .date_of_week(schedule.getDate_of_week())
                     .build();
                 allScheduleResponses.add(scheduleResponse);
@@ -87,7 +87,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             .id(schedule.getId())
             .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")
             .lesson_time_id(schedule.getLessonTime().getId())
-            .semester_class_id(schedule.getSemesterClass().getId())
+            .semester_classes_id(schedule.getSemesterClass().getId())
             .date_of_week(schedule.getDate_of_week())
             .build();
     }
@@ -99,7 +99,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new EntityNotFoundException("exception.lesson_time.not_found");
         });
 
-        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById(createScheduleRequest.getSemester_class_id());
+        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById(createScheduleRequest.getSemester_classes_id());
         SemesterClass semester_class = semesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
@@ -137,7 +137,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new EntityNotFoundException("exception.lesson_time.not_found");
         });
 
-        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById(createScheduleRequest.getSemester_class_id());
+        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById(createScheduleRequest.getSemester_classes_id());
         SemesterClass semester_class = semesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });

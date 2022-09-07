@@ -20,7 +20,7 @@ import com.app.kidsdrawing.dto.GetReportCourseResponse;
 import com.app.kidsdrawing.entity.ArtAge;
 import com.app.kidsdrawing.entity.ArtLevel;
 import com.app.kidsdrawing.entity.ArtType;
-import com.app.kidsdrawing.entity.Class;
+import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
@@ -31,7 +31,7 @@ import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtAgeRepository;
 import com.app.kidsdrawing.repository.ArtLevelRepository;
 import com.app.kidsdrawing.repository.ArtTypeRepository;
-import com.app.kidsdrawing.repository.ClassRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
@@ -52,7 +52,7 @@ public class CourseServiceImpl implements CourseService {
     private final ArtAgeRepository artAgeRepository;
     private final ArtTypeRepository artTypeRepository;
     private final ArtLevelRepository artLevelRepository;
-    private final ClassRepository classRepository;
+    private final ClassesRepository classRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterCourseRepository;
@@ -274,8 +274,8 @@ public class CourseServiceImpl implements CourseService {
             allNotRegisterSemesterClassResponses.add(notRegisterSemesterClassResponse);
         });
 
-        List<Class> allClassResponses = new ArrayList<>();
-        List<Class> listClass = classRepository.findAll();
+        List<Classes> allClassResponses = new ArrayList<>();
+        List<Classes> listClass = classRepository.findAll();
 
         // Danh sach dang ki giao vien duoc xep lop
         List<UserRegisterTeachSemester> allTeacherRegisterSuccessfullTeachSemesterResponses = new ArrayList<>();

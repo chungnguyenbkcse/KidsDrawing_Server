@@ -22,6 +22,6 @@ Content-Type: application/json
 
 {
     "lesson_time": 1,
-    "semester_class_id": 2,
+    "semester_classes_id": 2,
     "date_of_week": 5
 }

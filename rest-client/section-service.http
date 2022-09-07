@@ -20,7 +20,7 @@ POST {{rest}}/section
 Content-Type: application/json
 
 {
-    "class_id": 18,
+    "classes_id": 18,
     "name": "Học kì 1 năm học 2022",
     "description": "",
     "number": 1,

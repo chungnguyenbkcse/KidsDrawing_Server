@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetClassNotificationResponse {
-    private Long notification_id;
+public class GetClassHasRegisterJoinSemesterClassResponse {
     private Long classes_id;
-    private String class_name;
-    private String notification_name;
+    private Long user_register_join_semester_id;
+    private Integer review_star;
 }

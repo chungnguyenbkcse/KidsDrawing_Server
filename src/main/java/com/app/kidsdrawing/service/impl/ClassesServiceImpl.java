@@ -7,7 +7,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,7 +29,8 @@ import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.dto.GetStudentResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
-import com.app.kidsdrawing.entity.Class;
+import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
@@ -39,7 +39,8 @@ import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
-import com.app.kidsdrawing.repository.ClassRepository;
+import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
@@ -53,13 +54,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ClassesServiceImpl implements ClassesService {
 
-    private final ClassRepository classRepository;
+    private final ClassesRepository classRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRepository userRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
     private final ScheduleRepository scheduleRepository;
     private final SemesterRepository semesterRepository;
+    private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
     private static int total_section_count = 0;
     private static int week_count = 0;
@@ -67,7 +69,7 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllClass() {
         List<GetClassResponse> allClassResponses = new ArrayList<>();
-        List<Class> listClass = classRepository.findAll();
+        List<Classes> listClass = classRepository.findAll();
         listClass.forEach(content -> {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
@@ -93,7 +95,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<Map<String,List<Map<String, List<List<LocalDateTime>>>>>> allScheduleTime = new ArrayList<>();
         List<List<GetStudentResponse>> allStudentDoneResponses = new ArrayList<>();
         List<List<GetStudentResponse>> allStudentDoingResponses = new ArrayList<>();
-        List<Class> listClass = classRepository.findAll();
+        List<Classes> listClass = classRepository.findAll();
         LocalDateTime time_now = LocalDateTime.now();
         listClass.forEach(ele -> {
             schedule = "";
@@ -115,6 +117,7 @@ public class ClassesServiceImpl implements ClassesService {
                     Map<String,List<Map<String, List<List<LocalDateTime>>>>> x = new HashMap<>();
                     x.put(ele.getName(),schedule_time);
                     allScheduleTime.add(x);
+                    List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(ele.getId());
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
                         .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
@@ -124,7 +127,7 @@ public class ClassesServiceImpl implements ClassesService {
                         .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
                         .semester_name(ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName())
                         .semster_course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
-                        .total_student(ele.getUserRegisterJoinSemesters().size())
+                        .total_student(listClassHasRegisterJoinSemesterClass.size())
                         .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getNum_of_section())
                         .art_age_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getArtAges().getName())
                         .art_type_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getArtTypes().getName())
@@ -134,21 +137,21 @@ public class ClassesServiceImpl implements ClassesService {
                     allInfoClassTeacherDoingResponses.add(infoClassTeacherResponse);
                     
                     List<GetStudentResponse> listStudents = new ArrayList<>();
-                    ele.getUserRegisterJoinSemesters().forEach(content -> {
-                        String parent_name = content.getStudent().getParent().getUsername();
+                    listClassHasRegisterJoinSemesterClass.forEach(content -> {
+                        String parent_name = content.getUserRegisterJoinSemester().getStudent().getParent().getUsername();
                         GetStudentResponse student = GetStudentResponse.builder()
-                                .id(content.getStudent().getId())
-                                .username(content.getStudent().getUsername())
-                                .email(content.getStudent().getEmail())
-                                .firstName(content.getStudent().getFirstName())
-                                .lastName(content.getStudent().getLastName())
-                                .dateOfBirth(content.getStudent().getDateOfBirth())
-                                .profile_image_url(content.getStudent().getProfileImageUrl())
-                                .sex(content.getStudent().getSex())
-                                .phone(content.getStudent().getPhone())
-                                .address(content.getStudent().getAddress())
+                                .id(content.getUserRegisterJoinSemester().getStudent().getId())
+                                .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
+                                .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
+                                .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
+                                .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
+                                .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
+                                .profile_image_url(content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
+                                .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
+                                .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
+                                .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
                                 .parent(parent_name)
-                                .createTime(content.getStudent().getCreateTime())
+                                .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
                                 .build();
                         listStudents.add(student);
                     });
@@ -156,6 +159,7 @@ public class ClassesServiceImpl implements ClassesService {
                 }
 
                 else {
+                    List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(ele.getId());
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
                         .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
@@ -165,7 +169,7 @@ public class ClassesServiceImpl implements ClassesService {
                         .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
                         .semester_name(ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName())
                         .semster_course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
-                        .total_student(ele.getUserRegisterJoinSemesters().size())
+                        .total_student(listClassHasRegisterJoinSemesterClass.size())
                         .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getNum_of_section())
                         .art_age_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getArtAges().getName())
                         .art_type_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getArtTypes().getName())
@@ -175,21 +179,21 @@ public class ClassesServiceImpl implements ClassesService {
                     allInfoClassTeacherDoneResponses.add(infoClassTeacherResponse);
 
                     List<GetStudentResponse> listStudentDones = new ArrayList<>();
-                    ele.getUserRegisterJoinSemesters().forEach(content -> {
-                        String parent_name = content.getStudent().getParent().getUsername();
+                    listClassHasRegisterJoinSemesterClass.forEach(content -> {
+                        String parent_name = content.getUserRegisterJoinSemester().getStudent().getParent().getUsername();
                         GetStudentResponse student = GetStudentResponse.builder()
-                                .id(content.getStudent().getId())
-                                .username(content.getStudent().getUsername())
-                                .email(content.getStudent().getEmail())
-                                .firstName(content.getStudent().getFirstName())
-                                .lastName(content.getStudent().getLastName())
-                                .dateOfBirth(content.getStudent().getDateOfBirth())
-                                .profile_image_url(content.getStudent().getProfileImageUrl())
-                                .sex(content.getStudent().getSex())
-                                .phone(content.getStudent().getPhone())
-                                .address(content.getStudent().getAddress())
+                                .id(content.getUserRegisterJoinSemester().getStudent().getId())
+                                .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
+                                .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
+                                .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
+                                .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
+                                .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
+                                .profile_image_url(content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
+                                .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
+                                .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
+                                .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
                                 .parent(parent_name)
-                                .createTime(content.getStudent().getCreateTime())
+                                .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
                                 .build();
                         listStudentDones.add(student);
                     });
@@ -213,7 +217,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<GetSemesterResponse> allSemesterResponses = new ArrayList<>();
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
-        List<Class> listClass = classRepository.findAll();
+        List<Classes> listClass = classRepository.findAll();
         listClass.forEach(content -> {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
@@ -300,7 +304,7 @@ public class ClassesServiceImpl implements ClassesService {
     public ResponseEntity<Map<String, Object>> getInforScheduleAllClass() {
         LocalDateTime time_now = LocalDateTime.now();
         List<Semester> allSemesters = semesterRepository.findAll();
-        List<Class> allClassDoing = new ArrayList<>();
+        List<Classes> allClassDoing = new ArrayList<>();
         allSemesters.forEach(semester  -> {
             if (semester.getEnd_time().isAfter(time_now)){
                 semesterClassRepository.findBySemesterId(semester.getId()).forEach(semester_class -> {
@@ -325,8 +329,8 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     public LocalDateTime getEndSectionOfClass(Long id) {
-        Optional<Class> classOpt = classRepository.findById(id);
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional<Classes> classOpt = classRepository.findById(id);
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
@@ -449,8 +453,8 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     public List<Map<String, List<List<LocalDateTime>>>> getScheduleDetailOfClass(Long id) {
-        Optional<Class> classOpt = classRepository.findById(id);
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional<Classes> classOpt = classRepository.findById(id);
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
@@ -584,8 +588,8 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getInforDetailOfClass(Long id) {
         Map<String, Object> response = new HashMap<>();
-        Optional<Class> classOpt = classRepository.findById(id);
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional<Classes> classOpt = classRepository.findById(id);
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
         response.put("classes", GetClassResponse.builder()
@@ -653,23 +657,24 @@ public class ClassesServiceImpl implements ClassesService {
                 .build());
 
         List<GetStudentResponse> listStudents = new ArrayList<>();
-        classes.getUserRegisterJoinSemesters().forEach(content -> {
-            Long parent_idx = content.getStudent().getParent().getId();
-            String parent_namex = content.getStudent().getParent().getFirstName() + " " + content.getStudent().getParent().getLastName();
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+        listClassHasRegisterJoinSemesterClass.forEach(content -> {
+            Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
+            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " " + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
-                    .id(content.getStudent().getId())
-                    .username(content.getStudent().getUsername())
-                    .email(content.getStudent().getEmail())
-                    .firstName(content.getStudent().getFirstName())
-                    .lastName(content.getStudent().getLastName())
-                    .dateOfBirth(content.getStudent().getDateOfBirth())
-                    .profile_image_url(content.getStudent().getProfileImageUrl())
-                    .sex(content.getStudent().getSex())
-                    .phone(content.getStudent().getPhone())
-                    .address(content.getStudent().getAddress())
+                    .id(content.getUserRegisterJoinSemester().getStudent().getId())
+                    .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
+                    .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
+                    .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
+                    .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
+                    .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
+                    .profile_image_url(content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
+                    .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
+                    .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
+                    .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
                     .parent(parent_namex)
                     .parents(parent_idx)
-                    .createTime(content.getStudent().getCreateTime())
+                    .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
                     .build();
             listStudents.add(student);
         });
@@ -810,8 +815,8 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public GetClassResponse getClassById(Long id) {
-        Optional<Class> classOpt = classRepository.findById(id);
-        Class classes = classOpt.orElseThrow(() -> {
+        Optional<Classes> classOpt = classRepository.findById(id);
+        Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
@@ -850,12 +855,11 @@ public class ClassesServiceImpl implements ClassesService {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
-        Class savedClass = Class.builder()
+        Classes savedClass = Classes.builder()
                 .user(user)
                 .userRegisterTeachSemester(teacherTeachSemester)
                 .security_code(createClassRequest.getSecurity_code())
                 .name(createClassRequest.getName())
-                .userRegisterJoinSemesters(new HashSet<>(validUserRegisterSemesters))
                 .build();
         classRepository.save(savedClass);
 
@@ -864,7 +868,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public Long removeClassById(Long id) {
-        Optional<Class> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById(id);
         classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -875,8 +879,8 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public Long updateClassById(Long id, CreateClassRequest createClassRequest) {
-        Optional<Class> classOpt = classRepository.findById(id);
-        Class updatedClass = classOpt.orElseThrow(() -> {
+        Optional<Classes> classOpt = classRepository.findById(id);
+        Classes updatedClass = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 

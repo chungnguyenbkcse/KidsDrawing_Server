@@ -12,7 +12,7 @@ public interface StudentLeaveService {
     ResponseEntity<Map<String, Object>> getAllStudentLeave();
     ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(Long id);
     ResponseEntity<Map<String, Object>> getAllStudentLeaveByTeacher(Long id);
-    ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(Long class_id, Long student_id);
+    ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(Long classes_id, Long student_id);
     GetStudentLeaveResponse getStudentLeaveById(Long id);
     Long createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest);
     Long removeStudentLeaveById(Long id);

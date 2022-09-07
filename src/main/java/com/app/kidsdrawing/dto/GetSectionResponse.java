@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetSectionResponse {
     private Long id;
-    private Long class_id;
+    private Long classes_id;
     private String name;
     private Integer number;
     private String recording;

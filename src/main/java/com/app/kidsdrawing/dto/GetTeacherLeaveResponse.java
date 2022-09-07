@@ -16,7 +16,7 @@ public class GetTeacherLeaveResponse {
     private Long section_id;
     private int section_number;
     private String section_name;
-    private Long class_id;
+    private Long classes_id;
     private String class_name;
     private Long teacher_id;
     private String teacher_name;
