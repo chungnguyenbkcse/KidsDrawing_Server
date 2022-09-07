@@ -297,7 +297,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getInforScheduleAllClass(Long id) {
+    public ResponseEntity<Map<String, Object>> getInforScheduleAllClass() {
         LocalDateTime time_now = LocalDateTime.now();
         List<Semester> allSemesters = semesterRepository.findAll();
         List<Class> allClassDoing = new ArrayList<>();
