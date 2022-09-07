@@ -18,11 +18,16 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateEmailDetailRequest;
 import com.app.kidsdrawing.entity.EmailDetails;
+import com.app.kidsdrawing.entity.Notification;
 import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.UserReadNotification;
+import com.app.kidsdrawing.entity.UserReadNotificationKey;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.entity.Class;
 import com.app.kidsdrawing.repository.ClassRepository;
+import com.app.kidsdrawing.repository.NotificationRepository;
+import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.EmailService;
  
@@ -35,6 +40,8 @@ public class EmailServiceImpl implements EmailService {
     @Autowired private JavaMailSender javaMailSender;
     @Autowired private UserRepository userRepository;
     @Autowired private ClassRepository classRepository;
+    @Autowired private NotificationRepository notificationRepository;
+    @Autowired private UserReadNotificationRepository uuserReadNotificationRepository;
  
     @Value("${spring.mail.username}") private String sender;
  
@@ -70,6 +77,12 @@ public class EmailServiceImpl implements EmailService {
 
     public String sendMailByAdmin(CreateEmailDetailRequest details){
         // Creating a mime message
+        Notification savedNotification = Notification.builder()
+            .name(details.getSubject())
+            .description(details.getMsgBody())
+            .build();
+        notificationRepository.save(savedNotification);
+
         List<User> allUser = userRepository.findAll();
 
         allUser.forEach(ele -> {
@@ -78,6 +91,14 @@ public class EmailServiceImpl implements EmailService {
             email.setSubject(details.getSubject());
             email.setMsgBody(details.getMsgBody());
             sendSimpleMail(email);
+            UserReadNotificationKey id = new UserReadNotificationKey(ele.getId(), savedNotification.getId());
+            UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                .id(id)
+                .notification(savedNotification)
+                .user(ele)
+                .is_read(false)
+                .build();
+            uuserReadNotificationRepository.save(savedUserReadNotification);
         });
  
         return "Mail Sent Successfully...";
@@ -105,6 +126,12 @@ public class EmailServiceImpl implements EmailService {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
+        Notification savedNotification = Notification.builder()
+            .name(details.getSubject())
+            .description(details.getMsgBody())
+            .build();
+        notificationRepository.save(savedNotification);
+
         classes.getUserRegisterJoinSemesters().forEach(ele -> {
             EmailDetails email = new EmailDetails();
             email.setRecipient(ele.getStudent().getEmail());
@@ -117,6 +144,24 @@ public class EmailServiceImpl implements EmailService {
             email_1.setSubject(details.getSubject());
             email_1.setMsgBody(details.getMsgBody());
             sendSimpleMail(email_1);
+
+            UserReadNotificationKey idx = new UserReadNotificationKey(ele.getStudent().getId(), savedNotification.getId());
+            UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                .id(idx)
+                .notification(savedNotification)
+                .user(ele.getStudent())
+                .is_read(false)
+                .build();
+            uuserReadNotificationRepository.save(savedUserReadNotification);
+
+            UserReadNotificationKey id_1 = new UserReadNotificationKey(ele.getStudent().getParent().getId(), savedNotification.getId());
+            UserReadNotification savedUserReadNotification_1 = UserReadNotification.builder()
+                .id(id_1)
+                .notification(savedNotification)
+                .user(ele.getStudent().getParent())
+                .is_read(false)
+                .build();
+            uuserReadNotificationRepository.save(savedUserReadNotification_1);
         });
         return "Mail Sent Successfully...";
     }
@@ -147,6 +192,12 @@ public class EmailServiceImpl implements EmailService {
 
     public String sendMailToTeacher(CreateEmailDetailRequest details) {
         List<User> allUser = userRepository.findAll();
+        Notification savedNotification = Notification.builder()
+            .name(details.getSubject())
+            .description(details.getMsgBody())
+            .build();
+        notificationRepository.save(savedNotification);
+
         allUser.forEach(user -> {           
             List<String> role_name = new ArrayList<>();
             Set<Role> role = user.getRoles();
@@ -160,6 +211,15 @@ public class EmailServiceImpl implements EmailService {
                 email.setSubject(details.getSubject());
                 email.setMsgBody(details.getMsgBody());
                 sendSimpleMail(email);
+
+                UserReadNotificationKey id = new UserReadNotificationKey(user.getId(), savedNotification.getId());
+                UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                    .id(id)
+                    .notification(savedNotification)
+                    .user(user)
+                    .is_read(false)
+                    .build();
+                uuserReadNotificationRepository.save(savedUserReadNotification);
             }
         });
         return "Mail sent Successfully"; 
@@ -187,6 +247,12 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public String sendMailToStudent(CreateEmailDetailRequest details) {
+        Notification savedNotification = Notification.builder()
+            .name(details.getSubject())
+            .description(details.getMsgBody())
+            .build();
+        notificationRepository.save(savedNotification);
+
         List<User> allUser = userRepository.findAll();
         allUser.forEach(user -> {           
             List<String> role_name = new ArrayList<>();
@@ -201,6 +267,14 @@ public class EmailServiceImpl implements EmailService {
                 email.setSubject(details.getSubject());
                 email.setMsgBody(details.getMsgBody());
                 sendSimpleMail(email);
+                UserReadNotificationKey id = new UserReadNotificationKey(user.getId(), savedNotification.getId());
+                UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                    .id(id)
+                    .notification(savedNotification)
+                    .user(user)
+                    .is_read(false)
+                    .build();
+                uuserReadNotificationRepository.save(savedUserReadNotification);
             }
         });
         return "Mail sent Successfully"; 
