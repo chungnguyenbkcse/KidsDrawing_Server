@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 3,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -717,7 +717,7 @@ Content-Type: application/json
     "username": "teacher-1",
     "password": "12345678aA@",
     "email": "teacher-1@gmail.com",
-    "firstName": "teache",
+    "firstName": "teacher",
     "lastName": "1",
     "dateOfBirth": null,
     "profile_image_url": null,

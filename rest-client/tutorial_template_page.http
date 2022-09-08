@@ -18,9 +18,10 @@ Content-Type: application/json
 
 POST {{rest}}/tutorial-template-page
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
-    "tutorial_id": 1,
+    "tutorial_template_id": 1,
     "name": "Trang 1",
     "description": "xxx",
     "number": 1
@@ -31,6 +32,7 @@ Content-Type: application/json
 
 POST {{rest}}/tutorial-template-page
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
     "name": "Học kì 2 năm học 2022",

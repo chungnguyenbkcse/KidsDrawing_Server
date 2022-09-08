@@ -27,6 +27,7 @@ import com.app.kidsdrawing.entity.TutorialPage;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
+import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.entity.Holiday;
@@ -372,13 +373,16 @@ public class SemesterServiceImpl implements SemesterService {
                         .user(creator)
                         .userRegisterTeachSemester(allUserRegisterTeachSemesters.get(i))
                         .security_code(key)
-                        .link_meeting("https://meet.jit.si/" + key)
-                        .name(semester_class.getName() + "-" +  number + " thuộc học kì " + semester.getNumber() + " năm học " + semester.getYear())
+                        .link_meeting("https://meet.jit.si/" + String.valueOf(key))
+                        .name(semester_class.getName() + "-" +  String.valueOf(number) + " thuộc học kì " + String.valueOf(semester.getNumber()) + " năm học " + String.valueOf(semester.getYear()))
                         .build();
                     classRepository.save(savedClass);
 
                     validUserRegisterSemesters.forEach(user_register_semester -> {
+                        ClassHasRegisterJoinSemesterClassKey idx = new ClassHasRegisterJoinSemesterClassKey(savedClass.getId(),user_register_semester.getId());
+                        
                         ClassHasRegisterJoinSemesterClass savedClassHasRegisterJoinSemesterClass = ClassHasRegisterJoinSemesterClass.builder()
+                            .id(idx)
                             .classes(savedClass)
                             .userRegisterJoinSemester(user_register_semester)
                             .review_star(0)

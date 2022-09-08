@@ -31,7 +31,7 @@ public class TutorialTemplatePage {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "toturial_id", referencedColumnName = "id")
+    @JoinColumn(name = "toturial_template_id", referencedColumnName = "id")
     private TutorialTemplate tutorialTemplate;
 
 

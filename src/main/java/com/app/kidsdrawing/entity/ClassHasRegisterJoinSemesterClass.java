@@ -4,13 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,8 +37,6 @@ public class ClassHasRegisterJoinSemesterClass {
     UserRegisterJoinSemester userRegisterJoinSemester;
 
     @Column(name = "review_star")
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
     private Integer review_star;
 
 }

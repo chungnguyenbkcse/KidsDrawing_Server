@@ -15,9 +15,11 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateTutorialTemplateRequest;
 import com.app.kidsdrawing.dto.GetTutorialTemplateResponse;
 import com.app.kidsdrawing.entity.TutorialTemplate;
+import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.TutorialTemplateRepository;
+import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.repository.SectionTemplateRepository;
 import com.app.kidsdrawing.service.TutorialTemplateService;
 
@@ -30,6 +32,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
     
     private final TutorialTemplateRepository tutorialTemplateRepository;
     private final SectionTemplateRepository sectionTemplateRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialTemplate() {
@@ -96,10 +99,16 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
         SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.sectionTemplate.not_found");
         });
+
+        Optional <User> userOpt = userRepository.findById(createTutorialTemplateRequest.getCreator_id());
+        User creator = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user_creator.not_found");
+        });
         
         TutorialTemplate savedTutorialTemplate = TutorialTemplate.builder()
                 .sectionTemplate(sectionTemplate)
                 .name(createTutorialTemplateRequest.getName())
+                .creator(creator)
                 .build();
         tutorialTemplateRepository.save(savedTutorialTemplate);
 

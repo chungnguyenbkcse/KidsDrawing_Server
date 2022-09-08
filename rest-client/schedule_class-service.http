@@ -21,7 +21,7 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "time": ["2022-09-01", "2022-09-02", "2022-09-03", "2022-09-04"]
+    "time": ["2022-10-01", "2022-11-02", "2022-10-03", "2022-10-04"]
 }
 
 
