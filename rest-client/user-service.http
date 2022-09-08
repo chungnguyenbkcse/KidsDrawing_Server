@@ -459,11 +459,11 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-27",
+    "username": "student-22",
     "password": "12345678aA@",
-    "email": "student-27@gmail.com",
+    "email": "student-22@gmail.com",
     "firstName": "student",
-    "lastName": "27",
+    "lastName": "22",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,

@@ -21,9 +21,9 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "tutorial_template_id": 1,
+    "tutorial_template_id": 11,
     "name": "Trang 1",
-    "description": "xxx",
+    "description": "<h3><strong>Phần 3: Tô màu&nbsp;&nbsp;</strong></h3><h5><strong>Bước 7:&nbsp;Kết thúc phần dựng hình, các bạn chuẩn bị dụng cụ để bắt đầu phần tô màu nhé.&nbsp;&nbsp;</strong></h5><ul><li>Chúng mình cần có cọ, màu poster, bảng pha màu, ly đựng nước và giẻ lau.&nbsp;&nbsp;</li><li>Mình tô phần vỏ bánh trước, Zest sử dụng màu nâu nhạt để tô, ngoài ra bạn còn có thể dùng màu vàng nâu, màu vàng nhạt nữa nhé</li></ul><p><img src=\"https://zestart.vn/wp-content/uploads/2021/10/Huong-dan-be-ve-tranh-chiec-banh-ma-quai-Zest-art-8.jpg\"></p>",
     "number": 1
 }
 
