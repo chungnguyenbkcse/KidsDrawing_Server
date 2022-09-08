@@ -860,6 +860,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .userRegisterTeachSemester(teacherTeachSemester)
                 .security_code(createClassRequest.getSecurity_code())
                 .name(createClassRequest.getName())
+                .link_meeting("https://meet.jit.si/" + createClassRequest.getSecurity_code())
                 .build();
         classRepository.save(savedClass);
 
@@ -897,6 +898,7 @@ public class ClassesServiceImpl implements ClassesService {
 
         updatedClass.setName(createClassRequest.getName());
         updatedClass.setSecurity_code(createClassRequest.getSecurity_code());
+        updatedClass.setLink_meeting("https://meet.jit.si/" + createClassRequest.getSecurity_code());
         updatedClass.setUser(user);
         updatedClass.setUserRegisterTeachSemester(teacherTeachSemester);
 

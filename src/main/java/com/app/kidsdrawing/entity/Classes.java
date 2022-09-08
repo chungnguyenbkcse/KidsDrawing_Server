@@ -53,6 +53,9 @@ public class Classes {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "link_meeting")
+    private String link_meeting;
+
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp

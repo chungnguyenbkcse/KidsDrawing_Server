@@ -372,6 +372,7 @@ public class SemesterServiceImpl implements SemesterService {
                         .user(creator)
                         .userRegisterTeachSemester(allUserRegisterTeachSemesters.get(i))
                         .security_code(key)
+                        .link_meeting("https://meet.jit.si/" + key)
                         .name(semester_class.getName() + "-" +  number + " thuộc học kì " + semester.getNumber() + " năm học " + semester.getYear())
                         .build();
                     classRepository.save(savedClass);
