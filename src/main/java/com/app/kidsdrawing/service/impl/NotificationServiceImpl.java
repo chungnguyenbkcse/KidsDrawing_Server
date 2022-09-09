@@ -63,14 +63,19 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Long createNotification(CreateNotificationRequest createNotificationRequest) {
+    public GetNotificationResponse createNotification(CreateNotificationRequest createNotificationRequest) {
 
         Notification savedNotification = Notification.builder()
             .name(createNotificationRequest.getName())
             .description(createNotificationRequest.getDescription())
             .build();
         notificationRepository.save(savedNotification);
-        return savedNotification.getId();
+        return GetNotificationResponse.builder()
+        .id(savedNotification.getId())
+        .name(savedNotification.getName())
+        .description(savedNotification.getDescription())
+        .time(savedNotification.getTime())
+        .build();
     }
 
     @Override

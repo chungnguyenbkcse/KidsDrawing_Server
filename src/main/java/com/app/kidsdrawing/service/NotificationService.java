@@ -10,7 +10,7 @@ import com.app.kidsdrawing.dto.GetNotificationResponse;
 public interface NotificationService {
     ResponseEntity<Map<String, Object>> getAllNotification();
     GetNotificationResponse getNotificationById(Long id);
-    Long createNotification(CreateNotificationRequest createNotificationRequest);
+    GetNotificationResponse createNotification(CreateNotificationRequest createNotificationRequest);
     Long removeNotificationById(Long id);
     Long updateNotificationById(Long id, CreateNotificationRequest createNotificationRequest);
 }

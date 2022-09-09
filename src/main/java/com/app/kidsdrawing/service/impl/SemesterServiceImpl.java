@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateHolidayRequest;
 import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
-import com.app.kidsdrawing.dto.PnsRequest;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.Tutorial;
@@ -29,7 +28,6 @@ import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
 import com.app.kidsdrawing.entity.Course;
-import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.entity.Holiday;
 import com.app.kidsdrawing.entity.Schedule;
 import com.app.kidsdrawing.entity.Section;
@@ -48,8 +46,6 @@ import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
-import com.app.kidsdrawing.service.EmailService;
-import com.app.kidsdrawing.service.FCMService;
 import com.app.kidsdrawing.service.SemesterService;
 
 import lombok.RequiredArgsConstructor;
@@ -67,8 +63,8 @@ public class SemesterServiceImpl implements SemesterService {
     private final SectionTemplateRepository sectionTemplateRepository;
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
-    private final EmailService emailService;
-    private final FCMService fcmService;
+    //private final EmailService emailService;
+    //private final FCMService fcmService;
     private final TutorialRepository tutorialRepository;
     private final TutorialPageRepository tutorialPageRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
@@ -421,7 +417,7 @@ public class SemesterServiceImpl implements SemesterService {
                     });
                 
 
-                    String msgBody = "Chúc mừng giáo viên "+ savedClass.getUserRegisterTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getUserRegisterTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + validUserRegisterSemesters.size() + "\n";
+                    /* String msgBody = "Chúc mừng giáo viên "+ savedClass.getUserRegisterTeachSemester().getTeacher().getFirstName() + " "+ savedClass.getUserRegisterTeachSemester().getTeacher().getLastName() + " đã được phân công giảng dạy lớp " + savedClass.getName() + " trên KidsDrawing.\n" + "Thông tin lớp học: \n" + "Học kì: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName() + "\n" + "Thuộc khóa học: " + savedClass.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName() + "\n" + "Số lượng học sinh: " + validUserRegisterSemesters.size() + "\n";
                     EmailDetails details = new EmailDetails(savedClass.getUserRegisterTeachSemester().getTeacher().getEmail(), msgBody, "Thông báo xếp lớp thành công", "");
                     emailService.sendSimpleMail(details);
 
@@ -444,10 +440,10 @@ public class SemesterServiceImpl implements SemesterService {
                             pnsRequestStudent.setBody(msgBodyStudent);
                             fcmService.pushNotification(pnsRequestStudent);
                         }
-                    });
+                    }); */
                 }
                 else {
-                    String msgBody = "Xin thông báo giáo viên "+ allUserRegisterTeachSemesters.get(i).getTeacher().getFirstName() + " "+ allUserRegisterTeachSemesters.get(i).getTeacher().getLastName() + " đã không được phân công giảng dạy lớp " + semester_class.getName() + " trên KidsDrawing.\n ;ý do: Vì số lượng học sinh đăng kí không đủ để xếp lớp!\n Rất mong sự thông cảm của giáo viên!\n Chúng tôi trân thành cảm ơn bạn đã đăng kí!\n";
+                    /* String msgBody = "Xin thông báo giáo viên "+ allUserRegisterTeachSemesters.get(i).getTeacher().getFirstName() + " "+ allUserRegisterTeachSemesters.get(i).getTeacher().getLastName() + " đã không được phân công giảng dạy lớp " + semester_class.getName() + " trên KidsDrawing.\n ;ý do: Vì số lượng học sinh đăng kí không đủ để xếp lớp!\n Rất mong sự thông cảm của giáo viên!\n Chúng tôi trân thành cảm ơn bạn đã đăng kí!\n";
                     EmailDetails details = new EmailDetails(allUserRegisterTeachSemesters.get(i).getTeacher().getEmail(), msgBody, "Thông báo xếp lớp không thành công", "");
                     emailService.sendSimpleMail(details);
 
@@ -457,7 +453,7 @@ public class SemesterServiceImpl implements SemesterService {
                         pnsRequest.setTitle("Thông báo xếp lớp không thành công");
                         pnsRequest.setBody(msgBody);
                         fcmService.pushNotification(pnsRequest);
-                    }
+                    } */
                 }
             }
             check_count ++;

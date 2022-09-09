@@ -29,11 +29,8 @@ public class NotificationController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createNotification(@RequestBody CreateNotificationRequest createNotificationRequest) {
-        Long notificationId = notificationService.createNotification(createNotificationRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{notificationId}")
-                .buildAndExpand(notificationId).toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<GetNotificationResponse> createNotification(@RequestBody CreateNotificationRequest createNotificationRequest) {
+        return ResponseEntity.ok().body(notificationService.createNotification(createNotificationRequest));
     }
 
     @CrossOrigin
