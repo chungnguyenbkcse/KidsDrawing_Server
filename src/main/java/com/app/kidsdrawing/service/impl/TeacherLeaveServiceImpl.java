@@ -159,7 +159,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
-    public Long createTeacherLeave(CreateTeacherLeaveRequest createTeacherLeaveRequest) {
+    public GetTeacherLeaveResponse createTeacherLeave(CreateTeacherLeaveRequest createTeacherLeaveRequest) {
 
         Optional <User> teacherOpt = userRepository.findById(createTeacherLeaveRequest.getTeacher_id());
         User teacher = teacherOpt.orElseThrow(() -> {
@@ -197,7 +197,23 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 .build();
         teacherLeaveRepository.save(savedTeacherLeave);
 
-        return savedTeacherLeave.getId();
+        return GetTeacherLeaveResponse.builder()
+        .id(savedTeacherLeave.getId())
+        .teacher_id(savedTeacherLeave.getTeacher().getId())
+        .teacher_name(savedTeacherLeave.getTeacher().getFirstName() + " " + savedTeacherLeave.getTeacher().getLastName())
+        .reviewer_id(savedTeacherLeave.getReviewer().getId())
+        .section_id(savedTeacherLeave.getSection().getId())
+        .section_name(savedTeacherLeave.getSection().getName())
+        .classes_id(savedTeacherLeave.getClasses().getId())
+        .section_number(savedTeacherLeave.getSection().getNumber())
+        .class_name(savedTeacherLeave.getClasses().getName())
+        .substitute_teacher_id(savedTeacherLeave.getSubstitute_teacher().getId())
+        .substitute_teacher_name(savedTeacherLeave.getSubstitute_teacher().getFirstName()  + " " + savedTeacherLeave.getSubstitute_teacher().getLastName())
+        .status(savedTeacherLeave.getStatus())
+        .description(savedTeacherLeave.getDescription())
+        .create_time(savedTeacherLeave.getCreate_time())
+        .update_time(savedTeacherLeave.getUpdate_time())
+        .build();
     }
 
     @Override
@@ -249,7 +265,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
-    public Long updateStatusTeacherLeaveById(Long id, CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
+    public GetTeacherLeaveResponse updateStatusTeacherLeaveById(Long id, CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
         Optional<TeacherLeave> TeacherLeaveOpt = teacherLeaveRepository.findById(id);
         TeacherLeave updatedTeacherLeave = TeacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
@@ -258,6 +274,22 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         updatedTeacherLeave.setStatus(createReviewTeacherLeaveRequest.getStatus());
         teacherLeaveRepository.save(updatedTeacherLeave);
 
-        return updatedTeacherLeave.getId();
+        return GetTeacherLeaveResponse.builder()
+        .id(updatedTeacherLeave.getId())
+        .teacher_id(updatedTeacherLeave.getTeacher().getId())
+        .teacher_name(updatedTeacherLeave.getTeacher().getFirstName() + " " + updatedTeacherLeave.getTeacher().getLastName())
+        .reviewer_id(updatedTeacherLeave.getReviewer().getId())
+        .section_id(updatedTeacherLeave.getSection().getId())
+        .section_name(updatedTeacherLeave.getSection().getName())
+        .classes_id(updatedTeacherLeave.getClasses().getId())
+        .section_number(updatedTeacherLeave.getSection().getNumber())
+        .class_name(updatedTeacherLeave.getClasses().getName())
+        .substitute_teacher_id(updatedTeacherLeave.getSubstitute_teacher().getId())
+        .substitute_teacher_name(updatedTeacherLeave.getSubstitute_teacher().getFirstName()  + " " + updatedTeacherLeave.getSubstitute_teacher().getLastName())
+        .status(updatedTeacherLeave.getStatus())
+        .description(updatedTeacherLeave.getDescription())
+        .create_time(updatedTeacherLeave.getCreate_time())
+        .update_time(updatedTeacherLeave.getUpdate_time())
+        .build();
     }
 }

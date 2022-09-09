@@ -48,11 +48,8 @@ public class TeacherLeaveController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createTeacherLeave(@RequestBody CreateTeacherLeaveRequest createTeacherLeaveRequest) {
-        Long teacherLeaveId = teacherLeaveService.createTeacherLeave(createTeacherLeaveRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{teacherLeaveId}")
-                .buildAndExpand(teacherLeaveId).toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<GetTeacherLeaveResponse> createTeacherLeave(@RequestBody CreateTeacherLeaveRequest createTeacherLeaveRequest) {
+        return ResponseEntity.ok().body(teacherLeaveService.createTeacherLeave(createTeacherLeaveRequest));
     }
 
     @CrossOrigin
@@ -66,11 +63,8 @@ public class TeacherLeaveController {
 
     @CrossOrigin
     @PutMapping(value = "/admin/{id}")
-    public ResponseEntity<String> updateStatusTeacherLeave(@PathVariable Long id, @RequestBody CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
-        Long TeacherLeaveId = teacherLeaveService.updateStatusTeacherLeaveById(id,createReviewTeacherLeaveRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-                .buildAndExpand(TeacherLeaveId).toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<GetTeacherLeaveResponse> updateStatusTeacherLeave(@PathVariable Long id, @RequestBody CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
+        return ResponseEntity.ok().body(teacherLeaveService.updateStatusTeacherLeaveById(id, createReviewTeacherLeaveRequest));
     }
 
     @CrossOrigin
