@@ -105,6 +105,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
     @Override 
     public ResponseEntity<Map<String, Object>> getReportUserNew(int year, Long role_id) {
         List<Integer> allUserResponses = new ArrayList<>();

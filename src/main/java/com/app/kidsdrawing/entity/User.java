@@ -154,4 +154,7 @@ public class User{
 
     @OneToOne(mappedBy="user")
     private UserReadNotification userReadNotification;
+
+    @OneToOne(mappedBy="user")
+    private PasswordResetToken passwordResetToken;
 }
