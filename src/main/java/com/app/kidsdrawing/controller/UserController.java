@@ -53,7 +53,13 @@ public class UserController {
     @GetMapping(value = "/teacher")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacher() {
         return ResponseEntity.ok().body(userService.getAllTeacher());
-    } 
+    }
+    
+    @CrossOrigin
+    @GetMapping(value = "/childs/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllChildForParentId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userService.getAllChildForParentId(id));
+    }
 
     @CrossOrigin
     @GetMapping(value = "/report/{id}")

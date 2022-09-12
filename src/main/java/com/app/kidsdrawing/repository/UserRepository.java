@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.app.kidsdrawing.entity.User;
@@ -17,4 +18,5 @@ public interface UserRepository extends JpaRepository <User, Long>{
     Optional<User> findByUsernameOrEmail(String username, String email);
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
+    List<User> findByParentId(Long id);
 }

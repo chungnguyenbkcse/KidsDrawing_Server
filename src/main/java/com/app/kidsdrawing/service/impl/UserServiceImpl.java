@@ -106,6 +106,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id) {
+        List<GetStudentResponse> allUserResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findByParentId(id);
+        pageUser.forEach(user -> {
+                GetStudentResponse userResponse = GetStudentResponse.builder()
+                    .id(user.getId())
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .status(user.getStatus())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .dateOfBirth(user.getDateOfBirth())
+                    .profile_image_url(user.getProfileImageUrl())
+                    .sex(user.getSex())
+                    .phone(user.getPhone())
+                    .address(user.getAddress())
+                    .createTime(user.getCreateTime())
+                    .parent(user.getParent().getUsername())
+                    .parents(user.getParent().getId())
+                    .build();
+                allUserResponses.add(userResponse);
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("childs", allUserResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public void changeUserPassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);

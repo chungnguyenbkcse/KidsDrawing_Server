@@ -42,4 +42,6 @@ public interface UserService {
     Long removeUser(Long id);
 
     void changeUserPassword(User user, String password);
+
+    ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id);
 }

@@ -110,7 +110,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
         if(result != null) {
             return "http://localhost:3000/auth";
         } else {
-            return "http://localhost:3000/forgot-password";
+            return "http://localhost:3000/update-password";
         }
     } 
 
