@@ -1,5 +1,7 @@
 package com.app.kidsdrawing.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +14,5 @@ public interface StudentLeaveRepository extends JpaRepository <StudentLeave, Lon
     Page<StudentLeave> findAll(Pageable pageable);
     boolean existsById(Long id);
     void deleteById(Long id);
+    List<StudentLeave> findByStudentId(Long id);
 }

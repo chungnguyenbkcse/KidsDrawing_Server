@@ -67,6 +67,148 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByStudent(Long id) {
+        List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
+        List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
+        List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId(id);
+        listStudentLeave.forEach(content -> {
+            if (content.getStatus().equals("Approved")) {
+                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                    .id(content.getId())
+                    .student_id(content.getStudent().getId())
+                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .reviewer_id(content.getReviewer().getId())
+                    .section_id(content.getSection().getId())
+                    .section_number(content.getSection().getNumber())
+                    .section_name(content.getSection().getName())
+                    .classes_id(content.getClasses().getId())
+                    .class_name(content.getClasses().getName())
+                    .status(content.getStatus())
+                    .description(content.getDescription())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allStudentLeaveApprovedResponses.add(StudentLeaveResponse);
+            }
+            else if (content.getStatus().equals("Not approved")) {
+                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                    .id(content.getId())
+                    .student_id(content.getStudent().getId())
+                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .reviewer_id(content.getReviewer().getId())
+                    .section_id(content.getSection().getId())
+                    .section_number(content.getSection().getNumber())
+                    .section_name(content.getSection().getName())
+                    .classes_id(content.getClasses().getId())
+                    .class_name(content.getClasses().getName())
+                    .status(content.getStatus())
+                    .description(content.getDescription())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allStudentLeaveNotApprovedResponses.add(StudentLeaveResponse);
+            }
+            else {
+                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                    .id(content.getId())
+                    .student_id(content.getStudent().getId())
+                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .reviewer_id(content.getReviewer().getId())
+                    .section_id(content.getSection().getId())
+                    .section_number(content.getSection().getNumber())
+                    .section_name(content.getSection().getName())
+                    .classes_id(content.getClasses().getId())
+                    .class_name(content.getClasses().getName())
+                    .status(content.getStatus())
+                    .description(content.getDescription())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allStudentLeaveNotApprovedNowResponses.add(StudentLeaveResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("student_leave_approved", allStudentLeaveApprovedResponses);
+        response.put("student_leave_not_approved", allStudentLeaveNotApprovedResponses);
+        response.put("student_leave_not_approved_now", allStudentLeaveNotApprovedNowResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByParent(Long id) {
+        List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
+        List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
+        List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findByParentId(id);
+        pageUser.forEach(student -> {
+            List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId(student.getId());
+            listStudentLeave.forEach(content -> {
+                if (content.getStatus().equals("Approved")) {
+                    GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                        .id(content.getId())
+                        .student_id(content.getStudent().getId())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .reviewer_id(content.getReviewer().getId())
+                        .section_id(content.getSection().getId())
+                        .section_number(content.getSection().getNumber())
+                        .section_name(content.getSection().getName())
+                        .classes_id(content.getClasses().getId())
+                        .class_name(content.getClasses().getName())
+                        .status(content.getStatus())
+                        .description(content.getDescription())
+                        .create_time(content.getCreate_time())
+                        .update_time(content.getUpdate_time())
+                        .build();
+                    allStudentLeaveApprovedResponses.add(StudentLeaveResponse);
+                }
+                else if (content.getStatus().equals("Not approved")) {
+                    GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                        .id(content.getId())
+                        .student_id(content.getStudent().getId())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .reviewer_id(content.getReviewer().getId())
+                        .section_id(content.getSection().getId())
+                        .section_number(content.getSection().getNumber())
+                        .section_name(content.getSection().getName())
+                        .classes_id(content.getClasses().getId())
+                        .class_name(content.getClasses().getName())
+                        .status(content.getStatus())
+                        .description(content.getDescription())
+                        .create_time(content.getCreate_time())
+                        .update_time(content.getUpdate_time())
+                        .build();
+                    allStudentLeaveNotApprovedResponses.add(StudentLeaveResponse);
+                }
+                else {
+                    GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                        .id(content.getId())
+                        .student_id(content.getStudent().getId())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .reviewer_id(content.getReviewer().getId())
+                        .section_id(content.getSection().getId())
+                        .section_number(content.getSection().getNumber())
+                        .section_name(content.getSection().getName())
+                        .classes_id(content.getClasses().getId())
+                        .class_name(content.getClasses().getName())
+                        .status(content.getStatus())
+                        .description(content.getDescription())
+                        .create_time(content.getCreate_time())
+                        .update_time(content.getUpdate_time())
+                        .build();
+                    allStudentLeaveNotApprovedNowResponses.add(StudentLeaveResponse);
+                }
+            });
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("student_leave_approved", allStudentLeaveApprovedResponses);
+        response.put("student_leave_not_approved", allStudentLeaveNotApprovedResponses);
+        response.put("student_leave_not_approved_now", allStudentLeaveNotApprovedNowResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(Long id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
         List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
