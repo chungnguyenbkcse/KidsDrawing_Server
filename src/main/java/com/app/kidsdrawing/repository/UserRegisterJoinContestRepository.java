@@ -13,6 +13,7 @@ import com.app.kidsdrawing.entity.UserRegisterJoinContest;
 public interface UserRegisterJoinContestRepository extends JpaRepository <UserRegisterJoinContest, Long>{
     Page<UserRegisterJoinContest> findAll(Pageable pageable);
     List<UserRegisterJoinContest> findByContestId(Long id);
+    List<UserRegisterJoinContest> findByStudentId(Long id);
     boolean existsById(Long id);
     void deleteById(Long id);
 }

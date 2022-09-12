@@ -52,6 +52,18 @@ public class ContestController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/student/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestByStudent(@PathVariable Long id) {
+        return ResponseEntity.ok().body(contestService.getAllContestByStudent(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/parent/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestByParent(@PathVariable Long id) {
+        return ResponseEntity.ok().body(contestService.getAllContestByParent(id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/art-age/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByArtAgeid(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size) {

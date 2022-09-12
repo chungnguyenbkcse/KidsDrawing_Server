@@ -263,6 +263,73 @@ public class ContestServiceImpl implements ContestService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllContestByStudent(Long student_id) {
+        List<GetContestResponse> allContestResponses = new ArrayList<>();
+        List<UserRegisterJoinContest> listRegisterJoinContest = userRegisterJoinContestRepository.findByStudentId(student_id);
+        listRegisterJoinContest.forEach(ele -> {
+            GetContestResponse contestResponse = GetContestResponse.builder()
+                    .id(ele.getContest().getId())
+                    .name(ele.getContest().getName())
+                    .description(ele.getContest().getDescription())
+                    .max_participant(ele.getContest().getMax_participant())
+                    .registration_time(ele.getContest().getRegistration_time())
+                    .image_url(ele.getContest().getImage_url())
+                    .start_time(ele.getContest().getStart_time())
+                    .end_time(ele.getContest().getEnd_time())
+                    .is_enabled(ele.getContest().getIs_enabled())
+                    .art_age_id(ele.getContest().getArtAges().getId())
+                    .art_type_id(ele.getContest().getArtTypes().getId())
+                    .creater_id(ele.getContest().getUser().getId())
+                    .create_time(ele.getContest().getCreate_time())
+                    .update_time(ele.getContest().getUpdate_time())
+                    .build();
+                allContestResponses.add(contestResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("contests", allContestResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllContestByParent(Long parent_id) {
+        List<Map<String, List<GetContestResponse>>> allContestResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findByParentId(parent_id);
+        pageUser.forEach(student -> {
+            List<GetContestResponse> allContestForStudent = new ArrayList<>();
+            List<UserRegisterJoinContest> listRegisterJoinContest = userRegisterJoinContestRepository.findByStudentId(student.getId());
+            listRegisterJoinContest.forEach(ele -> {
+                GetContestResponse contestResponse = GetContestResponse.builder()
+                        .id(ele.getContest().getId())
+                        .name(ele.getContest().getName())
+                        .description(ele.getContest().getDescription())
+                        .max_participant(ele.getContest().getMax_participant())
+                        .registration_time(ele.getContest().getRegistration_time())
+                        .image_url(ele.getContest().getImage_url())
+                        .start_time(ele.getContest().getStart_time())
+                        .end_time(ele.getContest().getEnd_time())
+                        .is_enabled(ele.getContest().getIs_enabled())
+                        .art_age_id(ele.getContest().getArtAges().getId())
+                        .art_type_id(ele.getContest().getArtTypes().getId())
+                        .creater_id(ele.getContest().getUser().getId())
+                        .create_time(ele.getContest().getCreate_time())
+                        .update_time(ele.getContest().getUpdate_time())
+                        .build();
+                    allContestForStudent.add(contestResponse);
+            });
+            Map<String, List<GetContestResponse>> allContsetForStudents = new HashMap<>();
+            allContsetForStudents.put(student.getUsername(), allContestForStudent);
+            allContestResponses.add(allContsetForStudents);
+        });
+        
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("contests", allContestResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Override
     public ResponseEntity<Map<String, Object>> getAllContestByArtAgeId(int page, int size, Long id) {
         List<GetContestResponse> allContestResponses = new ArrayList<>();
