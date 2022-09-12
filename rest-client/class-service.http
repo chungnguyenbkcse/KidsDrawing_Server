@@ -63,3 +63,13 @@ GET  {{rest}}/classes/info/1
 # @name get_classes
 
 GET  {{rest}}/classes/schedule-all/1
+
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/classes/schedule-child/18
+
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/classes/schedule-allchild/8

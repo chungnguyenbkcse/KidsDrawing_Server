@@ -734,7 +734,8 @@ public class ClassesServiceImpl implements ClassesService {
                     week_count++;
                 }
                 Map<String, List<Map<String, List<List<LocalDateTime>>>>> schedule_class = new HashMap<>();
-                schedule_class.put(user_register_join_semester.getClass().getName(), allCalendarForSemesterClass);
+                String name = user_register_join_semester.getClassHasRegisterJoinSemesterClass().getClasses().getName();
+                schedule_class.put(name, allCalendarForSemesterClass);
                 allCalendarForChild.add(schedule_class);
             }
         });
@@ -874,7 +875,7 @@ public class ClassesServiceImpl implements ClassesService {
                         week_count++;
                     }
                     Map<String, List<Map<String, List<List<LocalDateTime>>>>> schedule_class = new HashMap<>();
-                    schedule_class.put(user_register_join_semester.getClass().getName(), allCalendarForSemesterClass);
+                    schedule_class.put(user_register_join_semester.getClassHasRegisterJoinSemesterClass().getClasses().getName(), allCalendarForSemesterClass);
                     allCalendarForChild.add(schedule_class);
                 }
             });
