@@ -43,7 +43,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
         Pageable paging = PageRequest.of(page, size);
         Page<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findAll(paging);
         pageUserRegisterJoinContest.getContent().forEach(content -> {
-            if (content.getUser().getId() == id){
+            if (content.getStudent().getId() == id){
                 GetUserRegisterJoinContestResponse userRegisterJoinContestResponse = GetUserRegisterJoinContestResponse.builder()
                     .id(content.getId())
                     .student_id(id)
@@ -70,7 +70,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             if (content.getContest().getId() == id){
                 GetUserRegisterJoinContestResponse userRegisterJoinContestResponse = GetUserRegisterJoinContestResponse.builder()
                     .id(content.getId())
-                    .student_id(content.getUser().getId())
+                    .student_id(content.getStudent().getId())
                     .contest_id(id)
                     .build();
                     allUserRegisterJoinContestResponses.add(userRegisterJoinContestResponse);
@@ -94,7 +94,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
 
         return GetUserRegisterJoinContestResponse.builder()
                 .id(userRegisterJoinContest.getId())
-                .student_id(userRegisterJoinContest.getUser().getId())
+                .student_id(userRegisterJoinContest.getStudent().getId())
                 .contest_id(userRegisterJoinContest.getContest().getId())
                 .build();
     }
@@ -112,7 +112,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
         });
 
         UserRegisterJoinContest savedUserRegisterJoinContest = UserRegisterJoinContest.builder()
-                .user(teacher)
+                .student(teacher)
                 .contest(contest)
                 .build();
         userRegisterJoinContestRepository.save(savedUserRegisterJoinContest);
@@ -148,7 +148,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             throw new EntityNotFoundException("exception.user.not_found");
         });
         
-        updatedUserRegisterJoinContest.setUser(teacher);
+        updatedUserRegisterJoinContest.setStudent(teacher);
         updatedUserRegisterJoinContest.setContest(contest);
 
         return updatedUserRegisterJoinContest.getId();

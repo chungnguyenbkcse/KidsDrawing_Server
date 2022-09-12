@@ -107,8 +107,8 @@ public class User{
     @OneToMany(mappedBy="user")
     private Set<Course> courses;
 
-    @OneToMany(mappedBy="user")
-    private Set<UserRegisterJoinContest> user;
+    @OneToMany(mappedBy="student")
+    private Set<UserRegisterJoinContest> userRegisterJoinContests;
 
     @OneToMany(mappedBy="reviewer")
     private Set<TeacherRegisterQualification> admin_review_register_qutifications;
