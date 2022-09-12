@@ -12,4 +12,5 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     boolean existsById(Long id);
     void deleteById(Long id);
     List<UserRegisterJoinSemester> findBySemesterClassId(Long id);
+    List<UserRegisterJoinSemester> findByStudentId(Long id);
 }

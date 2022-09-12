@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +18,14 @@ import com.app.kidsdrawing.dto.GetSemesterClassResponse;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
+import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.exception.SemesterClassAlreadyCreateException;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
+import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.service.SemesterClassService;
 
@@ -37,6 +40,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private final SemesterRepository semesterRepository;
     private final CourseRepository courseRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
+    private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClass() {
@@ -54,6 +58,58 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     .registration_time(semesterClass.getRegistration_time())
                     .build();
             allSemesterClassResponses.add(semesterClassResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_classes", allSemesterClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassHistoryOfStudent(Long id) {
+        List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(id);
+        LocalDateTime time_now = LocalDateTime.now();
+        userRegisterJoinSemester.forEach( user_register_join_semester -> {
+            if (time_now.isAfter(user_register_join_semester.getSemesterClass().getSemester().getEnd_time())){
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(user_register_join_semester.getSemesterClass().getId())
+                    .name(user_register_join_semester.getSemesterClass().getName())
+                    .semester_id(user_register_join_semester.getSemesterClass().getSemester().getId())
+                    .semester_name(user_register_join_semester.getSemesterClass().getSemester().getName())
+                    .course_id(user_register_join_semester.getSemesterClass().getCourse().getId())
+                    .course_name(user_register_join_semester.getSemesterClass().getCourse().getName())
+                    .max_participant(user_register_join_semester.getSemesterClass().getMax_participant())
+                    .registration_time(user_register_join_semester.getSemesterClass().getRegistration_time())
+                    .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_classes", allSemesterClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassPresentOfStudent(Long id) {
+        List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(id);
+        LocalDateTime time_now = LocalDateTime.now();
+        userRegisterJoinSemester.forEach( user_register_join_semester -> {
+            if (time_now.isBefore(user_register_join_semester.getSemesterClass().getSemester().getEnd_time())){
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(user_register_join_semester.getSemesterClass().getId())
+                    .name(user_register_join_semester.getSemesterClass().getName())
+                    .semester_id(user_register_join_semester.getSemesterClass().getSemester().getId())
+                    .semester_name(user_register_join_semester.getSemesterClass().getSemester().getName())
+                    .course_id(user_register_join_semester.getSemesterClass().getCourse().getId())
+                    .course_name(user_register_join_semester.getSemesterClass().getCourse().getName())
+                    .max_participant(user_register_join_semester.getSemesterClass().getMax_participant())
+                    .registration_time(user_register_join_semester.getSemesterClass().getRegistration_time())
+                    .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();

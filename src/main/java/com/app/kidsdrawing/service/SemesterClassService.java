@@ -11,6 +11,8 @@ public interface SemesterClassService {
     ResponseEntity<Map<String, Object>> getAllSemesterClass();
     ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(Long id);
     ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(Long id);
+    ResponseEntity<Map<String, Object>> getAllSemesterClassHistoryOfStudent(Long id);
+    ResponseEntity<Map<String, Object>> getAllSemesterClassPresentOfStudent(Long id);
     GetSemesterClassResponse getSemesterClassById(Long id);
     GetSemesterClassResponse  createSemesterClass(CreateSemesterClassRequest createSemesterClassRequest);
     Long removeSemesterClassById(Long id);

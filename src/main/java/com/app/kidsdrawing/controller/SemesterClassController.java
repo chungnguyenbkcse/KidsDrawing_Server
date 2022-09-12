@@ -49,6 +49,18 @@ public class SemesterClassController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/history/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClassHistoryOfStudent(@PathVariable Long id) {
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassHistoryOfStudent(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/present/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClassPresentOfStudent(@PathVariable Long id) {
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassPresentOfStudent(id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/semester/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClasssBySemesterBySemester(@PathVariable Long id) {
         return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassBySemester(id));
