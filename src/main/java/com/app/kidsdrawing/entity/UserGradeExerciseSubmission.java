@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,7 +31,7 @@ public class UserGradeExerciseSubmission {
     @EmbeddedId
     UserGradeExerciseSubmissionKey id;
 
-    @OneToOne
+    @ManyToOne
     @MapsId("teacherId")
     @JoinColumn(name = "teacher_id")
     User teacher;

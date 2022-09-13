@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
+    "username": "student-3",
     "password": "12345678aA@"
 }
 
@@ -21,8 +21,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 9,
-    "exercise_id": 2,
+    "student_id": 20,
+    "exercise_id": 5,
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png"
 }
 
@@ -72,3 +72,8 @@ GET  {{rest}}/exercise-submission/class/23
 # @name get_contest
 
 GET  {{rest}}/exercise-submission/student/8
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercise-submission/classes-student/3/20

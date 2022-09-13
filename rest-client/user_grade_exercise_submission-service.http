@@ -7,7 +7,7 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "teacher-1",
+    "username": "teacher-3",
     "password": "12345678aA@"
 }
 
@@ -21,10 +21,10 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 22,
-    "exercise_submission_id": 1,
+    "teacher_id": 2,
+    "exercise_submission_id": ,
     "feedback": "Bài làm tốt",
-    "score": 8.3
+    "score": 9.5
 }
 
 ### CREATE CONTEST ACTION ###
@@ -84,4 +84,4 @@ GET  {{rest}}/user-grade-exercise-submission/exercise-class/2/23
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/user-grade-exercise-submission/class-student/23/8
+GET  {{rest}}/user-grade-exercise-submission/class-student/3/20

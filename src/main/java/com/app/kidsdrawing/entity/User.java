@@ -143,8 +143,8 @@ public class User{
     @OneToMany(mappedBy="student")
     private Set<ExerciseSubmission> exerciseSubmissions;
 
-    @OneToOne(mappedBy = "teacher")
-    private UserGradeExerciseSubmission userGradeExerciseSubmission;
+    @OneToMany(mappedBy = "teacher")
+    private Set<UserGradeExerciseSubmission> userGradeExerciseSubmissions;
 
     @OneToMany(mappedBy = "teacher")
     private Set<UserGradeContestSubmission> userGradeContestSubmissions;

@@ -71,4 +71,4 @@ GET  {{rest}}/exercises/section/66
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/exercises/class-student/23/8
+GET  {{rest}}/exercises/class-student/3/20
