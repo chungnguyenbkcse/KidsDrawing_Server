@@ -321,6 +321,28 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getClassesForStudentId(Long id) {
+        List<GetClassResponse> allClassResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(id);
+        listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
+            ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByUserRegisterJoinSemesterId(user_register_join_semester.getId());
+            GetClassResponse classResponse = GetClassResponse.builder()
+                    .id(classHasRegisterJoinSemesterClass.getClasses().getId())
+                    .creator_id(classHasRegisterJoinSemesterClass.getClasses().getUser().getId())
+                    .user_register_teach_semester(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getId())
+                    .security_code(classHasRegisterJoinSemesterClass.getClasses().getSecurity_code())
+                    .name(classHasRegisterJoinSemesterClass.getClasses().getName())
+                    .create_time(classHasRegisterJoinSemesterClass.getClasses().getCreate_time())
+                    .update_time(classHasRegisterJoinSemesterClass.getClasses().getUpdate_time())
+                    .build();
+            allClassResponses.add(classResponse);
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("classes", allClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleAllClass() {
         LocalDateTime time_now = LocalDateTime.now();
         List<Semester> allSemesters = semesterRepository.findAll();
