@@ -22,6 +22,7 @@ import com.app.kidsdrawing.dto.GetArtAgeResponse;
 import com.app.kidsdrawing.dto.GetArtLevelResponse;
 import com.app.kidsdrawing.dto.GetArtTypeResponse;
 import com.app.kidsdrawing.dto.GetClassResponse;
+import com.app.kidsdrawing.dto.GetClassesStudentResponse;
 import com.app.kidsdrawing.dto.GetCourseResponse;
 import com.app.kidsdrawing.dto.GetInfoClassTeacherResponse;
 import com.app.kidsdrawing.dto.GetScheduleResponse;
@@ -328,6 +329,39 @@ public class ClassesServiceImpl implements ClassesService {
             ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByUserRegisterJoinSemesterId(user_register_join_semester.getId());
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(classHasRegisterJoinSemesterClass.getClasses().getId())
+                    .creator_id(classHasRegisterJoinSemesterClass.getClasses().getUser().getId())
+                    .user_register_teach_semester(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getId())
+                    .security_code(classHasRegisterJoinSemesterClass.getClasses().getSecurity_code())
+                    .name(classHasRegisterJoinSemesterClass.getClasses().getName())
+                    .create_time(classHasRegisterJoinSemesterClass.getClasses().getCreate_time())
+                    .update_time(classHasRegisterJoinSemesterClass.getClasses().getUpdate_time())
+                    .build();
+            allClassResponses.add(classResponse);
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("classes", allClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(Long id) {
+        List<GetClassesStudentResponse> allClassResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(id);
+        listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
+            ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByUserRegisterJoinSemesterId(user_register_join_semester.getId());
+            GetClassesStudentResponse classResponse = GetClassesStudentResponse.builder()
+                    .id(classHasRegisterJoinSemesterClass.getClasses().getId())
+                    .link_url(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getImage_url())
+                    .teacher_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getId())
+                    .teacher_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                    .art_age_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtAges().getId())
+                    .art_age_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtAges().getName())
+                    .art_level_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtLevels().getId())
+                    .art_level_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtLevels().getName())
+                    .art_type_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtTypes().getId())
+                    .art_type_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtTypes().getName())
+                    .total_section(classHasRegisterJoinSemesterClass.getClasses().getSections().size())
+                    .total_student(classHasRegisterJoinSemesterClass.getClasses().getClassHasRegisterJoinSemesterClasses().size())
                     .creator_id(classHasRegisterJoinSemesterClass.getClasses().getUser().getId())
                     .user_register_teach_semester(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getId())
                     .security_code(classHasRegisterJoinSemesterClass.getClasses().getSecurity_code())

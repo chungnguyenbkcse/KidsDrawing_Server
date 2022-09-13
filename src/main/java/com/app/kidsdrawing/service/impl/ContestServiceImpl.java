@@ -265,30 +265,84 @@ public class ContestServiceImpl implements ContestService {
 
     @Override 
     public ResponseEntity<Map<String, Object>> getAllContestByStudent(Long student_id) {
-        List<GetContestResponse> allContestResponses = new ArrayList<>();
+        List<GetContestTeacherResponse> allContestNotOpenNowResponses = new ArrayList<>();
+        List<GetContestTeacherResponse> allContestOpeningResponses = new ArrayList<>();
+        List<GetContestTeacherResponse> allContestEndResponses = new ArrayList<>();
         List<UserRegisterJoinContest> listRegisterJoinContest = userRegisterJoinContestRepository.findByStudentId(student_id);
+        LocalDateTime time_now = LocalDateTime.now();
+        
         listRegisterJoinContest.forEach(ele -> {
-            GetContestResponse contestResponse = GetContestResponse.builder()
+            total = 0;
+            List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId(ele.getContest().getId());
+            List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(ele.getContest().getId());
+            listContestSubmissionByContest.forEach(contest_submission -> {
+                if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
+                    total = total + 1;
+                }
+            });
+            if (time_now.isAfter(ele.getContest().getStart_time()) == false){
+                GetContestTeacherResponse contestNotOpenNowResponse = GetContestTeacherResponse.builder()
                     .id(ele.getContest().getId())
                     .name(ele.getContest().getName())
                     .description(ele.getContest().getDescription())
                     .max_participant(ele.getContest().getMax_participant())
+                    .total_register_contest(listUserRegisterContestByContest.size())
+                    .total_contest_submission(listContestSubmissionByContest.size())
+                    .total_const_submission_graded(total)
                     .registration_time(ele.getContest().getRegistration_time())
                     .image_url(ele.getContest().getImage_url())
                     .start_time(ele.getContest().getStart_time())
                     .end_time(ele.getContest().getEnd_time())
                     .is_enabled(ele.getContest().getIs_enabled())
-                    .art_age_id(ele.getContest().getArtAges().getId())
-                    .art_type_id(ele.getContest().getArtTypes().getId())
-                    .creater_id(ele.getContest().getUser().getId())
-                    .create_time(ele.getContest().getCreate_time())
-                    .update_time(ele.getContest().getUpdate_time())
+                    .art_age_name(ele.getContest().getArtAges().getName())
+                    .art_type_name(ele.getContest().getArtTypes().getName())
                     .build();
-                allContestResponses.add(contestResponse);
+                allContestNotOpenNowResponses.add(contestNotOpenNowResponse);
+            }
+            else if (time_now.isAfter(ele.getContest().getEnd_time()) == true){
+                GetContestTeacherResponse contestEndResponse = GetContestTeacherResponse.builder()
+                    .id(ele.getContest().getId())
+                    .name(ele.getContest().getName())
+                    .description(ele.getContest().getDescription())
+                    .max_participant(ele.getContest().getMax_participant())
+                    .total_register_contest(listUserRegisterContestByContest.size())
+                    .total_contest_submission(listContestSubmissionByContest.size())
+                    .total_const_submission_graded(total)
+                    .registration_time(ele.getContest().getRegistration_time())
+                    .image_url(ele.getContest().getImage_url())
+                    .start_time(ele.getContest().getStart_time())
+                    .end_time(ele.getContest().getEnd_time())
+                    .is_enabled(ele.getContest().getIs_enabled())
+                    .art_age_name(ele.getContest().getArtAges().getName())
+                    .art_type_name(ele.getContest().getArtTypes().getName())
+                    .build();
+                allContestEndResponses.add(contestEndResponse);
+            } 
+            else if (time_now.isAfter(ele.getContest().getStart_time()) == true && time_now.isAfter(ele.getContest().getEnd_time()) == false){
+                GetContestTeacherResponse contestOpeningResponse = GetContestTeacherResponse.builder()
+                    .id(ele.getContest().getId())
+                    .name(ele.getContest().getName())
+                    .description(ele.getContest().getDescription())
+                    .max_participant(ele.getContest().getMax_participant())
+                    .total_register_contest(listUserRegisterContestByContest.size())
+                    .total_contest_submission(listContestSubmissionByContest.size())
+                    .total_const_submission_graded(total)
+                    .registration_time(ele.getContest().getRegistration_time())
+                    .image_url(ele.getContest().getImage_url())
+                    .start_time(ele.getContest().getStart_time())
+                    .end_time(ele.getContest().getEnd_time())
+                    .is_enabled(ele.getContest().getIs_enabled())
+                    .art_age_name(ele.getContest().getArtAges().getName())
+                    .art_type_name(ele.getContest().getArtTypes().getName())
+                    .build();
+                allContestOpeningResponses.add(contestOpeningResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("contests", allContestResponses);
+        response.put("contest_not_open_now", allContestNotOpenNowResponses);
+        response.put("contest_opening", allContestOpeningResponses);
+        response.put("contest_end", allContestEndResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

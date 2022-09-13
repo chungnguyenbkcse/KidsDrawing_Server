@@ -63,6 +63,11 @@ GET  {{rest}}/classes/info/1
 
 GET  {{rest}}/classes/student/18
 
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/classes/student/detail/18
+
 
 ### GET classes ACTION ###
 # @name get_classes

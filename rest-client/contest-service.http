@@ -58,3 +58,8 @@ Content-Type: application/json
 # @name get_contest
 
 GET  {{rest}}/contest/teacher/2
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/contest/student/18
