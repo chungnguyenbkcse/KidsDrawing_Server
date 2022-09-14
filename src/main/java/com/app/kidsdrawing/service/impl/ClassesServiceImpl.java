@@ -22,6 +22,7 @@ import com.app.kidsdrawing.dto.GetArtAgeResponse;
 import com.app.kidsdrawing.dto.GetArtLevelResponse;
 import com.app.kidsdrawing.dto.GetArtTypeResponse;
 import com.app.kidsdrawing.dto.GetClassResponse;
+import com.app.kidsdrawing.dto.GetClassesParentResponse;
 import com.app.kidsdrawing.dto.GetClassesStudentResponse;
 import com.app.kidsdrawing.dto.GetCourseResponse;
 import com.app.kidsdrawing.dto.GetInfoClassTeacherResponse;
@@ -224,7 +225,7 @@ public class ClassesServiceImpl implements ClassesService {
             }
         });
         Map<String, Object> response = new HashMap<>();
-        response.put("classes_doning", allInfoClassTeacherDoingResponses);
+        response.put("classes_doing", allInfoClassTeacherDoingResponses);
         response.put("schedule_time", allScheduleTime);
         response.put("students_done", allStudentDoneResponses);
         response.put("students_doing", allStudentDoingResponses);
@@ -340,6 +341,87 @@ public class ClassesServiceImpl implements ClassesService {
         });
         Map<String, Object> response = new HashMap<>();
         response.put("classes", allClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getClassesStudentForParentId(Long parent_id) {
+        List<User> pageUser = userRepository.findByParentId(parent_id);
+        List<GetClassesParentResponse> allClassDoingResponses = new ArrayList<>();
+        List<GetClassesParentResponse> allClassDoneResponses = new ArrayList<>();
+        LocalDateTime time_now = LocalDateTime.now();
+        pageUser.forEach(student -> {
+            List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(student.getId());
+            listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
+                ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByUserRegisterJoinSemesterId(user_register_join_semester.getId());
+                LocalDateTime res = getEndSectionOfClass(user_register_join_semester.getClassHasRegisterJoinSemesterClass().getClasses().getId());
+                if (time_now.isAfter(res) == false) {
+                    GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
+                        .id(classHasRegisterJoinSemesterClass.getClasses().getId())
+                        .student_id(student.getId())
+                        .semester_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getSemester().getId())
+                        .semester_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getSemester().getName())
+                        .course_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getId())
+                        .course_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getName())
+                        .student_name(student.getFirstName() + " " + student.getLastName())
+                        .semester_class_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getId())
+                        .semester_class_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getName())
+                        .link_url(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getImage_url())
+                        .teacher_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getId())
+                        .teacher_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                        .art_age_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtAges().getId())
+                        .art_age_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtAges().getName())
+                        .art_level_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtLevels().getId())
+                        .art_level_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtLevels().getName())
+                        .art_type_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtTypes().getId())
+                        .art_type_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtTypes().getName())
+                        .total_section(classHasRegisterJoinSemesterClass.getClasses().getSections().size())
+                        .total_student(classHasRegisterJoinSemesterClass.getClasses().getClassHasRegisterJoinSemesterClasses().size())
+                        .creator_id(classHasRegisterJoinSemesterClass.getClasses().getUser().getId())
+                        .user_register_teach_semester(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getId())
+                        .security_code(classHasRegisterJoinSemesterClass.getClasses().getSecurity_code())
+                        .name(classHasRegisterJoinSemesterClass.getClasses().getName())
+                        .create_time(classHasRegisterJoinSemesterClass.getClasses().getCreate_time())
+                        .update_time(classHasRegisterJoinSemesterClass.getClasses().getUpdate_time())
+                        .build();
+                    allClassDoingResponses.add(classResponse);
+                }
+                else {
+                    GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
+                        .id(classHasRegisterJoinSemesterClass.getClasses().getId())
+                        .student_id(student.getId())
+                        .semester_class_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getId())
+                        .semester_class_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getName())
+                        .student_name(student.getFirstName() + " " + student.getLastName())
+                        .semester_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getSemester().getId())
+                        .semester_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getSemester().getName())
+                        .course_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getId())
+                        .course_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getName())
+                        .link_url(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getImage_url())
+                        .teacher_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getId())
+                        .teacher_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                        .art_age_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtAges().getId())
+                        .art_age_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtAges().getName())
+                        .art_level_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtLevels().getId())
+                        .art_level_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtLevels().getName())
+                        .art_type_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtTypes().getId())
+                        .art_type_name(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass().getCourse().getArtTypes().getName())
+                        .total_section(classHasRegisterJoinSemesterClass.getClasses().getSections().size())
+                        .total_student(classHasRegisterJoinSemesterClass.getClasses().getClassHasRegisterJoinSemesterClasses().size())
+                        .creator_id(classHasRegisterJoinSemesterClass.getClasses().getUser().getId())
+                        .user_register_teach_semester(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getId())
+                        .security_code(classHasRegisterJoinSemesterClass.getClasses().getSecurity_code())
+                        .name(classHasRegisterJoinSemesterClass.getClasses().getName())
+                        .create_time(classHasRegisterJoinSemesterClass.getClasses().getCreate_time())
+                        .update_time(classHasRegisterJoinSemesterClass.getClasses().getUpdate_time())
+                        .build();
+                    allClassDoneResponses.add(classResponse);
+                }               
+            });
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("classes_doing", allClassDoingResponses);
+        response.put("classes_done", allClassDoneResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

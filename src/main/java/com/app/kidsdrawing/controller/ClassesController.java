@@ -58,6 +58,12 @@ public class ClassesController {
     }
 
     @CrossOrigin
+    @GetMapping(value="/parent/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesStudentForParentId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(classService.getClassesStudentForParentId(id));
+    }
+
+    @CrossOrigin
     @GetMapping(value="/student/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesForStudentId(@PathVariable Long id) {
         return ResponseEntity.ok().body(classService.getClassesForStudentId(id));
