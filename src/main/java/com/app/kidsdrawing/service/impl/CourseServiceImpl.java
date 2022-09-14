@@ -236,54 +236,50 @@ public class CourseServiceImpl implements CourseService {
                     listCourseNotRegisteredNow.add(course);
                 }
             });
+        });
 
-            listCourseRegistered.forEach(course -> {
-                GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
-                    .id(course.getId())
-                    .name(course.getName())
-                    .student_id(student.getId())
-                    .student_name(student.getFirstName() + " " + student.getLastName())
-                    .description(course.getDescription())
-                    .num_of_section(course.getNum_of_section())
-                    .image_url(course.getImage_url())
-                    .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
-                    .art_age_id(course.getArtAges().getId())
-                    .art_age_name(course.getArtAges().getName())
-                    .art_type_id(course.getArtTypes().getId())
-                    .art_type_name(course.getArtTypes().getName())
-                    .art_level_id(course.getArtLevels().getId())
-                    .art_level_name(course.getArtLevels().getName())
-                    .creator_id(course.getUser().getId())
-                    .create_time(course.getCreate_time())
-                    .update_time(course.getUpdate_time())
-                    .build();
-                allCourseRegistedResponses.add(courseResponse);
-            });
+        listCourseRegistered.forEach(course -> {
+            GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
+                .id(course.getId())
+                .name(course.getName())
+                .description(course.getDescription())
+                .num_of_section(course.getNum_of_section())
+                .image_url(course.getImage_url())
+                .price(course.getPrice())
+                .is_enabled(course.getIs_enabled())
+                .art_age_id(course.getArtAges().getId())
+                .art_age_name(course.getArtAges().getName())
+                .art_type_id(course.getArtTypes().getId())
+                .art_type_name(course.getArtTypes().getName())
+                .art_level_id(course.getArtLevels().getId())
+                .art_level_name(course.getArtLevels().getName())
+                .creator_id(course.getUser().getId())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
+                .build();
+            allCourseRegistedResponses.add(courseResponse);
+        });
 
-            listCourseNotRegisteredNow.forEach(course -> {
-                GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
-                    .id(course.getId())
-                    .name(course.getName())
-                    .student_id(student.getId())
-                    .student_name(student.getFirstName() + " " + student.getLastName())
-                    .description(course.getDescription())
-                    .num_of_section(course.getNum_of_section())
-                    .image_url(course.getImage_url())
-                    .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
-                    .art_age_id(course.getArtAges().getId())
-                    .art_age_name(course.getArtAges().getName())
-                    .art_type_id(course.getArtTypes().getId())
-                    .art_type_name(course.getArtTypes().getName())
-                    .art_level_id(course.getArtLevels().getId())
-                    .art_level_name(course.getArtLevels().getName())
-                    .creator_id(course.getUser().getId())
-                    .create_time(course.getCreate_time())
-                    .update_time(course.getUpdate_time())
-                    .build();
-                allCourseNotRegistedNowResponses.add(courseResponse);
-            });
+        listCourseNotRegisteredNow.forEach(course -> {
+            GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
+                .id(course.getId())
+                .name(course.getName())
+                .description(course.getDescription())
+                .num_of_section(course.getNum_of_section())
+                .image_url(course.getImage_url())
+                .price(course.getPrice())
+                .is_enabled(course.getIs_enabled())
+                .art_age_id(course.getArtAges().getId())
+                .art_age_name(course.getArtAges().getName())
+                .art_type_id(course.getArtTypes().getId())
+                .art_type_name(course.getArtTypes().getName())
+                .art_level_id(course.getArtLevels().getId())
+                .art_level_name(course.getArtLevels().getName())
+                .creator_id(course.getUser().getId())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
+                .build();
+            allCourseNotRegistedNowResponses.add(courseResponse);
         });
 
         Map<String, Object> response = new HashMap<>();

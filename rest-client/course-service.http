@@ -68,3 +68,9 @@ GET {{rest}}/course/art-level/1?page=0&size=10
 # @name get_contest
 
 GET  {{rest}}/course/report/2022
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/course/parent/8
