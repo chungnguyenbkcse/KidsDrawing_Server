@@ -17,6 +17,7 @@ import com.app.kidsdrawing.dto.CreateCourseRequest;
 import com.app.kidsdrawing.dto.GetCourseResponse;
 import com.app.kidsdrawing.dto.GetCourseTeacherResponse;
 import com.app.kidsdrawing.dto.GetReportCourseResponse;
+import com.app.kidsdrawing.dto.GetCourseParentResponse;
 import com.app.kidsdrawing.entity.ArtAge;
 import com.app.kidsdrawing.entity.ArtLevel;
 import com.app.kidsdrawing.entity.ArtType;
@@ -212,6 +213,82 @@ public class CourseServiceImpl implements CourseService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("courses", allCourseResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllCourseByParentId(Long id) {
+        List<GetCourseParentResponse> allCourseRegistedResponses = new ArrayList<>();
+        List<GetCourseParentResponse> allCourseNotRegistedNowResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findByParentId(id);
+        List<Course> listCourseRegistered = new ArrayList<>();
+        List<Course> listCourseNotRegisteredNow = new ArrayList<>();
+        List<Course> allCourse = courseRepository.findAll();
+        pageUser.forEach(student -> {
+            List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(student.getId());
+            listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
+                if (!listCourseRegistered.contains(user_register_join_semester.getSemesterClass().getCourse())) {
+                    listCourseRegistered.add(user_register_join_semester.getSemesterClass().getCourse());
+                }
+            });
+            allCourse.forEach(course -> {
+                if (!listCourseRegistered.contains(course)) {
+                    listCourseNotRegisteredNow.add(course);
+                }
+            });
+
+            listCourseRegistered.forEach(course -> {
+                GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
+                    .id(course.getId())
+                    .name(course.getName())
+                    .student_id(student.getId())
+                    .student_name(student.getFirstName() + " " + student.getLastName())
+                    .description(course.getDescription())
+                    .num_of_section(course.getNum_of_section())
+                    .image_url(course.getImage_url())
+                    .price(course.getPrice())
+                    .is_enabled(course.getIs_enabled())
+                    .art_age_id(course.getArtAges().getId())
+                    .art_age_name(course.getArtAges().getName())
+                    .art_type_id(course.getArtTypes().getId())
+                    .art_type_name(course.getArtTypes().getName())
+                    .art_level_id(course.getArtLevels().getId())
+                    .art_level_name(course.getArtLevels().getName())
+                    .creator_id(course.getUser().getId())
+                    .create_time(course.getCreate_time())
+                    .update_time(course.getUpdate_time())
+                    .build();
+                allCourseRegistedResponses.add(courseResponse);
+            });
+
+            listCourseNotRegisteredNow.forEach(course -> {
+                GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
+                    .id(course.getId())
+                    .name(course.getName())
+                    .student_id(student.getId())
+                    .student_name(student.getFirstName() + " " + student.getLastName())
+                    .description(course.getDescription())
+                    .num_of_section(course.getNum_of_section())
+                    .image_url(course.getImage_url())
+                    .price(course.getPrice())
+                    .is_enabled(course.getIs_enabled())
+                    .art_age_id(course.getArtAges().getId())
+                    .art_age_name(course.getArtAges().getName())
+                    .art_type_id(course.getArtTypes().getId())
+                    .art_type_name(course.getArtTypes().getName())
+                    .art_level_id(course.getArtLevels().getId())
+                    .art_level_name(course.getArtLevels().getName())
+                    .creator_id(course.getUser().getId())
+                    .create_time(course.getCreate_time())
+                    .update_time(course.getUpdate_time())
+                    .build();
+                allCourseNotRegistedNowResponses.add(courseResponse);
+            });
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("courses_registed", allCourseRegistedResponses);
+        response.put("courses_not_registed_now", allCourseNotRegistedNowResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

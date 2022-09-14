@@ -13,6 +13,7 @@ public interface CourseService {
     ResponseEntity<Map<String, Object>> getAllCourseByArtAgeId(Long id);
     ResponseEntity<Map<String, Object>> getAllCourseByArtLevelId(Long id);
     ResponseEntity<Map<String, Object>> getAllCourseByTeacherId(Long id);
+    ResponseEntity<Map<String, Object>> getAllCourseByParentId(Long id);
     ResponseEntity<Map<String, Object>> getReportCourse(int year);
     GetCourseResponse getCourseByName(String name);
     GetCourseResponse getCourseById(Long id);
