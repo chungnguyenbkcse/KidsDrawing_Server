@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetContestResponse {
+public class GetContestStudentResponse {
     private Long id;
     private String name;
     private String description;
+    private String student_name;
+    private Long student_id;
     private Integer max_participant;
     private Integer total_register_contest;
     private Integer total_contest_submission;
@@ -27,6 +29,8 @@ public class GetContestResponse {
     private Long creater_id;
     private Long art_age_id;
     private Long art_type_id;
+    private String art_age_name;
+    private String art_type_name;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

@@ -18,7 +18,7 @@ public class GetContestTeacherResponse {
     private Integer max_participant;
     private Integer total_register_contest;
     private Integer total_contest_submission;
-    private Integer total_const_submission_graded;
+    private Integer total_contest_submission_graded;
     private LocalDateTime registration_time;
     private String image_url;
     private LocalDateTime start_time;

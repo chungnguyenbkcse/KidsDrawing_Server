@@ -11,22 +11,25 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetContestResponse {
+public class GetSemesterClassParentResponse {
     private Long id;
     private String name;
-    private String description;
+    private Long semester_id;
+    private String semester_name;
+    private Long course_id;
+    private String course_name;
     private Integer max_participant;
-    private Integer total_register_contest;
-    private Integer total_contest_submission;
-    private Integer total_contest_submission_graded;
     private LocalDateTime registration_time;
+    private String description;
+    private Integer num_of_section;
+    private Float price;
     private String image_url;
-    private LocalDateTime start_time;
-    private LocalDateTime end_time;
     private Boolean is_enabled;
-    private Long creater_id;
-    private Long art_age_id;
+    private Long creator_id;
     private Long art_type_id;
-    private LocalDateTime create_time;
-    private LocalDateTime update_time;
+    private String art_type_name;
+    private Long art_level_id;
+    private String art_level_name;
+    private Long art_age_id;
+    private String art_age_name;
 }

@@ -16,4 +16,5 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, L
     boolean existsByName(String name);
     void deleteById(Long id);
     List<SemesterClass> findBySemesterId(Long id);
+    List<SemesterClass> findByCourseId(Long id);
 }

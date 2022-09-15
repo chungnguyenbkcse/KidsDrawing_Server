@@ -66,6 +66,31 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassNew() {
+        List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
+        LocalDateTime time_now = LocalDateTime.now();
+        List<SemesterClass> allSemesterClass = semesterClassRepository.findAll();
+        allSemesterClass.forEach(semesterClass -> {
+            if (semesterClass.getRegistration_time().isAfter(time_now)) {
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(semesterClass.getId())
+                    .name(semesterClass.getName())
+                    .semester_id(semesterClass.getSemester().getId())
+                    .semester_name(semesterClass.getSemester().getName())
+                    .course_id(semesterClass.getCourse().getId())
+                    .course_name(semesterClass.getCourse().getName())
+                    .max_participant(semesterClass.getMax_participant())
+                    .registration_time(semesterClass.getRegistration_time())
+                    .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_classes", allSemesterClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClassHistoryOfStudent(Long id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(id);

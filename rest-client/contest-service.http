@@ -63,3 +63,8 @@ GET  {{rest}}/contest/teacher/2
 # @name get_contest
 
 GET  {{rest}}/contest/student/18
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/contest/parent/8
