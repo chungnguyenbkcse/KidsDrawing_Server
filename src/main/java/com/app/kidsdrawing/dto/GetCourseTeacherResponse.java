@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class GetCourseTeacherResponse {
     private Long id;
     private Long course_id;
-    private Long semster_course_id;
+    private Long semster_class_id;
     private String name;
     private String course_name;
     private String description;

@@ -134,7 +134,7 @@ public class ClassesServiceImpl implements ClassesService {
                             .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
                             .semester_name(
                                     ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName())
-                            .semster_course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
+                            .semster_class_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
                             .total_student(listClassHasRegisterJoinSemesterClass.size())
                             .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
                                     .getNum_of_section())
@@ -184,7 +184,7 @@ public class ClassesServiceImpl implements ClassesService {
                             .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
                             .semester_name(
                                     ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName())
-                            .semster_course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
+                            .semster_class_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
                             .total_student(listClassHasRegisterJoinSemesterClass.size())
                             .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
                                     .getNum_of_section())

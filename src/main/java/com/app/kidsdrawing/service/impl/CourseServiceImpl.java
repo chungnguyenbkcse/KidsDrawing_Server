@@ -330,7 +330,7 @@ public class CourseServiceImpl implements CourseService {
             GetCourseTeacherResponse notRegisterSemesterClassResponse = GetCourseTeacherResponse.builder()
                 .course_id(ele.getCourse().getId())
                 .id(ele.getId())
-                .semster_course_id(ele.getId())
+                .semster_class_id(ele.getId())
                 .semester_name(ele.getSemester().getName())
                 .description(ele.getCourse().getDescription())
                 .image_url(ele.getCourse().getImage_url())
@@ -378,7 +378,7 @@ public class CourseServiceImpl implements CourseService {
             });
             GetCourseTeacherResponse registerSuccessfullSemesterClassResponse = GetCourseTeacherResponse.builder()
                 .course_id(ele.getCourse().getId())
-                .semster_course_id(ele.getId())
+                .semster_class_id(ele.getId())
                 .id(ele.getId())
                 .semester_name(ele.getSemester().getName())
                 .description(ele.getCourse().getDescription())
@@ -413,7 +413,7 @@ public class CourseServiceImpl implements CourseService {
                 });
                 GetCourseTeacherResponse registerNotScheduleClassSemesterClassResponse = GetCourseTeacherResponse.builder()
                     .course_id(ele.getCourse().getId())
-                    .semster_course_id(ele.getId())
+                    .semster_class_id(ele.getId())
                     .id(ele.getId())
                     .semester_name(ele.getSemester().getName())
                     .description(ele.getCourse().getDescription())
