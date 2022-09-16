@@ -21,7 +21,7 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "student_id": 35,
+    "student_id": 37,
     "contest_id": 3,
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png"
 }

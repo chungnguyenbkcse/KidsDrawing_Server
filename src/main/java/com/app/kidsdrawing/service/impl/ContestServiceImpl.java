@@ -204,7 +204,7 @@ public class ContestServiceImpl implements ContestService {
                     .is_enabled(contest.getIs_enabled())
                     .art_age_id(contest.getArtAges().getId())
                     .art_type_id(contest.getArtTypes().getId())
-                    .creater_id(contest.getUser().getId())
+                    .creator_id(contest.getUser().getId())
                     .create_time(contest.getCreate_time())
                     .update_time(contest.getUpdate_time())
                     .build();
@@ -252,7 +252,7 @@ public class ContestServiceImpl implements ContestService {
                         .is_enabled(contest.getIs_enabled())
                         .art_age_id(contest.getArtAges().getId())
                         .art_type_id(contest.getArtTypes().getId())
-                        .creater_id(contest.getUser().getId())
+                        .creator_id(contest.getUser().getId())
                         .create_time(contest.getCreate_time())
                         .update_time(contest.getUpdate_time())
                         .build();
@@ -387,11 +387,11 @@ public class ContestServiceImpl implements ContestService {
         List<GetContestStudentResponse> allContestOpeningResponses = new ArrayList<>();
         List<GetContestStudentResponse> allContestEndResponses = new ArrayList<>();
         List<GetContestStudentResponse> allContestNewResponses = new ArrayList<>();
+        LocalDateTime time_now = LocalDateTime.now();
         List<User> pageUser = userRepository.findByParentId(parent_id);
         pageUser.forEach(student -> {
             List<UserRegisterJoinContest> listRegisterJoinContest = userRegisterJoinContestRepository
                     .findByStudentId(student.getId());
-            LocalDateTime time_now = LocalDateTime.now();
             List<Contest> allContest = contestRepository.findAll();
             List<Contest> allContestForStudent = new ArrayList<>();
 
@@ -484,6 +484,7 @@ public class ContestServiceImpl implements ContestService {
                             .max_participant(contest.getMax_participant())
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission_graded(total)
+                            .total_contest_submission(0)
                             .registration_time(contest.getRegistration_time())
                             .image_url(contest.getImage_url())
                             .start_time(contest.getStart_time())
@@ -491,6 +492,11 @@ public class ContestServiceImpl implements ContestService {
                             .is_enabled(contest.getIs_enabled())
                             .art_age_name(contest.getArtAges().getName())
                             .art_type_name(contest.getArtTypes().getName())
+                            .create_time(contest.getCreate_time())
+                            .update_time(contest.getUpdate_time())
+                            .art_age_id(contest.getArtAges().getId())
+                            .art_type_id(contest.getArtTypes().getId())
+                            .creator_id(contest.getUser().getId())
                             .build();
                     allContestNewResponses.add(contestOpeningResponse);
                 }
@@ -537,7 +543,7 @@ public class ContestServiceImpl implements ContestService {
                         .is_enabled(contest.getIs_enabled())
                         .art_age_id(contest.getArtAges().getId())
                         .art_type_id(contest.getArtTypes().getId())
-                        .creater_id(contest.getUser().getId())
+                        .creator_id(contest.getUser().getId())
                         .create_time(contest.getCreate_time())
                         .update_time(contest.getUpdate_time())
                         .build();
@@ -586,7 +592,7 @@ public class ContestServiceImpl implements ContestService {
                 .is_enabled(contest.getIs_enabled())
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
-                .creater_id(contest.getUser().getId())
+                .creator_id(contest.getUser().getId())
                 .create_time(contest.getCreate_time())
                 .update_time(contest.getUpdate_time())
                 .build();
@@ -625,7 +631,7 @@ public class ContestServiceImpl implements ContestService {
                 .is_enabled(contest.getIs_enabled())
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
-                .creater_id(contest.getUser().getId())
+                .creator_id(contest.getUser().getId())
                 .create_time(contest.getCreate_time())
                 .update_time(contest.getUpdate_time())
                 .build();
@@ -637,7 +643,7 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestAlreadyCreateException("exception.contest.contest_taken");
         }
 
-        Optional<User> userOpt = userRepository.findById(createContestRequest.getCreater_id());
+        Optional<User> userOpt = userRepository.findById(createContestRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -687,7 +693,7 @@ public class ContestServiceImpl implements ContestService {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById(createContestRequest.getCreater_id());
+        Optional<User> userOpt = userRepository.findById(createContestRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
