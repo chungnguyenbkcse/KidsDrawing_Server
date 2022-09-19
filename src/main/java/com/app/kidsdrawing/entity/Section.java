@@ -81,4 +81,7 @@ public class Section {
 
     @OneToMany(mappedBy="section")
     private Set<UserRegisterTutorial> userRegisterTutorials;
+
+    @OneToMany(mappedBy="section")
+    private Set<UserAttendance> userAttendances;
 }

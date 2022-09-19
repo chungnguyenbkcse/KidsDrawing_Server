@@ -157,4 +157,7 @@ public class User{
 
     @OneToOne(mappedBy="user")
     private PasswordResetToken passwordResetToken;
+
+    @OneToOne(mappedBy="student")
+    private UserAttendance userAttendance;
 }
