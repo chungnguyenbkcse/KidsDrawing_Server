@@ -6,5 +6,5 @@ import lombok.Data;
 public class CreateUserAttendanceRequest {
     private Long section_id;
     private Long student_id;
-    private String status;
+    private Boolean status;
 }

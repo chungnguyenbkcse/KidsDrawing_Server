@@ -130,6 +130,7 @@ public class ClassesServiceImpl implements ClassesService {
                             .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
                             .security_code(ele.getSecurity_code())
                             .name(ele.getName())
+                            .link_url(ele.getLink_meeting())
                             .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
                             .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
                             .semester_name(
@@ -180,6 +181,7 @@ public class ClassesServiceImpl implements ClassesService {
                             .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
                             .security_code(ele.getSecurity_code())
                             .name(ele.getName())
+                            .link_url(ele.getLink_meeting())
                             .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
                             .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
                             .semester_name(

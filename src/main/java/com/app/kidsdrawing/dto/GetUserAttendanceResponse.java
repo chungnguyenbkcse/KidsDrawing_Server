@@ -15,7 +15,11 @@ public class GetUserAttendanceResponse {
     private Long id;
     private Long student_id;
     private Long section_id;
-    private String status;
+    private int section_number;
+    private Long course_id;
+    private String course_name;
+    private String email;
+    private Boolean status;
     private String student_name;
     private String section_name;
     private LocalDateTime create_time;

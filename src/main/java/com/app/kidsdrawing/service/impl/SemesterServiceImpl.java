@@ -24,6 +24,7 @@ import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.Tutorial;
 import com.app.kidsdrawing.entity.TutorialPage;
 import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.UserAttendance;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
@@ -44,6 +45,7 @@ import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
+import com.app.kidsdrawing.repository.UserAttendanceRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.SemesterService;
@@ -63,6 +65,7 @@ public class SemesterServiceImpl implements SemesterService {
     private final SectionTemplateRepository sectionTemplateRepository;
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
+    private final UserAttendanceRepository userAttendanceRepository;
     //private final EmailService emailService;
     //private final FCMService fcmService;
     private final TutorialRepository tutorialRepository;
@@ -397,6 +400,15 @@ public class SemesterServiceImpl implements SemesterService {
                             .teaching_form(section_template.getTeaching_form())
                             .build();
                         sectionRepository.save(savedSection);
+
+                        validUserRegisterSemesters.forEach(user_register_semester -> {
+                            UserAttendance savedUserAttendance = UserAttendance.builder()
+                                .section(savedSection)
+                                .student(user_register_semester.getStudent())
+                                .status(false)
+                                .build();
+                            userAttendanceRepository.save(savedUserAttendance);
+                        });
                         
                         Tutorial savedTutorial = Tutorial.builder()
                             .section(savedSection)

@@ -36,7 +36,7 @@ public class UserAttendance{
     private Long id;
 
     @Column(name = "status")
-    private String status;
+    private Boolean status;
 
     @Builder.Default()
     @Column(name = "create_time")
