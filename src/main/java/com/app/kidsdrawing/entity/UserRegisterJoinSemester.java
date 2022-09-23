@@ -38,6 +38,9 @@ public class UserRegisterJoinSemester {
     @Column(name = "price")
     private Float price;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private User student;

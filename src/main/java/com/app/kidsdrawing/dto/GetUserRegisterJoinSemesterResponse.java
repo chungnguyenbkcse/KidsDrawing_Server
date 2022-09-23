@@ -14,8 +14,12 @@ import lombok.NoArgsConstructor;
 public class GetUserRegisterJoinSemesterResponse {
     private Long id;
     private Long student_id;
+    private String student_name;
+    private String semester_classes_name;
+    private String link_url;
     private Long semester_classes_id;
     private Long payer_id;
     private Float price;
+    private String status;
     private LocalDateTime time;
 }

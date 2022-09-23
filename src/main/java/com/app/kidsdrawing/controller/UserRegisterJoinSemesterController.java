@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.app.kidsdrawing.dto.CreateMomoRequest;
 import com.app.kidsdrawing.dto.CreateUserRegisterJoinSemesterRequest;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
 import com.app.kidsdrawing.service.UserRegisterJoinSemesterService;
@@ -34,6 +37,12 @@ public class UserRegisterJoinSemesterController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/payer/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterByPayerId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userRegisterJoinSemesterService.getAllUserRegisterJoinSemesterByPayerId(id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/report/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUserRegisterJoinSemester(@PathVariable int id) {
         return ResponseEntity.ok().body(userRegisterJoinSemesterService.getReportUserRegisterJoinSemester(id));
@@ -43,6 +52,15 @@ public class UserRegisterJoinSemesterController {
     @PostMapping
     public ResponseEntity<String> createUserRegisterJoinSemester(@RequestBody CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
         Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.createUserRegisterJoinSemester(createUserRegisterJoinSemesterRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterJoinSemesterId}")
+                .buildAndExpand(userRegisterJoinSemesterId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @PostMapping("/payment")
+    public ResponseEntity<String> updateStatusUserRegisterJoinSemester(@RequestParam List<Long> ids, @RequestBody CreateMomoRequest createMomoRequest) {
+        Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateStatusUserRegisterJoinSemester(ids, createMomoRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterJoinSemesterId}")
                 .buildAndExpand(userRegisterJoinSemesterId).toUri();
         return ResponseEntity.created(location).build();

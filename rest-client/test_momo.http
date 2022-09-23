@@ -25,7 +25,7 @@ Content-Type: application/json
   "ipnUrl": "https://callback.url/notify",
   "redirectUrl": "https://momo.vn/return",
   "orderId": "MOMOXF6D202209171663870695052",
-  "amount": 50000,
+  "amount": 1000,
   "lang":  "vi",
   "orderInfo": "pay with MoMo",
   "requestId": "MOMOXF6D202209171663870695052",

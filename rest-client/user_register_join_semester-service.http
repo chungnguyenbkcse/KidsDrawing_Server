@@ -42,3 +42,23 @@ GET {{rest}}/user-register-join-semester
 # @name get_all_user_grade_semester
 
 GET {{rest}}/user-register-join-semester/report/2022
+
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST {{rest}}/user-register-join-semester/payment?ids=1,2
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "partnerCode":"MOMOIOLD20190129",
+    "orderId":"01234567890123451633504872421",
+    "requestId":"01234567890123451633504872421",
+    "amount":1000,"orderInfo":"Test Thue 1234556",
+    "orderType":"momo_wallet","transId":2588659987,
+    "resultCode":0,"message":"Giao dịch thành công.",
+    "payType":"qr","responseTime":1633504902954,
+    "extraData":"eyJyZXN1bHRfbmFtZXNwYWNlIjoidW1hcmtldCIsImVycm9yIjoiIiwic3RhdGUiOjZ9",
+    "signature":"90482b3881bdf863d5f61ace078921bbc6dbb58b2fded35261c71c9af3b1ce4f"
+}

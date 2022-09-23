@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.app.kidsdrawing.dto.CreateMomoRequest;
 import com.app.kidsdrawing.dto.CreateUserRegisterJoinSemesterRequest;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
 import com.app.kidsdrawing.entity.SemesterClass;
@@ -54,10 +55,39 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
                 .student_id(content.getStudent().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .semester_classes_name(content.getSemesterClass().getName())
+                .link_url(content.getSemesterClass().getCourse().getImage_url())
                 .semester_classes_id(content.getSemesterClass().getId())
                 .payer_id(content.getPayer().getId())
                 .price(content.getPrice())
                 .time(content.getTime())
+                .status(content.getStatus())
+                .build();
+            allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user_register_semester", allUserRegisterJoinSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByPayerId(Long id) {
+        List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByPayerId(id);
+        listUserRegisterJoinSemester.forEach(content -> {
+            GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .semester_classes_id(content.getSemesterClass().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .semester_classes_name(content.getSemesterClass().getName())
+                .link_url(content.getSemesterClass().getCourse().getImage_url())
+                .payer_id(content.getPayer().getId())
+                .price(content.getPrice())
+                .time(content.getTime())
+                .status(content.getStatus())
                 .build();
             allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
         });
@@ -79,8 +109,12 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
                 .student_id(userRegisterJoinSemester.getStudent().getId())
                 .semester_classes_id(userRegisterJoinSemester.getSemesterClass().getId())
                 .payer_id(userRegisterJoinSemester.getPayer().getId())
+                .student_name(userRegisterJoinSemester.getStudent().getFirstName() + " " + userRegisterJoinSemester.getStudent().getLastName())
+                .semester_classes_name(userRegisterJoinSemester.getSemesterClass().getName())
+                .link_url(userRegisterJoinSemester.getSemesterClass().getCourse().getImage_url())
                 .price(userRegisterJoinSemester.getPrice())
                 .time(userRegisterJoinSemester.getTime())
+                .status(userRegisterJoinSemester.getStatus())
                 .build();
     }
 
@@ -248,6 +282,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
                 .semesterClass(semesterCouse)
                 .student(student)
                 .payer(payer)
+                .status(createUserRegisterJoinSemesterRequest.getStatus())
                 .price(createUserRegisterJoinSemesterRequest.getPrice())
                 .build();
         userRegisterJoinSemesterRepository.save(savedUserRegisterJoinSemester);
@@ -291,8 +326,25 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         updatedUserRegisterJoinSemester.setSemesterClass(semesterCouse);
         updatedUserRegisterJoinSemester.setStudent(student);
         updatedUserRegisterJoinSemester.setPayer(payer);
+        updatedUserRegisterJoinSemester.setStatus(createUserRegisterJoinSemesterRequest.getStatus());
         updatedUserRegisterJoinSemester.setPrice(createUserRegisterJoinSemesterRequest.getPrice());
 
         return updatedUserRegisterJoinSemester.getId();
+    }
+
+    @Override
+    public Long updateStatusUserRegisterJoinSemester(List<Long> ids, CreateMomoRequest createMomoRequest) {
+        
+        ids.forEach(ele -> {
+            Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById(ele);
+            UserRegisterJoinSemester updatedUserRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
+            });
+            if (createMomoRequest.getResultCode() == 0){
+                updatedUserRegisterJoinSemester.setStatus("Completed");
+            }
+        });
+
+        return (long) 1;
     }
 }

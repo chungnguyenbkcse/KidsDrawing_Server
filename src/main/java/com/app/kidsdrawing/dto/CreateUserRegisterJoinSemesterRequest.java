@@ -8,4 +8,5 @@ public class CreateUserRegisterJoinSemesterRequest {
     private Long semester_classes_id;
     private Long payer_id;
     private Float price;
+    private String status;
 }
