@@ -1,0 +1,51 @@
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "teacher-1",
+    "password": "12345678aA@"
+}
+
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST https://test-payment.momo.vn/v2/gateway/api/create
+Content-Type: application/json
+
+{
+  "partnerCode": "MOMOXF6D20220917",
+  "requestType": "captureWallet",
+  "ipnUrl": "https://callback.url/notify",
+  "redirectUrl": "https://momo.vn/return",
+  "orderId": "MOMOXF6D202209171663870695052",
+  "amount": 50000,
+  "lang":  "vi",
+  "orderInfo": "pay with MoMo",
+  "requestId": "MOMOXF6D202209171663870695052",
+  "extraData": "",
+  "signature": "9a885e2717f9174c56ec95ae693542980c2b8fc45542ec5e8c2b1d8c0c2d295f"
+}
+
+
+### CREATE STUDENT REGISTER JOIN semester ACTION ###
+# @name create_student_register_join_semester
+
+POST https://test-payment.momo.vn/v2/gateway/api/query
+Content-Type: application/json
+
+{
+  "partnerCode": "MOMOXF6D20220917",
+  "orderId": "MOMOXF6D202209171663870695052",
+  "lang":  "vi",
+  "requestId": "MOMOXF6D202209171663870695052",
+  "signature": "9a885e2717f9174c56ec95ae693542980c2b8fc45542ec5e8c2b1d8c0c2d295f"
+}
+
+
