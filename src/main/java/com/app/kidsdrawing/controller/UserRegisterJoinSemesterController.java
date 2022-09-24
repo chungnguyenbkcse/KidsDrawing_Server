@@ -67,6 +67,15 @@ public class UserRegisterJoinSemesterController {
     }
 
     @CrossOrigin
+    @PostMapping("/payment/v2")
+    public ResponseEntity<String> updateStatusUserRegisterJoinSemester(@RequestParam List<Long> ids) {
+        Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateStatusUserRegisterJoinSemester(ids);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterJoinSemesterId}")
+                .buildAndExpand(userRegisterJoinSemesterId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateUserRegisterJoinSemester(@PathVariable Long id, @RequestBody CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
         Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateUserRegisterJoinSemesterById(id,createUserRegisterJoinSemesterRequest);

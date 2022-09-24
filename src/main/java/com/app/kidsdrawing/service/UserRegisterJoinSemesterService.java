@@ -18,4 +18,5 @@ public interface UserRegisterJoinSemesterService {
     Long removeUserRegisterJoinSemesterById(Long id);
     Long updateUserRegisterJoinSemesterById(Long id, CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
     Long updateStatusUserRegisterJoinSemester(List<Long> ids, CreateMomoRequest createMomoRequest);
+    Long updateStatusUserRegisterJoinSemester(List<Long> ids);
 }

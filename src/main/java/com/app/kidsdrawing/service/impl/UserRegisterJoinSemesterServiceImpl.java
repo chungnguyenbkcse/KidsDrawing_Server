@@ -347,4 +347,18 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
         return (long) 1;
     }
+
+    @Override
+    public Long updateStatusUserRegisterJoinSemester(List<Long> ids) {
+        ids.forEach(ele -> {
+            Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById(ele);
+            UserRegisterJoinSemester updatedUserRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
+            });
+            updatedUserRegisterJoinSemester.setStatus("Completed");
+            userRegisterJoinSemesterRepository.save(updatedUserRegisterJoinSemester);
+        });
+
+        return (long) 1;
+    }
 }
