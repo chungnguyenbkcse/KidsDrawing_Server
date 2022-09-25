@@ -150,7 +150,7 @@ public class User{
     private Set<UserRegisterJoinSemester> userRegisterJoinSemesters;
 
     @OneToMany(mappedBy = "student")
-    private Set<UserRegisterJoinSemester> userRegisterJoinSemester1s;
+    private Set<UserRegisterJoinSemester> userRegisterJoinSemesters2;
 
     @OneToMany(mappedBy = "teacher")
     private Set<UserGradeContestSubmission> userGradeContestSubmissions;

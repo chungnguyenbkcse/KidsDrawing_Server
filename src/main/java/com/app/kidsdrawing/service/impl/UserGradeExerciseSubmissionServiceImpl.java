@@ -276,6 +276,39 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override  
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndExercise(Long exercise_id, Long student_id) {
+        List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
+        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
+
+        List<User> user_graded = new ArrayList<>();
+        listUserGradeExerciseSubmission.forEach(content -> {
+            if (content.getExerciseSubmission().getExercise().getId() == exercise_id && content.getExerciseSubmission().getStudent().getId() == student_id){
+                GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                    .student_id(content.getExerciseSubmission().getStudent().getId())
+                    .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
+                    .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .image_url(content.getExerciseSubmission().getImage_url())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
+                    .feedback(content.getFeedback())
+                    .score(content.getScore())
+                    .time(content.getTime())
+                    .build();
+                allUserGradeExerciseSubmissionResponses.add(userGradeExerciseSubmissionResponse);
+                user_graded.add(content.getExerciseSubmission().getStudent());
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("UserGradeExerciseSubmission", allUserGradeExerciseSubmissionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndClass(Long classes_id, Long student_id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();

@@ -22,9 +22,9 @@ Authorization: Bearer {{admin_access_token}}
 
 {
     "teacher_id": 2,
-    "contest_submission_id": 3,
-    "feedback": "Bài thi kha",
-    "score": 7
+    "contest_submission_id": 5,
+    "feedback": "Bài thi tot",
+    "score": 9
 }
 
 ### CREATE CONTEST ACTION ###
@@ -65,3 +65,4 @@ GET  {{rest}}/user-grade-contest-submission/contest/2
 # @name get_contest
 
 GET  {{rest}}/user-grade-contest-submission/teacher/2
+

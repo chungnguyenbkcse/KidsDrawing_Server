@@ -21,10 +21,10 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "section_id": 41,
+    "section_id": 18,
     "level_id": 1,
     "name": "Bài tập 1",
-    "description": "<p>Vẽ con chó<p>"
+    "description": "<p>Vẽ con nguời thân<p>"
 }
 
 ### CREATE CONTEST ACTION ###

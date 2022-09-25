@@ -15,6 +15,7 @@ public interface UserGradeExerciseSubmissionService {
     ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseId(Long id);
     ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseAndClass(Long exercise_id, Long classes_id);
     ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndClass(Long classes_id, Long student_id);
+    ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndExercise(Long exercise_id, Long student_id);
     ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseSubmissionId(Long id);
     GetUserGradeExerciseSubmissionResponse getUserGradeExerciseSubmissionById(Long id);
     Long createUserGradeExerciseSubmission(CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest);

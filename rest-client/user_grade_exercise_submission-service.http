@@ -22,9 +22,9 @@ Content-Type: application/json
 
 {
     "teacher_id": 2,
-    "exercise_submission_id": ,
-    "feedback": "Bài làm tốt",
-    "score": 9.5
+    "exercise_submission_id": 6,
+    "feedback": "Bài làm vo cung tốt",
+    "score": 7
 }
 
 ### CREATE CONTEST ACTION ###
@@ -34,10 +34,10 @@ POST {{rest}}/user-grade-exercise-submission
 Content-Type: application/json
 
 {
-    "student_id": 1,
-    "exercise_submission_id": 1,
-    "feedback": "",
-    "score": 1
+    "student_id": 18,
+    "exercise_submission_id": 6,
+    "feedback": "Bai lam vo cung tot",
+    "score": 9
 }
 
 ### 
@@ -85,3 +85,9 @@ GET  {{rest}}/user-grade-exercise-submission/exercise-class/2/23
 # @name get_contest
 
 GET  {{rest}}/user-grade-exercise-submission/class-student/2/20
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-grade-exercise-submission/exercise-student/6/18
