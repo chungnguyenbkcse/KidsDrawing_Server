@@ -15,6 +15,7 @@ public class GetExerciseResponse {
     private Long id;
     private Long section_id;
     private Long level_id;
+    private Long exercise_submission_id;
     private String level_name;
     private String teacher_name;
     private String section_name;

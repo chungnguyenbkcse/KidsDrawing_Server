@@ -259,6 +259,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             .id(exerciseSubmission.getId())
             .exercise_id(exerciseSubmission.getExercise().getId())
             .student_id(exerciseSubmission.getStudent().getId())
+            .exercise_name(exerciseSubmission.getExercise().getName())
+            .student_name(exerciseSubmission.getStudent().getFirstName() + " " + exerciseSubmission.getStudent().getLastName())
             .image_url(exerciseSubmission.getImage_url())
             .create_time(exerciseSubmission.getCreate_time())
             .update_time(exerciseSubmission.getUpdate_time())
