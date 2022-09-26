@@ -19,12 +19,14 @@ import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ExerciseLevel;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.ExerciseLevelRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
+import com.app.kidsdrawing.repository.UserGradeExerciseSubmissionRepository;
 import com.app.kidsdrawing.service.ExerciseService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,9 +38,11 @@ public class ExerciseServiceImpl implements ExerciseService{
     
     private final ExerciseRepository exerciseRepository;
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
+    private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
     private final SectionRepository sectionRepository;
     private final ExerciseLevelRepository exerciseLevelRepository;
     private final ClassesRepository classRepository;
+    private static Boolean checked = false;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExercise() {
@@ -66,7 +70,8 @@ public class ExerciseServiceImpl implements ExerciseService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndStudent(Long classes_id, Long student_id) {
         List<GetExerciseResponse> allExerciseNotSubmitResponses = new ArrayList<>();
-        List<GetExerciseResponse> allExerciseSubmitedResponses = new ArrayList<>();
+        List<GetExerciseResponse> allExerciseSubmitedNotGradeResponses = new ArrayList<>();
+        List<GetExerciseResponse> allExerciseSubmitedGradedResponses = new ArrayList<>();
 
         Optional<Classes> classOpt = classRepository.findById(classes_id);
         Classes classes = classOpt.orElseThrow(() -> {
@@ -84,23 +89,50 @@ public class ExerciseServiceImpl implements ExerciseService{
         });
 
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAll();
+        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findAll();
         List<Exercise> listExerciseSubmitedByStudentClass = new ArrayList<>();
         listExerciseSubmission.forEach(ele -> {
             if (listExerciseForClass.contains(ele.getExercise()) && ele.getStudent().getId() == student_id){
                 listExerciseSubmitedByStudentClass.add(ele.getExercise());
-                GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
-                    .id(ele.getExercise().getId())
-                    .section_id(ele.getExercise().getSection().getId())
-                    .level_id(ele.getExercise().getExerciseLevel().getId())
-                    .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
-                    .section_name(ele.getExercise().getSection().getName())
-                    .name(ele.getExercise().getName())
-                    .description(ele.getExercise().getDescription())
-                    .deadline(ele.getExercise().getDeadline())
-                    .create_time(ele.getExercise().getCreate_time())
-                    .update_time(ele.getExercise().getUpdate_time())
-                    .build();
-                allExerciseSubmitedResponses.add(exerciseResponse);
+                checked = false;
+                listUserGradeExerciseSubmissions.forEach(user_grade_exercise_submission -> {
+                    if (user_grade_exercise_submission.getExerciseSubmission() == ele) {
+                        checked = true;
+                        GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                            .id(ele.getExercise().getId())
+                            .section_id(ele.getExercise().getSection().getId())
+                            .teacher_name(ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                            .time_submit(ele.getUpdate_time())
+                            .level_id(ele.getExercise().getExerciseLevel().getId())
+                            .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
+                            .section_name(ele.getExercise().getSection().getName())
+                            .name(ele.getExercise().getName())
+                            .description(ele.getExercise().getDescription())
+                            .deadline(ele.getExercise().getDeadline())
+                            .create_time(ele.getExercise().getCreate_time())
+                            .update_time(ele.getExercise().getUpdate_time())
+                            .build();
+                        allExerciseSubmitedGradedResponses.add(exerciseResponse);
+                    }
+                });
+
+                if (checked == false) {
+                    GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                        .id(ele.getExercise().getId())
+                        .section_id(ele.getExercise().getSection().getId())
+                        .level_id(ele.getExercise().getExerciseLevel().getId())
+                        .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
+                        .section_name(ele.getExercise().getSection().getName())
+                        .teacher_name(ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                        .time_submit(ele.getUpdate_time())
+                        .name(ele.getExercise().getName())
+                        .description(ele.getExercise().getDescription())
+                        .deadline(ele.getExercise().getDeadline())
+                        .create_time(ele.getExercise().getCreate_time())
+                        .update_time(ele.getExercise().getUpdate_time())
+                        .build();
+                    allExerciseSubmitedNotGradeResponses.add(exerciseResponse);
+                }
             }
         });
 
@@ -113,6 +145,8 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .level_name(ele.getExerciseLevel().getWeight().toString())
                     .section_name(ele.getSection().getName())
                     .name(ele.getName())
+                    .teacher_name(ele.getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                    .time_submit(ele.getUpdate_time())
                     .description(ele.getDescription())
                     .deadline(ele.getDeadline())
                     .create_time(ele.getCreate_time())
@@ -125,14 +159,16 @@ public class ExerciseServiceImpl implements ExerciseService{
 
         Map<String, Object> response = new HashMap<>();
         response.put("exercise_not_submit", allExerciseNotSubmitResponses);
-        response.put("exercise_submitted", allExerciseSubmitedResponses);
+        response.put("exercise_submitted_not_grade", allExerciseSubmitedNotGradeResponses);
+        response.put("exercise_submitted_graded", allExerciseSubmitedGradedResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExerciseBySectionAndStudent(Long section_id, Long student_id) {
         List<GetExerciseResponse> allExerciseNotSubmitResponses = new ArrayList<>();
-        List<GetExerciseResponse> allExerciseSubmitedResponses = new ArrayList<>();
+        List<GetExerciseResponse> allExerciseSubmitedNotGradeResponses = new ArrayList<>();
+        List<GetExerciseResponse> allExerciseSubmitedGradedResponses = new ArrayList<>();
 
         Optional<Section> sectionOpt = sectionRepository.findById(section_id);
         Section section = sectionOpt.orElseThrow(() -> {
@@ -150,25 +186,52 @@ public class ExerciseServiceImpl implements ExerciseService{
         });
 
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAll();
-        
+        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findAll();
+
         List<Exercise> listExerciseSubmitedByStudentClass = new ArrayList<>();
         listExerciseSubmission.forEach(ele -> {
             
             if (listExerciseForSection.contains(ele.getExercise()) && ele.getStudent().getId() == student_id){
                 listExerciseSubmitedByStudentClass.add(ele.getExercise());
-                GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
-                    .id(ele.getExercise().getId())
-                    .section_id(ele.getExercise().getSection().getId())
-                    .level_id(ele.getExercise().getExerciseLevel().getId())
-                    .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
-                    .section_name(ele.getExercise().getSection().getName())
-                    .name(ele.getExercise().getName())
-                    .description(ele.getExercise().getDescription())
-                    .deadline(ele.getExercise().getDeadline())
-                    .create_time(ele.getExercise().getCreate_time())
-                    .update_time(ele.getExercise().getUpdate_time())
-                    .build();
-                allExerciseSubmitedResponses.add(exerciseResponse);
+                checked = false;
+                listUserGradeExerciseSubmissions.forEach(user_grade_exercise_submission -> {
+                    if (user_grade_exercise_submission.getExerciseSubmission() == ele) {
+                        checked = true;
+                        GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                            .id(ele.getExercise().getId())
+                            .section_id(ele.getExercise().getSection().getId())
+                            .teacher_name(ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                            .time_submit(ele.getUpdate_time())
+                            .level_id(ele.getExercise().getExerciseLevel().getId())
+                            .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
+                            .section_name(ele.getExercise().getSection().getName())
+                            .name(ele.getExercise().getName())
+                            .description(ele.getExercise().getDescription())
+                            .deadline(ele.getExercise().getDeadline())
+                            .create_time(ele.getExercise().getCreate_time())
+                            .update_time(ele.getExercise().getUpdate_time())
+                            .build();
+                        allExerciseSubmitedGradedResponses.add(exerciseResponse);
+                    }
+                });
+
+                if (checked == false) {
+                    GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                        .id(ele.getExercise().getId())
+                        .section_id(ele.getExercise().getSection().getId())
+                        .level_id(ele.getExercise().getExerciseLevel().getId())
+                        .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
+                        .section_name(ele.getExercise().getSection().getName())
+                        .teacher_name(ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                        .time_submit(ele.getUpdate_time())
+                        .name(ele.getExercise().getName())
+                        .description(ele.getExercise().getDescription())
+                        .deadline(ele.getExercise().getDeadline())
+                        .create_time(ele.getExercise().getCreate_time())
+                        .update_time(ele.getExercise().getUpdate_time())
+                        .build();
+                    allExerciseSubmitedNotGradeResponses.add(exerciseResponse);
+                }
             }
         });
 
@@ -180,6 +243,8 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .level_id(ele.getExerciseLevel().getId())
                     .level_name(ele.getExerciseLevel().getWeight().toString())
                     .section_name(ele.getSection().getName())
+                    .teacher_name(ele.getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                    .time_submit(ele.getUpdate_time())
                     .name(ele.getName())
                     .description(ele.getDescription())
                     .deadline(ele.getDeadline())
@@ -193,7 +258,8 @@ public class ExerciseServiceImpl implements ExerciseService{
 
         Map<String, Object> response = new HashMap<>();
         response.put("exercise_not_submit", allExerciseNotSubmitResponses);
-        response.put("exercise_submitted", allExerciseSubmitedResponses);
+        response.put("exercise_submitted_not_grade", allExerciseSubmitedNotGradeResponses);
+        response.put("exercise_submitted_graded", allExerciseSubmitedGradedResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

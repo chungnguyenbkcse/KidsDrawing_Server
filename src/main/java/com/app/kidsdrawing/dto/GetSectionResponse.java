@@ -16,6 +16,7 @@ public class GetSectionResponse {
     private Long classes_id;
     private String name;
     private Integer number;
+    private String teacher_name;
     private String recording;
     private String message;
     private Boolean teach_form;
