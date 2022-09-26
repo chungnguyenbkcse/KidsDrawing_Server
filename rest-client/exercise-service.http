@@ -23,8 +23,8 @@ Content-Type: application/json
 {
     "section_id": 18,
     "level_id": 1,
-    "name": "Bài tập 1",
-    "description": "<p>Vẽ con nguời thân<p>"
+    "name": "Bài tập 3",
+    "description": "<p>Vẽ con nguời thân 3<p>"
 }
 
 ### CREATE CONTEST ACTION ###
@@ -72,3 +72,9 @@ GET  {{rest}}/exercises/section/66
 # @name get_contest
 
 GET  {{rest}}/exercises/class-student/3/20
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercises/section-student/18/18
