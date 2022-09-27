@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateCourseRequest;
+import com.app.kidsdrawing.dto.GetCourseNewResponse;
 import com.app.kidsdrawing.dto.GetCourseResponse;
 import com.app.kidsdrawing.dto.GetCourseTeacherResponse;
 import com.app.kidsdrawing.dto.GetReportCourseResponse;
@@ -23,6 +24,7 @@ import com.app.kidsdrawing.entity.ArtLevel;
 import com.app.kidsdrawing.entity.ArtType;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Course;
+import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
@@ -36,6 +38,7 @@ import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
+import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -56,10 +59,12 @@ public class CourseServiceImpl implements CourseService {
     private final ClassesRepository classRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
-    private final SemesterClassRepository semesterCourseRepository;
+    private final SemesterClassRepository semesterClassRepository;
     private final ScheduleRepository scheduleRepository;
+    private final SemesterRepository semesterRepository;
     private static String schedule = "";
     private static int count = 0;
+    private static int total = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourse() {
@@ -90,9 +95,68 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(Long id) {
+        List<GetCourseNewResponse> courses = new ArrayList<>();
+        List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByStudentId(id);
+        List<Course> listCourseRegisted = new ArrayList<>();
+        userRegisterJoinSemesters.forEach(user_register_join_semester -> {
+            if (user_register_join_semester.getStatus() == "Completed") {
+                listCourseRegisted.add(user_register_join_semester.getSemesterClass().getCourse());
+            }
+        });
+
+        List<Semester> semesterNexts = new ArrayList<>();
+        LocalDateTime time_now = LocalDateTime.now();
+        List<Semester> pageSemester = semesterRepository.findAll();
+        pageSemester.forEach(semester -> {
+            if (time_now.isBefore(semester.getStart_time())) {
+                semesterNexts.add(semester);
+            }
+        });
+
+        List<Course> allCourses = courseRepository.findAll();
+        allCourses.forEach(course -> {
+            if (listCourseRegisted.contains(course) == false) {
+                total = 0;
+                List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId(course.getId());
+
+                allSemesterClass.forEach(semester_course -> {
+                    if (semesterNexts.contains(semester_course.getSemester())){
+                        total ++;
+                    }
+                });
+                GetCourseNewResponse courseResponse = GetCourseNewResponse.builder()
+                    .id(course.getId())
+                    .name(course.getName())
+                    .description(course.getDescription())
+                    .num_of_section(course.getNum_of_section())
+                    .image_url(course.getImage_url())
+                    .price(course.getPrice())
+                    .is_enabled(course.getIs_enabled())
+                    .art_age_id(course.getArtAges().getId())
+                    .art_type_id(course.getArtTypes().getId())
+                    .art_level_id(course.getArtLevels().getId())
+                    .art_age_name(course.getArtAges().getName())
+                    .art_level_name(course.getArtLevels().getName())
+                    .art_type_name(course.getArtTypes().getName())
+                    .creator_id(course.getUser().getId())
+                    .create_time(course.getCreate_time())
+                    .update_time(course.getUpdate_time())
+                    .total(total)
+                    .build();
+                courses.add(courseResponse);
+            }
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("courses", courses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getReportCourse(int year) {
         List<GetReportCourseResponse> allReportCourseResponses = new ArrayList<>();
         List<Course> pageCourse = courseRepository.findAll();
+
         List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll();
         pageCourse.forEach(course -> {
             count = 0;
@@ -376,7 +440,7 @@ public class CourseServiceImpl implements CourseService {
         // Danh sach khoa hoc theo ki giao vien chua dang ki
         List<SemesterClass> allNotRegisterSemesterClass = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<SemesterClass> pageSemesterClass = semesterCourseRepository.findAll();
+        List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(ele -> {
             if (allRegisteredSemesterClassResponses.size() == 0 || (allRegisteredSemesterClassResponses.contains(ele) == false && time_now.isAfter(ele.getSemester().getStart_time()) == false) ){
                 allNotRegisterSemesterClass.add(ele);

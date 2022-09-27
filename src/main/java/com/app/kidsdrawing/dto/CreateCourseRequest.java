@@ -14,5 +14,4 @@ public class CreateCourseRequest {
     private Long art_type_id;
     private Long art_level_id;
     private Long art_age_id;
-
 }
