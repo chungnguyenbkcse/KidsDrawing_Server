@@ -37,6 +37,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     private final ContestRepository contestRepository;
     private final UserRepository userRepository;
 
+
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByTeacherId(int page, int size, Long id) {
         List<GetUserRegisterJoinContestResponse> allUserRegisterJoinContestResponses = new ArrayList<>();
@@ -105,6 +106,11 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.contest.not_found");
         });
+
+        List<UserRegisterJoinContest> listUserRegisterJoinContest = userRegisterJoinContestRepository.findByContestId(createUserRegisterJoinContestRequest.getContest_id());
+        if (listUserRegisterJoinContest.size() >= contest.getMax_participant()) {
+            throw new EntityNotFoundException("exception.max_participant.not_register");
+        }
 
         Optional <User> teacherOpt = userRepository.findById(createUserRegisterJoinContestRequest.getStudent_id());
         User teacher = teacherOpt.orElseThrow(() -> {
