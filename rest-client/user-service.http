@@ -11,7 +11,7 @@ Content-Type: application/json
 {
     "username": "student-1",
     "password": "12345678aA@",
-    "email": "thanhtrunga370px@gmail.com",
+    "email": "student-1@gmail.com",
     "firstName": "student",
     "lastName": "1",
     "dateOfBirth": null,
@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 8,
+    "parent_id": 6,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -41,7 +41,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 8,
+    "parent_id": 6,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -63,7 +63,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 9,
+    "parent_id": 7,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -85,7 +85,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 9,
+    "parent_id": 7,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -107,7 +107,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 10,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -129,7 +129,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 10,
+    "parent_id": 8,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -143,7 +143,7 @@ Content-Type: application/json
 {
     "username": "student-7",
     "password": "a8726357",
-    "email": "thanhtrunga370qx@gmail.com",
+    "email": "student-7@gmail.com",
     "firstName": "student",
     "lastName": "7",
     "dateOfBirth": null,
@@ -151,7 +151,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 11,
+    "parent_id": 9,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -173,7 +173,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 11,
+    "parent_id": 9,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -196,7 +196,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 12,
+    "parent_id": 10,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -219,7 +219,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 12,
+    "parent_id": 10,
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -696,7 +696,7 @@ Content-Type: application/json
 {
     "username": "admin",
     "password": "12345678aA@",
-    "email": "kidsdrawing@gmail.com",
+    "email": "chungnguyen10012000@gmail.com",
     "firstName": "admin",
     "lastName": "1",
     "dateOfBirth": null,
@@ -716,7 +716,7 @@ Content-Type: application/json
 {
     "username": "teacher-1",
     "password": "12345678aA@",
-    "email": "teacher-1@gmail.com",
+    "email": "thanhtrunga370qx@gmail.com",
     "firstName": "teacher",
     "lastName": "1",
     "dateOfBirth": null,
