@@ -316,6 +316,16 @@ public class SemesterServiceImpl implements SemesterService {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
             List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(semester_class.getId());
 
+            List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = new ArrayList<>();
+
+
+            allUserRegisterJoinSemesters.forEach(ele -> {
+                if (ele.getStatus() == "Completed") {
+                    listUserRegisterJoinSemesters.add(ele);
+                }
+            });
+
+
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
             List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId());
 
@@ -350,10 +360,10 @@ public class SemesterServiceImpl implements SemesterService {
                 }
             }
 
-            System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(allUserRegisterJoinSemesters.size()));
+            System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(listUserRegisterJoinSemesters.size()));
 
             // Lấy các group có thể chia được
-            int[][] list_group = foo(allUserRegisterJoinSemesters.size(), partion, min, max);
+            int[][] list_group = foo(listUserRegisterJoinSemesters.size(), partion, min, max);
             System.out.println(list_group.length);
             // Số lớp có thể chia
             int total_class = list_group.length;
@@ -363,7 +373,7 @@ public class SemesterServiceImpl implements SemesterService {
                     List<UserRegisterJoinSemester> validUserRegisterSemesters = new ArrayList<>(); 
                     for(int j = 0; j < list_group[i].length; j++){
                         int idx = list_group[i][j] - 1;
-                        validUserRegisterSemesters.add(allUserRegisterJoinSemesters.get(idx));
+                        validUserRegisterSemesters.add(listUserRegisterJoinSemesters.get(idx));
                     }
                     System.out.print("Số học sinh đc xếp: " + String.valueOf(validUserRegisterSemesters.size()));
                     String key = getSaltString();
