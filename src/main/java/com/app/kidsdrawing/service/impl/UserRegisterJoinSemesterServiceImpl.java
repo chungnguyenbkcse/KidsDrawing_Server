@@ -268,6 +268,12 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
+
+        if (semesterCouse.getMax_participant() <= listUserRegisterJoinSemesters.size()) {
+            throw new EntityNotFoundException("exception.max_participant.not_register");
+        }
+
         Optional <User> studentOpt = userRepository.findById(createUserRegisterJoinSemesterRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
