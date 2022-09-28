@@ -323,7 +323,7 @@ public class SemesterServiceImpl implements SemesterService {
         // Danh sách giáo viên đăng kí dạy
         check_count = 0;
         number = 1;
-        allSemesterClassResponses.forEach(semester_class -> {
+        /* allSemesterClassResponses.forEach(semester_class -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
             List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(semester_class.getId());
 
@@ -399,7 +399,7 @@ public class SemesterServiceImpl implements SemesterService {
                             .build();
                         classRepository.save(savedClass);
     
-                        /* validUserRegisterSemesters.forEach(user_register_semester -> {
+                        validUserRegisterSemesters.forEach(user_register_semester -> {
                             ClassHasRegisterJoinSemesterClassKey idx = new ClassHasRegisterJoinSemesterClassKey(savedClass.getId(),user_register_semester.getId());
                             
                             ClassHasRegisterJoinSemesterClass savedClassHasRegisterJoinSemesterClass = ClassHasRegisterJoinSemesterClass.builder()
@@ -448,7 +448,7 @@ public class SemesterServiceImpl implements SemesterService {
                                     .build();
                                 tutorialPageRepository.save(savedTutorialPage);
                             });
-                        }); */
+                        });
                     }
                     else {
                         
@@ -458,7 +458,7 @@ public class SemesterServiceImpl implements SemesterService {
             check_count ++; 
             System.out.println("Lan: " + String.valueOf(check_count));
             //throw new EntityNotFoundException("exception.end.end"); 
-        });
+        }); */
         return (long) check_count; 
     }
 
