@@ -283,6 +283,15 @@ public class SemesterServiceImpl implements SemesterService {
         }
     }
 
+    public static void print2D(int[][] matrix){//in mang 2 chieu
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.print('\n');
+        }
+    }
+
     @Override
     public Long setClassForSemester(Long id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
@@ -303,7 +312,7 @@ public class SemesterServiceImpl implements SemesterService {
                 .semester(semester)
                 .build();
             holidayRepository.save(saveHoliday);
-        });
+        }); 
 
         Optional <User> userOpt = userRepository.findById((long) 1);
         User creator = userOpt.orElseThrow(() -> {
@@ -367,6 +376,7 @@ public class SemesterServiceImpl implements SemesterService {
             if (listUserRegisterJoinSemesters.size() >= min) {
                 int[][] list_group = foo(listUserRegisterJoinSemesters.size(), partion, min, max);
                 System.out.println(" Ket qua chi lop: " + String.valueOf(list_group.length));
+                print2D(list_group);
                 // Số lớp có thể chia
                 int total_class = list_group.length;
                 for (int i = 0; i < allUserRegisterTeachSemesters.size(); i++) {
@@ -443,11 +453,11 @@ public class SemesterServiceImpl implements SemesterService {
                     else {
                         
                     }
-                }
+                } 
             } 
             check_count ++; 
             System.out.println("Lan: " + String.valueOf(check_count));
-            throw new EntityNotFoundException("exception.end.end"); 
+            //throw new EntityNotFoundException("exception.end.end"); 
         });
         return (long) check_count; 
     }

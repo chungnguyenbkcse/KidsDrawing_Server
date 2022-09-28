@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: "jdbc:postgres://oxrvvgvhcfvfmc:6274f9d08c7261d680dd09714b3e39852d4550b5587ae641e56a52843753d399@ec2-54-165-184-219.compute-1.amazonaws.com:5432/db5moqnus8h5l8"
-    username: oxrvvgvhcfvfmc
-    password: 6274f9d08c7261d680dd09714b3e39852d4550b5587ae641e56a52843753d399
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: postgres
+    password: 123
   http:
     multipart:
       max-file-size: 10MB
