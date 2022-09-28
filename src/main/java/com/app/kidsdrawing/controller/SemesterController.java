@@ -47,6 +47,16 @@ public class SemesterController {
         return ResponseEntity.created(location).build();
     }
 
+
+    @CrossOrigin
+    @PostMapping(value = "/schedule-class/heroku/{id}")
+    public ResponseEntity<String> setClassForSemesterHeroku(@PathVariable Long id, @RequestBody CreateHolidayRequest createHolidayResquest) {
+        Long semesterId = semesterService.setClassForSemesterHeroku(id, 6, 5, 8);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{semesterId}")
+                .buildAndExpand(semesterId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
     @CrossOrigin
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateSemester(@PathVariable Long id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) CreateSemesterRequest createSemesterRequest) {

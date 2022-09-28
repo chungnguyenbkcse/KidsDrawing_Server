@@ -13,6 +13,7 @@ public interface SemesterService {
     ResponseEntity<Map<String, Object>> getAllSemesterNext();
     Long setCalenderForSemester(Long id, CreateHolidayRequest createHolidayResquest);
     Long setClassForSemester(Long id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest);
+    Long setClassForSemesterHeroku(Long id, int partion, int min, int max);
     GetSemesterResponse getSemesterById(Long id);
     Long createSemester(CreateSemesterRequest createSemesterRequest);
     Long removeSemesterById(Long id);
