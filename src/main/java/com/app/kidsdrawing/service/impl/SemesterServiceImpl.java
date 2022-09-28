@@ -294,7 +294,7 @@ public class SemesterServiceImpl implements SemesterService {
 
         Set<SemesterClass> allSemesterClassResponses = semester.getSemesterClass();
 
-        List<Classes> listClassOfSemesterClass = new ArrayList<>();
+        /* List<Classes> listClassOfSemesterClass = new ArrayList<>();
         
         createHolidayResquest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
@@ -307,7 +307,7 @@ public class SemesterServiceImpl implements SemesterService {
         Optional <User> userOpt = userRepository.findById((long) 1);
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
-        });
+        }); */
 
         System.out.print("Tổng số lớp mở: " + String.valueOf(allSemesterClassResponses.size()));
 
@@ -447,7 +447,7 @@ public class SemesterServiceImpl implements SemesterService {
             }
             check_count ++;
         });*/
-        return (long) allSemesterClassResponses.size(); 
+        return (long) allSemesterClassResponses.size()-1; 
     }
 
     protected String getSaltString() {
