@@ -447,7 +447,7 @@ public class SemesterServiceImpl implements SemesterService {
             }
             check_count ++;
         });*/
-        return id; 
+        return (long) allSemesterClassResponses.size(); 
     }
 
     protected String getSaltString() {
