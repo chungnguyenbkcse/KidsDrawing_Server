@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
     "student_id": 26,
-    "semester_classes_id": 1,
+    "semester_classes_id": 2,
     "payer_id": 6,
     "price": 1000
 }
