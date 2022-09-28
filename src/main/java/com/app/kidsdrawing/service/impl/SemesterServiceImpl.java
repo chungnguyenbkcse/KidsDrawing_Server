@@ -399,7 +399,7 @@ public class SemesterServiceImpl implements SemesterService {
                             .build();
                         classRepository.save(savedClass);
     
-                        validUserRegisterSemesters.forEach(user_register_semester -> {
+                        /* validUserRegisterSemesters.forEach(user_register_semester -> {
                             ClassHasRegisterJoinSemesterClassKey idx = new ClassHasRegisterJoinSemesterClassKey(savedClass.getId(),user_register_semester.getId());
                             
                             ClassHasRegisterJoinSemesterClass savedClassHasRegisterJoinSemesterClass = ClassHasRegisterJoinSemesterClass.builder()
@@ -448,7 +448,7 @@ public class SemesterServiceImpl implements SemesterService {
                                     .build();
                                 tutorialPageRepository.save(savedTutorialPage);
                             });
-                        });
+                        }); */
                     }
                     else {
                         
