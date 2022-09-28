@@ -7,5 +7,6 @@ import lombok.Data;
 
 @Data
 public class CreateHolidayRequest {
+    private Long semester_id;
     private Set<LocalDate> time;
 }

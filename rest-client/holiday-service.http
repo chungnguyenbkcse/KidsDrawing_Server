@@ -1,0 +1,89 @@
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345678aA@"
+}
+
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/holiday
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "start_time": "07:00:00",
+    "end_time": "07:45:00"
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/holiday
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "start_time": "08:00:00",
+    "end_time": "08:45:00"
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/holiday
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "start_time": "09:00:00",
+    "end_time": "09:45:00"
+}
+
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+POST {{rest}}/holiday
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "semester_id": 4,
+    "time": ["2022-10-01", "2022-11-02", "2022-10-03", "2022-10-04"]
+}
+
+### UPDATE ART TYPE ACTION ###
+# @name update_art_type
+
+PUT {{rest}}/holiday/1
+Content-Type: application/json
+
+{
+    "start_time": "20:00:00",
+    "end_time": "22:00:00"
+}
+
+### REMOVE ART TYPE ACTION ###
+# @name update_art_type
+
+DELETE  {{rest}}/holiday/2
+
+### GET ART TYPE ACTION ###
+# @name get_art_type
+
+GET {{rest}}/holiday/2
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/holiday?page=0&size=2
