@@ -75,6 +75,7 @@ public class SemesterServiceImpl implements SemesterService {
     private static int counter = 0;
     private static int check_count = 0;
     private static int number = 1;
+    private static int total = 0;
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemester() {
         List<GetSemesterResponse> allSemesterResponses = new ArrayList<>();
@@ -479,6 +480,21 @@ public class SemesterServiceImpl implements SemesterService {
                 }
             }
             check_count ++;
+        });
+
+        allSemesterClassResponses.forEach(semester_class -> {
+            // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
+            total = 0;
+            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(semester_class.getId());
+
+
+            allUserRegisterJoinSemesters.forEach(ele -> {
+                if (ele.getStatus() == "Completed") {
+                    total ++;
+                }
+            });
+
+            System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(total));
         });
         return id;
     }

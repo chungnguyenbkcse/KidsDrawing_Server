@@ -21,8 +21,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 7,
-    "semester_classes_id": 2
+    "teacher_id": 2,
+    "semester_classes_id": 1
 }
 
 ### GET TEACHER GRADE semester ACTION ###
