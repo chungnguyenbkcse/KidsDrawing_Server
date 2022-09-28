@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateSemesterClassRequest;
 import com.app.kidsdrawing.dto.GetCourseTeacherResponse;
+import com.app.kidsdrawing.dto.GetSemesterClassForScheduleClassResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassStudentResponse;
 import com.app.kidsdrawing.entity.Course;
@@ -337,6 +338,25 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         .course_name(semesterClass.getCourse().getName())
                         .max_participant(semesterClass.getMax_participant())
                         .registration_time(semesterClass.getRegistration_time())
+                        .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_classes", allSemesterClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemesterScheduleClass(Long id) {
+        List<GetSemesterClassForScheduleClassResponse> allSemesterClassResponses = new ArrayList<>();
+        List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
+        pageSemesterClass.forEach(semesterClass -> {
+            if (semesterClass.getSemester().getId() == id) {
+                GetSemesterClassForScheduleClassResponse semesterClassResponse = GetSemesterClassForScheduleClassResponse.builder()
+                        .id(semesterClass.getId())
                         .build();
                 allSemesterClassResponses.add(semesterClassResponse);
             }
