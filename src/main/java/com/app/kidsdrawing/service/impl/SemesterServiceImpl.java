@@ -490,7 +490,7 @@ public class SemesterServiceImpl implements SemesterService {
         number = 1;
         allSemesterClassResponses.forEach(semester_class -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
-            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(semester_class.getId());
+            /* List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(semester_class.getId());
 
             List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = new ArrayList<>();
 
@@ -502,7 +502,7 @@ public class SemesterServiceImpl implements SemesterService {
             });
 
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
-            List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId());
+            List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId()); */
 
             /* List<Integer> list_total_register_of_teacher = new ArrayList<>();
             if (check_count == 0){

@@ -25,6 +25,18 @@ Content-Type: application/json
 }
 
 
+### CREATE SCHEDULE CLASS ACTION ###
+# @name create_schedule_class
+
+POST {{rest}}/semester/schedule-class/heroku/4
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "time": ["2022-10-01", "2022-11-02", "2022-10-03", "2022-10-04"]
+}
+
+
 
 
 ### GET CLASSES INFORMATION ACTION ###
