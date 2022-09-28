@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateTeacherTeachSemesterRequest;
 import com.app.kidsdrawing.dto.GetTeacherTeachSemesterResponse;
+import com.app.kidsdrawing.dto.GetUserRegisterTeachSemesterScheduleClassResponse;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.entity.User;
@@ -46,6 +47,22 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
                 .teacher_id(content.getTeacher().getId())
                 .semester_classes_id(content.getSemesterClass().getId())
                 .time(content.getTime())
+                .build();
+            allTeacherTeachSemesterResponses.add(teacherTeachSemesterResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user_register_semester", allTeacherTeachSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllTeacherTeachSemesterBySemesterClassSchedule(Long id) {
+        List<GetUserRegisterTeachSemesterScheduleClassResponse> allTeacherTeachSemesterResponses = new ArrayList<>();
+        List<UserRegisterTeachSemester> listTeacherTeachSemester = userRegisterTeachSemesterRepository.findBySemesterClassId(id);
+        listTeacherTeachSemester.forEach(content -> {
+            GetUserRegisterTeachSemesterScheduleClassResponse teacherTeachSemesterResponse = GetUserRegisterTeachSemesterScheduleClassResponse.builder()
+                .id(content.getId())
                 .build();
             allTeacherTeachSemesterResponses.add(teacherTeachSemesterResponse);
         });

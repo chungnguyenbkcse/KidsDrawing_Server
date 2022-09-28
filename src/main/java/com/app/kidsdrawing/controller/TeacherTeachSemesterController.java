@@ -33,6 +33,13 @@ public class TeacherTeachSemesterController {
         return ResponseEntity.ok().body(teacherTeachSemesterService.getAllTeacherTeachSemester());
     } 
 
+
+    @CrossOrigin
+    @GetMapping(value = "/semester-class/schedule-class/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherTeachSemesterBySemesterClassSchedule(@PathVariable Long id) {
+        return ResponseEntity.ok().body(teacherTeachSemesterService.getAllTeacherTeachSemesterBySemesterClassSchedule(id));
+    } 
+
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createTeacherTeachSemester(@RequestBody CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {

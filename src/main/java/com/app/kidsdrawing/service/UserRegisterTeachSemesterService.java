@@ -9,6 +9,7 @@ import com.app.kidsdrawing.dto.GetTeacherTeachSemesterResponse;
 
 public interface UserRegisterTeachSemesterService {
     ResponseEntity<Map<String, Object>> getAllTeacherTeachSemester();
+    ResponseEntity<Map<String, Object>> getAllTeacherTeachSemesterBySemesterClassSchedule(Long id);
     GetTeacherTeachSemesterResponse getTeacherTeachSemesterById(Long id);
     Long createTeacherTeachSemester(CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest);
     Long removeTeacherTeachSemesterById(Long id);

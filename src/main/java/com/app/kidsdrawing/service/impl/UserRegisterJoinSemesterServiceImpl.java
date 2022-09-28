@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateMomoRequest;
 import com.app.kidsdrawing.dto.CreateUserRegisterJoinSemesterRequest;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
+import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterScheduleClassResponse;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.User;
@@ -90,6 +91,24 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
                 .status(content.getStatus())
                 .build();
             allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user_register_semester", allUserRegisterJoinSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(Long id) {
+        List<GetUserRegisterJoinSemesterScheduleClassResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassId(id);
+        listUserRegisterJoinSemester.forEach(content -> {
+            if (content.getStatus().equals("Completed")) {
+                GetUserRegisterJoinSemesterScheduleClassResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterScheduleClassResponse.builder()
+                    .id(content.getId())
+                    .build();
+                allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();
