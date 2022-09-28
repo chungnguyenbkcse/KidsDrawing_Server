@@ -72,6 +72,31 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClass(Long id) {
+        List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassId(id);
+        listUserRegisterJoinSemester.forEach(content -> {
+            GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .semester_classes_name(content.getSemesterClass().getName())
+                .link_url(content.getSemesterClass().getCourse().getImage_url())
+                .semester_classes_id(content.getSemesterClass().getId())
+                .payer_id(content.getPayer().getId())
+                .price(content.getPrice())
+                .time(content.getTime())
+                .status(content.getStatus())
+                .build();
+            allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user_register_semester", allUserRegisterJoinSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByPayerId(Long id) {
         List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();

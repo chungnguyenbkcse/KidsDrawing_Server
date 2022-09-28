@@ -37,6 +37,12 @@ public class UserRegisterJoinSemesterController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/semester-class/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterBySemesterClass(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userRegisterJoinSemesterService.getAllUserRegisterJoinSemesterBySemesterClass(id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/payer/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterByPayerId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userRegisterJoinSemesterService.getAllUserRegisterJoinSemesterByPayerId(id));
