@@ -309,9 +309,11 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
 
+        System.out.print("Tổng số lớp mở: " + String.valueOf(allSemesterClassResponses.size()));
+
         // Danh sách học sinh đăng kí học
         // Danh sách giáo viên đăng kí dạy
-        check_count = 0;
+        /* check_count = 0;
         number = 1;
         allSemesterClassResponses.forEach(semester_class -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
@@ -363,7 +365,7 @@ public class SemesterServiceImpl implements SemesterService {
 
             System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(listUserRegisterJoinSemesters.size()));
 
-            /* // Lấy các group có thể chia được
+            // Lấy các group có thể chia được
             int[][] list_group = foo(listUserRegisterJoinSemesters.size(), partion, min, max);
             System.out.println(list_group.length);
             // Số lớp có thể chia
@@ -442,25 +444,10 @@ public class SemesterServiceImpl implements SemesterService {
                 else {
                     
                 }
-            } */
+            }
             check_count ++;
-        });
-
-        allSemesterClassResponses.forEach(semester_class -> {
-            // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
-            total = 0;
-            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(semester_class.getId());
-
-
-            allUserRegisterJoinSemesters.forEach(ele -> {
-                if (ele.getStatus() == "Completed") {
-                    total ++;
-                }
-            });
-
-            System.out.println("Số học sinh đăng kí lớp mở: " + String.valueOf(total));
-        });
-        return id;
+        });*/
+        return id; 
     }
 
     protected String getSaltString() {
