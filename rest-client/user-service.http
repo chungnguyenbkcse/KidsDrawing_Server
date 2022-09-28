@@ -242,7 +242,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 13,
+    "parent_id": 6,
     "roleNames": ["STUDENT_USER"]
 }
 

@@ -21,8 +21,8 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 16,
-    "semester_classes_id": 4,
+    "student_id": 26,
+    "semester_classes_id": 1,
     "payer_id": 6,
     "price": 1000
 }
