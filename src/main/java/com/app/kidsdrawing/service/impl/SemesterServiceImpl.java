@@ -297,13 +297,13 @@ public class SemesterServiceImpl implements SemesterService {
 
         List<Classes> listClassOfSemesterClass = new ArrayList<>();
         
-        /* createHolidayResquest.getTime().forEach(holiday -> {
+        createHolidayResquest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
                 .day(holiday)
                 .semester(semester)
                 .build();
             holidayRepository.save(saveHoliday);
-        }); */
+        });
 
         Optional <User> userOpt = userRepository.findById((long) 1);
         User creator = userOpt.orElseThrow(() -> {
