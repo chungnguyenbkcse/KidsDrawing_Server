@@ -75,7 +75,6 @@ public class SemesterServiceImpl implements SemesterService {
     private static int counter = 0;
     private static int check_count = 0;
     private static int number = 1;
-    private static int total = 0;
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemester() {
         List<GetSemesterResponse> allSemesterResponses = new ArrayList<>();
@@ -294,7 +293,7 @@ public class SemesterServiceImpl implements SemesterService {
 
         Set<SemesterClass> allSemesterClassResponses = semester.getSemesterClass();
 
-        /* List<Classes> listClassOfSemesterClass = new ArrayList<>();
+        List<Classes> listClassOfSemesterClass = new ArrayList<>();
         
         createHolidayResquest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
@@ -307,13 +306,11 @@ public class SemesterServiceImpl implements SemesterService {
         Optional <User> userOpt = userRepository.findById((long) 1);
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
-        }); */
-
-        System.out.print("Tổng số lớp mở: " + String.valueOf(allSemesterClassResponses.size()));
+        });
 
         // Danh sách học sinh đăng kí học
         // Danh sách giáo viên đăng kí dạy
-        /* check_count = 0;
+        check_count = 0;
         number = 1;
         allSemesterClassResponses.forEach(semester_class -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
@@ -367,7 +364,7 @@ public class SemesterServiceImpl implements SemesterService {
 
             // Lấy các group có thể chia được
             int[][] list_group = foo(listUserRegisterJoinSemesters.size(), partion, min, max);
-            System.out.println(list_group.length);
+            System.out.println(" Kết quả chia: " + String.valueOf(list_group.length));
             // Số lớp có thể chia
             int total_class = list_group.length;
             for (int i = 0; i < allUserRegisterTeachSemesters.size(); i++) {
@@ -378,9 +375,9 @@ public class SemesterServiceImpl implements SemesterService {
                         int idx = list_group[i][j] - 1;
                         validUserRegisterSemesters.add(listUserRegisterJoinSemesters.get(idx));
                     }
-                    System.out.print("Số học sinh đc xếp: " + String.valueOf(validUserRegisterSemesters.size()));
+                    System.out.println("Số học sinh đc xếp: " + String.valueOf(validUserRegisterSemesters.size()));
                     String key = getSaltString();
-                    System.out.print("Lớp thứ: " + String.valueOf(i));
+                    System.out.println("Lớp thứ: " + String.valueOf(i));
                     Classes savedClass = Classes.builder()
                         .user(creator)
                         .userRegisterTeachSemester(allUserRegisterTeachSemesters.get(i))
@@ -446,8 +443,9 @@ public class SemesterServiceImpl implements SemesterService {
                 }
             }
             check_count ++;
-        });*/
-        return (long) allSemesterClassResponses.size()-1; 
+            System.out.println("Lần: " + String.valueOf(check_count));
+        });
+        return id; 
     }
 
     protected String getSaltString() {
