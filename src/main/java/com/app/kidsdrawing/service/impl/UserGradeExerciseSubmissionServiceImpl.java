@@ -41,6 +41,11 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
     private final ClassesRepository classRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
+    private static Float exam = (float) 0;
+    private static Float middle = (float) 0;
+    private static Float final_exam = (float) 0;
+
+    private static int count_exam =  0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmission() {
@@ -67,6 +72,51 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
 
         Map<String, Object> response = new HashMap<>();
         response.put("UserGradeExerciseSubmission", allUserGradeExerciseSubmissionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForStudentAndClasses(Long student_id, Long classes_id) {
+        List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
+        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
+        exam = (float) 0;
+        middle = (float) 0;
+        final_exam = (float) 0;
+        count_exam = 0;
+        listUserGradeExerciseSubmission.forEach(content -> {
+            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId() == classes_id && content.getExerciseSubmission().getStudent().getId() == student_id) {
+                if (content.getExerciseSubmission().getExercise().getExerciseLevel().getId() == (long)1) {
+                    exam = exam + content.getScore() ;
+                    count_exam ++;
+                }
+                else if (content.getExerciseSubmission().getExercise().getExerciseLevel().getId() == (long)2) {
+                    middle = middle + content.getScore() ;
+                }
+                else {
+                    final_exam = final_exam + content.getScore() ;
+                }
+                GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
+                    .student_id(content.getExerciseSubmission().getStudent().getId())
+                    .student_name(content.getExerciseSubmission().getStudent().getFirstName() + " " + content.getExerciseSubmission().getStudent().getLastName())
+                    .exercise_name(content.getExerciseSubmission().getExercise().getName())
+                    .time_submit(content.getExerciseSubmission().getUpdate_time())
+                    .image_url(content.getExerciseSubmission().getImage_url())
+                    .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .deadline(content.getExerciseSubmission().getExercise().getDeadline())
+                    .exercise_submission_id(content.getExerciseSubmission().getId())
+                    .feedback(content.getFeedback())
+                    .score(content.getScore())
+                    .time(content.getTime())
+                    .build();
+                allUserGradeExerciseSubmissionResponses.add(userGradeExerciseSubmissionResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("UserGradeExerciseSubmission", allUserGradeExerciseSubmissionResponses);
+        response.put("final_grade", (exam * 10 / count_exam + middle * 30 + final_exam * 60) / 100);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

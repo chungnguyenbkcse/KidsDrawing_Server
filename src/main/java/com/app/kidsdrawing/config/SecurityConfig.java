@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/user-read-notification/**").permitAll()
                 .antMatchers("/api/v1/registration").permitAll()
                 .antMatchers("/api/v1/cloudinary/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/final-course/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/art-type/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/art-type/**").hasAnyAuthority("ADMIN_USER")
                 .antMatchers(HttpMethod.PUT, "/api/v1/art-type/**").hasAnyAuthority("ADMIN_USER")

@@ -35,10 +35,10 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "section_id": 42,
-    "level_id": 1,
-    "name": "Bài tập 2",
-    "description": "<p>Vẽ con mèo<p>"
+    "section_id": 25,
+    "level_id": 3,
+    "name": "Bài kiểm tra cuối kì",
+    "description": "<p>Vẽ hình ngôi nhà<p>"
 }
 
 ### 
