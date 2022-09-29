@@ -39,4 +39,13 @@ public class ClassHasRegisterJoinSemesterClass {
     @Column(name = "review_star")
     private Integer review_star;
 
+    @Column(name = "student_feedback")
+    private String student_feedback;
+
+    @Column(name = "teacher_feedback")
+    private String teacher_feedback;
+
+    @Column(name = "final_grade")
+    private Float final_grade;
+
 }

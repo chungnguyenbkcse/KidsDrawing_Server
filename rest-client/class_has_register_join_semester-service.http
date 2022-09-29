@@ -1,0 +1,50 @@
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "teacher-1",
+    "password": "12345678aA@"
+}
+
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+
+### 
+# @name update_classes
+
+PUT {{rest}}/class-has-register-join-semester/student
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "classes_id": 1,
+    "user_register_join_semester_id": 11,
+    "student_feedback": "Lớp học vui vẻ!",
+    "review_star": 3
+}
+
+
+### 
+# @name update_classes
+
+PUT {{rest}}/class-has-register-join-semester/teacher
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "classes_id": 1,
+    "user_register_join_semester_id": 11,
+    "teacher_feedback": "Học sinh ngoan ngoãn",
+    "final_grade": 8
+}
+
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/class-has-register-join-semester/1/11
+
