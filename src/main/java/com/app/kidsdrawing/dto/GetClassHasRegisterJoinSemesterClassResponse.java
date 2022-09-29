@@ -15,5 +15,4 @@ public class GetClassHasRegisterJoinSemesterClassResponse {
     private Integer review_star;
     private String student_feedback;
     private String teacher_feedback;
-    private Float final_grade;
 }

@@ -45,7 +45,4 @@ public class ClassHasRegisterJoinSemesterClass {
     @Column(name = "teacher_feedback")
     private String teacher_feedback;
 
-    @Column(name = "final_grade")
-    private Float final_grade;
-
 }

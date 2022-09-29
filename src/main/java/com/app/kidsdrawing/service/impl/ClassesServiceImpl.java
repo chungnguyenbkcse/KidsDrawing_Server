@@ -356,6 +356,7 @@ public class ClassesServiceImpl implements ClassesService {
                                             .getSemester().getId())
                             .semester_name(class_has_join_semester_class.getUserRegisterJoinSemester()
                                     .getSemesterClass().getSemester().getName())
+                            .user_register_join_semester_id(class_has_join_semester_class.getUserRegisterJoinSemester().getId())
                             .course_id(
                                     class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
                                             .getCourse().getId())
@@ -422,6 +423,7 @@ public class ClassesServiceImpl implements ClassesService {
                             .course_id(
                                     class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
                                             .getCourse().getId())
+                            .user_register_join_semester_id(class_has_join_semester_class.getUserRegisterJoinSemester().getId())
                             .course_name(
                                     class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
                                             .getCourse().getName())
@@ -493,6 +495,7 @@ public class ClassesServiceImpl implements ClassesService {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                             .id(class_has_join_semester_class.getClasses().getId())
                             .student_id(student.getId())
+                            .user_register_join_semester_id(class_has_join_semester_class.getUserRegisterJoinSemester().getId())
                             .semester_id(
                                     class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
                                             .getSemester().getId())
@@ -551,6 +554,7 @@ public class ClassesServiceImpl implements ClassesService {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                             .id(class_has_join_semester_class.getClasses().getId())
                             .student_id(student.getId())
+                            .user_register_join_semester_id(class_has_join_semester_class.getUserRegisterJoinSemester().getId())
                             .semester_class_id(class_has_join_semester_class.getUserRegisterJoinSemester()
                                     .getSemesterClass().getId())
                             .semester_class_name(class_has_join_semester_class.getUserRegisterJoinSemester()
@@ -625,8 +629,10 @@ public class ClassesServiceImpl implements ClassesService {
                     .findByUserRegisterJoinSemesterId(user_register_join_semester.getId());
             GetClassesStudentResponse classResponse = GetClassesStudentResponse.builder()
                     .id(classHasRegisterJoinSemesterClass.getClasses().getId())
+                    .user_register_join_semester_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getId())
                     .link_url(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getSemesterClass()
                             .getCourse().getImage_url())
+                    .user_register_join_semester_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getId())
                     .teacher_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
                             .getTeacher().getId())
                     .teacher_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()

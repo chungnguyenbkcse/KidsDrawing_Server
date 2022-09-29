@@ -94,7 +94,6 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
         .classes_id(updatedClassHasRegisterJoinSemesterClass.getClasses().getId())
         .user_register_join_semester_id(updatedClassHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getId())
         .review_star(updatedClassHasRegisterJoinSemesterClass.getReview_star())
-        .final_grade(updatedClassHasRegisterJoinSemesterClass.getFinal_grade())
         .student_feedback(updatedClassHasRegisterJoinSemesterClass.getStudent_feedback())
         .teacher_feedback(updatedClassHasRegisterJoinSemesterClass.getTeacher_feedback())
         .build();
@@ -147,7 +146,6 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
         });
 
         updatedClassHasRegisterJoinSemesterClass.setTeacher_feedback(createClassHasRegisterJoinSemesterClassTeacherRequest.getTeacher_feedback());
-        updatedClassHasRegisterJoinSemesterClass.setFinal_grade(createClassHasRegisterJoinSemesterClassTeacherRequest.getFinal_grade());
         classHasRegisterJoinSemesterClassRepository.save(updatedClassHasRegisterJoinSemesterClass);
 
         return updatedClassHasRegisterJoinSemesterClass.getClasses().getId();
