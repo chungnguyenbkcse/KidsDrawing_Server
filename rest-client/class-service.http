@@ -87,7 +87,7 @@ GET  {{rest}}/classes/schedule-allchild/8
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/parent/8
+GET  {{rest}}/classes/parent/6
 
 ### GET classes ACTION ###
 # @name get_classes
