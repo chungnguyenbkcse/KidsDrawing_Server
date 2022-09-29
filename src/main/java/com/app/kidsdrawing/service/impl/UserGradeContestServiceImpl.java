@@ -98,6 +98,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
         Contest contest = contestRepository.getById(createUserGradeContestRequest.getContest_id());
         User teacher = userRepository.getById(createUserGradeContestRequest.getTeacher_id());
         UserGradeContest savedUserGradeContest = UserGradeContest.builder()
+                .id((long) userGradeContestRepository.findAll().size() + 1)
                 .user(teacher)
                 .contest(contest)
                 .build();

@@ -281,6 +281,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         });
         
         ExerciseSubmission savedExerciseSubmission = ExerciseSubmission.builder()
+                .id((long) exerciseSubmissionRepository.findAll().size() + 1)
                 .student(student)
                 .exercise(exercise)
                 .image_url(createExerciseSubmissionRequest.getImage_url())

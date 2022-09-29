@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
     ResponseEntity<Map<String, Object>> getAllStudents(Long role_id);
 
+    ResponseEntity<Map<String, Object>> getAllUser();
+
     ResponseEntity<Map<String, Object>> getAllParents(Long role_id);
 
     ResponseEntity<Map<String, Object>> getReportUserNew(int year, Long role_id);

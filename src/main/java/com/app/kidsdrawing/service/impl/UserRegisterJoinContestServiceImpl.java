@@ -118,6 +118,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
         });
 
         UserRegisterJoinContest savedUserRegisterJoinContest = UserRegisterJoinContest.builder()
+                .id((long) userRegisterJoinContestRepository.findAll().size() + 1)
                 .student(teacher)
                 .contest(contest)
                 .build();

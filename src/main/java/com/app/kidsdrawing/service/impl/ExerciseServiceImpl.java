@@ -329,6 +329,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         });
         
         Exercise savedExercise = Exercise.builder()
+                .id((long) exerciseRepository.findAll().size() + 1)
                 .section(section)
                 .exerciseLevel(exercise_level)
                 .name(createExerciseRequest.getName())

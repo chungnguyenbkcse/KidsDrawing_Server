@@ -54,6 +54,12 @@ public class UserController {
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacher() {
         return ResponseEntity.ok().body(userService.getAllTeacher());
     }
+
+    @CrossOrigin
+    @GetMapping
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUser() {
+        return ResponseEntity.ok().body(userService.getAllUser());
+    }
     
     @CrossOrigin
     @GetMapping(value = "/childs/{id}")

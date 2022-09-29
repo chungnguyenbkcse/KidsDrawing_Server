@@ -649,6 +649,7 @@ public class CourseServiceImpl implements CourseService {
 
 
         Course savedCourse = Course.builder()
+                .id((long) courseRepository.findAll().size() + 1)
                 .name(createCourseRequest.getName())
                 .description(createCourseRequest.getDescription())
                 .num_of_section(createCourseRequest.getNum_of_section())

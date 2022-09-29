@@ -106,6 +106,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
         });
         
         TutorialTemplate savedTutorialTemplate = TutorialTemplate.builder()
+                .id((long) tutorialTemplateRepository.findAll().size() + 1)
                 .sectionTemplate(sectionTemplate)
                 .name(createTutorialTemplateRequest.getName())
                 .creator(creator)

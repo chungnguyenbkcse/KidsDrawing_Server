@@ -1489,6 +1489,7 @@ public class ClassesServiceImpl implements ClassesService {
         });
 
         Classes savedClass = Classes.builder()
+                .id((long) classRepository.findAll().size() + 1)
                 .user(user)
                 .userRegisterTeachSemester(teacherTeachSemester)
                 .security_code(createClassRequest.getSecurity_code())

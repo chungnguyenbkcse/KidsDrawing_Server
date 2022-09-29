@@ -105,6 +105,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         });
 
         Schedule savedSchedule = Schedule.builder()
+                .id((long) scheduleRepository.findAll().size() + 1)
                 .lessonTime(lesson_time)
                 .date_of_week(createScheduleRequest.getDate_of_week())
                 .semesterClass(semester_class)

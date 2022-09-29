@@ -141,6 +141,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
         });
         
         UserRegisterTutorial savedUserRegisterTutorial = UserRegisterTutorial.builder()
+                .id((long) userRegisterTutorialRepository.findAll().size() + 1)
                 .creator(creator)
                 .section(section)
                 .name(createUserRegisterTutorialRequest.getName())

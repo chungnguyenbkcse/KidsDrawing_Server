@@ -329,6 +329,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         });
         
         UserRegisterJoinSemester savedUserRegisterJoinSemester = UserRegisterJoinSemester.builder()
+                .id((long) userRegisterJoinSemesterRepository.findAll().size() + 1)
                 .semesterClass(semesterCouse)
                 .student(student)
                 .payer(payer)

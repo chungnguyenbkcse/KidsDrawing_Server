@@ -409,6 +409,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         }
 
         SemesterClass savedSemesterClass = SemesterClass.builder()
+                .id((long) semesterClassRepository.findAll().size() + 1)
                 .semester(semester)
                 .course(course)
                 .name(createSemesterClassRequest.getName())

@@ -187,6 +187,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         });
         
         TeacherLeave savedTeacherLeave = TeacherLeave.builder()
+                .id((long) teacherLeaveRepository.findAll().size() + 1)
                 .classes(classes)
                 .section(section)
                 .teacher(teacher)

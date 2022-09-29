@@ -175,6 +175,7 @@ public class TutorialServiceImpl implements TutorialService{
         });
         
         Tutorial savedTutorial = Tutorial.builder()
+                .id((long) tutorialRepository.findAll().size() + 1)
                 .section(section)
                 .creator(creator)
                 .name(createTutorialRequest.getName())

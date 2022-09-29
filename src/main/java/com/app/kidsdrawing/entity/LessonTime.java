@@ -4,8 +4,7 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -26,8 +25,7 @@ import lombok.Setter;
 @Table(name = "Lesson_Time")
 public class LessonTime {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+@Column(name = "id")
     private Long id;
 
     @Column(name = "start_time")

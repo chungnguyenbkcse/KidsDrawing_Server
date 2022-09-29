@@ -346,6 +346,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         });
         
         StudentLeave savedStudentLeave = StudentLeave.builder()
+                .id((long) studentLeaveRepository.findAll().size() + 1)
                 .classes(classes)
                 .section(section)
                 .student(student)

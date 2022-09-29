@@ -118,6 +118,7 @@ public class TutorialPageServiceImpl implements TutorialPageService{
         });
         
         TutorialPage savedTutorialPage = TutorialPage.builder()
+                .id((long) tutorialPageRepository.findAll().size() + 1)
                 .tutorial(tutorial)
                 .name(createTutorialPageRequest.getName())
                 .description(createTutorialPageRequest.getDescription())

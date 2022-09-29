@@ -6,8 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -32,8 +31,7 @@ import lombok.Setter;
 @Table(name = "section_template")
 public class SectionTemplate {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+@Column(name = "id")
     private Long id;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)

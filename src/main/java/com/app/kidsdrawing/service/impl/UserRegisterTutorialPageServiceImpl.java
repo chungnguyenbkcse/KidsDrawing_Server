@@ -95,6 +95,7 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
         });
         
         UserRegisterTutorialPage savedUserRegisterTutorialPage = UserRegisterTutorialPage.builder()
+                .id((long) userRegisterTutorialPageRepository.findAll().size() + 1)
                 .userRegisterTutorial(userRegisterTutorial)
                 .name(createUserRegisterTutorialPageRequest.getName())
                 .description(createUserRegisterTutorialPageRequest.getDescription())

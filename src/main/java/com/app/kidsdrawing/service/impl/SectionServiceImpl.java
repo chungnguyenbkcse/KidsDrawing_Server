@@ -113,6 +113,7 @@ public class SectionServiceImpl implements SectionService{
         });
         
         Section savedSection = Section.builder()
+                .id((long) sectionRepository.findAll().size() + 1)
                 .classes(classes)
                 .name(createSectionRequest.getName())
                 .number(createSectionRequest.getNumber())

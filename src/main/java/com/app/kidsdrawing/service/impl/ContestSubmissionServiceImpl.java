@@ -156,6 +156,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         });
         
         ContestSubmission savedContestSubmission = ContestSubmission.builder()
+                .id((long) contestSubmissionRepository.findAll().size() + 1)
                 .student(student)
                 .contest(contest)
                 .image_url(createContestSubmissionRequest.getImage_url())

@@ -75,6 +75,7 @@ public class ArtLevelServiceImpl implements ArtLevelService {
         }
 
         ArtLevel savedArtLevel = ArtLevel.builder()
+                .id((long) artLevelRepository.findAll().size() + 1)
                 .name(createArtLevelRequest.getName())
                 .description(createArtLevelRequest.getDescription())
                 .build();

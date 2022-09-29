@@ -659,6 +659,7 @@ public class ContestServiceImpl implements ContestService {
         });
 
         Contest savedContest = Contest.builder()
+                .id((long) contestRepository.findAll().size() + 1)
                 .name(createContestRequest.getName())
                 .description(createContestRequest.getDescription())
                 .max_participant(createContestRequest.getMax_participant())

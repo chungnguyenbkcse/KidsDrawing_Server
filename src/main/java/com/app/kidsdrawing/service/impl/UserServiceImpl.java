@@ -106,6 +106,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllUser() {
+        List<GetStudentResponse> allUserResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findAll();
+        pageUser.forEach(user -> {
+                GetStudentResponse userResponse = GetStudentResponse.builder()
+                    .id(user.getId())
+                    .build();
+                allUserResponses.add(userResponse);
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("students", allUserResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id) {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findByParentId(id);
@@ -427,6 +442,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
         User savedUser = User.builder()
+                .id((long) (userRepository.findAll().size() + 1))
                 .username(createUserRequest.getUsername())
                 .email(createUserRequest.getEmail())
                 .password(encodedPassword)
@@ -467,6 +483,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
         User savedUser = User.builder()
+                .id((long) (userRepository.findAll().size() + 1))
                 .username(createStudentOrParentRequest.getUsername())
                 .email(createStudentOrParentRequest.getEmail())
                 .password(encodedPassword)
@@ -522,6 +539,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
         User savedUser = User.builder()
+                .id((long) (userRepository.findAll().size() + 1))
                 .username(createTeacherRequest.getUsername())
                 .email(createTeacherRequest.getEmail())
                 .password(encodedPassword)

@@ -120,6 +120,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
         });
         
         TutorialTemplatePage savedTutorialTemplatePage = TutorialTemplatePage.builder()
+                .id((long) tutorialTemplatePageRepository.findAll().size() + 1)
                 .tutorialTemplate(tutorial)
                 .name(createTutorialTemplatePageRequest.getName())
                 .description(createTutorialTemplatePageRequest.getDescription())

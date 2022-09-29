@@ -100,6 +100,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
         });
         
         UserRegisterTeachSemester savedTeacherTeachSemester = UserRegisterTeachSemester.builder()
+                .id((long) userRegisterTeachSemesterRepository.findAll().size() + 1)
                 .semesterClass(semesterCouse)
                 .teacher(teacher)
                 .build();

@@ -169,6 +169,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         User teacher = userRepository.getById(createTeacherRegisterQualificationRequest.getTeacher_id());
         User reviewer = userRepository.getById((long) 1);
         TeacherRegisterQualification savedTeacherRegisterQualification = TeacherRegisterQualification.builder()
+                .id((long) teacherRegisterQualificationRepository.findAll().size() + 1)
                 .teacher(teacher)
                 .reviewer(reviewer)
                 .course(course)

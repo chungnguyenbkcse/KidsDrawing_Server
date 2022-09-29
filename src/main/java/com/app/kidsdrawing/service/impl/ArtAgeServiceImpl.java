@@ -75,6 +75,7 @@ public class ArtAgeServiceImpl implements ArtAgeService {
         }
 
         ArtAge savedArtAge = ArtAge.builder()
+                .id((long) artAgeRepository.findAll().size() + 1)
                 .name(createArtAgeRequest.getName())
                 .description(createArtAgeRequest.getDescription())
                 .build();

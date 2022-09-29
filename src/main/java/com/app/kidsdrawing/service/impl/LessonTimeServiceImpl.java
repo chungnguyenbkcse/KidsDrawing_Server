@@ -64,6 +64,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     public Long createLessonTime(CreateLessonTimeRequest createLessonTimeRequest) {
 
         LessonTime savedLessonTime = LessonTime.builder()
+                .id((long) lessonTimeRepository.findAll().size() + 1)
                 .start_time(createLessonTimeRequest.getStart_time())
                 .end_time(createLessonTimeRequest.getEnd_time())
                 .build();

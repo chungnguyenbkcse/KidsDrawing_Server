@@ -75,6 +75,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
         }
 
         ArtType savedArtType = ArtType.builder()
+                .id((long) artTypeRepository.findAll().size() + 1)
                 .name(createArtTypeRequest.getName())
                 .description(createArtTypeRequest.getDescription())
                 .build();

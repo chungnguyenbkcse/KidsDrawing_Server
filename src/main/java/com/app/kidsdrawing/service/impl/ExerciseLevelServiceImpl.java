@@ -66,6 +66,7 @@ public class ExerciseLevelServiceImpl implements ExerciseLevelService{
     public Long createExerciseLevel(CreateExerciseLevelRequest createExerciseLevelRequest) {
         
         ExerciseLevel savedExerciseLevel = ExerciseLevel.builder()
+                .id((long) exerciseLevelRepository.findAll().size() + 1)
                 .name(createExerciseLevelRequest.getName())
                 .description(createExerciseLevelRequest.getDescription())
                 .weight(createExerciseLevelRequest.getWeight())

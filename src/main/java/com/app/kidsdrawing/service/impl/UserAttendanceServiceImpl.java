@@ -226,6 +226,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         });
         
         UserAttendance savedUserAttendance = UserAttendance.builder()
+                .id((long) userAttendanceRepository.findAll().size() + 1)
                 .section(section)
                 .student(student)
                 .status(createUserAttendanceRequest.getStatus())

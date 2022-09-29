@@ -73,6 +73,7 @@ public class HolidayServiceImpl implements HolidayService {
 
         createHolidayRequest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
+                .id((long) HolidayRepository.findAll().size() + 1)
                 .day(holiday)
                 .semester(semester)
                 .build();

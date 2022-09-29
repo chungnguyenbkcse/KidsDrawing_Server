@@ -66,6 +66,7 @@ public class NotificationServiceImpl implements NotificationService {
     public GetNotificationResponse createNotification(CreateNotificationRequest createNotificationRequest) {
 
         Notification savedNotification = Notification.builder()
+            .id((long) notificationRepository.findAll().size() + 1)
             .name(createNotificationRequest.getName())
             .description(createNotificationRequest.getDescription())
             .build();
