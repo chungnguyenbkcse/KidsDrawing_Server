@@ -57,7 +57,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
         List<GetTutorialTemplatePageResponse> allTutorialTemplatePageResponses = new ArrayList<>();
         List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findAll();
         listTutorialTemplatePage.forEach(content -> {
-            if (content.getTutorialTemplate().getId() == id){
+            if (content.getTutorialTemplate().getId().compareTo(id) == 0){
                 GetTutorialTemplatePageResponse tutorialPageResponse = GetTutorialTemplatePageResponse.builder()
                     .id(content.getId())
                     .tutorial_template_id(content.getTutorialTemplate().getId())

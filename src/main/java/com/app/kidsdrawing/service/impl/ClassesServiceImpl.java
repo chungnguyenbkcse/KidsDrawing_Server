@@ -107,7 +107,7 @@ public class ClassesServiceImpl implements ClassesService {
 
             scheduleRepository.findAll().forEach(schedule_ele -> {
                 if (ele.getUserRegisterTeachSemester().getSemesterClass().getSchedules().contains(schedule_ele)) {
-                    if (schedule == "") {
+                    if (schedule.equals("")) {
                         schedule = schedule + "Thứ " + schedule_ele.getDate_of_week() + " ("
                                 + schedule_ele.getLessonTime().getStart_time().toString() + " - "
                                 + schedule_ele.getLessonTime().getEnd_time().toString() + ")";

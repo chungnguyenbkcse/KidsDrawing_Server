@@ -162,7 +162,7 @@ public class CourseServiceImpl implements CourseService {
         pageCourse.forEach(course -> {
             count = 0;
             listUserRegisterJoinSemester.forEach(ele -> {
-                if (ele.getSemesterClass().getSemester().getStart_time().getYear() == year) {
+                if (ele.getSemesterClass().getSemester().getStart_time().getYear() == year && ele.getStatus().equals("Completed")) {
                     count += 1;
                 }
             });

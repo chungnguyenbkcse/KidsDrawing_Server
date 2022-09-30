@@ -63,7 +63,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
         List<GetSectionTemplateResponse> allSectionTemplateResponses = new ArrayList<>();
         List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
         listSectionTemplate.forEach(content -> {
-            if (content.getCourse().getId() == id){
+            if (content.getCourse().getId().compareTo(id) == 0){
                 GetSectionTemplateResponse sectionResponse = GetSectionTemplateResponse.builder()
                     .id(content.getId())
                     .creator_id(content.getUser().getId())

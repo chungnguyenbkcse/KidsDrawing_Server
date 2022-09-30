@@ -9,9 +9,9 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-100",
+    "username": "student-1",
     "password": "12345678aA@",
-    "email": "student-100@gmail.com",
+    "email": "student-1@gmail.com",
     "firstName": "student",
     "lastName": "1",
     "dateOfBirth": null,
@@ -483,7 +483,7 @@ Content-Type: application/json
 {
     "username": "parent-1",
     "password": "a8726357",
-    "email": "chungnguyen10012000@gmail.com",
+    "email": "chung.nguyen10012001@hcmut.edu.vn",
     "firstName": "parent",
     "lastName": "1",
     "dateOfBirth": null,
@@ -794,11 +794,11 @@ POST {{rest}}/user
 Content-Type: application/json
 
 {
-    "username": "teacher-11",
+    "username": "teacher-10",
     "password": "12345678aA@",
-    "email": "teacher-11@gmail.com",
+    "email": "teacher-10@gmail.com",
     "firstName": "teacher",
-    "lastName": "11",
+    "lastName": "10",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
