@@ -65,7 +65,7 @@ public class TutorialServiceImpl implements TutorialService{
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
         List<Tutorial> listTutorial = tutorialRepository.findAll();
         listTutorial.forEach(content -> {
-            if (content.getSection().getId() == id){
+            if (content.getSection().getId().compareTo(id) == 0){
                 GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
                     .id(content.getId())
                     .section_id(content.getSection().getId())
@@ -92,7 +92,7 @@ public class TutorialServiceImpl implements TutorialService{
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
         List<Tutorial> listTutorial = tutorialRepository.findAll();
         listTutorial.forEach(content -> {
-            if (content.getCreator().getId() == id){
+            if (content.getCreator().getId().compareTo(id) == 0){
                 GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
                     .id(content.getId())
                     .section_id(content.getSection().getId())
@@ -119,7 +119,7 @@ public class TutorialServiceImpl implements TutorialService{
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
         List<Tutorial> listTutorial = tutorialRepository.findAll();
         listTutorial.forEach(content -> {
-            if (content.getSection().getId() == section_id && content.getCreator().getId() == creator_id){
+            if (content.getSection().getId().compareTo(section_id) == 0 && content.getCreator().getId().compareTo(creator_id) == 0){
                 GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
                     .id(content.getId())
                     .section_id(content.getSection().getId())

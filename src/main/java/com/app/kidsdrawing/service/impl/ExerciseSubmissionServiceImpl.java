@@ -71,7 +71,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             exersiceGraded.add(ele.getExerciseSubmission());
         });
         listExerciseSubmission.forEach(content -> {
-            if (content.getStudent().getId() == id){
+            if (content.getStudent().getId().compareTo(id) == 0){
                 if (exersiceGraded.contains(content)) {
                     GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
                         .id(content.getId())
@@ -119,7 +119,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             exersiceGraded.add(ele.getExerciseSubmission());
         });
         listExerciseSubmission.forEach(content -> {
-            if (content.getExercise().getId() == id){
+            if (content.getExercise().getId().compareTo(id) == 0){
                 if (exersiceGraded.contains(content)) {
                     GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
                         .id(content.getId())
@@ -166,7 +166,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             exersiceGraded.add(ele.getExerciseSubmission());
         });
         listExerciseSubmission.forEach(content -> {
-            if (content.getExercise().getSection().getClasses().getId() == class_id){
+            if (content.getExercise().getSection().getClasses().getId().compareTo(class_id) == 0){
                 if (exersiceGraded.contains(content)) {
                     GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
                         .id(content.getId())
@@ -213,7 +213,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             exersiceGraded.add(ele.getExerciseSubmission());
         });
         listExerciseSubmission.forEach(content -> {
-            if (content.getExercise().getSection().getClasses().getId() == id){
+            if (content.getExercise().getSection().getClasses().getId().compareTo(id) == 0){
                 if (exersiceGraded.contains(content)) {
                     GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
                         .id(content.getId())

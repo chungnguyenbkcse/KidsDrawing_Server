@@ -90,7 +90,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
         listUserGradeContestSubmission.forEach(content -> {
-            if (content.getContestSubmission().getStudent().getId() == id){
+            if (content.getContestSubmission().getStudent().getId().compareTo(id) == 0){
                 GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .student_id(content.getContestSubmission().getStudent().getId())
@@ -118,7 +118,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         List<ContestSubmission> allContestSubmissionResponses = new ArrayList<>();
         List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findAll();
         listContestSubmission.forEach(content -> {
-            if (content.getContest().getId() == id){
+            if (content.getContest().getId().compareTo(id) == 0){
                 allContestSubmissionResponses.add(content);
             }
         });
@@ -208,7 +208,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
 
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
         listUserGradeContestSubmission.forEach(content-> {
-            if (content.getTeacher().getId() == teacher_id && content.getContestSubmission().getId() == submission_id){
+            if (content.getTeacher().getId().compareTo(teacher_id) == 0  && content.getContestSubmission().getId().compareTo(submission_id) == 0){
                 UserGradeContestSubmission updatedUserGradeContestSubmission = content;
                 Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getTeacher_id());
                 User teacher = userOpt.orElseThrow(() -> {

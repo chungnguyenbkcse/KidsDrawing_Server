@@ -85,7 +85,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         final_exam = (float) 0;
         count_exam = 0;
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId() == classes_id && content.getExerciseSubmission().getStudent().getId() == student_id) {
+            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId().compareTo(classes_id) == 0 && content.getExerciseSubmission().getStudent().getId().compareTo(student_id) == 0) {
                 if (content.getExerciseSubmission().getExercise().getExerciseLevel().getName().equals("exam")) {
                     exam = exam + content.getScore() ;
                     count_exam ++;
@@ -126,7 +126,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getTeacher().getId() == id){
+            if (content.getTeacher().getId().compareTo(id) == 0){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
@@ -156,7 +156,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getStudent().getId() == id){
+            if (content.getExerciseSubmission().getStudent().getId().compareTo(id) == 0){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
@@ -186,7 +186,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId() == id){
+            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId().compareTo(id) == 0){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
@@ -216,7 +216,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getExercise().getId() == id){
+            if (content.getExerciseSubmission().getExercise().getId().compareTo(id) == 0){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
@@ -246,7 +246,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getId() == id){
+            if (content.getExerciseSubmission().getId().compareTo(id) == 0){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
@@ -281,7 +281,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         });
         List<User> user_graded = new ArrayList<>();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId() == classes_id && content.getExerciseSubmission().getExercise().getId() == exercise_id){
+            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId().compareTo(classes_id) == 0 && content.getExerciseSubmission().getExercise().getId().compareTo(exercise_id) == 0){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
@@ -334,7 +334,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
 
         List<User> user_graded = new ArrayList<>();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getExercise().getId() == exercise_id && content.getExerciseSubmission().getStudent().getId() == student_id){
+            if (content.getExerciseSubmission().getExercise().getId().compareTo(exercise_id) == 0 && content.getExerciseSubmission().getStudent().getId().compareTo(student_id) == 0){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
@@ -367,7 +367,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         
         List<User> teacher_graded = new ArrayList<>();
         listUserGradeExerciseSubmission.forEach(content -> {
-            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId() == classes_id && content.getExerciseSubmission().getStudent().getId() == student_id){
+            if (content.getExerciseSubmission().getExercise().getSection().getClasses().getId().compareTo(classes_id) == 0 && content.getExerciseSubmission().getStudent().getId().compareTo(student_id) == 0){
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .teacher_id(content.getTeacher().getId())
                     .teacher_name(content.getTeacher().getFirstName() + content.getTeacher().getLastName())
@@ -457,7 +457,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
 
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         listUserGradeExerciseSubmission.forEach(content-> {
-            if (content.getTeacher().getId() == teacher_id && content.getExerciseSubmission().getId() == submission_id){
+            if (content.getTeacher().getId().compareTo(teacher_id) == 0 && content.getExerciseSubmission().getId().compareTo(submission_id) == 0){
                 UserGradeExerciseSubmission updatedUserGradeExerciseSubmission = content;
                 Optional <User> userOpt = userRepository.findById(createUserGradeExerciseSubmissionRequest.getTeacher_id());
                 User teacher = userOpt.orElseThrow(() -> {

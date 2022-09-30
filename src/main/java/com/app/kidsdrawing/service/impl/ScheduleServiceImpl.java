@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
         List<Schedule> pageSchedule = scheduleRepository.findAll();
         pageSchedule.forEach(schedule -> {
-            if (schedule.getSemesterClass().getId() == id){
+            if (schedule.getSemesterClass().getId().compareTo(id) == 0){
                 GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
                     .id(schedule.getId())
                     .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")

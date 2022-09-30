@@ -60,7 +60,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
         List<GetTutorialTemplateResponse> allTutorialTemplateResponses = new ArrayList<>();
         List<TutorialTemplate> listTutorialTemplate = tutorialTemplateRepository.findAll();
         listTutorialTemplate.forEach(content -> {
-            if (content.getSectionTemplate().getId() == id){
+            if (content.getSectionTemplate().getId().compareTo(id) == 0){
                 GetTutorialTemplateResponse tutorialTemplateResponse = GetTutorialTemplateResponse.builder()
                     .id(content.getId())
                     .section_template_id(id)

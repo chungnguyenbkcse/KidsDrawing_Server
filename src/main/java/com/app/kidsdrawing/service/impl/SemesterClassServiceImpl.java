@@ -78,11 +78,11 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         LocalDateTime time_now = LocalDateTime.now();
         List<SemesterClass> allSemesterClass = semesterClassRepository.findAll();
         allSemesterClass.forEach(semesterClass -> {
-            if (semesterClass.getRegistration_time().isAfter(time_now)) {
+            if (semesterClass.getRegistration_time().isAfter(time_now) == false && semesterClass.getSemester().getStart_time().isAfter(time_now)) {
                 schedule = "";
                 scheduleRepository.findAll().forEach(schedule_item -> {
-                    if (schedule_item.getSemesterClass().getId() == semesterClass.getId()) {
-                        if (schedule == "") {
+                    if (schedule_item.getSemesterClass().getId().compareTo(semesterClass.getId()) == 0) {
+                        if (schedule.equals("")) {
                             schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
                                     + schedule_item.getLessonTime().getStart_time().toString() + " - "
                                     + schedule_item.getLessonTime().getEnd_time().toString() + ")";
@@ -128,13 +128,13 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 .findByStudentId(id);
         List<SemesterClass> listSemesterClass = new ArrayList<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
-            if (user_register_join_semester.getSemesterClass().getRegistration_time().isAfter(time_now)) {
+            if (user_register_join_semester.getSemesterClass().getRegistration_time().isAfter(time_now) == false && user_register_join_semester.getSemesterClass().getSemester().getStart_time().isAfter(time_now)) {
                 listSemesterClass.add(user_register_join_semester.getSemesterClass());
                 schedule = "";
                 scheduleRepository.findAll().forEach(schedule_item -> {
-                    if (schedule_item.getSemesterClass().getId() == user_register_join_semester.getSemesterClass()
-                            .getId()) {
-                        if (schedule == "") {
+                    if (schedule_item.getSemesterClass().getId().compareTo(user_register_join_semester.getSemesterClass()
+                    .getId()) == 0) {
+                        if (schedule.equals("")) {
                             schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
                                     + schedule_item.getLessonTime().getStart_time().toString() + " - "
                                     + schedule_item.getLessonTime().getEnd_time().toString() + ")";
@@ -145,7 +145,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         }
                     }
                 });
-                if (user_register_join_semester.getStatus() != "Completed"
+                if (user_register_join_semester.getStatus().equals("Completed") == true
                         && allSemesterClass.contains(user_register_join_semester.getSemesterClass())) {
                     GetSemesterClassStudentResponse semesterClassResponse = GetSemesterClassStudentResponse.builder()
                             .course_id(user_register_join_semester.getSemesterClass().getCourse().getId())
@@ -206,11 +206,10 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
         allSemesterClass.forEach(semester_class -> {
             if (listSemesterClass.contains(semester_class) == false
-                    && semester_class.getRegistration_time().isAfter(time_now)) {
+                    && semester_class.getRegistration_time().isAfter(time_now) == false && semester_class.getSemester().getStart_time().isAfter(time_now)) {
                         schedule = "";
                 scheduleRepository.findAll().forEach(schedule_item -> {
-                    if (schedule_item.getSemesterClass().getId() == semester_class
-                            .getId()) {
+                    if (schedule_item.getSemesterClass().getId().compareTo(semester_class.getId()) == 0) {
                         if (schedule == "") {
                             schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
                                     + schedule_item.getLessonTime().getStart_time().toString() + " - "
@@ -329,7 +328,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
-            if (semesterClass.getSemester().getId() == id) {
+            if (semesterClass.getSemester().getId().compareTo(id) == 0) {
                 GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                         .id(semesterClass.getId())
                         .name(semesterClass.getName())
@@ -355,7 +354,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<GetSemesterClassForScheduleClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
-            if (semesterClass.getSemester().getId() == id) {
+            if (semesterClass.getSemester().getId().compareTo(id) == 0) {
                 GetSemesterClassForScheduleClassResponse semesterClassResponse = GetSemesterClassForScheduleClassResponse.builder()
                         .id(semesterClass.getId())
                         .build();
@@ -373,7 +372,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
-            if (semesterClass.getCourse().getId() == id) {
+            if (semesterClass.getCourse().getId().compareTo(id) == 0) {
                 GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                         .id(semesterClass.getId())
                         .name(semesterClass.getName())
@@ -484,7 +483,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<UserRegisterTeachSemester> pageUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findAll();
         List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = new ArrayList<>();
         pageUserRegisterTeachSemesters.forEach(user_register_teach_semester -> {
-            if (user_register_teach_semester.getSemesterClass().getId() == id) {
+            if (user_register_teach_semester.getSemesterClass().getId().compareTo(id) == 0) {
                 allUserRegisterTeachSemesters.add(user_register_teach_semester);
             }
         });

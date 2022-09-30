@@ -157,7 +157,7 @@ public class SemesterServiceImpl implements SemesterService {
         allSemesterClassResponses.forEach(semester_class -> {
             List<Classes> list_class = new ArrayList<>();
             listClass.forEach(ele_class -> {
-                if (ele_class.getUserRegisterTeachSemester().getSemesterClass().getId() == semester_class.getId()){
+                if (ele_class.getUserRegisterTeachSemester().getSemesterClass().getId().compareTo(semester_class.getId()) == 0){
                     list_class.add(ele_class);
                 }
             });
@@ -181,7 +181,7 @@ public class SemesterServiceImpl implements SemesterService {
             List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
             List<SectionTemplate> allSectionTemplate = new ArrayList<>();
             listSectionTemplate.forEach(section_template -> {
-                if (section_template.getCourse().getId() == list_class.get(0).getUserRegisterTeachSemester().getSemesterClass().getCourse().getId()){
+                if (section_template.getCourse().getId().compareTo(list_class.get(0).getUserRegisterTeachSemester().getSemesterClass().getCourse().getId()) == 0){
                     allSectionTemplate.add(section_template);
                     section_template.getCourse().getNum_of_section();
                 }
@@ -350,7 +350,7 @@ public class SemesterServiceImpl implements SemesterService {
                 allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
                     counter = 0;
                     listClassOfSemesterClass.forEach(class_x -> {
-                        if (teacher_register_teach_semester.getTeacher().getId() == class_x.getUserRegisterTeachSemester().getTeacher().getId()){
+                        if (teacher_register_teach_semester.getTeacher().getId().compareTo(class_x.getUserRegisterTeachSemester().getTeacher().getId()) == 0){
                             counter += 1;
                         }
                     });

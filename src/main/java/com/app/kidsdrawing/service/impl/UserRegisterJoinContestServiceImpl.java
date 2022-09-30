@@ -45,7 +45,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
         Pageable paging = PageRequest.of(page, size);
         Page<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findAll(paging);
         pageUserRegisterJoinContest.getContent().forEach(content -> {
-            if (content.getStudent().getId() == id){
+            if (content.getStudent().getId().compareTo(id) == 0){
                 GetUserRegisterJoinContestResponse userRegisterJoinContestResponse = GetUserRegisterJoinContestResponse.builder()
                     .id(content.getId())
                     .student_id(id)
@@ -69,7 +69,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
         Pageable paging = PageRequest.of(page, size);
         Page<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findAll(paging);
         pageUserRegisterJoinContest.getContent().forEach(content -> {
-            if (content.getContest().getId() == id){
+            if (content.getContest().getId().compareTo(id) == 0){
                 GetUserRegisterJoinContestResponse userRegisterJoinContestResponse = GetUserRegisterJoinContestResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())

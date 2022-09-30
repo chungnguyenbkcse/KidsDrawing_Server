@@ -177,37 +177,37 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         total_user_of_dec = 0;
         pageUser.forEach(user -> {
             if (user.getRoles().contains(role) == true && user.getCreateTime().getYear() == year){
-                if (user.getCreateTime().getMonth().toString() == "JANUARY"){
+                if (user.getCreateTime().getMonth().toString().equals("JANUARY")){
                     total_user_of_jan += 1;
                 }
-                else if (user.getCreateTime().getMonth().toString() == "FEBRUARY"){
+                else if (user.getCreateTime().getMonth().toString().equals("FEBRUARY")){
                     total_user_of_feb += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "MARCH"){
+                else if (user.getCreateTime().getMonth().toString().equals("MARCH")){
                     total_user_of_mar += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "APRIL"){
+                else if (user.getCreateTime().getMonth().toString().equals("APRIL")){
                     total_user_of_apr += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "MAY"){
+                else if (user.getCreateTime().getMonth().toString().equals("MAY")){
                     total_user_of_may += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "JUNE"){
+                else if (user.getCreateTime().getMonth().toString().equals("JUNE")){
                     total_user_of_jun += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "JULY"){
+                else if (user.getCreateTime().getMonth().toString().equals("JULY")){
                     total_user_of_jul += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "AUGUST"){
+                else if (user.getCreateTime().getMonth().toString().equals("AUGUST")){
                     total_user_of_aug += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "SEPTEMBER"){
+                else if (user.getCreateTime().getMonth().toString().equals("SEPTEMBER")){
                     total_user_of_sep += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "OCTOBER"){
+                else if (user.getCreateTime().getMonth().toString().equals("OCTOBER")){
                     total_user_of_oct += 1;
                 }
-                else if (user.getCreateTime().getMonth().toString() == "NOVEMBER"){
+                else if (user.getCreateTime().getMonth().toString().equals("NOVEMBER")){
                     total_user_of_nov += 1;
                 }
                 else {
@@ -312,7 +312,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 List<GetTeacherRegisterQualificationResponse> teacherRegisterQualificationDoingResponses = new ArrayList<>();
                 List<GetTeacherRegisterQualificationResponse> teacherRegisterQualificationNotAcceptResponses = new ArrayList<>();
                 pageTeacherRegisterQualification.forEach(content -> {
-                    if (content.getTeacher().getId() == user.getId() && content.getStatus() == "Accept"){
+                    if (content.getTeacher().getId().compareTo(user.getId()) == 0 && content.getStatus().equals("Accept")){
                         GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                             .id(content.getId())
                             .teacher_id(content.getTeacher().getId())
@@ -323,7 +323,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                             .build();
                         teacherRegisterQualificationResponses.add(teacherRegisterQualificationResponse);
                     }
-                    else if (content.getTeacher().getId() == user.getId() && content.getStatus() == "Doing"){
+                    else if (content.getTeacher().getId().compareTo(user.getId()) == 0 && content.getStatus().equals("Doing")){
                         GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                             .id(content.getId())
                             .teacher_id(content.getTeacher().getId())

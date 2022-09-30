@@ -62,7 +62,7 @@ public class SectionServiceImpl implements SectionService{
         List<GetSectionResponse> allSectionResponses = new ArrayList<>();
         List<Section> listSection = sectionRepository.findAll();
         listSection.forEach(content -> {
-            if (content.getClasses().getId() == id){
+            if (content.getClasses().getId().compareTo(id) == 0){
                 GetSectionResponse sectionResponse = GetSectionResponse.builder()
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())

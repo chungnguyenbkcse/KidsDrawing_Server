@@ -74,7 +74,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
         List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
         listTeacherLeave.forEach(content -> {
-            if (content.getSubstitute_teacher().getId() == id) {
+            if (content.getSubstitute_teacher().getId().compareTo(id) == 0) {
                 GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
                     .id(content.getId())
                     .teacher_id(content.getTeacher().getId())
@@ -106,7 +106,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
         List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
         listTeacherLeave.forEach(content -> {
-            if (content.getClasses().getId() == id) {
+            if (content.getClasses().getId().compareTo(id) == 0) {
                 GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
                     .id(content.getId())
                     .teacher_id(content.getTeacher().getId())

@@ -214,7 +214,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
         List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getId() == id) {
+            if (content.getClasses().getId().compareTo(id) == 0) {
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
@@ -244,7 +244,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
         List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getUserRegisterTeachSemester().getTeacher().getId() == id) {
+            if (content.getClasses().getUserRegisterTeachSemester().getTeacher().getId().compareTo(id) == 0) {
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
@@ -274,7 +274,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
         List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getId() == classes_id && content.getStudent().getId() == student_id) {
+            if (content.getClasses().getId().compareTo(classes_id) == 0 && content.getStudent().getId().compareTo(student_id) == 0) {
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())

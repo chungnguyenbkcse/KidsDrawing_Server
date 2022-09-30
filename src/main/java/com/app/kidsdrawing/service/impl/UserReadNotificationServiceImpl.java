@@ -59,7 +59,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
         List<GetUserReadNotificationResponse> allUserReadNotificationResponses = new ArrayList<>();
         List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findByUserId(id);
         listUserReadNotification.forEach(content -> {
-            if (content.getUser().getId() == id){
+            if (content.getUser().getId().compareTo(id) == 0){
                 GetUserReadNotificationResponse uuserReadNotificationResponse = GetUserReadNotificationResponse.builder()
                     .user_id(content.getUser().getId())
                     .notification_id(content.getNotification().getId())
@@ -79,7 +79,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
         List<GetUserReadNotificationResponse> allUserReadNotificationResponses = new ArrayList<>();
         List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findAll();
         listUserReadNotification.forEach(content -> {
-            if (content.getNotification().getId() == id){
+            if (content.getNotification().getId().compareTo(id) == 0){
                 GetUserReadNotificationResponse uuserReadNotificationResponse = GetUserReadNotificationResponse.builder()
                     .user_id(content.getUser().getId())
                     .notification_id(content.getNotification().getId())
@@ -145,7 +145,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
         });
         List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findAll();
         listUserReadNotification.forEach(content-> {
-            if (content.getUser().getId() == createUserReadNotificationRequest.getUser_id() && content.getNotification().getId() == createUserReadNotificationRequest.getNotification_id()){
+            if (content.getUser().getId().compareTo(createUserReadNotificationRequest.getUser_id()) == 0 && content.getNotification().getId().compareTo(createUserReadNotificationRequest.getNotification_id()) == 0){
                 UserReadNotification updatedUserReadNotification = content;
                 UserReadNotificationKey idx = new UserReadNotificationKey(user.getId(), notification.getId());
             

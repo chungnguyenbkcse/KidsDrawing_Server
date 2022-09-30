@@ -86,7 +86,7 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/parent")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllParent() {
-        String role_id =  "STUDENT_USER";
+        String role_id =  "PARENT_USER";
         return ResponseEntity.ok().body(userService.getAllParents(role_id));
     } 
 

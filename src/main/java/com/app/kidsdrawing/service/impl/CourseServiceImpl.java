@@ -432,7 +432,7 @@ public class CourseServiceImpl implements CourseService {
         List<SemesterClass> allRegisteredSemesterClassResponses = new ArrayList<>();
 
         listTeacherTeachSemester.forEach(ele -> {
-            if (ele.getTeacher().getId() == id){
+            if (ele.getTeacher().getId().compareTo(id) == 0){
                 allTeacherTeachSemesterResponses.add(ele);
                 allRegisteredSemesterClassResponses.add(ele.getSemesterClass());
             }
@@ -452,8 +452,8 @@ public class CourseServiceImpl implements CourseService {
         allNotRegisterSemesterClass.forEach(ele -> {
             schedule = "";
             scheduleRepository.findAll().forEach(schedule_item -> {
-                if (schedule_item.getSemesterClass().getId() == ele.getId()){
-                    if (schedule == ""){
+                if (schedule_item.getSemesterClass().getId().compareTo(ele.getId()) == 0){
+                    if (schedule.equals("") ){
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
                     }
                     else {
@@ -501,8 +501,8 @@ public class CourseServiceImpl implements CourseService {
         allRegisterSuccessfullSemesterClass.forEach(ele -> {
             schedule = "";
             scheduleRepository.findAll().forEach(schedule_item -> {
-                if (schedule_item.getSemesterClass().getId() == ele.getId()){
-                    if (schedule == ""){
+                if (schedule_item.getSemesterClass().getId().compareTo(ele.getId()) == 0){
+                    if (schedule.equals("")){
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
                     }
                     else {
@@ -536,8 +536,8 @@ public class CourseServiceImpl implements CourseService {
             if (!allRegisterSuccessfullSemesterClass.contains(ele)){
                 schedule = "";
                 scheduleRepository.findAll().forEach(schedule_item -> {
-                    if (schedule_item.getSemesterClass().getId() == ele.getId()){
-                        if (schedule == ""){
+                    if (schedule_item.getSemesterClass().getId().compareTo(ele.getId()) == 0){
+                        if (schedule.equals("")){
                             schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " (" + schedule_item.getLessonTime().getStart_time().toString() + " - " + schedule_item.getLessonTime().getEnd_time().toString() +")";
                         }
                         else {

@@ -93,7 +93,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findAll();
         List<Exercise> listExerciseSubmitedByStudentClass = new ArrayList<>();
         listExerciseSubmission.forEach(ele -> {
-            if (listExerciseForClass.contains(ele.getExercise()) && ele.getStudent().getId() == student_id){
+            if (listExerciseForClass.contains(ele.getExercise()) && ele.getStudent().getId().compareTo(student_id) == 0){
                 listExerciseSubmitedByStudentClass.add(ele.getExercise());
                 checked = false;
                 listUserGradeExerciseSubmissions.forEach(user_grade_exercise_submission -> {
@@ -194,7 +194,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<Exercise> listExerciseSubmitedByStudentClass = new ArrayList<>();
         listExerciseSubmission.forEach(ele -> {
             
-            if (listExerciseForSection.contains(ele.getExercise()) && ele.getStudent().getId() == student_id){
+            if (listExerciseForSection.contains(ele.getExercise()) && ele.getStudent().getId().compareTo(student_id) == 0){
                 listExerciseSubmitedByStudentClass.add(ele.getExercise());
                 checked = false;
                 listUserGradeExerciseSubmissions.forEach(user_grade_exercise_submission -> {
@@ -273,7 +273,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> allExerciseResponses = new ArrayList<>();
         List<Exercise> listExercise = exerciseRepository.findAll();
         listExercise.forEach(content -> {
-            if (content.getSection().getId() == id){
+            if (content.getSection().getId().compareTo(id) == 0){
                 GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
                     .id(content.getId())
                     .section_id(content.getSection().getId())

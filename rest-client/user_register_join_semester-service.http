@@ -21,10 +21,10 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "student_id": 18,
-    "semester_classes_id": 10,
-    "payer_id": 7,
-    "price": 1000
+    "student_id": "adb99134-a577-4c2e-b565-c61ff1c3e1ca",
+    "semester_classes_id": "dffd05a7-a0c3-4c66-aaea-74e04f04766c",
+    "payer_id": "5abc98e1-6fc3-4339-8584-4aaf4df9590d",
+    "price": "1000"
 }
 
 ### GET TEACHER GRADE semester ACTION ###

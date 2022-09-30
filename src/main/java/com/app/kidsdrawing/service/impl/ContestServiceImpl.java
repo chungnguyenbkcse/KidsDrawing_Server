@@ -70,7 +70,7 @@ public class ContestServiceImpl implements ContestService {
         pageContest.forEach(contest -> {
             List<UUID> teachers = new ArrayList<>();
             pageUserGradeContest.forEach(user_grade_contest -> {
-                if (user_grade_contest.getContest().getId() == contest.getId()) {
+                if (user_grade_contest.getContest().getId().compareTo(contest.getId())  == 0) {
                     teachers.add(user_grade_contest.getUser().getId());
                 }
             });
@@ -226,7 +226,7 @@ public class ContestServiceImpl implements ContestService {
         Pageable paging = PageRequest.of(page, size);
         Page<Contest> pageContest = contestRepository.findAll(paging);
         pageContest.getContent().forEach(contest -> {
-            if (contest.getArtTypes().getId() == id) {
+            if (contest.getArtTypes().getId().compareTo(id) == 0) {
                 total = 0;
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                         .findByContestId(contest.getId());
@@ -518,7 +518,7 @@ public class ContestServiceImpl implements ContestService {
         Pageable paging = PageRequest.of(page, size);
         Page<Contest> pageContest = contestRepository.findAll(paging);
         pageContest.getContent().forEach(contest -> {
-            if (contest.getArtAges().getId() == id) {
+            if (contest.getArtAges().getId().compareTo(id) == 0) {
                 total = 0;
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                         .findByContestId(contest.getId());

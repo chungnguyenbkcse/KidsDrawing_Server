@@ -119,7 +119,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
         List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId(student_id);
         listUserAttendance.forEach(content -> {
-            if (content.getSection().getClasses().getId() == classes_id) {
+            if (content.getSection().getClasses().getId().compareTo(classes_id) == 0) {
                 GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                     .id(content.getId())
                     .section_number(content.getSection().getNumber())
@@ -147,7 +147,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
         List<UserAttendance> listUserAttendance = userAttendanceRepository.findAll();
         listUserAttendance.forEach(content -> {
-            if (content.getSection().getClasses().getId() == classes_id) {
+            if (content.getSection().getClasses().getId().compareTo(classes_id) == 0) {
                 GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                     .id(content.getId())
                     .section_number(content.getSection().getNumber())

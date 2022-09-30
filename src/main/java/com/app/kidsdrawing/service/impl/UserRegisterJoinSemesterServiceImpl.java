@@ -181,37 +181,37 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         total_user_of_dec = 0;
         listUserRegisterJoinSemester.forEach(content -> {
             if (content.getSemesterClass().getSemester().getStart_time().getYear() == year){
-                if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JANUARY"){
+                if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("JANUARY")){
                     total_user_of_jan += content.getPrice();
                 }
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "FEBRUARY"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("FEBRUARY")){
                     total_user_of_feb += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "MARCH"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("MARCH")){
                     total_user_of_mar += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "APRIL"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("APRIL")){
                     total_user_of_apr += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "MAY"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("MAY")){
                     total_user_of_may += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JUNE"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("JUNE")){
                     total_user_of_jun += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JULY"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("JULY")){
                     total_user_of_jul += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "AUGUST"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("AUGUST")){
                     total_user_of_aug += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "SEPTEMBER"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("SEPTEMBER")){
                     total_user_of_sep += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "OCTOBER"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("OCTOBER")){
                     total_user_of_oct += content.getPrice();
                 }
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "NOVEMBER"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("NOVEMBER")){
                     total_user_of_nov += content.getPrice();
                 }
                 else {
@@ -248,37 +248,37 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         total_user_of_dec = 0;
         listUserRegisterJoinSemester.forEach(content -> {
             if (content.getSemesterClass().getSemester().getStart_time().getYear() == year-1){
-                if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JANUARY"){
+                if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("JANUARY")){
                     total_user_of_jan += content.getPrice();
                 }
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "FEBRUARY"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("FEBRUARY")){
                     total_user_of_feb += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "MARCH"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("MARCH")){
                     total_user_of_mar += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "APRIL"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("APRIL")){
                     total_user_of_apr += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "MAY"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("MAY")){
                     total_user_of_may += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JUNE"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("JUNE")){
                     total_user_of_jun += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "JULY"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("JULY")){
                     total_user_of_jul += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "AUGUST"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("AUGUST")){
                     total_user_of_aug += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "SEPTEMBER"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("SEPTEMBER")){
                     total_user_of_sep += content.getPrice();
                 } 
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "OCTOBER"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("OCTOBER")){
                     total_user_of_oct += content.getPrice();
                 }
-                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString() == "NOVEMBER"){
+                else if (content.getSemesterClass().getSemester().getStart_time().getMonth().toString().equals("NOVEMBER")){
                     total_user_of_nov += content.getPrice();
                 }
                 else {

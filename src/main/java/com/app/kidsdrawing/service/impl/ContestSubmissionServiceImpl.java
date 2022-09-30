@@ -64,7 +64,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         List<GetContestSubmissionResponse> allContestSubmissionResponses = new ArrayList<>();
         List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findAll();
         listContestSubmission.forEach(content -> {
-            if (content.getStudent().getId() == id){
+            if (content.getStudent().getId().compareTo(id) == 0){
                 GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
                     .id(content.getId())
                     .contest_id(content.getContest().getId())

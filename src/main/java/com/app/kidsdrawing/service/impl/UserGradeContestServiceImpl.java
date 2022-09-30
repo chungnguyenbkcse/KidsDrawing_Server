@@ -39,7 +39,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
         List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
         pageUserGradeContest.forEach(content -> {
-            if (content.getUser().getId() == id){
+            if (content.getUser().getId().compareTo(id) == 0){
                 GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
                     .id(content.getId())
                     .teacher_id(id)
@@ -61,7 +61,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
         List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
         pageUserGradeContest.forEach(content -> {
-            if (content.getContest().getId() == id){
+            if (content.getContest().getId().compareTo(id) == 0){
                 GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
                     .id(content.getId())
                     .teacher_id(content.getUser().getId())
