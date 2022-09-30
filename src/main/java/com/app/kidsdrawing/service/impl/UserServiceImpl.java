@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -72,10 +73,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private static int total_user_of_dec = 0;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudents(Long role_id) {
+    public ResponseEntity<Map<String, Object>> getAllStudents(String role_name) {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById(role_id);
+        Optional<Role> roleOpt = roleRepository.findByName(role_name);
         Role role = roleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.role.not_found");
         });
@@ -121,7 +122,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllChildForParentId(UUID id) {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findByParentId(id);
         pageUser.forEach(user -> {
@@ -155,10 +156,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getReportUserNew(int year, Long role_id) {
+    public ResponseEntity<Map<String, Object>> getReportUserNew(int year, String role_name) {
         List<Integer> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById(role_id);
+        Optional<Role> roleOpt = roleRepository.findByName(role_name);
         Role role = roleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.role.not_found");
         });
@@ -233,7 +234,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long updateUserStatus(Long id, CreateUserStatusRequest createUserStatusRequest) {
+    public UUID updateUserStatus(UUID id, CreateUserStatusRequest createUserStatusRequest) {
         Optional<User> userOpt = userRepository.findById(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -245,10 +246,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllParents(Long role_id) {
+    public ResponseEntity<Map<String, Object>> getAllParents(String role_name) {
         List<GetUserResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById(role_id);
+        Optional<Role> roleOpt = roleRepository.findByName(role_name);
         Role role = roleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.role.not_found");
         });
@@ -280,7 +281,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public ResponseEntity<Map<String, Object>> getAllTeacher() {
         List<GetTeacherResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById((long) 2);
+        Optional<Role> roleOpt = roleRepository.findByName("TEACHER_USER");
         Role role = roleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.role.not_found");
         });
@@ -378,12 +379,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public GetUserInfoResponse getUserInfoById(Long id) {
+    public GetUserInfoResponse getUserInfoById(UUID id) {
         Optional<User> userOpt = userRepository.findById(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
-        Long a = (long) 0;
+        UUID a = UUID.randomUUID();
         if (user.getParent() != null) {
             a = user.getParent().getId();
         }
@@ -415,7 +416,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long createUser(CreateUserRequest createUserRequest) {
+    public UUID createUser(CreateUserRequest createUserRequest) {
         String encodedPassword = passwordEncoder.encode(createUserRequest.getPassword());
 
         if (userRepository.existsByUsername(createUserRequest.getUsername())) {
@@ -442,7 +443,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
         User savedUser = User.builder()
-                .id((long) (userRepository.findAll().size() + 1))
                 .username(createUserRequest.getUsername())
                 .email(createUserRequest.getEmail())
                 .password(encodedPassword)
@@ -461,7 +461,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public Long createStudent(CreateStudentRequest createStudentOrParentRequest) {
+    public UUID createStudent(CreateStudentRequest createStudentOrParentRequest) {
         String encodedPassword = passwordEncoder.encode(createStudentOrParentRequest.getPassword());
 
         if (userRepository.existsByUsername(createStudentOrParentRequest.getUsername())) {
@@ -483,7 +483,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
         User savedUser = User.builder()
-                .id((long) (userRepository.findAll().size() + 1))
                 .username(createStudentOrParentRequest.getUsername())
                 .email(createStudentOrParentRequest.getEmail())
                 .password(encodedPassword)
@@ -516,7 +515,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long createTeacher(CreateTeacherRequest createTeacherRequest) {
+    public UUID createTeacher(CreateTeacherRequest createTeacherRequest) {
         String password = getSaltString();
         String encodedPassword = passwordEncoder.encode(password);
 
@@ -539,7 +538,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
         User savedUser = User.builder()
-                .id((long) (userRepository.findAll().size() + 1))
                 .username(createTeacherRequest.getUsername())
                 .email(createTeacherRequest.getEmail())
                 .password(encodedPassword)
@@ -574,7 +572,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long updateUser(Long id, CreateUserRequest createUserRequest) {
+    public UUID updateUser(UUID id, CreateUserRequest createUserRequest) {
         Optional<User> userOpt = userRepository.findById(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -604,7 +602,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public Long updatePassword(Long id, CreateChangePassowrdRequest createChangePassowrdRequest) {
+    public UUID updatePassword(UUID id, CreateChangePassowrdRequest createChangePassowrdRequest) {
         Optional<User> userOpt = userRepository.findById(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -623,7 +621,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long removeUser(Long id) {
+    public UUID removeUser(UUID id) {
         Optional<User> userOpt = userRepository.findById(id);
         userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");

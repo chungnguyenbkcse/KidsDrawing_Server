@@ -1,10 +1,11 @@
 package com.app.kidsdrawing.dto;
+import java.util.UUID;
 
-import lombok.Data;
+import lombok.Data;                                   
 
 @Data
 public class CreateContestSubmissionRequest {
-    private Long student_id;
-    private Long contest_id;
+    private UUID student_id;
+    private UUID contest_id;
     private String image_url;
 }

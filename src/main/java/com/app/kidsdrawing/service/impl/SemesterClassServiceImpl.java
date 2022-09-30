@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -118,7 +119,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByStudentAndCourse(Long id, Long course_id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByStudentAndCourse(UUID id, UUID course_id) {
         List<GetSemesterClassStudentResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId(course_id);
@@ -251,7 +252,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassHistoryOfStudent(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassHistoryOfStudent(UUID id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
                 .findByStudentId(id);
@@ -278,7 +279,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassPresentOfStudent(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassPresentOfStudent(UUID id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
                 .findByStudentId(id);
@@ -305,7 +306,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public GetSemesterClassResponse getSemesterClassById(Long id) {
+    public GetSemesterClassResponse getSemesterClassById(UUID id) {
         Optional<SemesterClass> semesterClassOpt = semesterClassRepository.findById(id);
         SemesterClass semesterClass = semesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
@@ -324,7 +325,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(UUID id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
@@ -350,7 +351,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemesterScheduleClass(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemesterScheduleClass(UUID id) {
         List<GetSemesterClassForScheduleClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
@@ -368,7 +369,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(UUID id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
@@ -409,7 +410,6 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         }
 
         SemesterClass savedSemesterClass = SemesterClass.builder()
-                .id((long) semesterClassRepository.findAll().size() + 1)
                 .semester(semester)
                 .course(course)
                 .name(createSemesterClassRequest.getName())
@@ -432,7 +432,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public Long removeSemesterClassById(Long id) {
+    public UUID removeSemesterClassById(UUID id) {
         Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
         SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
@@ -443,7 +443,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public Long updateSemesterClassById(Long id, CreateSemesterClassRequest createSemesterClassRequest) {
+    public UUID updateSemesterClassById(UUID id, CreateSemesterClassRequest createSemesterClassRequest) {
         Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
         SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
@@ -475,7 +475,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public String updateSemesterClassMaxParticipantById(Long id) {
+    public String updateSemesterClassMaxParticipantById(UUID id) {
         Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
         SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");

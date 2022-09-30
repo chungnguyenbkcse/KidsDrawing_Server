@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,13 +31,13 @@ public class TeacherRegisterQualificationController {
 
     @CrossOrigin
     @GetMapping(value = "/info/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherRegisterQualificationByTeacherId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherRegisterQualificationByTeacherId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(teacherRegisterQualificationService.getAllTeacherRegisterQualificationByTeacherId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherRegisterQualificationApprovedByTeacherId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherRegisterQualificationApprovedByTeacherId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(teacherRegisterQualificationService.getAllTeacherRegisterQualificationApprovedByTeacherId(id));
     }
     
@@ -49,7 +50,7 @@ public class TeacherRegisterQualificationController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createTeacherRegisterQualification(@RequestBody CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest) {
-        Long teacherRegisterQualificationId = teacherRegisterQualificationService.createTeacherRegisterQualification(createTeacherRegisterQualificationRequest);
+        UUID teacherRegisterQualificationId = teacherRegisterQualificationService.createTeacherRegisterQualification(createTeacherRegisterQualificationRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{teacherRegisterQualificationId}")
                 .buildAndExpand(teacherRegisterQualificationId).toUri();
         return ResponseEntity.created(location).build();
@@ -57,8 +58,8 @@ public class TeacherRegisterQualificationController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateTeacherRegisterQualification(@PathVariable Long id, @RequestBody CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest) {
-        Long teacherRegisterQualificationId = teacherRegisterQualificationService.updateTeacherRegisterQualificationById(id,createTeacherRegisterQualificationRequest);
+    public ResponseEntity<String> updateTeacherRegisterQualification(@PathVariable UUID id, @RequestBody CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest) {
+        UUID teacherRegisterQualificationId = teacherRegisterQualificationService.updateTeacherRegisterQualificationById(id,createTeacherRegisterQualificationRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(teacherRegisterQualificationId).toUri();
         return ResponseEntity.created(location).build();
@@ -66,8 +67,8 @@ public class TeacherRegisterQualificationController {
 
     @CrossOrigin
     @PutMapping(value = "/admin/{id}")
-    public ResponseEntity<String> updateTeacherRegisterQualificationAdmin(@PathVariable Long id, @RequestBody CreateTeacherRegisterQualificationAdminRequest createTeacherRegisterQualificationAdminRequest) {
-        Long teacherRegisterQualificationId = teacherRegisterQualificationService.updateTeacherRegisterQualificationByAdmin(id,createTeacherRegisterQualificationAdminRequest);
+    public ResponseEntity<String> updateTeacherRegisterQualificationAdmin(@PathVariable UUID id, @RequestBody CreateTeacherRegisterQualificationAdminRequest createTeacherRegisterQualificationAdminRequest) {
+        UUID teacherRegisterQualificationId = teacherRegisterQualificationService.updateTeacherRegisterQualificationByAdmin(id,createTeacherRegisterQualificationAdminRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(teacherRegisterQualificationId).toUri();
         return ResponseEntity.created(location).build();
@@ -75,14 +76,14 @@ public class TeacherRegisterQualificationController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetTeacherRegisterQualificationResponse> getTeacherRegisterQualificationById(@PathVariable Long id) {
+    public ResponseEntity<GetTeacherRegisterQualificationResponse> getTeacherRegisterQualificationById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(teacherRegisterQualificationService.getTeacherRegisterQualificationById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteTeacherRegisterQualificationById(@PathVariable Long id) {
-        Long teacherRegisterQualificationId = teacherRegisterQualificationService.removeTeacherRegisterQualificationById(id);
+    public ResponseEntity<String> deleteTeacherRegisterQualificationById(@PathVariable UUID id) {
+        UUID teacherRegisterQualificationId = teacherRegisterQualificationService.removeTeacherRegisterQualificationById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(teacherRegisterQualificationId).toUri();
         return ResponseEntity.created(location).build();

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -57,7 +58,7 @@ public class ContestServiceImpl implements ContestService {
     private static int total = 0;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllContestByTeacher(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllContestByTeacher(UUID id) {
         List<GetContestTeacherResponse> allContestNotOpenNowResponses = new ArrayList<>();
         List<GetContestTeacherResponse> allContestOpeningResponses = new ArrayList<>();
         List<GetContestTeacherResponse> allContestEndResponses = new ArrayList<>();
@@ -67,7 +68,7 @@ public class ContestServiceImpl implements ContestService {
         LocalDateTime time_now = LocalDateTime.now();
 
         pageContest.forEach(contest -> {
-            List<Long> teachers = new ArrayList<>();
+            List<UUID> teachers = new ArrayList<>();
             pageUserGradeContest.forEach(user_grade_contest -> {
                 if (user_grade_contest.getContest().getId() == contest.getId()) {
                     teachers.add(user_grade_contest.getUser().getId());
@@ -220,7 +221,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllContestByArtTypeId(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllContestByArtTypeId(int page, int size, UUID id) {
         List<GetContestResponse> allContestResponses = new ArrayList<>();
         Pageable paging = PageRequest.of(page, size);
         Page<Contest> pageContest = contestRepository.findAll(paging);
@@ -269,7 +270,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllContestByStudent(Long student_id) {
+    public ResponseEntity<Map<String, Object>> getAllContestByStudent(UUID student_id) {
         List<GetContestStudentResponse> allContestNotOpenNowResponses = new ArrayList<>();
         List<GetContestStudentResponse> allContestOpeningResponses = new ArrayList<>();
         List<GetContestStudentResponse> allContestEndResponses = new ArrayList<>();
@@ -382,7 +383,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllContestByParent(Long parent_id) {
+    public ResponseEntity<Map<String, Object>> getAllContestByParent(UUID parent_id) {
         List<GetContestStudentResponse> allContestNotOpenNowResponses = new ArrayList<>();
         List<GetContestStudentResponse> allContestOpeningResponses = new ArrayList<>();
         List<GetContestStudentResponse> allContestEndResponses = new ArrayList<>();
@@ -512,7 +513,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllContestByArtAgeId(int page, int size, Long id) {
+    public ResponseEntity<Map<String, Object>> getAllContestByArtAgeId(int page, int size, UUID id) {
         List<GetContestResponse> allContestResponses = new ArrayList<>();
         Pageable paging = PageRequest.of(page, size);
         Page<Contest> pageContest = contestRepository.findAll(paging);
@@ -599,7 +600,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public GetContestResponse getContestById(Long id) {
+    public GetContestResponse getContestById(UUID id) {
         Optional<Contest> contestOpt = contestRepository.findById(id);
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Contest.not_found");
@@ -638,7 +639,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public Long createContest(CreateContestRequest createContestRequest) {
+    public UUID createContest(CreateContestRequest createContestRequest) {
         if (contestRepository.existsByName(createContestRequest.getName())) {
             throw new ContestAlreadyCreateException("exception.contest.contest_taken");
         }
@@ -659,7 +660,6 @@ public class ContestServiceImpl implements ContestService {
         });
 
         Contest savedContest = Contest.builder()
-                .id((long) contestRepository.findAll().size() + 1)
                 .name(createContestRequest.getName())
                 .description(createContestRequest.getDescription())
                 .max_participant(createContestRequest.getMax_participant())
@@ -678,7 +678,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public Long removeContestById(Long id) {
+    public UUID removeContestById(UUID id) {
         Optional<Contest> contestOpt = contestRepository.findById(id);
         contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Contest.not_found");
@@ -688,7 +688,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public Long updateContestById(Long id, CreateContestRequest createContestRequest) {
+    public UUID updateContestById(UUID id, CreateContestRequest createContestRequest) {
         Optional<Contest> contestOpt = contestRepository.findById(id);
         Contest updatedContest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Contest.not_found");

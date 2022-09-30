@@ -6,15 +6,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.UUID;
 
 import com.app.kidsdrawing.entity.SemesterClass;
 
 @Repository
-public interface SemesterClassRepository extends JpaRepository <SemesterClass, Long>{
+public interface SemesterClassRepository extends JpaRepository <SemesterClass, UUID>{
     Page<SemesterClass> findAll(Pageable pageable);
-    boolean existsById(Long id);
+    boolean existsById(UUID id);
     boolean existsByName(String name);
-    void deleteById(Long id);
-    List<SemesterClass> findBySemesterId(Long id);
-    List<SemesterClass> findByCourseId(Long id);
+    void deleteById(UUID id);
+    List<SemesterClass> findBySemesterId(UUID id);
+    List<SemesterClass> findByCourseId(UUID id);
 }

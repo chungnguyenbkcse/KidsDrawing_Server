@@ -1,10 +1,11 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -25,8 +26,9 @@ import lombok.Setter;
 @Table(name = "Lesson_Time")
 public class LessonTime {
     @Id
-@Column(name = "id")
-    private Long id;
+    @GeneratedValue
+    @Column(name = "id")
+    private UUID  id;
 
     @Column(name = "start_time")
     private LocalTime start_time;

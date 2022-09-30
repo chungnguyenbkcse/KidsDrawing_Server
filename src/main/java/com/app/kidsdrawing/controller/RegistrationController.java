@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import java.net.URI;
+import java.util.UUID;
 
 import com.app.kidsdrawing.dto.CreateUserRequest;
 import com.app.kidsdrawing.service.UserService;
@@ -25,7 +26,7 @@ public class RegistrationController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody CreateUserRequest createUserRequest) {
-        Long userId = userService.createUser(createUserRequest);
+        UUID userId = userService.createUser(createUserRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();

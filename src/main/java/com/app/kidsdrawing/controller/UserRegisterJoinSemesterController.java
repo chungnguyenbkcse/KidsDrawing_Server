@@ -3,6 +3,7 @@ package com.app.kidsdrawing.controller;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,19 +39,19 @@ public class UserRegisterJoinSemesterController {
 
     @CrossOrigin
     @GetMapping(value = "/semester-class/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterBySemesterClass(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterBySemesterClass(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userRegisterJoinSemesterService.getAllUserRegisterJoinSemesterBySemesterClass(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/semester-class/schedule-class/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userRegisterJoinSemesterService.getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/payer/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterByPayerId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinSemesterByPayerId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userRegisterJoinSemesterService.getAllUserRegisterJoinSemesterByPayerId(id));
     }
 
@@ -63,7 +64,7 @@ public class UserRegisterJoinSemesterController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserRegisterJoinSemester(@RequestBody CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
-        Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.createUserRegisterJoinSemester(createUserRegisterJoinSemesterRequest);
+        UUID userRegisterJoinSemesterId = userRegisterJoinSemesterService.createUserRegisterJoinSemester(createUserRegisterJoinSemesterRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterJoinSemesterId}")
                 .buildAndExpand(userRegisterJoinSemesterId).toUri();
         return ResponseEntity.created(location).build();
@@ -71,8 +72,8 @@ public class UserRegisterJoinSemesterController {
 
     @CrossOrigin
     @PostMapping("/payment")
-    public ResponseEntity<String> updateStatusUserRegisterJoinSemester(@RequestParam List<Long> ids, @RequestBody CreateMomoRequest createMomoRequest) {
-        Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateStatusUserRegisterJoinSemester(ids, createMomoRequest);
+    public ResponseEntity<String> updateStatusUserRegisterJoinSemester(@RequestParam List<UUID> ids, @RequestBody CreateMomoRequest createMomoRequest) {
+        UUID userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateStatusUserRegisterJoinSemester(ids, createMomoRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterJoinSemesterId}")
                 .buildAndExpand(userRegisterJoinSemesterId).toUri();
         return ResponseEntity.created(location).build();
@@ -80,8 +81,8 @@ public class UserRegisterJoinSemesterController {
 
     @CrossOrigin
     @PostMapping("/payment/v2")
-    public ResponseEntity<String> updateStatusUserRegisterJoinSemester(@RequestParam List<Long> ids) {
-        Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateStatusUserRegisterJoinSemester(ids);
+    public ResponseEntity<String> updateStatusUserRegisterJoinSemester(@RequestParam List<UUID> ids) {
+        UUID userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateStatusUserRegisterJoinSemester(ids);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterJoinSemesterId}")
                 .buildAndExpand(userRegisterJoinSemesterId).toUri();
         return ResponseEntity.created(location).build();
@@ -89,8 +90,8 @@ public class UserRegisterJoinSemesterController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateUserRegisterJoinSemester(@PathVariable Long id, @RequestBody CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
-        Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateUserRegisterJoinSemesterById(id,createUserRegisterJoinSemesterRequest);
+    public ResponseEntity<String> updateUserRegisterJoinSemester(@PathVariable UUID id, @RequestBody CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
+        UUID userRegisterJoinSemesterId = userRegisterJoinSemesterService.updateUserRegisterJoinSemesterById(id,createUserRegisterJoinSemesterRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userRegisterJoinSemesterId).toUri();
         return ResponseEntity.created(location).build();
@@ -98,14 +99,14 @@ public class UserRegisterJoinSemesterController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserRegisterJoinSemesterResponse> getUserRegisterJoinSemesterById(@PathVariable Long id) {
+    public ResponseEntity<GetUserRegisterJoinSemesterResponse> getUserRegisterJoinSemesterById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userRegisterJoinSemesterService.getUserRegisterJoinSemesterById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserRegisterJoinSemesterById(@PathVariable Long id) {
-        Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.removeUserRegisterJoinSemesterById(id);
+    public ResponseEntity<String> deleteUserRegisterJoinSemesterById(@PathVariable UUID id) {
+        UUID userRegisterJoinSemesterId = userRegisterJoinSemesterService.removeUserRegisterJoinSemesterById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userRegisterJoinSemesterId).toUri();
         return ResponseEntity.created(location).build();

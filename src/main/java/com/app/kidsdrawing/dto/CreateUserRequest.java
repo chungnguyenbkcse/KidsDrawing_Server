@@ -3,7 +3,7 @@ package com.app.kidsdrawing.dto;
 import java.time.LocalDate;
 import java.util.Set;
 
-import lombok.Data;
+import lombok.Data;                                   import java.util.UUID;
 
 @Data
 public class CreateUserRequest {
@@ -17,6 +17,6 @@ public class CreateUserRequest {
     private String sex;
     private String phone;
     private String address;
-    private Long parent_id;
+    private UUID parent_id;
     private Set<String> roleNames;
 }

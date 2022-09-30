@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
@@ -34,7 +35,7 @@ public class UserController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createStudent(@RequestBody CreateStudentRequest createStudentOrParentRequest) {
-        Long userId = userService.createStudent(createStudentOrParentRequest);
+        UUID userId = userService.createStudent(createStudentOrParentRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();
@@ -43,7 +44,7 @@ public class UserController {
     @CrossOrigin
     @PostMapping(value = "/teacher")
     public ResponseEntity<String> createTeacher(@RequestBody CreateTeacherRequest createTeacherRequest) {
-        Long userId = userService.createTeacher(createTeacherRequest);
+        UUID userId = userService.createTeacher(createTeacherRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();
@@ -63,21 +64,21 @@ public class UserController {
     
     @CrossOrigin
     @GetMapping(value = "/childs/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllChildForParentId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllChildForParentId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userService.getAllChildForParentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/report/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUser(@PathVariable int id) {
-        Long role_id = (long) 2;
+        String role_id =  "STUDENT_USER";
         return ResponseEntity.ok().body(userService.getReportUserNew(id, role_id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/student")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudent() {
-        Long role_id = (long) 4;
+        String role_id =  "STUDENT_USER";
         return ResponseEntity.ok().body(userService.getAllStudents(role_id));
     } 
 
@@ -85,20 +86,20 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/parent")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllParent() {
-        Long role_id = (long) 3;
+        String role_id =  "STUDENT_USER";
         return ResponseEntity.ok().body(userService.getAllParents(role_id));
     } 
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserInfoResponse> getUserInfoById(@PathVariable Long id) {
+    public ResponseEntity<GetUserInfoResponse> getUserInfoById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userService.getUserInfoById(id));
     }
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateUserInfoById(@PathVariable Long id, @RequestBody CreateUserRequest createUserRequest) {
-        Long userId = userService.updateUser(id, createUserRequest);
+    public ResponseEntity<String> updateUserInfoById(@PathVariable UUID id, @RequestBody CreateUserRequest createUserRequest) {
+        UUID userId = userService.updateUser(id, createUserRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();
@@ -107,8 +108,8 @@ public class UserController {
 
     @CrossOrigin
     @PutMapping(value = "/change-password/{id}")
-    public ResponseEntity<String> updatePasswordById(@PathVariable Long id, @RequestBody CreateChangePassowrdRequest createChangePassowrdRequest) {
-        Long userId = userService.updatePassword(id, createChangePassowrdRequest);
+    public ResponseEntity<String> updatePasswordById(@PathVariable UUID id, @RequestBody CreateChangePassowrdRequest createChangePassowrdRequest) {
+        UUID userId = userService.updatePassword(id, createChangePassowrdRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();
@@ -116,8 +117,8 @@ public class UserController {
 
     @CrossOrigin
     @PutMapping(value = "/status/{id}")
-    public ResponseEntity<String> updateUserStatus(@PathVariable Long id, @RequestBody CreateUserStatusRequest createUserStatusRequest) {
-        Long userId = userService.updateUserStatus(id, createUserStatusRequest);
+    public ResponseEntity<String> updateUserStatus(@PathVariable UUID id, @RequestBody CreateUserStatusRequest createUserStatusRequest) {
+        UUID userId = userService.updateUserStatus(id, createUserStatusRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();
@@ -125,8 +126,8 @@ public class UserController {
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable Long id){
-        Long userId = userService.removeUser(id);
+    public ResponseEntity<String> deleteUserById(@PathVariable UUID id){
+        UUID userId = userService.removeUser(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();

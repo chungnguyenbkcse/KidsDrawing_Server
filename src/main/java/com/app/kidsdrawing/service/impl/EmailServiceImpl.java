@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -81,7 +82,6 @@ public class EmailServiceImpl implements EmailService {
     public String sendMailByAdmin(CreateEmailDetailRequest details){
         // Creating a mime message
         Notification savedNotification = Notification.builder()
-            .id((long) notificationRepository.findAll().size() + 1)
             .name(details.getSubject())
             .description(details.getMsgBody())
             .build();
@@ -124,14 +124,13 @@ public class EmailServiceImpl implements EmailService {
         return "Mail Sent Successfully...";
     }
 
-    public String sendMailByClass(CreateEmailDetailRequest details, Long id) {
+    public String sendMailByClass(CreateEmailDetailRequest details, UUID id) {
         Optional<Classes> classOpt = classRepository.findById(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
         Notification savedNotification = Notification.builder()
-            .id((long) notificationRepository.findAll().size() + 1)
             .name(details.getSubject())
             .description(details.getMsgBody())
             .build();
@@ -173,7 +172,7 @@ public class EmailServiceImpl implements EmailService {
         return "Mail Sent Successfully...";
     }
 
-    public String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, Long id) {
+    public String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, UUID id) {
         Optional<Classes> classOpt = classRepository.findById(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
@@ -202,7 +201,6 @@ public class EmailServiceImpl implements EmailService {
     public String sendMailToTeacher(CreateEmailDetailRequest details) {
         List<User> allUser = userRepository.findAll();
         Notification savedNotification = Notification.builder()
-            .id((long) notificationRepository.findAll().size() + 1)
             .name(details.getSubject())
             .description(details.getMsgBody())
             .build();
@@ -258,7 +256,6 @@ public class EmailServiceImpl implements EmailService {
 
     public String sendMailToStudent(CreateEmailDetailRequest details) {
         Notification savedNotification = Notification.builder()
-            .id((long) notificationRepository.findAll().size() + 1)
             .name(details.getSubject())
             .description(details.getMsgBody())
             .build();

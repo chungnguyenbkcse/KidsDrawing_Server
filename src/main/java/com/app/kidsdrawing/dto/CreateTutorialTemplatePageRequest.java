@@ -1,10 +1,10 @@
 package com.app.kidsdrawing.dto;
 
-import lombok.Data;
+import lombok.Data;                                   import java.util.UUID;
 
 @Data
 public class CreateTutorialTemplatePageRequest {
-    private Long tutorial_template_id;
+    private UUID tutorial_template_id;
     private String name;
     private String description;
     private Integer number; 

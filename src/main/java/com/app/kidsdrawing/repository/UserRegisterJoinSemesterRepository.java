@@ -4,14 +4,15 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.UUID;
 
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 
 @Repository
-public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserRegisterJoinSemester, Long>{
-    boolean existsById(Long id);
-    void deleteById(Long id);
-    List<UserRegisterJoinSemester> findBySemesterClassId(Long id);
-    List<UserRegisterJoinSemester> findByStudentId(Long id);
-    List<UserRegisterJoinSemester> findByPayerId(Long id);
+public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserRegisterJoinSemester, UUID>{
+    boolean existsById(UUID id);
+    void deleteById(UUID id);
+    List<UserRegisterJoinSemester> findBySemesterClassId(UUID id);
+    List<UserRegisterJoinSemester> findByStudentId(UUID id);
+    List<UserRegisterJoinSemester> findByPayerId(UUID id);
 }

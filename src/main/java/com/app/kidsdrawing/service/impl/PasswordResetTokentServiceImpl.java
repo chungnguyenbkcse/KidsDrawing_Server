@@ -60,7 +60,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
     }
 
     @Override
-    public Long savePassword(CreateResetPasswordRequest createResetPasswordRequest) {
+    public UUID savePassword(CreateResetPasswordRequest createResetPasswordRequest) {
         String result = validatePasswordResetToken(createResetPasswordRequest.getToken());
 
         if(result != null) {

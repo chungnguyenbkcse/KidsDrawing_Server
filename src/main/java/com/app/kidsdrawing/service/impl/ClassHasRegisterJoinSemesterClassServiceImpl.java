@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -56,7 +57,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
     }
 
     @Override
-    public GetClassHasRegisterJoinSemesterClassResponse getClassHasRegisterJoinSemesterClassById(Long id){
+    public GetClassHasRegisterJoinSemesterClassResponse getClassHasRegisterJoinSemesterClassById(UUID id){
         Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findById(id);
         ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
@@ -70,7 +71,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
     }
 
     @Override
-    public GetClassHasRegisterJoinSemesterClassResponse getClassHasRegisterJoinSemesterClassByClassesAndUserRegisterJoinSemester(Long class_id, Long user_register_join_semester_id) {
+    public GetClassHasRegisterJoinSemesterClassResponse getClassHasRegisterJoinSemesterClassByClassesAndUserRegisterJoinSemester(UUID class_id, UUID user_register_join_semester_id) {
         
         Optional <Classes> classOpt = classRepository.findById(class_id);
         Classes classes = classOpt.orElseThrow(() -> {
@@ -101,7 +102,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
 
     @Override
-    public Long updateClassHasRegisterJoinSemesterClassForStudent(CreateClassHasRegisterJoinSemesterClassStudentRequest createClassHasRegisterJoinSemesterClassStudentRequest) {
+    public UUID updateClassHasRegisterJoinSemesterClassForStudent(CreateClassHasRegisterJoinSemesterClassStudentRequest createClassHasRegisterJoinSemesterClassStudentRequest) {
         Optional <Classes> classOpt = classRepository.findById(createClassHasRegisterJoinSemesterClassStudentRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.classes.not_found");
@@ -127,7 +128,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
     }
 
     @Override
-    public Long updateClassHasRegisterJoinSemesterClassForTeacher(CreateClassHasRegisterJoinSemesterClassTeacherRequest createClassHasRegisterJoinSemesterClassTeacherRequest) {
+    public UUID updateClassHasRegisterJoinSemesterClassForTeacher(CreateClassHasRegisterJoinSemesterClassTeacherRequest createClassHasRegisterJoinSemesterClassTeacherRequest) {
         Optional <Classes> classOpt = classRepository.findById(createClassHasRegisterJoinSemesterClassTeacherRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.classes.not_found");
@@ -153,7 +154,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
 
     @Override
-    public Long createClassHasRegisterJoinSemesterClass(CreateClassHasRegisterJoinSemesterClassRequest createClassHasRegisterJoinSemesterClassRequest) {
+    public UUID createClassHasRegisterJoinSemesterClass(CreateClassHasRegisterJoinSemesterClassRequest createClassHasRegisterJoinSemesterClassRequest) {
 
         Optional <Classes> classOpt = classRepository.findById(createClassHasRegisterJoinSemesterClassRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
@@ -179,7 +180,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
     }
 
     @Override
-    public Long removeClassHasRegisterJoinSemesterClassById(Long classes_id, Long user_register_join_semester) {
+    public UUID removeClassHasRegisterJoinSemesterClassById(UUID classes_id, UUID user_register_join_semester) {
 
         Optional <Classes> classOpt = classRepository.findById(classes_id);
         Classes classes = classOpt.orElseThrow(() -> {
@@ -199,11 +200,11 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
         });
 
         classHasRegisterJoinSemesterClassRepository.deleteById(id);
-        return (long)1;
+        return  UUID.randomUUID();
     }
 
     @Override
-    public Long updateClassHasRegisterJoinSemesterClassById(CreateClassHasRegisterJoinSemesterClassRequest createClassHasRegisterJoinSemesterClassRequest) {
+    public UUID updateClassHasRegisterJoinSemesterClassById(CreateClassHasRegisterJoinSemesterClassRequest createClassHasRegisterJoinSemesterClassRequest) {
 
         Optional <Classes> classOpt = classRepository.findById(createClassHasRegisterJoinSemesterClassRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {

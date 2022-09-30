@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -67,7 +68,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByStudent(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByStudent(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
@@ -137,7 +138,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByParent(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByParent(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
@@ -209,7 +210,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
         List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
         listStudentLeave.forEach(content -> {
@@ -239,7 +240,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByTeacher(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByTeacher(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
         List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
         listStudentLeave.forEach(content -> {
@@ -269,7 +270,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(Long classes_id, Long student_id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(UUID classes_id, UUID student_id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
         List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
         listStudentLeave.forEach(content -> {
@@ -299,7 +300,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public GetStudentLeaveResponse getStudentLeaveById(Long id) {
+    public GetStudentLeaveResponse getStudentLeaveById(UUID id) {
         Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById(id);
         StudentLeave StudentLeave = StudentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
@@ -323,14 +324,14 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest) {
+    public UUID createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest) {
 
         Optional <User> studentOpt = userRepository.findById(createStudentLeaveRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <User> adminOpt = userRepository.findById((long) 1);
+        Optional <User> adminOpt = userRepository.findByUsername("admin");
         User admin = adminOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
@@ -346,7 +347,6 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         });
         
         StudentLeave savedStudentLeave = StudentLeave.builder()
-                .id((long) studentLeaveRepository.findAll().size() + 1)
                 .classes(classes)
                 .section(section)
                 .student(student)
@@ -360,7 +360,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long removeStudentLeaveById(Long id) {
+    public UUID removeStudentLeaveById(UUID id) {
         Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById(id);
         studentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
@@ -371,7 +371,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long updateStudentLeaveById(Long id, CreateStudentLeaveRequest createStudentLeaveRequest) {
+    public UUID updateStudentLeaveById(UUID id, CreateStudentLeaveRequest createStudentLeaveRequest) {
         Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById(id);
         StudentLeave updatedStudentLeave = StudentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
@@ -401,7 +401,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long updateStatusStudentLeaveById(Long id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest) {
+    public UUID updateStatusStudentLeaveById(UUID id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest) {
         Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById(id);
         StudentLeave updatedStudentLeave = studentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");

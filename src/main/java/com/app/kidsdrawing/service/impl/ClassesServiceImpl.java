@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -92,7 +93,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getInforDetailOfClassByTeacherId(Long id) {
+    public ResponseEntity<Map<String, Object>> getInforDetailOfClassByTeacherId(UUID id) {
         List<GetInfoClassTeacherResponse> allInfoClassTeacherDoingResponses = new ArrayList<>();
         List<GetInfoClassTeacherResponse> allInfoClassTeacherDoneResponses = new ArrayList<>();
         List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allScheduleTime = new ArrayList<>();
@@ -327,7 +328,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getClassesForStudentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getClassesForStudentId(UUID id) {
         List<GetClassesParentResponse> allClassDoingResponses = new ArrayList<>();
         List<GetClassesParentResponse> allClassDoneResponses = new ArrayList<>();
 
@@ -475,7 +476,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getClassesStudentForParentId(Long parent_id) {
+    public ResponseEntity<Map<String, Object>> getClassesStudentForParentId(UUID parent_id) {
         List<User> pageUser = userRepository.findByParentId(parent_id);
         List<GetClassesParentResponse> allClassDoingResponses = new ArrayList<>();
         List<GetClassesParentResponse> allClassDoneResponses = new ArrayList<>();
@@ -620,7 +621,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(UUID id) {
         List<GetClassesStudentResponse> allClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository
                 .findByStudentId(id);
@@ -701,7 +702,7 @@ public class ClassesServiceImpl implements ClassesService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public LocalDateTime getEndSectionOfClass(Long id) {
+    public LocalDateTime getEndSectionOfClass(UUID id) {
         Optional<Classes> classOpt = classRepository.findById(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
@@ -823,7 +824,7 @@ public class ClassesServiceImpl implements ClassesService {
         return start_time;
     }
 
-    public List<Map<String, List<List<LocalDateTime>>>> getScheduleDetailOfClass(Long id) {
+    public List<Map<String, List<List<LocalDateTime>>>> getScheduleDetailOfClass(UUID id) {
         Optional<Classes> classOpt = classRepository.findById(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
@@ -958,7 +959,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getInforScheduleChild(Long child_id) {
+    public ResponseEntity<Map<String, Object>> getInforScheduleChild(UUID child_id) {
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
                 .findByStudentId(child_id);
         List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
@@ -1096,7 +1097,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getInforScheduleAllChild(Long parent_id) {
+    public ResponseEntity<Map<String, Object>> getInforScheduleAllChild(UUID parent_id) {
         List<User> listChilds = userRepository.findByParentId(parent_id);
         List<Map<String, List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>>>> allCalendarForAllChild = new ArrayList<>();
         listChilds.forEach(child -> {
@@ -1242,7 +1243,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getInforDetailOfClass(Long id) {
+    public ResponseEntity<Map<String, Object>> getInforDetailOfClass(UUID id) {
         Map<String, Object> response = new HashMap<>();
         Optional<Classes> classOpt = classRepository.findById(id);
         Classes classes = classOpt.orElseThrow(() -> {
@@ -1316,7 +1317,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
                 .findByClassesId(classes.getId());
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
-            Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
+            UUID parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
             String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
                     + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
@@ -1473,7 +1474,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public GetClassResponse getClassById(Long id) {
+    public GetClassResponse getClassById(UUID id) {
         Optional<Classes> classOpt = classRepository.findById(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
@@ -1491,7 +1492,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public Long createClass(CreateClassRequest createClassRequest) {
+    public UUID createClass(CreateClassRequest createClassRequest) {
         Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
                 .findById(createClassRequest.getUser_register_teach_semester());
         UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
@@ -1515,7 +1516,6 @@ public class ClassesServiceImpl implements ClassesService {
         });
 
         Classes savedClass = Classes.builder()
-                .id((long) classRepository.findAll().size() + 1)
                 .user(user)
                 .userRegisterTeachSemester(teacherTeachSemester)
                 .security_code(createClassRequest.getSecurity_code())
@@ -1528,7 +1528,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public Long removeClassById(Long id) {
+    public UUID removeClassById(UUID id) {
         Optional<Classes> classOpt = classRepository.findById(id);
         classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
@@ -1539,7 +1539,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public Long updateClassById(Long id, CreateClassRequest createClassRequest) {
+    public UUID updateClassById(UUID id, CreateClassRequest createClassRequest) {
         Optional<Classes> classOpt = classRepository.findById(id);
         Classes updatedClass = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");

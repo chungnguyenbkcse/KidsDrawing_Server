@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -95,7 +96,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(UUID id) {
         List<GetCourseNewResponse> courses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByStudentId(id);
         List<Course> listCourseRegisted = new ArrayList<>();
@@ -191,7 +192,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtTypeId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtTypeId(UUID id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<Course> pageCourse = courseRepository.findAll();
         pageCourse.forEach(course -> {
@@ -221,7 +222,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtAgeId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtAgeId(UUID id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<Course> pageCourse = courseRepository.findAll();
         pageCourse.forEach(course -> {
@@ -251,7 +252,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtLevelId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtLevelId(UUID id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<Course> pageCourse = courseRepository.findAll();
         pageCourse.forEach(course -> {
@@ -281,7 +282,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByParentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByParentId(UUID id) {
         List<GetCourseParentResponse> allCourseRegistedResponses = new ArrayList<>();
         List<GetCourseParentResponse> allCourseNotRegistedNowResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findByParentId(id);
@@ -353,7 +354,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByStudentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByStudentId(UUID id) {
         List<GetCourseParentResponse> allCourseRegistedResponses = new ArrayList<>();
         List<GetCourseParentResponse> allCourseNotRegistedNowResponses = new ArrayList<>();
         List<Course> listCourseRegistered = new ArrayList<>();
@@ -422,7 +423,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByTeacherId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByTeacherId(UUID id) {
         List<UserRegisterTeachSemester> listTeacherTeachSemester = userRegisterTeachSemesterRepository.findAll();
         
         // Danh sach dang ki day cua giao vien
@@ -598,7 +599,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public GetCourseResponse getCourseById(Long id){
+    public GetCourseResponse getCourseById(UUID id){
         Optional<Course> courseOpt = courseRepository.findById(id);
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
@@ -622,7 +623,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Long createCourse(CreateCourseRequest createCourseRequest) {
+    public UUID createCourse(CreateCourseRequest createCourseRequest) {
         if (courseRepository.existsByName(createCourseRequest.getName())) {
             throw new CourseAlreadyCreateException("exception.course.course_taken");
         }
@@ -649,7 +650,6 @@ public class CourseServiceImpl implements CourseService {
 
 
         Course savedCourse = Course.builder()
-                .id((long) courseRepository.findAll().size() + 1)
                 .name(createCourseRequest.getName())
                 .description(createCourseRequest.getDescription())
                 .num_of_section(createCourseRequest.getNum_of_section())
@@ -667,7 +667,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Long removeCourseById(Long id) {
+    public UUID removeCourseById(UUID id) {
         Optional<Course> courseOpt = courseRepository.findById(id);
         courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
@@ -677,7 +677,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Long updateCourseById(Long id, CreateCourseRequest createCourseRequest) {
+    public UUID updateCourseById(UUID id, CreateCourseRequest createCourseRequest) {
         Optional<Course> courseOpt = courseRepository.findById(id);
         Course updatedCourse = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");

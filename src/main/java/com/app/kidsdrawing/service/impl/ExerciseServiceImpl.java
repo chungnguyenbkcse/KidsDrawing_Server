@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -68,7 +69,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndStudent(Long classes_id, Long student_id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndStudent(UUID classes_id, UUID student_id) {
         List<GetExerciseResponse> allExerciseNotSubmitResponses = new ArrayList<>();
         List<GetExerciseResponse> allExerciseSubmitedNotGradeResponses = new ArrayList<>();
         List<GetExerciseResponse> allExerciseSubmitedGradedResponses = new ArrayList<>();
@@ -167,7 +168,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionAndStudent(Long section_id, Long student_id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionAndStudent(UUID section_id, UUID student_id) {
         List<GetExerciseResponse> allExerciseNotSubmitResponses = new ArrayList<>();
         List<GetExerciseResponse> allExerciseSubmitedNotGradeResponses = new ArrayList<>();
         List<GetExerciseResponse> allExerciseSubmitedGradedResponses = new ArrayList<>();
@@ -268,7 +269,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionId(UUID id) {
         List<GetExerciseResponse> allExerciseResponses = new ArrayList<>();
         List<Exercise> listExercise = exerciseRepository.findAll();
         listExercise.forEach(content -> {
@@ -295,7 +296,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public GetExerciseResponse getExerciseById(Long id) {
+    public GetExerciseResponse getExerciseById(UUID id) {
         Optional<Exercise> exerciseOpt = exerciseRepository.findById(id);
         Exercise exercise = exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");
@@ -316,7 +317,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public Long createExercise(CreateExerciseRequest createExerciseRequest) {
+    public UUID createExercise(CreateExerciseRequest createExerciseRequest) {
 
         Optional <Section> sectionOpt = sectionRepository.findById(createExerciseRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
@@ -329,7 +330,6 @@ public class ExerciseServiceImpl implements ExerciseService{
         });
         
         Exercise savedExercise = Exercise.builder()
-                .id((long) exerciseRepository.findAll().size() + 1)
                 .section(section)
                 .exerciseLevel(exercise_level)
                 .name(createExerciseRequest.getName())
@@ -342,7 +342,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public Long removeExerciseById(Long id) {
+    public UUID removeExerciseById(UUID id) {
         Optional<Exercise> exerciseOpt = exerciseRepository.findById(id);
         exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");
@@ -353,7 +353,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public Long updateExerciseById(Long id, CreateExerciseRequest createExerciseRequest) {
+    public UUID updateExerciseById(UUID id, CreateExerciseRequest createExerciseRequest) {
         Optional<Exercise> exerciseOpt = exerciseRepository.findById(id);
         Exercise updatedExercise = exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");

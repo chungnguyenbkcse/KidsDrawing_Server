@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -129,7 +130,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public Long setCalenderForSemester(Long id, CreateHolidayRequest createHolidayResquest) {
+    public UUID setCalenderForSemester(UUID id, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
         Optional<Semester> semesterOpt = semesterRepository.findById(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
@@ -165,14 +166,13 @@ public class SemesterServiceImpl implements SemesterService {
 
         createHolidayResquest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
-                .id((long) holidayRepository.findAll().size() + 1)
                 .day(holiday)
                 .semester(semester)
                 .build();
             holidayRepository.save(saveHoliday);
         });
 
-        Optional <User> userOpt = userRepository.findById((long) 1);
+        Optional <User> userOpt = userRepository.findByUsername("admin");
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
@@ -294,7 +294,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public Long setClassForSemester(Long id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
+    public UUID setClassForSemester(UUID id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
         Optional<Semester> semesterOpt = semesterRepository.findById(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
@@ -309,14 +309,13 @@ public class SemesterServiceImpl implements SemesterService {
         
         createHolidayResquest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
-                .id((long) holidayRepository.findAll().size() + 1)
                 .day(holiday)
                 .semester(semester)
                 .build();
             holidayRepository.save(saveHoliday);
         }); 
 
-        Optional <User> userOpt = userRepository.findById((long) 1);
+        Optional <User> userOpt = userRepository.findByUsername("admin");
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         }); 
@@ -393,7 +392,6 @@ public class SemesterServiceImpl implements SemesterService {
                         String key = getSaltString();
                         System.out.println("Lớp thứ: " + String.valueOf(i));
                         Classes savedClass = Classes.builder()
-                            .id((long) classRepository.findAll().size() + 1)
                             .user(creator)
                             .userRegisterTeachSemester(allUserRegisterTeachSemesters.get(i))
                             .security_code(key)
@@ -419,7 +417,6 @@ public class SemesterServiceImpl implements SemesterService {
                         List<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId(semester_class.getCourse().getId());
                         sectionTemplateOpt.forEach(section_template -> {
                             Section savedSection = Section.builder()
-                                .id((long) sectionRepository.findAll().size() + 1)
                                 .classes(savedClass)
                                 .name(section_template.getName())
                                 .number(section_template.getNumber())
@@ -428,8 +425,7 @@ public class SemesterServiceImpl implements SemesterService {
                             sectionRepository.save(savedSection);
     
                             validUserRegisterSemesters.forEach(user_register_semester -> {
-                                UserAttendance savedUserAttendance = UserAttendance.builder()
-                                    .id((long) userAttendanceRepository.findAll().size() + 1)  
+                                UserAttendance savedUserAttendance = UserAttendance.builder() 
                                     .section(savedSection)
                                     .student(user_register_semester.getStudent())
                                     .status(false)
@@ -438,7 +434,6 @@ public class SemesterServiceImpl implements SemesterService {
                             });
                             
                             Tutorial savedTutorial = Tutorial.builder()
-                                .id((long) tutorialRepository.findAll().size() + 1)
                                 .section(savedSection)
                                 .creator(creator)
                                 .name("Giáo trình " + section_template.getTutorialTemplates().getName())
@@ -447,7 +442,6 @@ public class SemesterServiceImpl implements SemesterService {
                             
                             section_template.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
                                 TutorialPage savedTutorialPage = TutorialPage.builder()
-                                    .id((long) tutorialPageRepository.findAll().size() + 1)
                                     .tutorial(savedTutorial)
                                     .name(tutorial_page.getName())
                                     .description(tutorial_page.getDescription())
@@ -466,7 +460,7 @@ public class SemesterServiceImpl implements SemesterService {
             System.out.println("Lan: " + String.valueOf(check_count));
             //throw new EntityNotFoundException("exception.end.end"); 
         });
-        return (long) check_count; 
+        return UUID.randomUUID(); 
     }
 
     protected String getSaltString() {
@@ -483,7 +477,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public GetSemesterResponse getSemesterById(Long id){
+    public GetSemesterResponse getSemesterById(UUID id){
         Optional<Semester> semesterOpt = semesterRepository.findById(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
@@ -504,14 +498,13 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public Long createSemester(CreateSemesterRequest createSemesterRequest) {
+    public UUID createSemester(CreateSemesterRequest createSemesterRequest) {
         Optional<User> userOpt = userRepository.findById(createSemesterRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
         Semester savedSemester = Semester.builder()
-                .id((long) semesterRepository.findAll().size() + 1)
                 .name(createSemesterRequest.getName())
                 .description(createSemesterRequest.getDescription())
                 .number(createSemesterRequest.getNumber())
@@ -526,7 +519,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public Long removeSemesterById(Long id) {
+    public UUID removeSemesterById(UUID id) {
         Optional<Semester> semesterOpt = semesterRepository.findById(id);
         semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
@@ -537,7 +530,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public Long updateSemesterById(Long id, CreateSemesterRequest createSemesterRequest) {
+    public UUID updateSemesterById(UUID id, CreateSemesterRequest createSemesterRequest) {
         Optional<Semester> semesterOpt = semesterRepository.findById(id);
         Semester updatedSemester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");

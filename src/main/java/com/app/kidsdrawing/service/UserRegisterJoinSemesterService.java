@@ -2,6 +2,7 @@ package com.app.kidsdrawing.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
@@ -11,14 +12,14 @@ import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
 
 public interface UserRegisterJoinSemesterService {
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemester();
-    ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClass(Long id);
-    ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(Long id);
-    ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByPayerId(Long id);
-    GetUserRegisterJoinSemesterResponse getUserRegisterJoinSemesterById(Long id);
+    ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClass(UUID id);
+    ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(UUID id);
+    ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByPayerId(UUID id);
+    GetUserRegisterJoinSemesterResponse getUserRegisterJoinSemesterById(UUID id);
     ResponseEntity<Map<String, Object>> getReportUserRegisterJoinSemester(int year);
-    Long createUserRegisterJoinSemester(CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
-    Long removeUserRegisterJoinSemesterById(Long id);
-    Long updateUserRegisterJoinSemesterById(Long id, CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
-    Long updateStatusUserRegisterJoinSemester(List<Long> ids, CreateMomoRequest createMomoRequest);
-    Long updateStatusUserRegisterJoinSemester(List<Long> ids);
+    UUID createUserRegisterJoinSemester(CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
+    UUID removeUserRegisterJoinSemesterById(UUID id);
+    UUID updateUserRegisterJoinSemesterById(UUID id, CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
+    UUID updateStatusUserRegisterJoinSemester(List<UUID> ids, CreateMomoRequest createMomoRequest);
+    UUID updateStatusUserRegisterJoinSemester(List<UUID> ids);
 }

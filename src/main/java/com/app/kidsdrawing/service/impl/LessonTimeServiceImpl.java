@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -47,7 +48,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     }
 
     @Override
-    public GetLessonTimeResponse getLessonTimeById(Long id){
+    public GetLessonTimeResponse getLessonTimeById(UUID id){
         Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(id);
         LessonTime lessonTime = lessonTimeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.LessonTime.not_found");
@@ -61,10 +62,9 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     }
 
     @Override
-    public Long createLessonTime(CreateLessonTimeRequest createLessonTimeRequest) {
+    public UUID createLessonTime(CreateLessonTimeRequest createLessonTimeRequest) {
 
         LessonTime savedLessonTime = LessonTime.builder()
-                .id((long) lessonTimeRepository.findAll().size() + 1)
                 .start_time(createLessonTimeRequest.getStart_time())
                 .end_time(createLessonTimeRequest.getEnd_time())
                 .build();
@@ -74,7 +74,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     }
 
     @Override
-    public Long removeLessonTimeById(Long id) {
+    public UUID removeLessonTimeById(UUID id) {
         Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(id);
         lessonTimeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.LessonTime.not_found");
@@ -85,7 +85,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     }
 
     @Override
-    public Long updateLessonTimeById(Long id, CreateLessonTimeRequest createLessonTimeRequest) {
+    public UUID updateLessonTimeById(UUID id, CreateLessonTimeRequest createLessonTimeRequest) {
         Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(id);
         LessonTime updatedLessonTime = lessonTimeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.LessonTime.not_found");

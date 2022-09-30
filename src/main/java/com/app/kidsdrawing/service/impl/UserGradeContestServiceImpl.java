@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByTeacherId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByTeacherId(UUID id) {
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
         List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
         pageUserGradeContest.forEach(content -> {
@@ -56,7 +57,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByContestId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByContestId(UUID id) {
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
         List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
         pageUserGradeContest.forEach(content -> {
@@ -78,7 +79,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public GetUserGradeContestResponse getUserGradeContestById(Long id) {
+    public GetUserGradeContestResponse getUserGradeContestById(UUID id) {
         Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
         UserGradeContest userGradeContest = userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
@@ -94,11 +95,10 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public Long createUserGradeContest(CreateUserGradeContestRequest createUserGradeContestRequest) {
+    public UUID createUserGradeContest(CreateUserGradeContestRequest createUserGradeContestRequest) {
         Contest contest = contestRepository.getById(createUserGradeContestRequest.getContest_id());
         User teacher = userRepository.getById(createUserGradeContestRequest.getTeacher_id());
         UserGradeContest savedUserGradeContest = UserGradeContest.builder()
-                .id((long) userGradeContestRepository.findAll().size() + 1)
                 .user(teacher)
                 .contest(contest)
                 .build();
@@ -108,7 +108,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public Long removeUserGradeContestById(Long id) {
+    public UUID removeUserGradeContestById(UUID id) {
         Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
         userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
@@ -119,7 +119,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public Long updateUserGradeContestById(Long id, CreateUserGradeContestRequest createUserGradeContestRequest) {
+    public UUID updateUserGradeContestById(UUID id, CreateUserGradeContestRequest createUserGradeContestRequest) {
         Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
         UserGradeContest updatedUserGradeContest = userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");

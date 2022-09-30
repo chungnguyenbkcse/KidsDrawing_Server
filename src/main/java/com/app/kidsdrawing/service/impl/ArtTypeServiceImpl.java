@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -55,7 +56,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     }
 
     @Override
-    public GetArtTypeResponse getArtTypeById(Long id){
+    public GetArtTypeResponse getArtTypeById(UUID id){
         Optional<ArtType> artTypeOpt = artTypeRepository.findById(id);
         ArtType artType = artTypeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtType.not_found");
@@ -69,13 +70,12 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     }
 
     @Override
-    public Long createArtType(CreateArtTypeRequest createArtTypeRequest) {
+    public UUID createArtType(CreateArtTypeRequest createArtTypeRequest) {
         if (artTypeRepository.existsByName(createArtTypeRequest.getName())) {
             throw new ArtTypeAlreadyCreateException("exception.art_type.art_type_taken");
         }
 
         ArtType savedArtType = ArtType.builder()
-                .id((long) artTypeRepository.findAll().size() + 1)
                 .name(createArtTypeRequest.getName())
                 .description(createArtTypeRequest.getDescription())
                 .build();
@@ -85,7 +85,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     }
 
     @Override
-    public Long removeArtTypeById(Long id) {
+    public UUID removeArtTypeById(UUID id) {
         Optional<ArtType> artTypeOpt = artTypeRepository.findById(id);
         artTypeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtType.not_found");
@@ -96,7 +96,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     }
 
     @Override
-    public Long updateArtTypeById(Long id, CreateArtTypeRequest createArtTypeRequest) {
+    public UUID updateArtTypeById(UUID id, CreateArtTypeRequest createArtTypeRequest) {
         Optional<ArtType> artTypeOpt = artTypeRepository.findById(id);
         ArtType updatedArtType = artTypeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtType.not_found");

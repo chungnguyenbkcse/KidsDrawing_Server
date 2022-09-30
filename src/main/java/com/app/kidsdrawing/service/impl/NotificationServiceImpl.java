@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -48,7 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public GetNotificationResponse getNotificationById(Long id){
+    public GetNotificationResponse getNotificationById(UUID id){
         Optional<Notification> notificationOpt = notificationRepository.findById(id);
         Notification notification = notificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Notification.not_found");
@@ -66,7 +67,6 @@ public class NotificationServiceImpl implements NotificationService {
     public GetNotificationResponse createNotification(CreateNotificationRequest createNotificationRequest) {
 
         Notification savedNotification = Notification.builder()
-            .id((long) notificationRepository.findAll().size() + 1)
             .name(createNotificationRequest.getName())
             .description(createNotificationRequest.getDescription())
             .build();
@@ -80,7 +80,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Long removeNotificationById(Long id) {
+    public UUID removeNotificationById(UUID id) {
         Optional<Notification> notificationOpt = notificationRepository.findById(id);
         notificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Notification.not_found");
@@ -91,7 +91,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Long updateNotificationById(Long id, CreateNotificationRequest createNotificationRequest) {
+    public UUID updateNotificationById(UUID id, CreateNotificationRequest createNotificationRequest) {
         Optional<Notification> notificationOpt = notificationRepository.findById(id);
         Notification updatedNotification = notificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Notification.not_found");

@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,26 +36,26 @@ public class ExerciseController {
     
     @CrossOrigin
     @GetMapping(value = "/class-student/{classes_id}/{student_id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseBySectionId(@PathVariable("classes_id") Long classes_id, @PathVariable("student_id") Long student_id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseBySectionId(@PathVariable("classes_id") UUID classes_id, @PathVariable("student_id") UUID student_id) {
         return ResponseEntity.ok().body(exerciseService.getAllExerciseByClassAndStudent(classes_id, student_id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/section-student/{section_id}/{student_id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseBySectionAndStudent(@PathVariable("section_id") Long section_id, @PathVariable("student_id") Long student_id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseBySectionAndStudent(@PathVariable("section_id") UUID section_id, @PathVariable("student_id") UUID student_id) {
         return ResponseEntity.ok().body(exerciseService.getAllExerciseBySectionAndStudent(section_id, student_id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/section/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseBySectionId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseBySectionId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(exerciseService.getAllExerciseBySectionId(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createExercise(@RequestBody CreateExerciseRequest createExerciseRequest) {
-        Long exerciseId = exerciseService.createExercise(createExerciseRequest);
+        UUID exerciseId = exerciseService.createExercise(createExerciseRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{exerciseId}")
                 .buildAndExpand(exerciseId).toUri();
         return ResponseEntity.created(location).build();
@@ -62,8 +63,8 @@ public class ExerciseController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateExercise(@PathVariable Long id, @RequestBody CreateExerciseRequest createExerciseRequest) {
-        Long exerciseId = exerciseService.updateExerciseById(id,createExerciseRequest);
+    public ResponseEntity<String> updateExercise(@PathVariable UUID id, @RequestBody CreateExerciseRequest createExerciseRequest) {
+        UUID exerciseId = exerciseService.updateExerciseById(id,createExerciseRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(exerciseId).toUri();
         return ResponseEntity.created(location).build();
@@ -71,14 +72,14 @@ public class ExerciseController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetExerciseResponse> getExerciseById(@PathVariable Long id) {
+    public ResponseEntity<GetExerciseResponse> getExerciseById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(exerciseService.getExerciseById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteExerciseById(@PathVariable Long id) {
-        Long exerciseId = exerciseService.removeExerciseById(id);
+    public ResponseEntity<String> deleteExerciseById(@PathVariable UUID id) {
+        UUID exerciseId = exerciseService.removeExerciseById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(exerciseId).toUri();
         return ResponseEntity.created(location).build();

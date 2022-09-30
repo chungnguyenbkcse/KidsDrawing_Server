@@ -1,12 +1,13 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,8 +32,9 @@ import lombok.Setter;
 @Table(name = "section_template")
 public class SectionTemplate {
     @Id
-@Column(name = "id")
-    private Long id;
+    @GeneratedValue
+    @Column(name = "id")
+    private UUID  id;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")

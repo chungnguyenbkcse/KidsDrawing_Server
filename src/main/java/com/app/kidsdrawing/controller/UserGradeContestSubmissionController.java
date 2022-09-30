@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,26 +36,26 @@ public class UserGradeContestSubmissionController {
     
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByTeacherId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByTeacherId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userGradeContestSubmissionService.getAllUserGradeContestSubmissionByTeacherId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/student/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByStudentId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByStudentId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userGradeContestSubmissionService.getAllUserGradeContestSubmissionByStudentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/contest/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByContestId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByContestId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userGradeContestSubmissionService.getAllUserGradeContestSubmissionByContestId(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserGradeContestSubmission(@RequestBody CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
-        Long userGradeContestSubmissionId = userGradeContestSubmissionService.createUserGradeContestSubmission(createUserGradeContestSubmissionRequest);
+        UUID userGradeContestSubmissionId = userGradeContestSubmissionService.createUserGradeContestSubmission(createUserGradeContestSubmissionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userGradeContestSubmissionId}")
                 .buildAndExpand(userGradeContestSubmissionId).toUri();
         return ResponseEntity.created(location).build();
@@ -62,8 +63,8 @@ public class UserGradeContestSubmissionController {
 
     @CrossOrigin
     @PutMapping(value = "/{student_id}/{submission_id}")
-    public ResponseEntity<String> updateUserGradeContestSubmission(@PathVariable("student_id") Long student_id, @PathVariable("submission_id") Long submission_id, @RequestBody CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
-        Long userGradeContestSubmissionId = userGradeContestSubmissionService.updateUserGradeContestSubmissionById(student_id, submission_id, createUserGradeContestSubmissionRequest);
+    public ResponseEntity<String> updateUserGradeContestSubmission(@PathVariable("student_id") UUID student_id, @PathVariable("submission_id") UUID submission_id, @RequestBody CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
+        UUID userGradeContestSubmissionId = userGradeContestSubmissionService.updateUserGradeContestSubmissionById(student_id, submission_id, createUserGradeContestSubmissionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userGradeContestSubmissionId).toUri();
         return ResponseEntity.created(location).build();
@@ -71,14 +72,14 @@ public class UserGradeContestSubmissionController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserGradeContestSubmissionResponse> getUserGradeContestSubmissionById(@PathVariable Long id) {
+    public ResponseEntity<GetUserGradeContestSubmissionResponse> getUserGradeContestSubmissionById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userGradeContestSubmissionService.getUserGradeContestSubmissionById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserGradeContestSubmissionById(@PathVariable Long id) {
-        Long userGradeContestSubmissionId = userGradeContestSubmissionService.removeUserGradeContestSubmissionById(id);
+    public ResponseEntity<String> deleteUserGradeContestSubmissionById(@PathVariable UUID id) {
+        UUID userGradeContestSubmissionId = userGradeContestSubmissionService.removeUserGradeContestSubmissionById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userGradeContestSubmissionId).toUri();
         return ResponseEntity.created(location).build();

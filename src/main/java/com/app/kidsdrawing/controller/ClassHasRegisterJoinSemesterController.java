@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import java.net.URI;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +29,7 @@ public class ClassHasRegisterJoinSemesterController {
     @CrossOrigin
     @PutMapping(value = "/student")
     public ResponseEntity<String> updateClassHasRegisterJoinSemesterClassForStudent(@RequestBody CreateClassHasRegisterJoinSemesterClassStudentRequest createClassHasRegisterJoinSemesterClassStudentRequest) {
-        Long classId = classHasRegisterJoinSemesterClassService.updateClassHasRegisterJoinSemesterClassForStudent(createClassHasRegisterJoinSemesterClassStudentRequest);
+        UUID classId = classHasRegisterJoinSemesterClassService.updateClassHasRegisterJoinSemesterClassForStudent(createClassHasRegisterJoinSemesterClassStudentRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(classId).toUri();
         return ResponseEntity.created(location).build();
@@ -37,7 +38,7 @@ public class ClassHasRegisterJoinSemesterController {
     @CrossOrigin
     @PutMapping(value = "/teacher")
     public ResponseEntity<String> updateClassHasRegisterJoinSemesterClassForTeacher(@RequestBody CreateClassHasRegisterJoinSemesterClassTeacherRequest createClassHasRegisterJoinSemesterClassTeacherRequest) {
-        Long classId = classHasRegisterJoinSemesterClassService.updateClassHasRegisterJoinSemesterClassForTeacher(createClassHasRegisterJoinSemesterClassTeacherRequest);
+        UUID classId = classHasRegisterJoinSemesterClassService.updateClassHasRegisterJoinSemesterClassForTeacher(createClassHasRegisterJoinSemesterClassTeacherRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(classId).toUri();
         return ResponseEntity.created(location).build();
@@ -45,7 +46,7 @@ public class ClassHasRegisterJoinSemesterController {
 
     @CrossOrigin
     @GetMapping(value = "/{classes_id}/{user_register_join_semester_id}")
-    public ResponseEntity<GetClassHasRegisterJoinSemesterClassResponse> getClassHasRegisterJoinSemesterClassByClassesAndUserRegisterJoinSemester(@PathVariable("classes_id") Long classes_id, @PathVariable("user_register_join_semester_id") Long user_register_join_semester_id) {
+    public ResponseEntity<GetClassHasRegisterJoinSemesterClassResponse> getClassHasRegisterJoinSemesterClassByClassesAndUserRegisterJoinSemester(@PathVariable("classes_id") UUID classes_id, @PathVariable("user_register_join_semester_id") UUID user_register_join_semester_id) {
         return ResponseEntity.ok().body(classHasRegisterJoinSemesterClassService.getClassHasRegisterJoinSemesterClassByClassesAndUserRegisterJoinSemester(classes_id, user_register_join_semester_id));
     }
 }

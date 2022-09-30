@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/api/v1/user/staff/**").hasAnyAuthority("SUPER_ADMIN_USER","ADMIN_USER")
                 //.antMatchers("/api/v1/user/teacher/**").hasAnyAuthority("SUPER_ADMIN_USER","ADMIN_USER","STAFF_USER")
                 .antMatchers("/api/v1/notification/**").permitAll()
+                .antMatchers("/api/v1/role/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/notification-database/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/notification-database/**").hasAnyAuthority("ADMIN_USER", "TEACHER_USER")
                 .antMatchers("/api/v1/user-read-notification/**").permitAll()

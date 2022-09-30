@@ -52,7 +52,7 @@ public class AuthUtil {
         });
         return JWT.create()
                 .withSubject("User Details")
-                .withClaim("id", user.getId())
+                .withClaim("id", user.getId().toString())
                 .withClaim("username", username)
                 .withClaim("role_privilege", role_privilege)
                 .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenDuration))

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -50,7 +51,7 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
-    public GetHolidayResponse getHolidayById(Long id){
+    public GetHolidayResponse getHolidayById(UUID id){
         Optional<Holiday> HolidayOpt = HolidayRepository.findById(id);
         Holiday Holiday = HolidayOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Holiday.not_found");
@@ -64,7 +65,7 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
-    public Long createHoliday(CreateHolidayRequest createHolidayRequest) {
+    public UUID createHoliday(CreateHolidayRequest createHolidayRequest) {
 
         Optional<Semester> semesterOpt = semesterRepository.findById(createHolidayRequest.getSemester_id());
         Semester semester = semesterOpt.orElseThrow(() -> {
@@ -73,18 +74,17 @@ public class HolidayServiceImpl implements HolidayService {
 
         createHolidayRequest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
-                .id((long) HolidayRepository.findAll().size() + 1)
                 .day(holiday)
                 .semester(semester)
                 .build();
             HolidayRepository.save(saveHoliday);
         });
 
-        return (long) 1;
+        return UUID.randomUUID();
     }
 
     @Override
-    public Long removeHolidayById(Long id) {
+    public UUID removeHolidayById(UUID id) {
         Optional<Holiday> HolidayOpt = HolidayRepository.findById(id);
         HolidayOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Holiday.not_found");
@@ -95,7 +95,7 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
-    public Long updateHolidayById(Long id, CreateHolidayRequest createHolidayRequest) {
+    public UUID updateHolidayById(UUID id, CreateHolidayRequest createHolidayRequest) {
         Optional<Holiday> HolidayOpt = HolidayRepository.findById(id);
         Holiday updatedHoliday = HolidayOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Holiday.not_found");

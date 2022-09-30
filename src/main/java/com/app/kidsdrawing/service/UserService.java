@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.service;
 
 import java.util.Map;
+import java.util.UUID;
 
 import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
@@ -13,37 +14,37 @@ import com.app.kidsdrawing.entity.User;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
-    ResponseEntity<Map<String, Object>> getAllStudents(Long role_id);
+    ResponseEntity<Map<String, Object>> getAllStudents(String role_name);
 
     ResponseEntity<Map<String, Object>> getAllUser();
 
-    ResponseEntity<Map<String, Object>> getAllParents(Long role_id);
+    ResponseEntity<Map<String, Object>> getAllParents(String role_name);
 
-    ResponseEntity<Map<String, Object>> getReportUserNew(int year, Long role_id);
+    ResponseEntity<Map<String, Object>> getReportUserNew(int year, String role_name);
 
     ResponseEntity<Map<String, Object>> getAllTeacher();
 
-    GetUserInfoResponse getUserInfoById(Long id);
+    GetUserInfoResponse getUserInfoById(UUID id);
 
     GetUserInfoResponse getUserInfoByUsername(String username);
 
     GetUserInfoResponse getUserInfo();
 
-    Long createUser(CreateUserRequest createUserRequest);
+    UUID createUser(CreateUserRequest createUserRequest);
 
-    Long createTeacher(CreateTeacherRequest createTeacherRequest);
+    UUID createTeacher(CreateTeacherRequest createTeacherRequest);
 
-    Long createStudent(CreateStudentRequest createStudentRequest);
+    UUID createStudent(CreateStudentRequest createStudentRequest);
 
-    Long updateUser(Long id, CreateUserRequest createUserRequest);
+    UUID updateUser(UUID id, CreateUserRequest createUserRequest);
 
-    Long updateUserStatus(Long id, CreateUserStatusRequest createUserStatusRequest);
+    UUID updateUserStatus(UUID id, CreateUserStatusRequest createUserStatusRequest);
     
-    Long updatePassword(Long id, CreateChangePassowrdRequest createChangePassowrdRequest);
+    UUID updatePassword(UUID id, CreateChangePassowrdRequest createChangePassowrdRequest);
 
-    Long removeUser(Long id);
+    UUID removeUser(UUID id);
 
     void changeUserPassword(User user, String password);
 
-    ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id);
+    ResponseEntity<Map<String, Object>> getAllChildForParentId(UUID id);
 }

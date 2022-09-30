@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,20 +36,20 @@ public class TutorialPageController {
     
     @CrossOrigin
     @GetMapping(value = "/tutorial/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialPageByClassId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialPageByClassId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(tutorialPageService.getAllTutorialPageByTutorialId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/section/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialPageBySectionId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialPageBySectionId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(tutorialPageService.getAllTutorialPageBySectionId(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createTutorialPage(@RequestBody CreateTutorialPageRequest createTutorialPageRequest) {
-        Long tutorialPageId = tutorialPageService.createTutorialPage(createTutorialPageRequest);
+        UUID tutorialPageId = tutorialPageService.createTutorialPage(createTutorialPageRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{tutorialPageId}")
                 .buildAndExpand(tutorialPageId).toUri();
         return ResponseEntity.created(location).build();
@@ -56,8 +57,8 @@ public class TutorialPageController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateTutorialPage(@PathVariable Long id, @RequestBody CreateTutorialPageRequest createTutorialPageRequest) {
-        Long tutorialPageId = tutorialPageService.updateTutorialPageById(id,createTutorialPageRequest);
+    public ResponseEntity<String> updateTutorialPage(@PathVariable UUID id, @RequestBody CreateTutorialPageRequest createTutorialPageRequest) {
+        UUID tutorialPageId = tutorialPageService.updateTutorialPageById(id,createTutorialPageRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(tutorialPageId).toUri();
         return ResponseEntity.created(location).build();
@@ -65,14 +66,14 @@ public class TutorialPageController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetTutorialPageResponse> getTutorialPageById(@PathVariable Long id) {
+    public ResponseEntity<GetTutorialPageResponse> getTutorialPageById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(tutorialPageService.getTutorialPageById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteTutorialPageById(@PathVariable Long id) {
-        Long tutorialPageId = tutorialPageService.removeTutorialPageById(id);
+    public ResponseEntity<String> deleteTutorialPageById(@PathVariable UUID id) {
+        UUID tutorialPageId = tutorialPageService.removeTutorialPageById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(tutorialPageId).toUri();
         return ResponseEntity.created(location).build();

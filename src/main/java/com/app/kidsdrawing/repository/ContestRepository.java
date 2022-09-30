@@ -6,14 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.UUID;
 
 import com.app.kidsdrawing.entity.Contest;
 
 @Repository
-public interface ContestRepository extends JpaRepository <Contest, Long>{
+public interface ContestRepository extends JpaRepository <Contest, UUID>{
     Page<Contest> findAll(Pageable pageable);
     Optional<Contest> findByName(String name);
-    boolean existsById(Long id);
+    boolean existsById(UUID id);
     Boolean existsByName(String name);
-    void deleteById(Long id);
+    void deleteById(UUID id);
 }

@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.dto;
 
 
-import lombok.Data;
+import lombok.Data;                                   
 
 @Data
 public class CreateReviewStudentLeaveRequest {

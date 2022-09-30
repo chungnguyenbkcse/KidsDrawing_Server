@@ -2,6 +2,7 @@ package com.app.kidsdrawing.service;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.util.UUID;
 
 import com.app.kidsdrawing.dto.CreateResetPasswordRequest;
 import com.app.kidsdrawing.dto.GetPasswordResetTokenResponse;
@@ -16,6 +17,6 @@ public interface PasswordResetTokentService {
     String validatePasswordResetToken(String token);
     boolean isTokenFound(PasswordResetToken passToken);
     boolean isTokenExpired(PasswordResetToken passToken);
-    Long savePassword(CreateResetPasswordRequest createResetPasswordRequest);
+    UUID savePassword(CreateResetPasswordRequest createResetPasswordRequest);
     String showChangePasswordPage(@RequestParam("token") String token);
 }

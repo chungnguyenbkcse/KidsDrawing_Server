@@ -6,11 +6,12 @@ import org.springframework.http.ResponseEntity;
 
 import com.app.kidsdrawing.dto.CreateArtTypeRequest;
 import com.app.kidsdrawing.dto.GetArtTypeResponse;
+import java.util.UUID;
 
 public interface ArtTypeService {
     ResponseEntity<Map<String, Object>> getAllArtType(int page, int size);
-    GetArtTypeResponse getArtTypeById(Long id);
-    Long createArtType(CreateArtTypeRequest createArtTypeRequest);
-    Long removeArtTypeById(Long id);
-    Long updateArtTypeById(Long id, CreateArtTypeRequest createArtTypeRequest);
+    GetArtTypeResponse getArtTypeById(UUID id);
+    UUID createArtType(CreateArtTypeRequest createArtTypeRequest);
+    UUID removeArtTypeById(UUID id);
+    UUID updateArtTypeById(UUID id, CreateArtTypeRequest createArtTypeRequest);
 }

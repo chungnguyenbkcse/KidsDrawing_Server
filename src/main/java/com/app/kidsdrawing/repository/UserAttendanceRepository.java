@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.UUID;
 
 import com.app.kidsdrawing.entity.UserAttendance;
 
 @Repository
-public interface UserAttendanceRepository extends JpaRepository <UserAttendance, Long>{
-    boolean existsById(Long id);
-    List<UserAttendance> findBySectionId(Long id);
-    List<UserAttendance> findByStudentId(Long id);
-    UserAttendance findBySectionIdAndStudentId(Long section_id, Long student_id);
+public interface UserAttendanceRepository extends JpaRepository <UserAttendance, UUID>{
+    boolean existsById(UUID id);
+    List<UserAttendance> findBySectionId(UUID id);
+    List<UserAttendance> findByStudentId(UUID id);
+    UserAttendance findBySectionIdAndStudentId(UUID section_id, UUID student_id);
 }

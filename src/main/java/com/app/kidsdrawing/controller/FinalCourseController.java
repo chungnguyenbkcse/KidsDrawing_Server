@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,7 @@ public class FinalCourseController {
 
     @CrossOrigin
     @GetMapping(value = "/{student_id}/{classes_id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getFinalGradeAndReviewForStudentAndClasses(@PathVariable("student_id") Long student_id, @PathVariable("classes_id") Long classes_id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getFinalGradeAndReviewForStudentAndClasses(@PathVariable("student_id") UUID student_id, @PathVariable("classes_id") UUID classes_id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getFinalGradeAndReviewForStudentAndClasses(student_id, classes_id));
     }
 }

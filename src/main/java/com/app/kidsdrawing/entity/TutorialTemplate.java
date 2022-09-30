@@ -2,12 +2,13 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,8 +34,9 @@ import lombok.Setter;
 @Table(name = "tutorial_template")
 public class TutorialTemplate {
     @Id
-@Column(name = "id")
-    private Long id;
+    @GeneratedValue
+    @Column(name = "id")
+    private UUID  id;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "section_template_id", referencedColumnName = "id")

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -58,7 +59,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSectionTemplateByCourseId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSectionTemplateByCourseId(UUID id) {
         List<GetSectionTemplateResponse> allSectionTemplateResponses = new ArrayList<>();
         List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
         listSectionTemplate.forEach(content -> {
@@ -83,7 +84,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     }
 
     @Override
-    public GetSectionTemplateResponse getSectionTemplateById(Long id) {
+    public GetSectionTemplateResponse getSectionTemplateById(UUID id) {
         Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById(id);
         SectionTemplate section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
@@ -102,7 +103,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     }
 
     @Override
-    public Long createSectionTemplate(CreateSectionTemplateRequest createSectionTemplateRequest) {
+    public UUID createSectionTemplate(CreateSectionTemplateRequest createSectionTemplateRequest) {
 
         Optional <Course> courseOpt = courseRepository.findById(createSectionTemplateRequest.getCourse_id());
         Course course = courseOpt.orElseThrow(() -> {
@@ -115,7 +116,6 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
         });
         
         SectionTemplate savedSectionTemplate = SectionTemplate.builder()
-                .id((long) sectionTemplateRepository.findAll().size() + 1)
                 .course(course)
                 .user(creator)
                 .name(createSectionTemplateRequest.getName())
@@ -128,7 +128,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     }
 
     @Override
-    public Long removeSectionTemplateById(Long id) {
+    public UUID removeSectionTemplateById(UUID id) {
         Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById(id);
         sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
@@ -139,7 +139,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     }
 
     @Override
-    public Long updateSectionTemplateById(Long id, CreateSectionTemplateRequest createSectionTemplateRequest) {
+    public UUID updateSectionTemplateById(UUID id, CreateSectionTemplateRequest createSectionTemplateRequest) {
         Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById(id);
         SectionTemplate updatedSectionTemplate = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");

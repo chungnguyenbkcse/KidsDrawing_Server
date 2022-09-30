@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -20,10 +21,10 @@ import lombok.Setter;
 public class UserGradeExerciseSubmissionKey implements Serializable {
 
     @Column(name = "teacher_id")
-    Long teacherId;
+    UUID teacherId;
 
     @Column(name = "submission_id")
-    Long submissionId;
+    UUID submissionId;
 
     // standard constructors, getters, and setters
     // hashcode and equals implementation

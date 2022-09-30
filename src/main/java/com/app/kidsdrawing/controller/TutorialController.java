@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,20 +36,20 @@ public class TutorialController {
     
     @CrossOrigin
     @GetMapping(value = "/section/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialBySectionId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialBySectionId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(tutorialService.getAllTutorialBySection(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialByCreatorId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialByCreatorId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(tutorialService.getAllTutorialByCreator(id));
     }
 
 
     @CrossOrigin
     @GetMapping(value = "/section/teacher/{section_id}/{creator_id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialByTeacherSection(@PathVariable("section_id") Long section_id, @PathVariable("creator_id") Long creator_id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialByTeacherSection(@PathVariable("section_id") UUID section_id, @PathVariable("creator_id") UUID creator_id) {
         return ResponseEntity.ok().body(tutorialService.getAllTutorialByCreatorSection(creator_id, section_id));
     }
 
@@ -60,8 +61,8 @@ public class TutorialController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateTutorial(@PathVariable Long id, @RequestBody CreateTutorialRequest createTutorialRequest) {
-        Long tutorialId = tutorialService.updateTutorial(id,createTutorialRequest);
+    public ResponseEntity<String> updateTutorial(@PathVariable UUID id, @RequestBody CreateTutorialRequest createTutorialRequest) {
+        UUID tutorialId = tutorialService.updateTutorial(id,createTutorialRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(tutorialId).toUri();
         return ResponseEntity.created(location).build();
@@ -69,14 +70,14 @@ public class TutorialController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetTutorialResponse> getTutorialById(@PathVariable Long id) {
+    public ResponseEntity<GetTutorialResponse> getTutorialById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(tutorialService.getTutorialById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteTutorialById(@PathVariable Long id) {
-        Long tutorialId = tutorialService.removeTutorialById(id);
+    public ResponseEntity<String> deleteTutorialById(@PathVariable UUID id) {
+        UUID tutorialId = tutorialService.removeTutorialById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(tutorialId).toUri();
         return ResponseEntity.created(location).build();

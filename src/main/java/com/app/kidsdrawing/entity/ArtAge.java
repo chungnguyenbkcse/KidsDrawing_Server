@@ -1,9 +1,10 @@
 package com.app.kidsdrawing.entity;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,8 +24,9 @@ import lombok.Setter;
 @Table(name = "art_age")
 public class ArtAge {
     @Id
-	@Column(name = "id")
-	private Long id;
+    @GeneratedValue
+    @Column(name = "id")
+    private UUID  id;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;

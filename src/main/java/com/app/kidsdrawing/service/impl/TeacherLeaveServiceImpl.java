@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -69,7 +70,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getTeacherLeaveByTeacher(Long id) {
+    public ResponseEntity<Map<String, Object>> getTeacherLeaveByTeacher(UUID id) {
         List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
         List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
         listTeacherLeave.forEach(content -> {
@@ -101,7 +102,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getTeacherLeaveByClassId(Long id) {
+    public ResponseEntity<Map<String, Object>> getTeacherLeaveByClassId(UUID id) {
         List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
         List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
         listTeacherLeave.forEach(content -> {
@@ -133,7 +134,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
-    public GetTeacherLeaveResponse getTeacherLeaveById(Long id) {
+    public GetTeacherLeaveResponse getTeacherLeaveById(UUID id) {
         Optional<TeacherLeave> teacherLeaveOpt = teacherLeaveRepository.findById(id);
         TeacherLeave teacherLeave = teacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
@@ -187,7 +188,6 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         });
         
         TeacherLeave savedTeacherLeave = TeacherLeave.builder()
-                .id((long) teacherLeaveRepository.findAll().size() + 1)
                 .classes(classes)
                 .section(section)
                 .teacher(teacher)
@@ -218,7 +218,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
-    public Long removeTeacherLeaveById(Long id) {
+    public UUID removeTeacherLeaveById(UUID id) {
         Optional<TeacherLeave> teacherLeaveOpt = teacherLeaveRepository.findById(id);
         teacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
@@ -229,7 +229,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
-    public Long updateTeacherLeaveById(Long id, CreateTeacherLeaveRequest createTeacherLeaveRequest) {
+    public UUID updateTeacherLeaveById(UUID id, CreateTeacherLeaveRequest createTeacherLeaveRequest) {
         Optional<TeacherLeave> TeacherLeaveOpt = teacherLeaveRepository.findById(id);
         TeacherLeave updatedTeacherLeave = TeacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
@@ -266,7 +266,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     }
 
     @Override
-    public GetTeacherLeaveResponse updateStatusTeacherLeaveById(Long id, CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
+    public GetTeacherLeaveResponse updateStatusTeacherLeaveById(UUID id, CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
         Optional<TeacherLeave> TeacherLeaveOpt = teacherLeaveRepository.findById(id);
         TeacherLeave updatedTeacherLeave = TeacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");

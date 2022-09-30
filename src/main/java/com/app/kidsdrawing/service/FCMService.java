@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -124,7 +125,7 @@ public class FCMService {
         return "Send successfull";
     }
 
-    public String pushNotificationForClass(Long id, PnsRequest pnsRequest) {
+    public String pushNotificationForClass(UUID id, PnsRequest pnsRequest) {
 
         Optional<Classes> classOpt = classRepository.findById(id);
         Classes classes = classOpt.orElseThrow(() -> {

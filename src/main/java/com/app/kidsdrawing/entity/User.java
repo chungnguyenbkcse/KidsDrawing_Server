@@ -3,11 +3,13 @@ package com.app.kidsdrawing.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -33,8 +35,9 @@ import lombok.Setter;
 @Table(name = "user")
 public class User{
     @Id
+    @GeneratedValue
     @Column(name = "id")
-    private Long id;
+    private UUID  id;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;

@@ -6,18 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetReportUserRegisterJoinSemesterResponse {
-    private Long id;
-    private Long student_id;
+    private UUID id;
+    private UUID student_id;
     private String student_name;
-    private Long semester_classes_id;
+    private UUID semester_classes_id;
     private String semester_class_name;
-    private Long payer_id;
+    private UUID payer_id;
     private String payer_name;
     private Float price;
     private LocalDateTime time;

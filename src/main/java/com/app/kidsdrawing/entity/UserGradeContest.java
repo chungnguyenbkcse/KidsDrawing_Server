@@ -1,10 +1,12 @@
 package com.app.kidsdrawing.entity;
 
+import java.util.UUID;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,8 +27,9 @@ import lombok.Setter;
 @Table(name = "User_Grade_Contest")
 public class UserGradeContest {
     @Id
-@Column(name = "id")
-    private Long id;
+    @GeneratedValue
+    @Column(name = "id")
+    private UUID  id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")

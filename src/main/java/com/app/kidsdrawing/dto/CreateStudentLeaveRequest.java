@@ -1,11 +1,12 @@
 package com.app.kidsdrawing.dto;
 
 import lombok.Data;
+import java.util.UUID;
 
 @Data
 public class CreateStudentLeaveRequest {
-    private Long section_id;
-    private Long classes_id;
-    private Long student_id;
+    private UUID section_id;
+    private UUID classes_id;
+    private UUID student_id;
     private String description;
 }
