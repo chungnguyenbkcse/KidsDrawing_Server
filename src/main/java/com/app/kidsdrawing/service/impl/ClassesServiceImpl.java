@@ -103,7 +103,7 @@ public class ClassesServiceImpl implements ClassesService {
         LocalDateTime time_now = LocalDateTime.now();
         listClass.forEach(ele -> {
             schedule = "";
-            LocalDateTime res = getEndSectionOfClass(ele.getId());
+            // LocalDateTime res = getEndSectionOfClass(ele.getId());
 
             scheduleRepository.findAll().forEach(schedule_ele -> {
                 if (ele.getUserRegisterTeachSemester().getSemesterClass().getSchedules().contains(schedule_ele)) {
@@ -118,8 +118,8 @@ public class ClassesServiceImpl implements ClassesService {
                     }
                 }
             });
-            if (ele.getUserRegisterTeachSemester().getTeacher().getId() == id) {
-                if (time_now.isAfter(res) == false) {
+            if (ele.getUserRegisterTeachSemester().getTeacher().getId().compareTo(id) == 0) {
+                if (time_now.isBefore(ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
                     List<Map<String, List<List<LocalDateTime>>>> schedule_time = getScheduleDetailOfClass(ele.getId());
                     Map<String, List<Map<String, List<List<LocalDateTime>>>>> x = new HashMap<>();
                     x.put(ele.getName(), schedule_time);
