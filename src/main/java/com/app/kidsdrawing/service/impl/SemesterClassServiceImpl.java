@@ -128,7 +128,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 .findByStudentId(id);
         List<SemesterClass> listSemesterClass = new ArrayList<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
-            if (user_register_join_semester.getSemesterClass().getRegistration_time().isAfter(time_now) == false && user_register_join_semester.getSemesterClass().getSemester().getStart_time().isAfter(time_now)) {
+            if (user_register_join_semester.getSemesterClass().getRegistration_time().isAfter(time_now) == false && user_register_join_semester.getSemesterClass().getSemester().getStart_time().isAfter(time_now) && allSemesterClass.contains(user_register_join_semester.getSemesterClass())) {
                 listSemesterClass.add(user_register_join_semester.getSemesterClass());
                 schedule = "";
                 scheduleRepository.findAll().forEach(schedule_item -> {
@@ -173,7 +173,8 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .status("Payed")
                             .build();
                     allSemesterClassResponses.add(semesterClassResponse);
-                } else {
+                } else if (user_register_join_semester.getStatus().equals("Not Payed Now") == true
+                && allSemesterClass.contains(user_register_join_semester.getSemesterClass())){
                     GetSemesterClassStudentResponse semesterClassResponse = GetSemesterClassStudentResponse.builder()
                             .course_id(user_register_join_semester.getSemesterClass().getCourse().getId())
                             .semster_class_id(user_register_join_semester.getSemesterClass().getId())
@@ -488,7 +489,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             }
         });
 
-        updatedSemesterClass.setMax_participant((allUserRegisterTeachSemesters.size() + 1) * 6 + 4);
+        updatedSemesterClass.setMax_participant((allUserRegisterTeachSemesters.size()) * 8);
         semesterClassRepository.save(updatedSemesterClass);
         return "Max participant successfull!";
     }

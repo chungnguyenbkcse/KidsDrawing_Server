@@ -218,68 +218,76 @@ public class SemesterServiceImpl implements SemesterService {
         return id;
     }
 
-    public static int[][] foo(int N, int x, int m, int M){ //ham can viet
-        int numOfBasicArr = N/x;
-        int numOfRemain = N - numOfBasicArr*x;
-        
-        if (numOfRemain == 0){ //chia het k du cai nao
+    public static int[][] foo(int N, int x, int m, int M) { // ham can viet
+        int numOfBasicArr = N / x;
+        int numOfRemain = N - numOfBasicArr * x;
+
+        if (numOfRemain == 0) { // chia het k du cai nao
             int[][] mat = new int[numOfBasicArr][x];
-            for (int i = 1; i<=numOfBasicArr; i++){
-                for (int j = 1; j<=x;j++){
-                    mat[i-1][j-1] = (i-1)*x+j;
+            for (int i = 1; i <= numOfBasicArr; i++) {
+                for (int j = 1; j <= x; j++) {
+                    mat[i - 1][j - 1] = (i - 1) * x + j;
                 }
             }
             return mat;
-        }
-        else if (numOfRemain == x - 1 || numOfRemain >= m){
+        } else if (numOfRemain == x - 1 || numOfRemain >= m) {
             int[][] mat = new int[numOfBasicArr + 1][];
-            for (int i = 1; i<=numOfBasicArr; i++){
-                mat[i-1] = new int[x];
-                for (int j = 1; j<=x;j++){
-                    mat[i-1][j-1] = (i-1)*x+j;
+            for (int i = 1; i <= numOfBasicArr; i++) {
+                mat[i - 1] = new int[x];
+                for (int j = 1; j <= x; j++) {
+                    mat[i - 1][j - 1] = (i - 1) * x + j;
                 }
             }
-                mat[numOfBasicArr] = new int[numOfRemain]; //mang cuoi
-                for (int i=1;i<=numOfRemain;i++){
-                    mat[numOfBasicArr][i-1]=x*numOfBasicArr+i;
-                }
+            mat[numOfBasicArr] = new int[numOfRemain]; // mang cuoi
+            for (int i = 1; i <= numOfRemain; i++) {
+                mat[numOfBasicArr][i - 1] = x * numOfBasicArr + i;
+            }
             return mat;
-        }
-        else{
+        } else {
             int[][] mat = new int[numOfBasicArr][];
-            int sophantumoinhomdcthem = numOfRemain/numOfBasicArr;
-            int sonhomdcthem1phantunua = numOfRemain - sophantumoinhomdcthem*numOfBasicArr;
-            //vay la co sonhomdcthem1phantunua nhom co x+sophantumoinhomdcthem+1 phan tu, con lai thi co x+sophantumoinhomdcthem phan tu.
-            //cap phat
-            for (int i = 1; i<=sonhomdcthem1phantunua; i++){
-                mat[i-1] = new int[x+sophantumoinhomdcthem+1];
+            int sophantumoinhomdcthem = numOfRemain / numOfBasicArr;
+            int sonhomdcthem1phantunua = numOfRemain - sophantumoinhomdcthem * numOfBasicArr;
+            // vay la co sonhomdcthem1phantunua nhom co x+sophantumoinhomdcthem+1 phan tu,
+            // con lai thi co x+sophantumoinhomdcthem phan tu.
+            // cap phat
+            for (int i = 1; i <= sonhomdcthem1phantunua; i++) {
+                mat[i - 1] = new int[x + sophantumoinhomdcthem + 1];
             }
-            for (int i = sonhomdcthem1phantunua+1; i<=numOfBasicArr; i++){
-                mat[i-1] = new int[x+sophantumoinhomdcthem];
+            for (int i = sonhomdcthem1phantunua + 1; i <= numOfBasicArr; i++) {
+                mat[i - 1] = new int[x + sophantumoinhomdcthem];
             }
-            //them phan tu co ban
-            for (int i = 1; i<=numOfBasicArr; i++){
-                for (int j = 1; j<=x;j++){
-                    mat[i-1][j-1] = (i-1)*x+j;
+            // them phan tu co ban
+            for (int i = 1; i <= numOfBasicArr; i++) {
+                for (int j = 1; j <= x; j++) {
+                    mat[i - 1][j - 1] = (i - 1) * x + j;
                 }
             }
-            //them cac phan tu du vao cac nhom
-            for (int i = 1; i<=sonhomdcthem1phantunua; i++){
-                for (int j = 1; j<=sophantumoinhomdcthem+1;j++){
-                    mat[i-1][x+j-1] = numOfBasicArr*x+i+(j-1)*numOfBasicArr;
+            // them cac phan tu du vao cac nhom
+            for (int i = 1; i <= sonhomdcthem1phantunua; i++) {
+                for (int j = 1; j <= sophantumoinhomdcthem + 1; j++) {
+                    mat[i - 1][x + j - 1] = numOfBasicArr * x + i + (j - 1) * numOfBasicArr;
                 }
             }
-            for (int i = sonhomdcthem1phantunua+1; i<=numOfBasicArr; i++){
-                for (int j = 1; j<=sophantumoinhomdcthem;j++){
-                    mat[i-1][x+j-1] = numOfBasicArr*x+i+(j-1)*numOfBasicArr;
+            for (int i = sonhomdcthem1phantunua + 1; i <= numOfBasicArr; i++) {
+                for (int j = 1; j <= sophantumoinhomdcthem; j++) {
+                    mat[i - 1][x + j - 1] = numOfBasicArr * x + i + (j - 1) * numOfBasicArr;
                 }
             }
-            //check max
-            if (mat[0].length>M){
-                int[][] error = {{-1}};
+            // check max
+            if (mat[0].length > M) {
+                ////// cho moi vua sua xong
+                for (int i = m; i <= M; i++) {// bat dau cho so phan tu tang dan tu m den M
+                    int[][] tempMat = new int[numOfBasicArr][];
+                    tempMat = foo(N, i, m, M);
+                    if (tempMat.length >= 2 && tempMat[tempMat.length - 1].length >= m) {// kiem tra nhom cuoi co so
+                                                                                         // phan tu >= m khong?
+                        return tempMat;
+                    }
+                }
+                int[][] error = { { -1 } };
                 return error;
             }
-            
+
             return mat;
         }
     }
