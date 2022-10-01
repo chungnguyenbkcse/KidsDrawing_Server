@@ -346,9 +346,9 @@ public class ClassesServiceImpl implements ClassesService {
 
             allClassHasRegisterJoinSemesterClass.forEach(class_has_join_semester_class -> {
                 if (allUserRegisterJoinSemesters.contains(class_has_join_semester_class.getUserRegisterJoinSemester())) {
-                    LocalDateTime res = getEndSectionOfClass(
-                        class_has_join_semester_class.getUserRegisterJoinSemester().getClassHasRegisterJoinSemesterClass().getClasses().getId());
-                if (time_now.isAfter(res) == false) {
+                    /* LocalDateTime res = getEndSectionOfClass(
+                        class_has_join_semester_class.getUserRegisterJoinSemester().getClassHasRegisterJoinSemesterClass().getClasses().getId()); */
+                if (time_now.isAfter(class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass().getSemester().getEnd_time()) == false) {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                             .id(class_has_join_semester_class.getClasses().getId())
                             .student_id(id)
