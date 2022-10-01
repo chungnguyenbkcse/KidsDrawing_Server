@@ -128,7 +128,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 .findByStudentId(id);
         List<SemesterClass> listSemesterClass = new ArrayList<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
-            if (user_register_join_semester.getSemesterClass().getRegistration_time().isAfter(time_now) == false && user_register_join_semester.getSemesterClass().getSemester().getStart_time().isAfter(time_now) && allSemesterClass.contains(user_register_join_semester.getSemesterClass())) {
+            if (user_register_join_semester.getSemesterClass().getRegistration_time().isAfter(time_now) && user_register_join_semester.getSemesterClass().getSemester().getStart_time().isAfter(time_now) && allSemesterClass.contains(user_register_join_semester.getSemesterClass())) {
                 listSemesterClass.add(user_register_join_semester.getSemesterClass());
                 schedule = "";
                 scheduleRepository.findAll().forEach(schedule_item -> {
@@ -207,7 +207,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
         allSemesterClass.forEach(semester_class -> {
             if (listSemesterClass.contains(semester_class) == false
-                    && semester_class.getRegistration_time().isAfter(time_now) == false && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+                    && semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
                         schedule = "";
                 scheduleRepository.findAll().forEach(schedule_item -> {
                     if (schedule_item.getSemesterClass().getId().compareTo(semester_class.getId()) == 0) {
