@@ -41,7 +41,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
     @Override
     public ResponseEntity<Map<String, Object>> getAllClassHasRegisterJoinSemesterClass() {
         List<GetClassHasRegisterJoinSemesterClassResponse> allClassHasRegisterJoinSemesterClassResponses = new ArrayList<>();
-        List<ClassHasRegisterJoinSemesterClass> pageClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findAll();
+        List<ClassHasRegisterJoinSemesterClass> pageClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findAllUsingFetch();
         pageClassHasRegisterJoinSemesterClass.forEach(class_has_register_join_semester_class -> {
             GetClassHasRegisterJoinSemesterClassResponse classHasRegisterJoinSemesterClassResponse = GetClassHasRegisterJoinSemesterClassResponse.builder()
                     .classes_id(class_has_register_join_semester_class.getClasses().getId())
@@ -54,20 +54,6 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
         Map<String, Object> response = new HashMap<>();
         response.put("class_has_register_join_semester_classs", allClassHasRegisterJoinSemesterClassResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @Override
-    public GetClassHasRegisterJoinSemesterClassResponse getClassHasRegisterJoinSemesterClassById(UUID id){
-        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findById(id);
-        ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
-        });
-
-        return GetClassHasRegisterJoinSemesterClassResponse.builder()
-                .classes_id(classHasRegisterJoinSemesterClass.getClasses().getId())
-                .user_register_join_semester_id(classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getId())
-                .review_star(classHasRegisterJoinSemesterClass.getReview_star())
-                .build();
     }
 
     @Override

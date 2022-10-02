@@ -138,7 +138,7 @@ public class SemesterServiceImpl implements SemesterService {
         });
 
         List<Course> allCourseResponses = new ArrayList<>();
-        //List<Course> pageCourse = classRepository.findAll();
+        //List<Course> pageCourse = classRepository.findAllUsingFetch();
         List<SemesterClass> allSemesterClassResponses = new ArrayList<>();
         List<Schedule> allScheduleResponses = new ArrayList<>();
         //List<Schedule> pageSchedule = scheduleRepository.findAll();
@@ -152,7 +152,7 @@ public class SemesterServiceImpl implements SemesterService {
             allCourseResponses.add(semester_class.getCourse());
         });
 
-        List<Classes> listClass = classRepository.findAll();
+        List<Classes> listClass = classRepository.findAllFetchUsingUserAndUserRegisterTeachSemester();
         List<List<Classes>> allClassOfSemesterClassResponses = new ArrayList<>();        
         allSemesterClassResponses.forEach(semester_class -> {
             List<Classes> list_class = new ArrayList<>();

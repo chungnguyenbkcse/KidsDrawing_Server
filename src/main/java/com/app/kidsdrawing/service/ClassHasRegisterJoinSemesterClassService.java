@@ -12,7 +12,6 @@ import com.app.kidsdrawing.dto.GetClassHasRegisterJoinSemesterClassResponse;
 
 public interface ClassHasRegisterJoinSemesterClassService {
     ResponseEntity<Map<String, Object>> getAllClassHasRegisterJoinSemesterClass();
-    GetClassHasRegisterJoinSemesterClassResponse getClassHasRegisterJoinSemesterClassById(UUID id);
     GetClassHasRegisterJoinSemesterClassResponse getClassHasRegisterJoinSemesterClassByClassesAndUserRegisterJoinSemester(UUID class_id, UUID user_register_join_semester_id);
     UUID createClassHasRegisterJoinSemesterClass(CreateClassHasRegisterJoinSemesterClassRequest createClassHasRegisterJoinSemesterClassRequest);
     UUID removeClassHasRegisterJoinSemesterClassById(UUID classes_id, UUID user_register_join_semester);

@@ -301,7 +301,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
             }
         });
 
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesIdUsingFetch(classes.getId());
 
         listClassHasRegisterJoinSemesterClass.forEach(student -> {
             LocalDateTime time_now = LocalDateTime.now();
