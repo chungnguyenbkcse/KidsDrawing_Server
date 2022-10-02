@@ -47,6 +47,8 @@ public class AuthController {
             String username = user.getUsername();
             List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
+            
+            System.out.println(roles);
 
             List<String> roles_privileges = authUtil.getAuthorities(roles).stream().map(GrantedAuthority::getAuthority)
             .collect(Collectors.toList());;

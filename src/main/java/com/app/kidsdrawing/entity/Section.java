@@ -38,7 +38,7 @@ public class Section {
     @Column(name = "id")
     private UUID  id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "classes_id", referencedColumnName = "id")
     private Classes classes;
 

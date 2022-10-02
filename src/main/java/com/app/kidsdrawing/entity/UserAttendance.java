@@ -48,11 +48,11 @@ public class UserAttendance{
     @UpdateTimestamp
     private LocalDateTime updateTime = LocalDateTime.now();
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private User student;
      
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
 }

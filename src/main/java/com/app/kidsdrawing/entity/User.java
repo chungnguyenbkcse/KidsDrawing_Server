@@ -82,13 +82,13 @@ public class User{
     @UpdateTimestamp
     private LocalDateTime updateTime = LocalDateTime.now();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable(name = "user_has_role",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private User parent;
      
@@ -136,6 +136,9 @@ public class User{
 
     @OneToMany(mappedBy="creator")
     private Set<Tutorial> tutorials;
+
+    @OneToMany(mappedBy="creator")
+    private Set<TutorialTemplate> tutorialTemplates;
 
     @OneToMany(mappedBy="creator")
     private Set<UserRegisterTutorial> userRegisterTutorials;

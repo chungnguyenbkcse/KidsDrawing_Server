@@ -40,7 +40,7 @@ public class PasswordResetToken {
     @Column(name = "expiry_date")
     private Date expiryDate;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }

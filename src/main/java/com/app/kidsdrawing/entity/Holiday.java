@@ -35,7 +35,7 @@ public class Holiday {
     @Column(name = "day")
     private LocalDate day;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "semester_id", referencedColumnName = "id")
     private Semester semester;
 }

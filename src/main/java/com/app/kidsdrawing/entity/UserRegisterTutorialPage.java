@@ -34,7 +34,7 @@ public class UserRegisterTutorialPage {
     @Column(name = "id")
     private UUID  id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_register_tutorial_id", referencedColumnName = "id")
     private UserRegisterTutorial userRegisterTutorial;
 
