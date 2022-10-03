@@ -24,6 +24,7 @@ import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.Tutorial;
 import com.app.kidsdrawing.entity.TutorialPage;
+import com.app.kidsdrawing.entity.TutorialTemplate;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserAttendance;
 import com.app.kidsdrawing.entity.Classes;
@@ -46,6 +47,7 @@ import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
+import com.app.kidsdrawing.repository.TutorialTemplateRepository;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -67,6 +69,7 @@ public class SemesterServiceImpl implements SemesterService {
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
     private final UserAttendanceRepository userAttendanceRepository;
+    private final TutorialTemplateRepository tutorialTemplateRepository;
     //private final EmailService emailService;
     //private final FCMService fcmService;
     private final TutorialRepository tutorialRepository;
@@ -199,11 +202,15 @@ public class SemesterServiceImpl implements SemesterService {
                     Tutorial savedTutorial = Tutorial.builder()
                         .section(savedSection)
                         .creator(creator)
-                        .name("Giáo trình " + ele_section_tmp.getTutorialTemplates().getName())
+                        .name("Giáo trình " + ele_section_tmp.getName())
                         .build();
                     tutorialRepository.save(savedTutorial);
 
-                    ele_section_tmp.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
+                    Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId(ele_section_tmp.getId());
+                    TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
+                        throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
+                    });
+                    tutorialTemplate.getTutorialTemplatePages().forEach(tutorial_page -> {
                         TutorialPage savedTutorialPage = TutorialPage.builder()
                             .tutorial(savedTutorial)
                             .name(tutorial_page.getName())
@@ -444,11 +451,16 @@ public class SemesterServiceImpl implements SemesterService {
                             Tutorial savedTutorial = Tutorial.builder()
                                 .section(savedSection)
                                 .creator(creator)
-                                .name("Giáo trình " + section_template.getTutorialTemplates().getName())
+                                .name("Giáo trình " + section_template.getName())
                                 .build();
                             tutorialRepository.save(savedTutorial);
-                            
-                            section_template.getTutorialTemplates().getTutorialTemplatePages().forEach(tutorial_page -> {
+
+                            Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId(section_template.getId());
+                            TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
+                                throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
+                            });
+
+                            tutorialTemplate.getTutorialTemplatePages().forEach(tutorial_page -> {
                                 TutorialPage savedTutorialPage = TutorialPage.builder()
                                     .tutorial(savedTutorial)
                                     .name(tutorial_page.getName())

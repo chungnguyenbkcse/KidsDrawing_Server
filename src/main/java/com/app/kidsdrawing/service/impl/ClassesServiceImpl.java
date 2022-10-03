@@ -497,8 +497,7 @@ public class ClassesServiceImpl implements ClassesService {
                 if (allUserRegisterJoinSemesters
                         .contains(class_has_join_semester_class.getUserRegisterJoinSemester())) {
                     LocalDateTime res = getEndSectionOfClass(
-                            class_has_join_semester_class.getUserRegisterJoinSemester()
-                                    .getClassHasRegisterJoinSemesterClass().getClasses().getId());
+                            class_has_join_semester_class.getClasses().getId());
                     if (time_now.isAfter(res) == false) {
                         GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                                 .id(class_has_join_semester_class.getClasses().getId())
@@ -1102,7 +1101,7 @@ public class ClassesServiceImpl implements ClassesService {
                     week_count++;
                 }
                 Map<String, List<Map<String, List<List<LocalDateTime>>>>> schedule_class = new HashMap<>();
-                String name = user_register_join_semester.getClassHasRegisterJoinSemesterClass().getClasses().getName();
+                String name = user_register_join_semester.getSemesterClass().getName();
                 schedule_class.put(name, allCalendarForSemesterClass);
                 allCalendarForChild.add(schedule_class);
             }
@@ -1244,7 +1243,7 @@ public class ClassesServiceImpl implements ClassesService {
                     }
                     Map<String, List<Map<String, List<List<LocalDateTime>>>>> schedule_class = new HashMap<>();
                     schedule_class.put(
-                            user_register_join_semester.getClassHasRegisterJoinSemesterClass().getClasses().getName(),
+                            user_register_join_semester.getSemesterClass().getName(),
                             allCalendarForSemesterClass);
                     allCalendarForChild.add(schedule_class);
                 }

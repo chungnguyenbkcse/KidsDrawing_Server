@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -35,11 +36,12 @@ import lombok.Setter;
 public class TutorialTemplate {
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column
     private UUID  id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "section_template_id", referencedColumnName = "id")
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
     private SectionTemplate sectionTemplate;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
