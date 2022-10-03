@@ -173,19 +173,19 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
 
     @Override
     public GetUserAttendanceResponse getAllUserAttendanceBySectionAndStudent(UUID section_id, UUID student_id) {
-        UserAttendance userAttendance = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
+        List<UserAttendance> userAttendance = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
         return GetUserAttendanceResponse.builder()
-            .id(userAttendance.getId())
-            .section_number(userAttendance.getSection().getNumber())
-            .course_id(userAttendance.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-            .course_name(userAttendance.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
-            .email(userAttendance.getStudent().getEmail())
-            .section_id(userAttendance.getSection().getId())
-            .student_id(userAttendance.getStudent().getId())
-            .section_name(userAttendance.getSection().getName())
-            .student_name(userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
-            .create_time(userAttendance.getCreateTime())
-            .update_time(userAttendance.getUpdateTime())
+            .id(userAttendance.get(0).getId())
+            .section_number(userAttendance.get(0).getSection().getNumber())
+            .course_id(userAttendance.get(0).getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
+            .course_name(userAttendance.get(0).getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
+            .email(userAttendance.get(0).getStudent().getEmail())
+            .section_id(userAttendance.get(0).getSection().getId())
+            .student_id(userAttendance.get(0).getStudent().getId())
+            .section_name(userAttendance.get(0).getSection().getName())
+            .student_name(userAttendance.get(0).getStudent().getFirstName() + " " + userAttendance.get(0).getStudent().getLastName())
+            .create_time(userAttendance.get(0).getCreateTime())
+            .update_time(userAttendance.get(0).getUpdateTime())
             .build();
     }
 

@@ -21,15 +21,15 @@ public interface ClassHasRegisterJoinSemesterClassRepository extends JpaReposito
     @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester")
     List<ClassHasRegisterJoinSemesterClass> findAll();
 
-    @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c WHERE c.id = :id ")
+    @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester WHERE c.id = :id ")
     Optional<ClassHasRegisterJoinSemesterClass> findById(ClassHasRegisterJoinSemesterClassKey id);
-    
-    @Query("SELECT count(c.id) = 1 FROM ClassHasRegisterJoinSemesterClass c  WHERE c.userRegisterJoinSemester = :id")
-    Boolean existsByUserRegisterJoinSemesterId(UUID id);
 
-    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester WHERE c.userRegisterJoinSemester = :id")
+    @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester JOIN FETCH c.classes WHERE c.classes = ?1 AND c.userRegisterJoinSemester = ?2")
+    Optional<ClassHasRegisterJoinSemesterClass> findByClassIdAndUserRegisterJoinSemester(UUID class_id, UUID user_register_join_semester_id);
+
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester JOIN FETCH c.classes WHERE c.userRegisterJoinSemester = :id")
     List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterId(UUID id);
 
-    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes WHERE c.classes = :id")
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester WHERE c.classes = :id")
     List<ClassHasRegisterJoinSemesterClass> findByClassesId(UUID id);
 }
