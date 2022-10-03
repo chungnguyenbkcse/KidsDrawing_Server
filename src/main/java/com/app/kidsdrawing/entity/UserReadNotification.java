@@ -3,6 +3,7 @@ package com.app.kidsdrawing.entity;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -25,12 +26,12 @@ public class UserReadNotification {
     @EmbeddedId
     UserReadNotificationKey id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id")
     User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("notificationId")
     @JoinColumn(name = "notification_id")
     Notification notification;

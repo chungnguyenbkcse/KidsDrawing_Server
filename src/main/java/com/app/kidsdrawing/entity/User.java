@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -82,17 +81,17 @@ public class User{
     @UpdateTimestamp
     private LocalDateTime updateTime = LocalDateTime.now();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_has_role",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private User parent;
      
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent")
     private Set<User> childrens;
 
     @OneToMany(mappedBy="user")
@@ -158,15 +157,7 @@ public class User{
     @OneToMany(mappedBy = "teacher")
     private Set<UserGradeContestSubmission> userGradeContestSubmissions;
 
-    @OneToOne(mappedBy = "user")
-    private SectionTemplate sectionTemplates;
+    @OneToMany(mappedBy="user")
+    private Set<UserReadNotification> userReadNotifications;
 
-    @OneToOne(mappedBy="user")
-    private UserReadNotification userReadNotification;
-
-    @OneToOne(mappedBy="user")
-    private PasswordResetToken passwordResetToken;
-
-    @OneToOne(mappedBy="student")
-    private UserAttendance userAttendance;
 }

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -42,6 +43,6 @@ public class Notification {
     @CreationTimestamp
     private LocalDateTime time = LocalDateTime.now();
 
-    @OneToOne(mappedBy="notification")
+    @OneToOne(mappedBy="notification", fetch = FetchType.LAZY)
     private UserReadNotification userReadNotification;
 }

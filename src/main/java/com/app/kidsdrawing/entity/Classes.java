@@ -43,7 +43,7 @@ public class Classes {
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_register_teach_semester_id", referencedColumnName = "id")
     private UserRegisterTeachSemester userRegisterTeachSemester;
 

@@ -560,7 +560,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOpt = userRepository.findByUsernameOrEmail(username, username);
+        Optional<User> userOpt = userRepository.findByUsername(username);
 
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");

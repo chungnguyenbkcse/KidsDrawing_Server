@@ -76,7 +76,7 @@ public class Section {
     @OneToMany(mappedBy="section")
     private Set<Exercise> exercises;
 
-    @OneToOne(mappedBy="section")
+    @OneToOne(mappedBy="section", fetch = FetchType.LAZY)
     private Tutorial tutorial;
 
     @OneToMany(mappedBy="section")

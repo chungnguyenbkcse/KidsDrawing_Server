@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository <User, UUID>{
 	)
     Page<User> findAll(Pageable pageable);
 
-    @Query("FROM User e JOIN FETCH e.parent WHERE e.id = :id")
+    @Query("FROM User e WHERE e.id = :id")
     Optional<User> findById(UUID id);
     
     @Query("SELECT COUNT(e.id) = 1 FROM User e WHERE e.username = :username")
@@ -32,12 +32,13 @@ public interface UserRepository extends JpaRepository <User, UUID>{
     @Query("SELECT COUNT(e.id) = 1 FROM User e WHERE e.email = :email")
     Boolean existsByEmail(String email);
 
+    @Query("FROM User e WHERE e.username = ?1 OR e.email = ?2")
     Optional<User> findByUsernameOrEmail(String username, String email);
 
-    @Query("FROM User e JOIN FETCH e.parent WHERE e.username = :username")
+    @Query("SELECT e FROM User e WHERE e.username = :username")
     Optional<User> findByUsername(String username);
 
-    @Query("FROM User e JOIN FETCH e.parent WHERE e.email = :email")
+    @Query("FROM User e WHERE e.email = :email")
     Optional<User> findByEmail(String email);
 
     @Query("FROM User e JOIN FETCH e.parent WHERE e.parent = :id")

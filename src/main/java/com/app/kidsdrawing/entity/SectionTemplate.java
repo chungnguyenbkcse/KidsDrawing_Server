@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -33,11 +34,12 @@ import lombok.Setter;
 public class SectionTemplate {
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column
     private UUID  id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
@@ -63,6 +65,6 @@ public class SectionTemplate {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @OneToOne(mappedBy="sectionTemplate")
+    @OneToOne(mappedBy="sectionTemplate", fetch = FetchType.LAZY)
     private TutorialTemplate tutorialTemplates;
 }
