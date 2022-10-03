@@ -41,7 +41,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
     @Override
     public ResponseEntity<Map<String, Object>> getAllClassHasRegisterJoinSemesterClass() {
         List<GetClassHasRegisterJoinSemesterClassResponse> allClassHasRegisterJoinSemesterClassResponses = new ArrayList<>();
-        List<ClassHasRegisterJoinSemesterClass> pageClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findAllUsingFetch();
+        List<ClassHasRegisterJoinSemesterClass> pageClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findAll();
         pageClassHasRegisterJoinSemesterClass.forEach(class_has_register_join_semester_class -> {
             GetClassHasRegisterJoinSemesterClassResponse classHasRegisterJoinSemesterClassResponse = GetClassHasRegisterJoinSemesterClassResponse.builder()
                     .classes_id(class_has_register_join_semester_class.getClasses().getId())

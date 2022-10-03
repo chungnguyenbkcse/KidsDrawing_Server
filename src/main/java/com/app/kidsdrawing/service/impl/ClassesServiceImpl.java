@@ -73,7 +73,7 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllClass() {
         List<GetClassResponse> allClassResponses = new ArrayList<>();
-        List<Classes> listClass = classRepository.findAllFetchUsingUserAndUserRegisterTeachSemester();
+        List<Classes> listClass = classRepository.findAll();
         listClass.forEach(content -> {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
@@ -99,7 +99,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allScheduleTime = new ArrayList<>();
         List<List<GetStudentResponse>> allStudentDoneResponses = new ArrayList<>();
         List<List<GetStudentResponse>> allStudentDoingResponses = new ArrayList<>();
-        List<Classes> listClass = classRepository.findAllFetchUsingUserAndUserRegisterTeachSemester();
+        List<Classes> listClass = classRepository.findAll();
         LocalDateTime time_now = LocalDateTime.now();
         listClass.forEach(ele -> {
             schedule = "";
@@ -126,7 +126,7 @@ public class ClassesServiceImpl implements ClassesService {
                     x.put(ele.getName(), schedule_time);
                     allScheduleTime.add(x);
                     List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
-                            .findByClassesIdUsingFetch(ele.getId());
+                            .findByClassesId(ele.getId());
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                             .id(ele.getId())
                             .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
@@ -177,7 +177,7 @@ public class ClassesServiceImpl implements ClassesService {
 
                 else {
                     List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
-                            .findByClassesIdUsingFetch(ele.getId());
+                            .findByClassesId(ele.getId());
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                             .id(ele.getId())
                             .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
@@ -243,7 +243,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<GetSemesterResponse> allSemesterResponses = new ArrayList<>();
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
-        List<Classes> listClass = classRepository.findAllFetchUsingUserAndUserRegisterTeachSemester();
+        List<Classes> listClass = classRepository.findAll();
         listClass.forEach(content -> {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
@@ -636,7 +636,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .findByStudentId(id);
         listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
             List<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository
-                    .findByUserRegisterJoinSemesterIdUsingFetch(user_register_join_semester.getId());
+                    .findByUserRegisterJoinSemesterId(user_register_join_semester.getId());
             classHasRegisterJoinSemesterClassOpt.forEach(ele -> {
                 GetClassesStudentResponse classResponse = GetClassesStudentResponse.builder()
                         .id(ele.getClasses().getId())
@@ -694,10 +694,10 @@ public class ClassesServiceImpl implements ClassesService {
                 semesterClassRepository.findBySemesterId(semester.getId()).forEach(semester_class -> {
                     userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId())
                             .forEach(user_register_teache_semester -> {
-                                if (classRepository.existsByUserRegisterTeachSemesterIdUsingFetch(
+                                if (classRepository.existsByUserRegisterTeachSemesterId(
                                         user_register_teache_semester.getId())) {
                                     List<Classes> classesOtp = classRepository
-                                            .findByUserRegisterTeachSemesterIdUsingFetch(
+                                            .findByUserRegisterTeachSemesterId(
                                                     user_register_teache_semester.getId());
                                     classesOtp.forEach(classes_ele -> {
                                         allClassDoing.add(classes_ele);
@@ -1332,7 +1332,7 @@ public class ClassesServiceImpl implements ClassesService {
 
         List<GetStudentResponse> listStudents = new ArrayList<>();
         List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
-                .findByClassesIdUsingFetch(classes.getId());
+                .findByClassesId(classes.getId());
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
             UUID parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
             String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "

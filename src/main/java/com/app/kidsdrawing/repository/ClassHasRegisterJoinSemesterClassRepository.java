@@ -19,16 +19,17 @@ public interface ClassHasRegisterJoinSemesterClassRepository extends JpaReposito
     void deleteById(ClassHasRegisterJoinSemesterClassKey id);
 
     @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester")
-    List<ClassHasRegisterJoinSemesterClass> findAllUsingFetch();
+    List<ClassHasRegisterJoinSemesterClass> findAll();
 
+    @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c WHERE c.id = :id ")
     Optional<ClassHasRegisterJoinSemesterClass> findById(ClassHasRegisterJoinSemesterClassKey id);
     
     @Query("SELECT count(c.id) = 1 FROM ClassHasRegisterJoinSemesterClass c  WHERE c.userRegisterJoinSemester = :id")
-    Boolean existsByUserRegisterJoinSemesterIdUsingFetch(UUID id);
+    Boolean existsByUserRegisterJoinSemesterId(UUID id);
 
     @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester WHERE c.userRegisterJoinSemester = :id")
-    List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterIdUsingFetch(UUID id);
+    List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterId(UUID id);
 
     @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes WHERE c.classes = :id")
-    List<ClassHasRegisterJoinSemesterClass> findByClassesIdUsingFetch(UUID id);
+    List<ClassHasRegisterJoinSemesterClass> findByClassesId(UUID id);
 }

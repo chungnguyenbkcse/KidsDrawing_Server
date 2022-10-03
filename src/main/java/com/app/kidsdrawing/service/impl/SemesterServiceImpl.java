@@ -152,7 +152,7 @@ public class SemesterServiceImpl implements SemesterService {
             allCourseResponses.add(semester_class.getCourse());
         });
 
-        List<Classes> listClass = classRepository.findAllFetchUsingUserAndUserRegisterTeachSemester();
+        List<Classes> listClass = classRepository.findAll();
         List<List<Classes>> allClassOfSemesterClassResponses = new ArrayList<>();        
         allSemesterClassResponses.forEach(semester_class -> {
             List<Classes> list_class = new ArrayList<>();

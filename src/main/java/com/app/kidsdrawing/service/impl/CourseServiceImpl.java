@@ -482,7 +482,7 @@ public class CourseServiceImpl implements CourseService {
         });
 
         List<Classes> allClassResponses = new ArrayList<>();
-        List<Classes> listClass = classRepository.findAllFetchUsingUserAndUserRegisterTeachSemester();
+        List<Classes> listClass = classRepository.findAll();
 
         // Danh sach dang ki giao vien duoc xep lop
         List<UserRegisterTeachSemester> allTeacherRegisterSuccessfullTeachSemesterResponses = new ArrayList<>();

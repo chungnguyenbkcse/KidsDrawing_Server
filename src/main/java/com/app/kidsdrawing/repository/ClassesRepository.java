@@ -14,21 +14,22 @@ import com.app.kidsdrawing.entity.Classes;
 public interface ClassesRepository extends JpaRepository <Classes, UUID>{
 
     @Query("SELECT count(c.id) = 1 FROM Classes c WHERE c.id = :id")
-    boolean existsByIdUsingFetch(UUID id);
+    boolean existsById(UUID id);
 
     @Query("SELECT count(c.id) = 1 FROM Classes c WHERE c.name = :name")
-    Boolean existsByNameUsingFetch(String name);
+    Boolean existsByName(String name);
 
     void deleteById(UUID id); 
     
     @Query("FROM Classes c  JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester")
-    List<Classes> findAllFetchUsingUserAndUserRegisterTeachSemester();
+    List<Classes> findAll();
 
     @Query("SELECT count(c.id) = 1 FROM Classes c WHERE c.userRegisterTeachSemester = :id")
-    Boolean existsByUserRegisterTeachSemesterIdUsingFetch(UUID id);
+    Boolean existsByUserRegisterTeachSemesterId(UUID id);
 
     @Query("FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester WHERE c.userRegisterTeachSemester = :id")
-    List<Classes> findByUserRegisterTeachSemesterIdUsingFetch(UUID id);
+    List<Classes> findByUserRegisterTeachSemesterId(UUID id);
 
+    @Query("SELECT c FROM Classes c WHERE c.id = :id ")
     Optional<Classes> findById(UUID id);
 }

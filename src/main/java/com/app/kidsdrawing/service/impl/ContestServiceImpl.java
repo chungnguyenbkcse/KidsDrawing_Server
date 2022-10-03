@@ -229,7 +229,7 @@ public class ContestServiceImpl implements ContestService {
             if (contest.getArtTypes().getId().compareTo(id) == 0) {
                 total = 0;
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
-                        .findByContestId(contest.getId());
+                    .findByContestId(contest.getId());
                 List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
                         .findByContestId(contest.getId());
                 listContestSubmissionByContest.forEach(contest_submission -> {
@@ -354,7 +354,7 @@ public class ContestServiceImpl implements ContestService {
         allContest.forEach(contest -> {
             if (!allContestForStudent.contains(contest) && time_now.isBefore(contest.getRegistration_time())) {
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
-                        .findByContestId(contest.getId());
+                    .findByContestId(contest.getId());
                 GetContestStudentResponse contestOpeningResponse = GetContestStudentResponse.builder()
                         .id(contest.getId())
                         .name(contest.getName())
@@ -400,7 +400,7 @@ public class ContestServiceImpl implements ContestService {
                 total = 0;
                 allContestForStudent.add(ele.getContest());
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
-                        .findByContestId(ele.getContest().getId());
+                    .findByContestId(ele.getContest().getId());
                 List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
                         .findByContestId(ele.getContest().getId());
                 listContestSubmissionByContest.forEach(contest_submission -> {
@@ -521,7 +521,7 @@ public class ContestServiceImpl implements ContestService {
             if (contest.getArtAges().getId().compareTo(id) == 0) {
                 total = 0;
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
-                        .findByContestId(contest.getId());
+                    .findByContestId(contest.getId());
                 List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
                         .findByContestId(contest.getId());
                 listContestSubmissionByContest.forEach(contest_submission -> {
@@ -569,7 +569,7 @@ public class ContestServiceImpl implements ContestService {
 
         total = 0;
         List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
-                .findByContestId(contest.getId());
+                    .findByContestId(contest.getId());
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
                 .findByContestId(contest.getId());
         listContestSubmissionByContest.forEach(contest_submission -> {
@@ -608,7 +608,7 @@ public class ContestServiceImpl implements ContestService {
 
         total = 0;
         List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
-                .findByContestId(contest.getId());
+                    .findByContestId(contest.getId());
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
                 .findByContestId(contest.getId());
         listContestSubmissionByContest.forEach(contest_submission -> {
