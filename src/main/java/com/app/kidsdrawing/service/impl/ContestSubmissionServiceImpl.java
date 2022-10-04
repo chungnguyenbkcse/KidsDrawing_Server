@@ -88,7 +88,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     public ResponseEntity<Map<String, Object>> getAllContestSubmissionByContestId(UUID id) {
         List<GetContestSubmissionResponse> allContestSubmissionGradedResponses = new ArrayList<>();
         List<GetContestSubmissionResponse> allContestSubmissionNotGradedResponses = new ArrayList<>();
-        List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId(id);
+        List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId2(id);
         listContestSubmissionByContest.forEach(contest_submission -> {
             if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
                 GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
@@ -126,7 +126,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
 
     @Override
     public GetContestSubmissionResponse getContestSubmissionById(UUID id) {
-        Optional<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(id);
+        Optional<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById2(id);
         ContestSubmission contestSubmission = contestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
@@ -168,7 +168,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
 
     @Override
     public UUID removeContestSubmissionById(UUID id) {
-        Optional<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(id);
+        Optional<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById1(id);
         contestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
@@ -179,7 +179,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
 
     @Override
     public UUID updateContestSubmissionById(UUID id, CreateContestSubmissionRequest createContestSubmissionRequest) {
-        Optional<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(id);
+        Optional<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById1(id);
         ContestSubmission updatedContestSubmission = contestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });

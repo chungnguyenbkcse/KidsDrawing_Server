@@ -79,7 +79,7 @@ public class ContestServiceImpl implements ContestService {
             List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId(contest.getId());
             List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
-                    .findByContestId(contest.getId());
+                    .findByContestId1(contest.getId());
             listContestSubmissionByContest.forEach(contest_submission -> {
                 if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())) {
                     total = total + 1;
@@ -183,7 +183,7 @@ public class ContestServiceImpl implements ContestService {
             List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId(contest.getId());
             List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
-                    .findByContestId(contest.getId());
+                    .findByContestId1(contest.getId());
             listContestSubmissionByContest.forEach(contest_submission -> {
                 if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())) {
                     total = total + 1;
@@ -231,7 +231,7 @@ public class ContestServiceImpl implements ContestService {
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId(contest.getId());
                 List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
-                        .findByContestId(contest.getId());
+                        .findByContestId1(contest.getId());
                 listContestSubmissionByContest.forEach(contest_submission -> {
                     if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())) {
                         total = total + 1;
@@ -287,7 +287,7 @@ public class ContestServiceImpl implements ContestService {
             List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId(ele.getContest().getId());
             List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
-                    .findByContestId(ele.getContest().getId());
+                    .findByContestId1(ele.getContest().getId());
             listContestSubmissionByContest.forEach(contest_submission -> {
                 if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())) {
                     total = total + 1;
@@ -402,7 +402,7 @@ public class ContestServiceImpl implements ContestService {
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId(ele.getContest().getId());
                 List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
-                        .findByContestId(ele.getContest().getId());
+                        .findByContestId1(ele.getContest().getId());
                 listContestSubmissionByContest.forEach(contest_submission -> {
                     if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())) {
                         total = total + 1;
@@ -523,7 +523,7 @@ public class ContestServiceImpl implements ContestService {
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId(contest.getId());
                 List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
-                        .findByContestId(contest.getId());
+                        .findByContestId1(contest.getId());
                 listContestSubmissionByContest.forEach(contest_submission -> {
                     if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())) {
                         total = total + 1;
@@ -571,7 +571,7 @@ public class ContestServiceImpl implements ContestService {
         List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId(contest.getId());
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
-                .findByContestId(contest.getId());
+                .findByContestId1(contest.getId());
         listContestSubmissionByContest.forEach(contest_submission -> {
             if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())) {
                 total = total + 1;
@@ -610,7 +610,7 @@ public class ContestServiceImpl implements ContestService {
         List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId(contest.getId());
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository
-                .findByContestId(contest.getId());
+                .findByContestId1(contest.getId());
         listContestSubmissionByContest.forEach(contest_submission -> {
             if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())) {
                 total = total + 1;

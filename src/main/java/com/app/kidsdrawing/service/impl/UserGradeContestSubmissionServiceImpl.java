@@ -172,7 +172,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 
-        Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(createUserGradeContestSubmissionRequest.getContest_submission_id());
+        Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById1(createUserGradeContestSubmissionRequest.getContest_submission_id());
         ContestSubmission contestSubmission = contestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
@@ -215,7 +215,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
                     throw new EntityNotFoundException("exception.user_teacher.not_found");
                 });
             
-                Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(createUserGradeContestSubmissionRequest.getContest_submission_id());
+                Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById1(createUserGradeContestSubmissionRequest.getContest_submission_id());
                 ContestSubmission contestSubmission = contestSubmissionOpt.orElseThrow(() -> {
                     throw new EntityNotFoundException("exception.ContestSubmission.not_found");
                 });
