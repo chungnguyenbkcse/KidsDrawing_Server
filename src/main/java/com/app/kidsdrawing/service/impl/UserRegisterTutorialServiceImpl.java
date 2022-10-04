@@ -131,7 +131,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
     @Override
     public GetUserRegisterTutorialResponse createUserRegisterTutorial(CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
-        Optional <Section> sectionOpt = sectionRepository.findById(createUserRegisterTutorialRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createUserRegisterTutorialRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
@@ -183,7 +183,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createUserRegisterTutorialRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createUserRegisterTutorialRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });

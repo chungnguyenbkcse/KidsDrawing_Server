@@ -173,7 +173,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> allExerciseSubmitedNotGradeResponses = new ArrayList<>();
         List<GetExerciseResponse> allExerciseSubmitedGradedResponses = new ArrayList<>();
 
-        Optional<Section> sectionOpt = sectionRepository.findById(section_id);
+        Optional<Section> sectionOpt = sectionRepository.findById2(section_id);
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Section.not_found");
         });
@@ -202,13 +202,13 @@ public class ExerciseServiceImpl implements ExerciseService{
                         checked = true;
                         GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
                             .id(ele.getExercise().getId())
-                            .section_id(ele.getExercise().getSection().getId())
+                            .section_id(section.getId())
                             .teacher_name(ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                             .time_submit(ele.getUpdate_time())
                             .exercise_submission_id(ele.getId())
                             .level_id(ele.getExercise().getExerciseLevel().getId())
                             .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
-                            .section_name(ele.getExercise().getSection().getName())
+                            .section_name(section.getName())
                             .name(ele.getExercise().getName())
                             .description(ele.getExercise().getDescription())
                             .deadline(ele.getExercise().getDeadline())
@@ -222,10 +222,10 @@ public class ExerciseServiceImpl implements ExerciseService{
                 if (checked == false) {
                     GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
                         .id(ele.getExercise().getId())
-                        .section_id(ele.getExercise().getSection().getId())
+                        .section_id(section.getId())
                         .level_id(ele.getExercise().getExerciseLevel().getId())
                         .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
-                        .section_name(ele.getExercise().getSection().getName())
+                        .section_name(section.getName())
                         .teacher_name(ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getExercise().getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                         .time_submit(ele.getUpdate_time())
                         .exercise_submission_id(ele.getId())
@@ -244,11 +244,11 @@ public class ExerciseServiceImpl implements ExerciseService{
             if (listExerciseSubmitedByStudentClass.contains(ele) == false){
                 GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
                     .id(ele.getId())
-                    .section_id(ele.getSection().getId())
+                    .section_id(section.getId())
                     .level_id(ele.getExerciseLevel().getId())
                     .level_name(ele.getExerciseLevel().getWeight().toString())
-                    .section_name(ele.getSection().getName())
-                    .teacher_name(ele.getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + ele.getSection().getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                    .section_name(section.getName())
+                    .teacher_name(section.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + section.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                     .time_submit(ele.getUpdate_time())
                     .name(ele.getName())
                     .description(ele.getDescription())
@@ -319,7 +319,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     @Override
     public UUID createExercise(CreateExerciseRequest createExerciseRequest) {
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createExerciseRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createExerciseRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
@@ -359,7 +359,7 @@ public class ExerciseServiceImpl implements ExerciseService{
             throw new EntityNotFoundException("exception.Exercise.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createExerciseRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createExerciseRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });

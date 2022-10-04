@@ -23,8 +23,11 @@ public interface SectionRepository extends JpaRepository <Section, UUID>{
 	)
     Page<Section> findAll(Pageable pageable);
 
+    @Query("FROM Section e WHERE e.id = :id")
+    Optional<Section> findById1(UUID id);
+
     @Query("FROM Section e JOIN FETCH e.classes WHERE e.id = :id")
-    Optional<Section> findById(UUID id);
+    Optional<Section> findById2(UUID id);
 
     @Query("FROM Section e JOIN FETCH e.classes WHERE e.classes = :id ORDER BY e.number")
     List<Section> findByClassesId(UUID id);

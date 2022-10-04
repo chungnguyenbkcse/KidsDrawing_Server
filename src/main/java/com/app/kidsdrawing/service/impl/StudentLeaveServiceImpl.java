@@ -336,7 +336,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createStudentLeaveRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createStudentLeaveRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
@@ -382,7 +382,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createStudentLeaveRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createStudentLeaveRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });

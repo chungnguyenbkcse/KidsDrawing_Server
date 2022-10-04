@@ -165,7 +165,7 @@ public class TutorialServiceImpl implements TutorialService{
     @Override
     public GetTutorialResponse createTutorial(CreateTutorialRequest createTutorialRequest) {
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createTutorialRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createTutorialRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
@@ -215,7 +215,7 @@ public class TutorialServiceImpl implements TutorialService{
             throw new EntityNotFoundException("exception.Tutorial.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createTutorialRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createTutorialRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });

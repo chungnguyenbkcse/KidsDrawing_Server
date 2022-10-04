@@ -216,7 +216,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     @Override
     public UUID createUserAttendance(CreateUserAttendanceRequest createUserAttendanceRequest) {
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createUserAttendanceRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createUserAttendanceRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
@@ -255,7 +255,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createUserAttendanceRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createUserAttendanceRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });

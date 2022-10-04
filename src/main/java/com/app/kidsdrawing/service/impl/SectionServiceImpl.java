@@ -86,7 +86,7 @@ public class SectionServiceImpl implements SectionService{
 
     @Override
     public GetSectionResponse getSectionById(UUID id) {
-        Optional<Section> sectionOpt = sectionRepository.findById(id);
+        Optional<Section> sectionOpt = sectionRepository.findById2(id);
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Section.not_found");
         });
@@ -127,7 +127,7 @@ public class SectionServiceImpl implements SectionService{
 
     @Override
     public UUID removeSectionById(UUID id) {
-        Optional<Section> sectionOpt = sectionRepository.findById(id);
+        Optional<Section> sectionOpt = sectionRepository.findById1(id);
         sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Section.not_found");
         });
@@ -138,7 +138,7 @@ public class SectionServiceImpl implements SectionService{
 
     @Override
     public UUID updateSectionById(UUID id, CreateSectionRequest createSectionRequest) {
-        Optional<Section> sectionOpt = sectionRepository.findById(id);
+        Optional<Section> sectionOpt = sectionRepository.findById1(id);
         Section updatedSection = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Section.not_found");
         });
