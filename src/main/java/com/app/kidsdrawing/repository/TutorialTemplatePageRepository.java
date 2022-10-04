@@ -24,8 +24,11 @@ public interface TutorialTemplatePageRepository extends JpaRepository <TutorialT
 	)
     Page<TutorialTemplatePage> findAll(Pageable pageable);
 
+    @Query("FROM TutorialTemplatePage e WHERE e.id = :id")
+    Optional<TutorialTemplatePage> findById1(UUID id);
+
     @Query("FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate WHERE e.id = :id")
-    Optional<TutorialTemplatePage> findById(UUID id);
+    Optional<TutorialTemplatePage> findById2(UUID id);
 
     @Query("FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate WHERE e.tutorialTemplate = :id")
     Optional<TutorialTemplatePage> findByTutorialTemplateId(UUID id);
