@@ -19,7 +19,7 @@ public interface ContestSubmissionRepository extends JpaRepository <ContestSubmi
     @Query("FROM ContestSubmission c  JOIN FETCH c.contest WHERE c.contest = :id")
     List<ContestSubmission> findByContestId1(UUID id);
 
-    @Query("FROM ContestSubmission c  JOIN FETCH c.contest  JOIN FETCH c.student WHERE c.contest = :id")
+    @Query("FROM ContestSubmission c JOIN FETCH c.userGradeContestSubmissions JOIN FETCH c.contest  JOIN FETCH c.student WHERE c.contest = :id")
     List<ContestSubmission> findByContestId2(UUID id);
 
     @Query("FROM ContestSubmission c  JOIN FETCH c.student WHERE c.student = :id")

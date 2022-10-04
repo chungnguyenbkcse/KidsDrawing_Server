@@ -21,7 +21,6 @@ import com.app.kidsdrawing.entity.Contest;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.ContestSubmissionRepository;
-import com.app.kidsdrawing.repository.UserGradeContestSubmissionRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ContestSubmissionService;
 
@@ -35,7 +34,6 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     private final ContestSubmissionRepository contestSubmissionRepository;
     private final ContestRepository contestRepository;
     private final UserRepository userRepository;
-    private final UserGradeContestSubmissionRepository userGradeContestSubmissionRepository;
 
 
     @Override
@@ -90,7 +88,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         List<GetContestSubmissionResponse> allContestSubmissionNotGradedResponses = new ArrayList<>();
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId2(id);
         listContestSubmissionByContest.forEach(contest_submission -> {
-            if (userGradeContestSubmissionRepository.existsByContestSubmissionId(contest_submission.getId())){
+            if (contest_submission.getUserGradeContestSubmissions().size() > 0){
                 GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
                     .id(contest_submission.getId())
                     .contest_id(contest_submission.getContest().getId())
