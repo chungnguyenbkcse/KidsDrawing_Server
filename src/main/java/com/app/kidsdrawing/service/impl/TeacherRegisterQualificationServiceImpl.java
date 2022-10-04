@@ -149,7 +149,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
     @Override
     public GetTeacherRegisterQualificationResponse getTeacherRegisterQualificationById(UUID id) {
-        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById(id);
+        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById2(id);
         TeacherRegisterQualification teacherRegisterQualification = teacherRegisterQualificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherRegisterQualification.not_found");
         });
@@ -186,7 +186,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
     @Override
     public UUID removeTeacherRegisterQualificationById(UUID id) {
-        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById(id);
+        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById1(id);
         teacherRegisterQualificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherRegisterQualification.not_found");
         });
@@ -197,7 +197,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
     @Override
     public UUID updateTeacherRegisterQualificationById(UUID id, CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest) {
-        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById(id);
+        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById1(id);
         TeacherRegisterQualification updatedTeacherRegisterQualification = teacherRegisterQualificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherRegisterQualification.not_found");
         });
@@ -219,7 +219,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
     @Override
     public UUID updateTeacherRegisterQualificationByAdmin(UUID id, CreateTeacherRegisterQualificationAdminRequest createTeacherRegisterQualificationAdminRequest) {
-        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById(id);
+        Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById1(id);
         TeacherRegisterQualification updatedTeacherRegisterQualification = teacherRegisterQualificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherRegisterQualification.not_found");
         });

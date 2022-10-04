@@ -22,15 +22,24 @@ public interface TeacherRegisterQualificationRepository extends JpaRepository <T
 	)
     Page<TeacherRegisterQualification> findAll(Pageable pageable);
 
-    @Query("FROM TeacherRegisterQualification e JOIN FETCH e.reviewer  JOIN FETCH e.teacher JOIN FETCH e.course WHERE e.id = :id")
-    Optional<TeacherRegisterQualification> findById(UUID id);
+    @Query("FROM TeacherRegisterQualification e WHERE e.id = :id")
+    Optional<TeacherRegisterQualification> findById1(UUID id);
+
+    @Query("FROM TeacherRegisterQualification e JOIN FETCH e.course JOIN FETCH e.reviewer  JOIN FETCH e.teacher WHERE e.id = :id")
+    Optional<TeacherRegisterQualification> findById2(UUID id);
 
 
-    @Query("FROM TeacherRegisterQualification e JOIN FETCH e.reviewer  JOIN FETCH e.teacher JOIN FETCH e.course WHERE e.teacher = :id")
-    List<TeacherRegisterQualification> findByTeacherId(UUID id);
+    @Query("FROM TeacherRegisterQualification JOIN FETCH e.teacher WHERE e.teacher = :id")
+    List<TeacherRegisterQualification> findByTeacherId1(UUID id);
 
-    @Query("FROM TeacherRegisterQualification e JOIN FETCH e.reviewer  JOIN FETCH e.teacher JOIN FETCH e.course WHERE e.course = :id")
-    List<TeacherRegisterQualification> findByCourseId(UUID id);
+    @Query("FROM TeacherRegisterQualification e JOIN FETCH e.teacher JOIN FETCH e.course JOIN FETCH e.reviewer  WHERE e.teacher = :id")
+    List<TeacherRegisterQualification> findByTeacherId2(UUID id);
+
+    @Query("FROM TeacherRegisterQualification e JOIN FETCH e.course WHERE e.course = :id")
+    List<TeacherRegisterQualification> findByCourseId1(UUID id);
+
+    @Query("FROM TeacherRegisterQualification e JOIN FETCH e.course JOIN FETCH e.reviewer  JOIN FETCH e.teacher WHERE e.course = :id")
+    List<TeacherRegisterQualification> findByCourseId2(UUID id);
 
     boolean existsById(UUID id);
     void deleteById(UUID id);
