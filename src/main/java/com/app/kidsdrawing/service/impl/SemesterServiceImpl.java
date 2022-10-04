@@ -353,7 +353,7 @@ public class SemesterServiceImpl implements SemesterService {
             });
 
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
-            List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId());
+            List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemesterClassId2(semester_class.getId());
 
             List<Integer> list_total_register_of_teacher = new ArrayList<>();
             if (check_count == 0){

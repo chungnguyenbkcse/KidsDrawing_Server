@@ -60,7 +60,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     @Override
     public ResponseEntity<Map<String, Object>> getAllTeacherTeachSemesterBySemesterClassSchedule(UUID id) {
         List<GetUserRegisterTeachSemesterScheduleClassResponse> allTeacherTeachSemesterResponses = new ArrayList<>();
-        List<UserRegisterTeachSemester> listTeacherTeachSemester = userRegisterTeachSemesterRepository.findBySemesterClassId(id);
+        List<UserRegisterTeachSemester> listTeacherTeachSemester = userRegisterTeachSemesterRepository.findBySemesterClassId1(id);
         listTeacherTeachSemester.forEach(content -> {
             GetUserRegisterTeachSemesterScheduleClassResponse teacherTeachSemesterResponse = GetUserRegisterTeachSemesterScheduleClassResponse.builder()
                 .id(content.getId())
@@ -75,7 +75,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
 
     @Override
     public GetTeacherTeachSemesterResponse getTeacherTeachSemesterById(UUID id) {
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById(id);
+        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById2(id);
         UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
@@ -113,7 +113,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
 
     @Override
     public UUID removeTeacherTeachSemesterById(UUID id) {
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById(id);
+        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById1(id);
         teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
@@ -124,7 +124,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
 
     @Override
     public UUID updateTeacherTeachSemesterById(UUID id, CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById(id);
+        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById1(id);
         UserRegisterTeachSemester updatedTeacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });

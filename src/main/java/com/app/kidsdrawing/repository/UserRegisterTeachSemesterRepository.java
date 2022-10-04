@@ -23,15 +23,24 @@ public interface UserRegisterTeachSemesterRepository extends JpaRepository <User
 	)
     Page<UserRegisterTeachSemester> findAll(Pageable pageable);
 
+    @Query("FROM UserRegisterTeachSemester e WHERE e.id = :id")
+    Optional<UserRegisterTeachSemester> findById1(UUID id);
+
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.teacher  JOIN FETCH e.semesterClass WHERE e.id = :id")
-    Optional<UserRegisterTeachSemester> findById(UUID id);
+    Optional<UserRegisterTeachSemester> findById2(UUID id);
     
     boolean existsById(UUID id);
     void deleteById(UUID id);
 
-    @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.teacher  JOIN FETCH e.semesterClass WHERE e.semesterClass = :id")
-    List<UserRegisterTeachSemester> findBySemesterClassId(UUID id);
+    @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.semesterClass WHERE e.semesterClass = :id")
+    List<UserRegisterTeachSemester> findBySemesterClassId1(UUID id);
+
+    @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.semesterClass JOIN FETCH e.teacher  WHERE e.semesterClass = :id")
+    List<UserRegisterTeachSemester> findBySemesterClassId2(UUID id);
+
+    @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.teacher WHERE e.teacher = :id")
+    List<UserRegisterTeachSemester> findByTeacherId1(UUID id);
 
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.teacher  JOIN FETCH e.semesterClass WHERE e.teacher = :id")
-    List<UserRegisterTeachSemester> findByTeacherId(UUID id);
+    List<UserRegisterTeachSemester> findByTeacherId2(UUID id);
 }
