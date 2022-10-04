@@ -72,7 +72,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
-        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId(id);
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId2(id);
         listStudentLeave.forEach(content -> {
             if (content.getStatus().equals("Approved")) {
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
@@ -144,7 +144,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findByParentId(id);
         pageUser.forEach(student -> {
-            List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId(student.getId());
+            List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId2(student.getId());
             listStudentLeave.forEach(content -> {
                 if (content.getStatus().equals("Approved")) {
                     GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
@@ -301,7 +301,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
 
     @Override
     public GetStudentLeaveResponse getStudentLeaveById(UUID id) {
-        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById(id);
+        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById2(id);
         StudentLeave StudentLeave = StudentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
@@ -361,7 +361,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
 
     @Override
     public UUID removeStudentLeaveById(UUID id) {
-        Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById(id);
+        Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById1(id);
         studentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
@@ -372,7 +372,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
 
     @Override
     public UUID updateStudentLeaveById(UUID id, CreateStudentLeaveRequest createStudentLeaveRequest) {
-        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById(id);
+        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById1(id);
         StudentLeave updatedStudentLeave = StudentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
@@ -402,7 +402,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
 
     @Override
     public UUID updateStatusStudentLeaveById(UUID id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest) {
-        Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById(id);
+        Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById1(id);
         StudentLeave updatedStudentLeave = studentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });

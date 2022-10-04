@@ -23,18 +23,30 @@ public interface StudentLeaveRepository extends JpaRepository <StudentLeave, UUI
 	)
     Page<StudentLeave> findAll(Pageable pageable);
 
+    @Query("FROM StudentLeave e WHERE e.id = :id")
+    Optional<StudentLeave> findById1(UUID id);
+
     @Query("FROM StudentLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.student JOIN FETCH e.reviewer WHERE e.id = :id")
-    Optional<StudentLeave> findById(UUID id);
+    Optional<StudentLeave> findById2(UUID id);
     
     boolean existsById(UUID id);
     void deleteById(UUID id);
 
-    @Query("FROM StudentLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.student JOIN FETCH e.reviewer WHERE e.student = :id")
-    List<StudentLeave> findByStudentId(UUID id);
+    @Query("FROM StudentLeave e JOIN FETCH e.student WHERE e.student = :id")
+    List<StudentLeave> findByStudentId1(UUID id);
+
+    @Query("FROM StudentLeave e JOIN FETCH e.student JOIN FETCH e.reviewer JOIN FETCH e.classes JOIN FETCH e.section WHERE e.student = :id")
+    List<StudentLeave> findByStudentId2(UUID id);
+
+    @Query("FROM StudentLeave e JOIN FETCH e.classes WHERE e.classes = :id")
+    List<StudentLeave> findByClassesId1(UUID id);
 
     @Query("FROM StudentLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.student JOIN FETCH e.reviewer WHERE e.classes = :id")
-    List<StudentLeave> findByClassesId(UUID id);
+    List<StudentLeave> findByClassesId2(UUID id);
 
-    @Query("FROM StudentLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.student JOIN FETCH e.reviewer WHERE e.section = :id")
-    List<StudentLeave> findBySectionId(UUID id);
+    @Query("FROM StudentLeave e JOIN FETCH e.section WHERE e.section = :id")
+    List<StudentLeave> findBySectionId1(UUID id);
+
+    @Query("FROM StudentLeave e JOIN FETCH e.section JOIN FETCH e.classes JOIN FETCH e.student JOIN FETCH e.reviewer WHERE e.section = :id")
+    List<StudentLeave> findBySectionId2(UUID id);
 }
