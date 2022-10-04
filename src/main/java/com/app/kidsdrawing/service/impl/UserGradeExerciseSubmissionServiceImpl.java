@@ -392,8 +392,8 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public GetUserGradeExerciseSubmissionResponse getUserGradeExerciseSubmissionById(UUID id) {
-        Optional<UserGradeExerciseSubmission> userGradeExerciseSubmissionOpt = userGradeExerciseSubmissionRepository.findById(id);
+    public GetUserGradeExerciseSubmissionResponse getUserGradeExerciseSubmissionById(UUID teacher_id ,UUID exercise_submission_id) {
+        Optional<UserGradeExerciseSubmission> userGradeExerciseSubmissionOpt = userGradeExerciseSubmissionRepository.findByTeacherIdAndExerciseSubmissionId(teacher_id, exercise_submission_id);
         UserGradeExerciseSubmission userGradeExerciseSubmission = userGradeExerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeExerciseSubmission.not_found");
         });
@@ -441,14 +441,14 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public UUID removeUserGradeExerciseSubmissionById(UUID id) {
-        Optional<UserGradeExerciseSubmission> userGradeExerciseSubmissionOpt = userGradeExerciseSubmissionRepository.findById(id);
+    public UUID removeUserGradeExerciseSubmissionById(UUID teacher_id, UUID exercise_submission_id) {
+        Optional<UserGradeExerciseSubmission> userGradeExerciseSubmissionOpt = userGradeExerciseSubmissionRepository.findByTeacherIdAndExerciseSubmissionId(teacher_id, exercise_submission_id);
         userGradeExerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeExerciseSubmission.not_found");
         });
 
-        userGradeExerciseSubmissionRepository.deleteById(id);
-        return id;
+        userGradeExerciseSubmissionRepository.deleteById(teacher_id, exercise_submission_id);
+        return teacher_id;
     }
 
     @Override
