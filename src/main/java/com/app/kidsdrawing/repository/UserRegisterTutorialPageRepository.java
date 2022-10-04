@@ -23,8 +23,11 @@ public interface UserRegisterTutorialPageRepository extends JpaRepository <UserR
 	)
     Page<UserRegisterTutorialPage> findAll(Pageable pageable);
 
+    @Query("FROM UserRegisterTutorialPage e WHERE e.id = :id")
+    Optional<UserRegisterTutorialPage> findById1(UUID id);
+
     @Query("FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial WHERE e.id = :id")
-    Optional<UserRegisterTutorialPage> findById(UUID id);
+    Optional<UserRegisterTutorialPage> findById2(UUID id);
 
     @Query("FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial WHERE e.userRegisterTutorial = :id")
     List<UserRegisterTutorialPage> findByUserRegisterTutorialId(UUID id);

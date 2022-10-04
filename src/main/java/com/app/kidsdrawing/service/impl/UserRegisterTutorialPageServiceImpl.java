@@ -74,7 +74,7 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
 
     @Override
     public GetUserRegisterTutorialPageResponse getUserRegisterTutorialPageById(UUID id) {
-        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById(id);
+        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById2(id);
         UserRegisterTutorialPage UserRegisterTutorialPage = UserRegisterTutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorialPage.not_found");
         });
@@ -108,7 +108,7 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
 
     @Override
     public UUID removeUserRegisterTutorialPageById(UUID id) {
-        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById(id);
+        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById1(id);
         UserRegisterTutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorialPage.not_found");
         });
@@ -119,7 +119,7 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
 
     @Override
     public UUID updateUserRegisterTutorialPageById(UUID id, CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
-        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById(id);
+        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById1(id);
         UserRegisterTutorialPage updatedUserRegisterTutorialPage = UserRegisterTutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorialPage.not_found");
         });
