@@ -21,19 +21,34 @@ public interface ContestRepository extends JpaRepository <Contest, UUID>{
 	)
     Page<Contest> findAll(Pageable pageable);
 
+    @Query(
+		value = "SELECT c FROM Contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.start_time",
+		countQuery = "SELECT COUNT(c) FROM Contest c INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user ORDER BY c.start_time"
+	)
+    Page<Contest> findAll1(Pageable pageable);
+
+    @Query(
+		value = "SELECT c FROM Contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.start_time",
+		countQuery = "SELECT COUNT(c) FROM Contest c INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user ORDER BY c.start_time"
+	)
+    Page<Contest> findAll2(Pageable pageable);
+
     @Query("SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.start_time")
     List<Contest> findAll();
+
+    @Query("SELECT c FROM Contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.start_time")
+    List<Contest> findAll1();
 
     @Query("FROM Contest c WHERE c.id = :id")
     Optional<Contest> findById1(UUID id);
 
-    @Query("FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.id = :id")
+    @Query("FROM Contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.id = :id")
     Optional<Contest> findById2(UUID id);
 
     @Query("FROM Contest c WHERE c.name = :name")
     Optional<Contest> findByName1(String name);
 
-    @Query("FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.name = :name")
+    @Query("FROM Contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.name = :name")
     Optional<Contest> findByName2(String name);
 
     @Query("SELECT count(c.id) = 1 FROM Contest c WHERE c.id = :id")

@@ -40,6 +40,9 @@ public interface UserRegisterJoinContestRepository extends JpaRepository <UserRe
 
     @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest WHERE e.student = :id")
     List<UserRegisterJoinContest> findByStudentId2(UUID id);
+
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student JOIN FETCH e.contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE e.student = :id")
+    List<UserRegisterJoinContest> findByStudentId3(UUID id);
     
     boolean existsById(UUID id);
     void deleteById(UUID id);
