@@ -483,7 +483,7 @@ Content-Type: application/json
 {
     "username": "parent-1",
     "password": "a8726357",
-    "email": "chung.nguyen10012001@hcmut.edu.vn",
+    "email": "parent-1@gmail.com",
     "firstName": "parent",
     "lastName": "1",
     "dateOfBirth": null,

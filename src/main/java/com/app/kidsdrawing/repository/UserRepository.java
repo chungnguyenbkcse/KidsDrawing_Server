@@ -17,6 +17,9 @@ public interface UserRepository extends JpaRepository <User, UUID>{
     @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent ORDER BY e.id")
     List<User> findAll();
 
+    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent LEFT JOIN FETCH e.roles ORDER BY e.id")
+    List<User> findAllFetchRole();
+
     @Query(
 		value = "SELECT e FROM User e LEFT JOIN FETCH e.parent ORDER BY e.id",
 		countQuery = "SELECT e FROM User e LEFT JOIN e.parent ORDER BY e.id"

@@ -280,7 +280,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllTeacher() {
         List<GetTeacherResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAll();
+        List<User> pageUser = userRepository.findAllFetchRole();
         Optional<Role> roleOpt = roleRepository.findByName("TEACHER_USER");
         Role role = roleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.role.not_found");
