@@ -24,12 +24,18 @@ public interface UserRegisterTutorialRepository extends JpaRepository <UserRegis
 	)
     Page<UserRegisterTutorial> findAll(Pageable pageable);
 
+    @Query("FROM UserRegisterTutorial e WHERE e.id = :id")
+    Optional<UserRegisterTutorial> findById1(UUID id);
+
     @Query("FROM UserRegisterTutorial e JOIN FETCH e.section  JOIN FETCH e.creator WHERE e.id = :id")
-    Optional<UserRegisterTutorial> findById(UUID id);
+    Optional<UserRegisterTutorial> findById2(UUID id);
     
     boolean existsById(UUID id);
     void deleteById(UUID id);
 
+    @Query("FROM UserRegisterTutorial e JOIN FETCH e.section  WHERE e.section = :id")
+    List<UserRegisterTutorial> findBySectionId1(UUID id);
+
     @Query("FROM UserRegisterTutorial e JOIN FETCH e.section  JOIN FETCH e.creator WHERE e.section = :id")
-    List<UserRegisterTutorial> findBySectionId(UUID id);
+    List<UserRegisterTutorial> findBySectionId2(UUID id);
 }

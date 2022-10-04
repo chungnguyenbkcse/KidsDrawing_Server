@@ -90,7 +90,7 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
 
     @Override
     public UUID createUserRegisterTutorialPage(CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
-        Optional <UserRegisterTutorial> user_register_tutorialOpt = userRegisterTutorialRepository.findById(createUserRegisterTutorialPageRequest.getUser_register_tutorial_id());
+        Optional <UserRegisterTutorial> user_register_tutorialOpt = userRegisterTutorialRepository.findById1(createUserRegisterTutorialPageRequest.getUser_register_tutorial_id());
         UserRegisterTutorial userRegisterTutorial = user_register_tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_register_tutorial.not_found");
         });
@@ -124,7 +124,7 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
             throw new EntityNotFoundException("exception.UserRegisterTutorialPage.not_found");
         });
 
-        Optional <UserRegisterTutorial> user_register_tutorialOpt = userRegisterTutorialRepository.findById(createUserRegisterTutorialPageRequest.getUser_register_tutorial_id());
+        Optional <UserRegisterTutorial> user_register_tutorialOpt = userRegisterTutorialRepository.findById1(createUserRegisterTutorialPageRequest.getUser_register_tutorial_id());
         UserRegisterTutorial userRegisterTutorial = user_register_tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_register_tutorial.not_found");
         });

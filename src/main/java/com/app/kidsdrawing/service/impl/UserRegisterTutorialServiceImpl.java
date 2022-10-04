@@ -82,7 +82,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorialBySection(UUID id) {
         List<GetUserRegisterTutorialResponse> allUserRegisterTutorialResponses = new ArrayList<>();
-        List<UserRegisterTutorial> listUserRegisterTutorial = userRegisterTutorialRepository.findBySectionId(id);
+        List<UserRegisterTutorial> listUserRegisterTutorial = userRegisterTutorialRepository.findBySectionId2(id);
         listUserRegisterTutorial.forEach(content -> {
             GetUserRegisterTutorialResponse UserRegisterTutorialResponse = GetUserRegisterTutorialResponse.builder()
                 .id(content.getId())
@@ -108,7 +108,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
     @Override
     public GetUserRegisterTutorialResponse getUserRegisterTutorialById(UUID id) {
-        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById(id);
+        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById2(id);
         UserRegisterTutorial UserRegisterTutorial = UserRegisterTutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
@@ -167,7 +167,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
     @Override
     public UUID removeUserRegisterTutorialById(UUID id) {
-        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById(id);
+        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById1(id);
         UserRegisterTutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
@@ -178,7 +178,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
     @Override
     public UUID updateUserRegisterTutorialById(UUID id, CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
-        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById(id);
+        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById1(id);
         UserRegisterTutorial updatedUserRegisterTutorial = UserRegisterTutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
