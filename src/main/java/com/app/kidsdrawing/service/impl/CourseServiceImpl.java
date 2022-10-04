@@ -98,7 +98,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(UUID id) {
         List<GetCourseNewResponse> courses = new ArrayList<>();
-        List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByStudentId(id);
+        List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByStudentId2(id);
         List<Course> listCourseRegisted = new ArrayList<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
             if (user_register_join_semester.getStatus() == "Completed") {
@@ -290,7 +290,7 @@ public class CourseServiceImpl implements CourseService {
         List<Course> listCourseNotRegisteredNow = new ArrayList<>();
         List<Course> allCourse = courseRepository.findAll();
         pageUser.forEach(student -> {
-            List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(student.getId());
+            List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId2(student.getId());
             listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
                 if (!listCourseRegistered.contains(user_register_join_semester.getSemesterClass().getCourse())) {
                     listCourseRegistered.add(user_register_join_semester.getSemesterClass().getCourse());
@@ -360,7 +360,7 @@ public class CourseServiceImpl implements CourseService {
         List<Course> listCourseRegistered = new ArrayList<>();
         List<Course> listCourseNotRegisteredNow = new ArrayList<>();
         List<Course> allCourse = courseRepository.findAll();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId(id);
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId2(id);
         listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
             if (!listCourseRegistered.contains(user_register_join_semester.getSemesterClass().getCourse())) {
                 listCourseRegistered.add(user_register_join_semester.getSemesterClass().getCourse());

@@ -341,7 +341,7 @@ public class SemesterServiceImpl implements SemesterService {
         number = 1;
         allSemesterClassResponses.forEach(semester_class -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
-            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(semester_class.getId());
+            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId1(semester_class.getId());
 
             List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = new ArrayList<>();
 

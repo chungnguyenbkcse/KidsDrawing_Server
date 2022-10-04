@@ -24,18 +24,30 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
 	)
     Page<UserRegisterJoinSemester> findAll(Pageable pageable);
 
+    @Query("FROM UserRegisterJoinSemester e WHERE e.id = :id")
+    Optional<UserRegisterJoinSemester> findById1(UUID id);
+
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass WHERE e.id = :id")
-    Optional<UserRegisterJoinSemester> findById(UUID id);
+    Optional<UserRegisterJoinSemester> findById2(UUID id);
     
     boolean existsById(UUID id);
     void deleteById(UUID id);
 
-    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass WHERE e.semesterClass = :id")
-    List<UserRegisterJoinSemester> findBySemesterClassId(UUID id);
+    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass WHERE e.semesterClass = :id")
+    List<UserRegisterJoinSemester> findBySemesterClassId1(UUID id);
+
+    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass JOIN FETCH e.student  JOIN FETCH e.payer WHERE e.semesterClass = :id")
+    List<UserRegisterJoinSemester> findBySemesterClassId2(UUID id);
+
+    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student WHERE e.student = :id")
+    List<UserRegisterJoinSemester> findByStudentId1(UUID id);
 
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass WHERE e.student = :id")
-    List<UserRegisterJoinSemester> findByStudentId(UUID id);
+    List<UserRegisterJoinSemester> findByStudentId2(UUID id);
 
-    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass WHERE e.payer = :id")
-    List<UserRegisterJoinSemester> findByPayerId(UUID id);
+    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.payer WHERE e.payer = :id")
+    List<UserRegisterJoinSemester> findByPayerId1(UUID id);
+
+    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.payer JOIN FETCH e.semesterClass JOIN FETCH e.student  WHERE e.payer = :id")
+    List<UserRegisterJoinSemester> findByPayerId2(UUID id);
 }

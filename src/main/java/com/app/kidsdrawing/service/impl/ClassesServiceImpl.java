@@ -338,7 +338,7 @@ public class ClassesServiceImpl implements ClassesService {
 
         LocalDateTime time_now = LocalDateTime.now();
         List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository
-                .findByStudentId(id);
+                .findByStudentId1(id);
 
         List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
                 .findAll();
@@ -488,7 +488,7 @@ public class ClassesServiceImpl implements ClassesService {
         LocalDateTime time_now = LocalDateTime.now();
         pageUser.forEach(student -> {
             List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository
-                    .findByStudentId(student.getId());
+                    .findByStudentId1(student.getId());
 
             List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
                     .findAll();
@@ -632,7 +632,7 @@ public class ClassesServiceImpl implements ClassesService {
     public ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(UUID id) {
         List<GetClassesStudentResponse> allClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository
-                .findByStudentId(id);
+                .findByStudentId1(id);
         listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
             List<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository
                     .findByUserRegisterJoinSemesterId2(user_register_join_semester.getId());
@@ -977,7 +977,7 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleChild(UUID child_id) {
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
-                .findByStudentId(child_id);
+                .findByStudentId2(child_id);
         List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
         userRegisterJoinSemester.forEach(user_register_join_semester -> {
@@ -1118,7 +1118,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<Map<String, List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>>>> allCalendarForAllChild = new ArrayList<>();
         listChilds.forEach(child -> {
             List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
-                    .findByStudentId(child.getId());
+                    .findByStudentId2(child.getId());
             List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
             LocalDateTime time_now = LocalDateTime.now();
             userRegisterJoinSemester.forEach(user_register_join_semester -> {

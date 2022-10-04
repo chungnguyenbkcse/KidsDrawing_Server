@@ -125,7 +125,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId2(course_id);
 
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository
-                .findByStudentId(id);
+                .findByStudentId2(id);
         List<SemesterClass> listSemesterClass = new ArrayList<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
             if (user_register_join_semester.getSemesterClass().getRegistration_time().isAfter(time_now) && user_register_join_semester.getSemesterClass().getSemester().getStart_time().isAfter(time_now) && allSemesterClass.contains(user_register_join_semester.getSemesterClass())) {
@@ -255,7 +255,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     public ResponseEntity<Map<String, Object>> getAllSemesterClassHistoryOfStudent(UUID id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
-                .findByStudentId(id);
+                .findByStudentId2(id);
         LocalDateTime time_now = LocalDateTime.now();
         userRegisterJoinSemester.forEach(user_register_join_semester -> {
             if (time_now.isAfter(user_register_join_semester.getSemesterClass().getSemester().getEnd_time())) {
@@ -282,7 +282,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     public ResponseEntity<Map<String, Object>> getAllSemesterClassPresentOfStudent(UUID id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
-                .findByStudentId(id);
+                .findByStudentId2(id);
         LocalDateTime time_now = LocalDateTime.now();
         userRegisterJoinSemester.forEach(user_register_join_semester -> {
             if (time_now.isBefore(user_register_join_semester.getSemesterClass().getSemester().getEnd_time())) {

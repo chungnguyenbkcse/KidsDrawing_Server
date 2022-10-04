@@ -77,7 +77,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     @Override 
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClass(UUID id) {
         List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassId(id);
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassId2(id);
         listUserRegisterJoinSemester.forEach(content -> {
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
@@ -102,7 +102,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(UUID id) {
         List<GetUserRegisterJoinSemesterScheduleClassResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassId(id);
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassId1(id);
         listUserRegisterJoinSemester.forEach(content -> {
             if (content.getStatus().equals("Completed")) {
                 GetUserRegisterJoinSemesterScheduleClassResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterScheduleClassResponse.builder()
@@ -120,7 +120,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByPayerId(UUID id) {
         List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByPayerId(id);
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByPayerId2(id);
         listUserRegisterJoinSemester.forEach(content -> {
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
@@ -144,7 +144,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
     @Override
     public GetUserRegisterJoinSemesterResponse getUserRegisterJoinSemesterById(UUID id) {
-        Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById(id);
+        Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById2(id);
         UserRegisterJoinSemester userRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
         });
@@ -313,7 +313,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId1(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
 
         if (semesterCouse.getMax_participant() <= listUserRegisterJoinSemesters.size()) {
             throw new EntityNotFoundException("exception.max_participant.not_register");
@@ -343,7 +343,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
     @Override
     public UUID removeUserRegisterJoinSemesterById(UUID id) {
-        Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById(id);
+        Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(id);
         userRegisterJoinSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
         });
@@ -354,7 +354,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
     @Override
     public UUID updateUserRegisterJoinSemesterById(UUID id, CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
-        Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById(id);
+        Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(id);
         UserRegisterJoinSemester updatedUserRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
         });
@@ -387,7 +387,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     public UUID updateStatusUserRegisterJoinSemester(List<UUID> ids, CreateMomoRequest createMomoRequest) {
         
         ids.forEach(ele -> {
-            Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById(ele);
+            Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(ele);
             UserRegisterJoinSemester updatedUserRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
             });
@@ -402,7 +402,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     @Override
     public UUID updateStatusUserRegisterJoinSemester(List<UUID> ids) {
         ids.forEach(ele -> {
-            Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById(ele);
+            Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(ele);
             UserRegisterJoinSemester updatedUserRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
             });
