@@ -62,9 +62,9 @@ public class UserGradeContestSubmissionController {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/{student_id}/{submission_id}")
-    public ResponseEntity<String> updateUserGradeContestSubmission(@PathVariable("student_id") UUID student_id, @PathVariable("submission_id") UUID submission_id, @RequestBody CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
-        UUID userGradeContestSubmissionId = userGradeContestSubmissionService.updateUserGradeContestSubmissionById(student_id, submission_id, createUserGradeContestSubmissionRequest);
+    @PutMapping(value = "/{teacher_id}/{contest_submission_id}")
+    public ResponseEntity<String> updateUserGradeContestSubmission(@PathVariable("teacher_id") UUID teacher_id, @PathVariable("contest_submission_id") UUID contest_submission_id, @RequestBody CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
+        UUID userGradeContestSubmissionId = userGradeContestSubmissionService.updateUserGradeContestSubmissionById(teacher_id, contest_submission_id, createUserGradeContestSubmissionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userGradeContestSubmissionId).toUri();
         return ResponseEntity.created(location).build();

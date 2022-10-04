@@ -23,14 +23,23 @@ public interface UserRegisterJoinContestRepository extends JpaRepository <UserRe
 	)
     Page<UserRegisterJoinContest> findAll(Pageable pageable);
 
+    @Query("FROM UserRegisterJoinContest e WHERE e.id = :id")
+    Optional<UserRegisterJoinContest> findById1(UUID id);
+
     @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest WHERE e.id = :id")
-    Optional<UserRegisterJoinContest> findById(UUID id);
+    Optional<UserRegisterJoinContest> findById2(UUID id);
     
-    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest WHERE e.contest = :id")
-    List<UserRegisterJoinContest> findByContestId(UUID id);
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.contest WHERE e.contest = :id")
+    List<UserRegisterJoinContest> findByContestId1(UUID id);
+
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.contest JOIN FETCH e.student  WHERE e.contest = :id")
+    List<UserRegisterJoinContest> findByContestId2(UUID id);
+
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student WHERE e.student = :id")
+    List<UserRegisterJoinContest> findByStudentId1(UUID id);
 
     @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest WHERE e.student = :id")
-    List<UserRegisterJoinContest> findByStudentId(UUID id);
+    List<UserRegisterJoinContest> findByStudentId2(UUID id);
     
     boolean existsById(UUID id);
     void deleteById(UUID id);

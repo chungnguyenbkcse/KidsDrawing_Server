@@ -89,7 +89,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
 
     @Override
     public GetUserRegisterJoinContestResponse getUserRegisterJoinContestById(UUID id) {
-        Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById(id);
+        Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById2(id);
         UserRegisterJoinContest userRegisterJoinContest = userRegisterJoinContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinContest.not_found");
         });
@@ -108,7 +108,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             throw new EntityNotFoundException("exception.contest.not_found");
         });
 
-        List<UserRegisterJoinContest> listUserRegisterJoinContest = userRegisterJoinContestRepository.findByContestId(createUserRegisterJoinContestRequest.getContest_id());
+        List<UserRegisterJoinContest> listUserRegisterJoinContest = userRegisterJoinContestRepository.findByContestId1(createUserRegisterJoinContestRequest.getContest_id());
         if (listUserRegisterJoinContest.size() >= contest.getMax_participant()) {
             throw new EntityNotFoundException("exception.max_participant.not_register");
         }
@@ -129,7 +129,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
 
     @Override
     public UUID removeUserRegisterJoinContestById(UUID id) {
-        Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById(id);
+        Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById1(id);
         userRegisterJoinContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinContest.not_found");
         });
@@ -140,7 +140,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
 
     @Override
     public UUID updateUserRegisterJoinContestById(UUID id, CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
-        Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById(id);
+        Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById1(id);
         UserRegisterJoinContest updatedUserRegisterJoinContest = userRegisterJoinContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinContest.not_found");
         });
