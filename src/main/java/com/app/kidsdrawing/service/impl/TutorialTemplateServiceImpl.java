@@ -79,7 +79,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
 
     @Override
     public GetTutorialTemplateResponse getTutorialTemplateById(UUID id) {
-        Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById(id);
+        Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById2(id);
         TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
         });
@@ -119,7 +119,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
     
     @Override
     public UUID removeTutorialTemplateById(UUID id) {
-        Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById(id);
+        Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById1(id);
         tutorialTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
         });
@@ -130,7 +130,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
 
     @Override
     public UUID updateTutorialTemplateById(UUID id, CreateTutorialTemplateRequest createTutorialTemplateRequest) {
-        Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById(id);
+        Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById1(id);
         TutorialTemplate updatedTutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
         });

@@ -206,7 +206,7 @@ public class SemesterServiceImpl implements SemesterService {
                         .build();
                     tutorialRepository.save(savedTutorial);
 
-                    Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId(ele_section_tmp.getId());
+                    Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId1(ele_section_tmp.getId());
                     TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
                         throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
                     });
@@ -455,7 +455,7 @@ public class SemesterServiceImpl implements SemesterService {
                                 .build();
                             tutorialRepository.save(savedTutorial);
 
-                            Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId(section_template.getId());
+                            Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId1(section_template.getId());
                             TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
                                 throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
                             });

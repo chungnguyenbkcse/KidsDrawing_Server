@@ -201,7 +201,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
             userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
 
-            Optional<Tutorial> updatedTutorialOpt = tutorialRepository.findBySectionId(section.getId());
+            Optional<Tutorial> updatedTutorialOpt = tutorialRepository.findBySectionId1(section.getId());
             Tutorial updatedTutorial = updatedTutorialOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.Tutorial.not_found");
             });
@@ -242,7 +242,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
                 throw new EntityNotFoundException("exception.section.not_found");
             });
 
-            Optional<TutorialTemplate> updatedTutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId(sectionTemplate.getId());
+            Optional<TutorialTemplate> updatedTutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId1(sectionTemplate.getId());
             TutorialTemplate updatedTutorialTemplate = updatedTutorialTemplateOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
             });

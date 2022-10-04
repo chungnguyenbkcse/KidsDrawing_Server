@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageService{
     
     private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
-    private final TutorialTemplateRepository tutorialRepository;
+    private final TutorialTemplateRepository tutorialTemplateRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePage() {
@@ -115,7 +115,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     @Override
     public UUID createTutorialTemplatePage(CreateTutorialTemplatePageRequest createTutorialTemplatePageRequest) {
 
-        Optional <TutorialTemplate> tutorialOpt = tutorialRepository.findById(createTutorialTemplatePageRequest.getTutorial_template_id());
+        Optional <TutorialTemplate> tutorialOpt = tutorialTemplateRepository.findById1(createTutorialTemplatePageRequest.getTutorial_template_id());
         TutorialTemplate tutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.tutorial.not_found");
         });
@@ -149,7 +149,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
             throw new EntityNotFoundException("exception.TutorialTemplatePage.not_found");
         });
 
-        Optional <TutorialTemplate> tutorialOpt = tutorialRepository.findById(createTutorialTemplatePageRequest.getTutorial_template_id());
+        Optional <TutorialTemplate> tutorialOpt = tutorialTemplateRepository.findById1(createTutorialTemplatePageRequest.getTutorial_template_id());
         TutorialTemplate tutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.tutorial.not_found");
         });

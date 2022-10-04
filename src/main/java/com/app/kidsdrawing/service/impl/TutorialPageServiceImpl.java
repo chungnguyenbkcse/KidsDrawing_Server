@@ -113,7 +113,7 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     @Override
     public UUID createTutorialPage(CreateTutorialPageRequest createTutorialPageRequest) {
 
-        Optional <Tutorial> tutorialOpt = tutorialRepository.findById(createTutorialPageRequest.getTutorial_id());
+        Optional <Tutorial> tutorialOpt = tutorialRepository.findById1(createTutorialPageRequest.getTutorial_id());
         Tutorial tutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.tutorial.not_found");
         });
@@ -147,7 +147,7 @@ public class TutorialPageServiceImpl implements TutorialPageService{
             throw new EntityNotFoundException("exception.TutorialPage.not_found");
         });
 
-        Optional <Tutorial> tutorialOpt = tutorialRepository.findById(createTutorialPageRequest.getTutorial_id());
+        Optional <Tutorial> tutorialOpt = tutorialRepository.findById1(createTutorialPageRequest.getTutorial_id());
         Tutorial tutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.tutorial.not_found");
         });

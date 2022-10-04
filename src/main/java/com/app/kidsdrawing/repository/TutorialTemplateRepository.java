@@ -23,11 +23,17 @@ public interface TutorialTemplateRepository extends JpaRepository <TutorialTempl
 	)
     Page<TutorialTemplate> findAll(Pageable pageable);
 
+    @Query("FROM TutorialTemplate e WHERE e.id = :id")
+    Optional<TutorialTemplate> findById1(UUID id);
+
     @Query("FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  JOIN FETCH e.creator WHERE e.id = :id")
-    Optional<TutorialTemplate> findById(UUID id);
+    Optional<TutorialTemplate> findById2(UUID id);
+
+    @Query("FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  WHERE e.sectionTemplate = :id")
+    Optional<TutorialTemplate> findBySectionTemplateId1(UUID id);
 
     @Query("FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  JOIN FETCH e.creator WHERE e.sectionTemplate = :id")
-    Optional<TutorialTemplate> findBySectionTemplateId(UUID id);
+    Optional<TutorialTemplate> findBySectionTemplateId2(UUID id);
     
     boolean existsById(UUID id);
     Boolean existsByName(String name);

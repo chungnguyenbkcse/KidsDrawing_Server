@@ -29,7 +29,7 @@ public interface TeacherRegisterQualificationRepository extends JpaRepository <T
     Optional<TeacherRegisterQualification> findById2(UUID id);
 
 
-    @Query("FROM TeacherRegisterQualification JOIN FETCH e.teacher WHERE e.teacher = :id")
+    @Query("FROM TeacherRegisterQualification e JOIN FETCH e.teacher WHERE e.teacher = :id")
     List<TeacherRegisterQualification> findByTeacherId1(UUID id);
 
     @Query("FROM TeacherRegisterQualification e JOIN FETCH e.teacher JOIN FETCH e.course JOIN FETCH e.reviewer  WHERE e.teacher = :id")
