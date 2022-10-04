@@ -237,7 +237,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
             userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
 
-            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber(section.getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId(), section.getNumber());
+            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber1(section.getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId(), section.getNumber());
             SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.section.not_found");
             });
