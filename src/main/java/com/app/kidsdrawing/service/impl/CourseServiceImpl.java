@@ -576,7 +576,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public GetCourseResponse getCourseByName(String name) {
-        Optional<Course> courseOpt = courseRepository.findByName(name);
+        Optional<Course> courseOpt = courseRepository.findByName2(name);
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
@@ -600,7 +600,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public GetCourseResponse getCourseById(UUID id){
-        Optional<Course> courseOpt = courseRepository.findById(id);
+        Optional<Course> courseOpt = courseRepository.findById2(id);
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
@@ -668,7 +668,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public UUID removeCourseById(UUID id) {
-        Optional<Course> courseOpt = courseRepository.findById(id);
+        Optional<Course> courseOpt = courseRepository.findById1(id);
         courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
@@ -678,7 +678,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public UUID updateCourseById(UUID id, CreateCourseRequest createCourseRequest) {
-        Optional<Course> courseOpt = courseRepository.findById(id);
+        Optional<Course> courseOpt = courseRepository.findById1(id);
         Course updatedCourse = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
         });

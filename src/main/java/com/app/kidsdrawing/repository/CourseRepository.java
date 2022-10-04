@@ -25,7 +25,10 @@ public interface CourseRepository extends JpaRepository <Course, UUID>{
     List<Course> findAll();
 
     @Query("FROM Course c WHERE c.name = :name")
-    Optional<Course> findByName(String name);
+    Optional<Course> findByName1(String name);
+
+    @Query("FROM Course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.name = :name")
+    Optional<Course> findByName2(String name);
 
     @Query("SELECT count(c.id) = 1 FROM Course c WHERE c.id = :id")
     boolean existsById(UUID id);
@@ -34,16 +37,34 @@ public interface CourseRepository extends JpaRepository <Course, UUID>{
     Boolean existsByName(String name);
 
     @Query("FROM Course c JOIN FETCH c.artAges WHERE c.artAges = :id")
-    boolean findByArtAgeId(UUID id);
+    boolean findByArtAgeId1(UUID id);
+
+    @Query("FROM Course c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.artLevels JOIN FETCH c.user WHERE c.artAges = :id")
+    boolean findByArtAgeId2(UUID id);
 
     @Query("FROM Course c JOIN FETCH c.artTypes WHERE c.artTypes = :id")
-    boolean findByArtTypeId(UUID id);
+    boolean findByArtTypeId1(UUID id);
+
+    @Query("FROM Course c JOIN FETCH c.artTypes JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.user WHERE c.artTypes = :id")
+    boolean findByArtTypeId2(UUID id);
 
     @Query("FROM Course c JOIN FETCH c.artLevels WHERE c.artLevels = :id")
-    boolean findByArtLevelId(UUID id);
+    boolean findByArtLevelId1(UUID id);
+
+    @Query("FROM Course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges JOIN FETCH c.user WHERE c.artLevels = :id")
+    boolean findByArtLevelId2(UUID id);
 
     @Query("FROM Course c JOIN FETCH c.user WHERE c.user = :id")
-    boolean findByCreatorId(UUID id);
+    boolean findByCreatorId1(UUID id);
+
+    @Query("FROM Course c JOIN FETCH c.user JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE c.user = :id")
+    boolean findByCreatorId2(UUID id);
+
+    @Query("FROM Course c WHERE c.id = :id")
+    Optional<Course> findById1(UUID id);
+
+    @Query("FROM Course c JOIN FETCH c.user JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE c.id = :id")
+    Optional<Course> findById2(UUID id);
 
     void deleteById(UUID id);
 }

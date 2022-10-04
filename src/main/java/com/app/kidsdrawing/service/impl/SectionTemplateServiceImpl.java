@@ -105,7 +105,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     @Override
     public UUID createSectionTemplate(CreateSectionTemplateRequest createSectionTemplateRequest) {
 
-        Optional <Course> courseOpt = courseRepository.findById(createSectionTemplateRequest.getCourse_id());
+        Optional <Course> courseOpt = courseRepository.findById1(createSectionTemplateRequest.getCourse_id());
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.course.not_found");
         });
@@ -145,7 +145,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });
 
-        Optional <Course> courseOpt = courseRepository.findById(createSectionTemplateRequest.getCourse_id());
+        Optional <Course> courseOpt = courseRepository.findById1(createSectionTemplateRequest.getCourse_id());
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.course.not_found");
         });
