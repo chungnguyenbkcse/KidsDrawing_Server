@@ -119,7 +119,7 @@ public class CourseServiceImpl implements CourseService {
         allCourses.forEach(course -> {
             if (listCourseRegisted.contains(course) == false) {
                 total = 0;
-                List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId(course.getId());
+                List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId2(course.getId());
 
                 allSemesterClass.forEach(semester_course -> {
                     if (semesterNexts.contains(semester_course.getSemester())){

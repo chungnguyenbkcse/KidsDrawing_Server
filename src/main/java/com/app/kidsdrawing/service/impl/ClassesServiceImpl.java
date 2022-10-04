@@ -690,7 +690,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<Classes> allClassDoing = new ArrayList<>();
         allSemesters.forEach(semester -> {
             if (semester.getEnd_time().isAfter(time_now)) {
-                semesterClassRepository.findBySemesterId(semester.getId()).forEach(semester_class -> {
+                semesterClassRepository.findBySemesterId1(semester.getId()).forEach(semester_class -> {
                     userRegisterTeachSemesterRepository.findBySemesterClassId(semester_class.getId())
                             .forEach(user_register_teache_semester -> {
                                 if (classRepository.existsByUserRegisterTeachSemesterId(

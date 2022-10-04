@@ -24,16 +24,25 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, U
 	)
     Page<SemesterClass> findAll(Pageable pageable);
 
+    @Query("FROM SemesterClass e WHERE e.id = :id")
+    Optional<SemesterClass> findById1(UUID id);
+
     @Query("FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course WHERE e.id = :id")
-    Optional<SemesterClass> findById(UUID id);
+    Optional<SemesterClass> findById2(UUID id);
 
     boolean existsById(UUID id);
     boolean existsByName(String name);
     void deleteById(UUID id);
 
-    @Query("FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course WHERE e.semester = :id")
-    List<SemesterClass> findBySemesterId(UUID id);
+    @Query("FROM SemesterClass e JOIN FETCH e.semester  WHERE e.semester = :id")
+    List<SemesterClass> findBySemesterId1(UUID id);
 
-    @Query("FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course WHERE e.course = :id")
-    List<SemesterClass> findByCourseId(UUID id);
+    @Query("FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course WHERE e.semester = :id")
+    List<SemesterClass> findBySemesterId2(UUID id);
+
+    @Query("FROM SemesterClass e JOIN FETCH e.course WHERE e.course = :id")
+    List<SemesterClass> findByCourseId1(UUID id);
+
+    @Query("FROM SemesterClass e JOIN FETCH e.course JOIN FETCH e.semester  WHERE e.course = :id")
+    List<SemesterClass> findByCourseId2(UUID id);
 }

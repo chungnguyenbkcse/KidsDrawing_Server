@@ -308,7 +308,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
     @Override
     public UUID createUserRegisterJoinSemester(CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
-        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
+        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById1(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
@@ -359,7 +359,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
         });
 
-        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
+        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById1(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });

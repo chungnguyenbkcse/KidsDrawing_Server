@@ -122,7 +122,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByStudentAndCourse(UUID id, UUID course_id) {
         List<GetSemesterClassStudentResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId(course_id);
+        List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId2(course_id);
 
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository
                 .findByStudentId(id);
@@ -307,7 +307,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
     @Override
     public GetSemesterClassResponse getSemesterClassById(UUID id) {
-        Optional<SemesterClass> semesterClassOpt = semesterClassRepository.findById(id);
+        Optional<SemesterClass> semesterClassOpt = semesterClassRepository.findById2(id);
         SemesterClass semesterClass = semesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
@@ -433,7 +433,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
     @Override
     public UUID removeSemesterClassById(UUID id) {
-        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
+        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById1(id);
         SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
@@ -444,7 +444,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
     @Override
     public UUID updateSemesterClassById(UUID id, CreateSemesterClassRequest createSemesterClassRequest) {
-        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
+        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById1(id);
         SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
@@ -476,7 +476,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
     @Override
     public String updateSemesterClassMaxParticipantById(UUID id) {
-        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById(id);
+        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById1(id);
         SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });

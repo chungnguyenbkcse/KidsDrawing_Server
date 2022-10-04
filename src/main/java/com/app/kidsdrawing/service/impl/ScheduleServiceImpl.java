@@ -100,7 +100,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new EntityNotFoundException("exception.lesson_time.not_found");
         });
 
-        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById(createScheduleRequest.getSemester_classes_id());
+        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById1(createScheduleRequest.getSemester_classes_id());
         SemesterClass semester_class = semesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
@@ -138,7 +138,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new EntityNotFoundException("exception.lesson_time.not_found");
         });
 
-        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById(createScheduleRequest.getSemester_classes_id());
+        Optional<SemesterClass> semesterClassOpt =   semesterClassRepository.findById1(createScheduleRequest.getSemester_classes_id());
         SemesterClass semester_class = semesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
