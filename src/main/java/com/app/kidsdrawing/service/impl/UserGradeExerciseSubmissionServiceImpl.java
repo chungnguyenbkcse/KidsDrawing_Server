@@ -421,7 +421,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 
-        Optional <ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById(createUserGradeExerciseSubmissionRequest.getExercise_submission_id());
+        Optional <ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(createUserGradeExerciseSubmissionRequest.getExercise_submission_id());
         ExerciseSubmission exerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
@@ -464,7 +464,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     throw new EntityNotFoundException("exception.user_teacher.not_found");
                 });
             
-                Optional <ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById(createUserGradeExerciseSubmissionRequest.getExercise_submission_id());
+                Optional <ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(createUserGradeExerciseSubmissionRequest.getExercise_submission_id());
                 ExerciseSubmission exerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
                     throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
                 });

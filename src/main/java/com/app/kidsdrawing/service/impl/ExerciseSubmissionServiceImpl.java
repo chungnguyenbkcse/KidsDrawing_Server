@@ -159,7 +159,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassAndStudent(UUID class_id, UUID student_id) {
         List<GetExerciseSubmissionResponse> allExerciseNotGradedSubmissionResponses = new ArrayList<>();
         List<GetExerciseSubmissionResponse> allExerciseGradedSubmissionResponses = new ArrayList<>();
-        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findByStudentId(student_id);
+        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findByStudentId2(student_id);
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
         List<ExerciseSubmission> exersiceGraded = new ArrayList<>();
         listUserGradeExerciseSubmission.forEach(ele -> {
@@ -251,7 +251,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
 
     @Override
     public GetExerciseSubmissionResponse getExerciseSubmissionById(UUID id) {
-        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById(id);
+        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById2(id);
         ExerciseSubmission exerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
@@ -293,7 +293,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
 
     @Override
     public UUID removeExerciseSubmissionById(UUID id) {
-        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById(id);
+        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(id);
         exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
@@ -304,7 +304,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
 
     @Override
     public UUID updateExerciseSubmissionById(UUID id, CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
-        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById(id);
+        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(id);
         ExerciseSubmission updatedExerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });

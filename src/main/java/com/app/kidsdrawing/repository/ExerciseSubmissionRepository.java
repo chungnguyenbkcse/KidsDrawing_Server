@@ -25,17 +25,26 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
 	)
     Page<ExerciseSubmission> findAll(Pageable pageable);
 
-    @Query("FROM ExerciseSubmission e JOIN FETCH e.student JOIN FETCH e.exercise WHERE e.id = :id")
-    Optional<ExerciseSubmission> findById(UUID id);
+    @Query("FROM ExerciseSubmission e WHERE e.id = :id")
+    Optional<ExerciseSubmission> findById1(UUID id);
+
+    @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise JOIN FETCH e.student WHERE e.id = :id")
+    Optional<ExerciseSubmission> findById2(UUID id);
     
     @Query("SELECT COUNT(e.id) = 1 FROM ExerciseSubmission e WHERE e.id = :id")
     boolean existsById(UUID id);
 
+    @Query("FROM ExerciseSubmission e JOIN FETCH e.student WHERE e.student = :id")
+    List<ExerciseSubmission> findByStudentId1(UUID id);
+
     @Query("FROM ExerciseSubmission e JOIN FETCH e.student JOIN FETCH e.exercise WHERE e.student = :id")
-    List<ExerciseSubmission> findByStudentId(UUID id);
+    List<ExerciseSubmission> findByStudentId2(UUID id);
+
+    @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise WHERE e.exercise = :id")
+    List<ExerciseSubmission> findByExerciseId1(UUID id);
 
     @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise JOIN FETCH e.student WHERE e.exercise = :id")
-    List<ExerciseSubmission> findByExerciseId(UUID id);
+    List<ExerciseSubmission> findByExerciseId2(UUID id);
 
     @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise JOIN FETCH e.student WHERE e.exercise = ?1 AND e.student= ?2")
     List<ExerciseSubmission> findByExerciseIdAndStudentId(UUID exercise_id, UUID student_id);
