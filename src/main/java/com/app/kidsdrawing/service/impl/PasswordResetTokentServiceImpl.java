@@ -67,7 +67,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
             throw new EntityNotFoundException(result);
         }
 
-        Optional<PasswordResetToken> passwordResetTokenOpt = passwordTokenRepository.findByToken(createResetPasswordRequest.getToken());
+        Optional<PasswordResetToken> passwordResetTokenOpt = passwordTokenRepository.findByToken2(createResetPasswordRequest.getToken());
         PasswordResetToken passwordResetToken = passwordResetTokenOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.PasswordResetToken.not_found");
         });
@@ -94,7 +94,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
 
     @Override
     public String validatePasswordResetToken(String token) {
-        Optional<PasswordResetToken> passwordTokenOpt = passwordTokenRepository.findByToken(token);
+        Optional<PasswordResetToken> passwordTokenOpt = passwordTokenRepository.findByToken1(token);
         PasswordResetToken passToken  = passwordTokenOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.PasswordResetToken.not_found");
         });

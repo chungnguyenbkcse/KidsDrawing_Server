@@ -24,11 +24,17 @@ public interface PasswordTokenRepository extends JpaRepository <PasswordResetTok
 	)
     Page<PasswordResetToken> findAll(Pageable pageable);
 
+    @Query("FROM PasswordResetToken e WHERE e.id = :id")
+    Optional<PasswordResetToken> findById1(UUID id);
+
     @Query("FROM PasswordResetToken e JOIN FETCH e.user WHERE e.id = :id")
-    Optional<PasswordResetToken> findById(UUID id);
+    Optional<PasswordResetToken> findById2(UUID id);
     
+    @Query("FROM PasswordResetToken e WHERE e.token = :token")
+    Optional<PasswordResetToken> findByToken1(String token);
+
     @Query("FROM PasswordResetToken e JOIN FETCH e.user WHERE e.token = :token")
-    Optional<PasswordResetToken> findByToken(String token);
+    Optional<PasswordResetToken> findByToken2(String token);
 
     @Query("FROM PasswordResetToken e JOIN FETCH e.user WHERE e.user = :id")
     List<PasswordResetToken> findByUserId(UUID id);

@@ -23,8 +23,11 @@ public interface HolidayRepository extends JpaRepository <Holiday, UUID>{
 	)
     Page<Holiday> findAll(Pageable pageable);
 
+    @Query("FROM Holiday e WHERE e.id = :id")
+    Optional<Holiday> findById1(UUID id);
+
     @Query("FROM Holiday e JOIN FETCH e.semester WHERE e.id = :id")
-    Optional<Holiday> findById(UUID id);
+    Optional<Holiday> findById2(UUID id);
 
     @Query("FROM Holiday e JOIN FETCH e.semester WHERE e.semester = :id")
     Optional<Holiday> findBySemesterId(UUID id);
