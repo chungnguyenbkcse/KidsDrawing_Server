@@ -69,9 +69,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
             throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
         });
         
-        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),userRegisterJoinSemester.getId());
-        
-        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findById(id);
+        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassIdAndUserRegisterJoinSemester(classes.getId(),userRegisterJoinSemester.getId());
         ClassHasRegisterJoinSemesterClass updatedClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
         });
@@ -98,10 +96,8 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
         UserRegisterJoinSemester userRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
         });
-
-        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),userRegisterJoinSemester.getId());
         
-        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findById(id);
+        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassIdAndUserRegisterJoinSemester(classes.getId(),userRegisterJoinSemester.getId());
         ClassHasRegisterJoinSemesterClass updatedClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
         });
@@ -125,9 +121,8 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
             throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
         });
 
-        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),userRegisterJoinSemester.getId());
         
-        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findById(id);
+        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassIdAndUserRegisterJoinSemester(classes.getId(),userRegisterJoinSemester.getId());
         ClassHasRegisterJoinSemesterClass updatedClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
         });
@@ -180,7 +175,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
         ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),userRegisterJoinSemester.getId());
         
-        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findById(id);
+        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassIdAndUserRegisterJoinSemester(classes.getId(),userRegisterJoinSemester.getId());
         classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
         });

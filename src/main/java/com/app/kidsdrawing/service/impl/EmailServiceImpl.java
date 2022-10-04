@@ -136,7 +136,7 @@ public class EmailServiceImpl implements EmailService {
             .build();
         notificationRepository.save(savedNotification);
 
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(classes.getId());
 
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             EmailDetails email = new EmailDetails();
@@ -178,7 +178,7 @@ public class EmailServiceImpl implements EmailService {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(classes.getId());
 
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             EmailDetails email = new EmailDetails();

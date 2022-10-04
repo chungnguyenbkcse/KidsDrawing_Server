@@ -132,7 +132,7 @@ public class FCMService {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(classes.getId());
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             Message message = Message.builder()
                 .putData("title", pnsRequest.getTitle())
