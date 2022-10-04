@@ -167,7 +167,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     @Override
     public UUID createUserGradeContestSubmission(CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
 
-        Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getTeacher_id());
+        Optional <User> userOpt = userRepository.findById1(createUserGradeContestSubmissionRequest.getTeacher_id());
         User teacher = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
@@ -210,7 +210,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         listUserGradeContestSubmission.forEach(content-> {
             if (content.getTeacher().getId().compareTo(teacher_id) == 0  && content.getContestSubmission().getId().compareTo(submission_id) == 0){
                 UserGradeContestSubmission updatedUserGradeContestSubmission = content;
-                Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getTeacher_id());
+                Optional <User> userOpt = userRepository.findById1(createUserGradeContestSubmissionRequest.getTeacher_id());
                 User teacher = userOpt.orElseThrow(() -> {
                     throw new EntityNotFoundException("exception.user_teacher.not_found");
                 });

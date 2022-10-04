@@ -271,7 +271,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     @Override
     public UUID createExerciseSubmission(CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
 
-        Optional <User> studentOpt = userRepository.findById(createExerciseSubmissionRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createExerciseSubmissionRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
@@ -309,7 +309,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById(createExerciseSubmissionRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createExerciseSubmissionRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });

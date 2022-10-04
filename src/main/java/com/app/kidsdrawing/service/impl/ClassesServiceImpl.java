@@ -331,7 +331,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<GetClassesParentResponse> allClassDoingResponses = new ArrayList<>();
         List<GetClassesParentResponse> allClassDoneResponses = new ArrayList<>();
 
-        Optional<User> userOpt = userRepository.findById(id);
+        Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -719,7 +719,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     public LocalDateTime getEndSectionOfClass(UUID id) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById1(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -841,7 +841,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     public List<Map<String, List<List<LocalDateTime>>>> getScheduleDetailOfClass(UUID id) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById2(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -1491,7 +1491,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public GetClassResponse getClassById(UUID id) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById2(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -1526,7 +1526,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .run();
         });
 
-        Optional<User> userOpt = userRepository.findById(createClassRequest.getCreator_id());
+        Optional<User> userOpt = userRepository.findById1(createClassRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -1545,7 +1545,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public UUID removeClassById(UUID id) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById1(id);
         classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -1556,7 +1556,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public UUID updateClassById(UUID id, CreateClassRequest createClassRequest) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById1(id);
         Classes updatedClass = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -1567,7 +1567,7 @@ public class ClassesServiceImpl implements ClassesService {
             throw new EntityNotFoundException("exception.teacher_teach_semester.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById(createClassRequest.getCreator_id());
+        Optional<User> userOpt = userRepository.findById1(createClassRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

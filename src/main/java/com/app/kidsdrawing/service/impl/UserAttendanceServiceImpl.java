@@ -221,7 +221,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createUserAttendanceRequest.getStudent_id());
+        Optional <User> userOpt = userRepository.findById1(createUserAttendanceRequest.getStudent_id());
         User student = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
@@ -260,7 +260,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createUserAttendanceRequest.getStudent_id());
+        Optional <User> userOpt = userRepository.findById1(createUserAttendanceRequest.getStudent_id());
         User student = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.student.not_found");
         });

@@ -24,7 +24,10 @@ public interface SemesterRepository extends JpaRepository <Semester, UUID>{
     Page<Semester> findAll(Pageable pageable);
 
     @Query("FROM Semester e JOIN FETCH e.user WHERE e.id = :id")
-    Optional<Semester> findById(UUID id);
+    Optional<Semester> findById2(UUID id);
+
+    @Query("FROM Semester e WHERE e.id = :id")
+    Optional<Semester> findById1(UUID id);
 
     @Query("FROM Semester e JOIN FETCH e.user WHERE e.user = :id")
     List<Semester> findByCreatorId(UUID id);

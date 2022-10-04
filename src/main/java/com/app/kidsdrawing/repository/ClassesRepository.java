@@ -30,9 +30,15 @@ public interface ClassesRepository extends JpaRepository <Classes, UUID>{
     @Query("FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester WHERE c.userRegisterTeachSemester = :id")
     List<Classes> findByUserRegisterTeachSemesterId(UUID id);
 
+    @Query("SELECT c FROM Classes c WHERE c.id = :id ")
+    Optional<Classes> findById1(UUID id);
+
     @Query("SELECT c FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester WHERE c.id = :id ")
-    Optional<Classes> findById(UUID id);
+    Optional<Classes> findById2(UUID id);
+
+    @Query("FROM Classes c JOIN FETCH c.user WHERE c.user = :id")
+    List<Classes> findByCreatorId1(UUID id);
 
     @Query("FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester WHERE c.user = :id")
-    List<Classes> findByCreatorId(UUID id);
+    List<Classes> findByCreatorId2(UUID id);
 }

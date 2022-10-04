@@ -168,7 +168,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
     public UUID createTeacherRegisterQualification(CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest) {
         Course course = courseRepository.getById(createTeacherRegisterQualificationRequest.getCourse_id());
         User teacher = userRepository.getById(createTeacherRegisterQualificationRequest.getTeacher_id());
-        Optional <User> adminOpt = userRepository.findByUsername("admin");
+        Optional <User> adminOpt = userRepository.findByUsername1("admin");
         User reviewer = adminOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
@@ -203,7 +203,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         });
         Course course = courseRepository.getById(createTeacherRegisterQualificationRequest.getCourse_id());
         User teacher = userRepository.getById(createTeacherRegisterQualificationRequest.getTeacher_id());
-        Optional <User> adminOpt = userRepository.findByUsername("admin");
+        Optional <User> adminOpt = userRepository.findByUsername1("admin");
         User reviewer = adminOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });

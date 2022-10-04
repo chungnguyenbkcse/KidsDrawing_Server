@@ -326,12 +326,12 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     @Override
     public UUID createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest) {
 
-        Optional <User> studentOpt = userRepository.findById(createStudentLeaveRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createStudentLeaveRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <User> adminOpt = userRepository.findByUsername("admin");
+        Optional <User> adminOpt = userRepository.findByUsername1("admin");
         User admin = adminOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
@@ -341,7 +341,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <Classes> classOpt = classRepository.findById(createStudentLeaveRequest.getClasses_id());
+        Optional <Classes> classOpt = classRepository.findById1(createStudentLeaveRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });
@@ -377,7 +377,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById(createStudentLeaveRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createStudentLeaveRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
@@ -387,7 +387,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <Classes> classOpt = classRepository.findById(createStudentLeaveRequest.getClasses_id());
+        Optional <Classes> classOpt = classRepository.findById1(createStudentLeaveRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });

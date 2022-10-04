@@ -95,7 +95,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById(createTeacherTeachSemesterRequest.getTeacher_id());
+        Optional <User> teacherOpt = userRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
         User teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
@@ -134,7 +134,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById(createTeacherTeachSemesterRequest.getTeacher_id());
+        Optional <User> teacherOpt = userRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
         User teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });

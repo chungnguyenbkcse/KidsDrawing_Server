@@ -110,7 +110,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createSectionTemplateRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createSectionTemplateRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -150,7 +150,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createSectionTemplateRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createSectionTemplateRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

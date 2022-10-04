@@ -135,7 +135,7 @@ public class SemesterServiceImpl implements SemesterService {
     @Override
     public UUID setCalenderForSemester(UUID id, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
-        Optional<Semester> semesterOpt = semesterRepository.findById(id);
+        Optional<Semester> semesterOpt = semesterRepository.findById1(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
@@ -175,7 +175,7 @@ public class SemesterServiceImpl implements SemesterService {
             holidayRepository.save(saveHoliday);
         });
 
-        Optional <User> userOpt = userRepository.findByUsername("admin");
+        Optional <User> userOpt = userRepository.findByUsername1("admin");
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
@@ -311,7 +311,7 @@ public class SemesterServiceImpl implements SemesterService {
     @Override
     public UUID setClassForSemester(UUID id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
-        Optional<Semester> semesterOpt = semesterRepository.findById(id);
+        Optional<Semester> semesterOpt = semesterRepository.findById1(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
@@ -330,7 +330,7 @@ public class SemesterServiceImpl implements SemesterService {
             holidayRepository.save(saveHoliday);
         }); 
 
-        Optional <User> userOpt = userRepository.findByUsername("admin");
+        Optional <User> userOpt = userRepository.findByUsername1("admin");
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         }); 
@@ -498,7 +498,7 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public GetSemesterResponse getSemesterById(UUID id){
-        Optional<Semester> semesterOpt = semesterRepository.findById(id);
+        Optional<Semester> semesterOpt = semesterRepository.findById2(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
@@ -519,7 +519,7 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public UUID createSemester(CreateSemesterRequest createSemesterRequest) {
-        Optional<User> userOpt = userRepository.findById(createSemesterRequest.getCreator_id());
+        Optional<User> userOpt = userRepository.findById1(createSemesterRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -540,7 +540,7 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public UUID removeSemesterById(UUID id) {
-        Optional<Semester> semesterOpt = semesterRepository.findById(id);
+        Optional<Semester> semesterOpt = semesterRepository.findById1(id);
         semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
@@ -551,12 +551,12 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public UUID updateSemesterById(UUID id, CreateSemesterRequest createSemesterRequest) {
-        Optional<Semester> semesterOpt = semesterRepository.findById(id);
+        Optional<Semester> semesterOpt = semesterRepository.findById1(id);
         Semester updatedSemester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById(createSemesterRequest.getCreator_id());
+        Optional<User> userOpt = userRepository.findById1(createSemesterRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

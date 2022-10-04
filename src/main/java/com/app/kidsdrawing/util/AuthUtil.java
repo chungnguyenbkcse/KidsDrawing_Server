@@ -46,7 +46,7 @@ public class AuthUtil {
 
     public String generateAccessToken(String username, List<String> role_privilege)
             throws IllegalArgumentException, JWTCreationException {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUsername1(username);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

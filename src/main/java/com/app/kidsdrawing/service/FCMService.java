@@ -127,7 +127,7 @@ public class FCMService {
 
     public String pushNotificationForClass(UUID id, PnsRequest pnsRequest) {
 
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById1(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });

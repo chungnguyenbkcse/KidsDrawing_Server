@@ -170,7 +170,7 @@ public class TutorialServiceImpl implements TutorialService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createTutorialRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createTutorialRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
@@ -220,7 +220,7 @@ public class TutorialServiceImpl implements TutorialService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createTutorialRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createTutorialRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });

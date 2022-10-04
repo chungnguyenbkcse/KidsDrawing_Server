@@ -644,7 +644,7 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestAlreadyCreateException("exception.contest.contest_taken");
         }
 
-        Optional<User> userOpt = userRepository.findById(createContestRequest.getCreator_id());
+        Optional<User> userOpt = userRepository.findById1(createContestRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -694,7 +694,7 @@ public class ContestServiceImpl implements ContestService {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById(createContestRequest.getCreator_id());
+        Optional<User> userOpt = userRepository.findById1(createContestRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

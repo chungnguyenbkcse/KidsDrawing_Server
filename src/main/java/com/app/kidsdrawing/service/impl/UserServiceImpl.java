@@ -235,7 +235,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UUID updateUserStatus(UUID id, CreateUserStatusRequest createUserStatusRequest) {
-        Optional<User> userOpt = userRepository.findById(id);
+        Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -358,7 +358,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public GetUserInfoResponse getUserInfoByUsername(String username) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUsername2(username);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -380,7 +380,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public GetUserInfoResponse getUserInfoById(UUID id) {
-        Optional<User> userOpt = userRepository.findById(id);
+        Optional<User> userOpt = userRepository.findById2(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -426,7 +426,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserAlreadyRegisteredException("exception.user.email_taken");
         }
 
-        Optional <User> userOpt = userRepository.findById(createUserRequest.getParent_id());
+        Optional <User> userOpt = userRepository.findById1(createUserRequest.getParent_id());
         User parent = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.parent.not_found");
         });
@@ -560,7 +560,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUsername1(username);
 
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -573,7 +573,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UUID updateUser(UUID id, CreateUserRequest createUserRequest) {
-        Optional<User> userOpt = userRepository.findById(id);
+        Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -603,7 +603,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UUID updatePassword(UUID id, CreateChangePassowrdRequest createChangePassowrdRequest) {
-        Optional<User> userOpt = userRepository.findById(id);
+        Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -622,7 +622,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UUID removeUser(UUID id) {
-        Optional<User> userOpt = userRepository.findById(id);
+        Optional<User> userOpt = userRepository.findById1(id);
         userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

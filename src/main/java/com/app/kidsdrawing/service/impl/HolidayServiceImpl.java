@@ -67,7 +67,7 @@ public class HolidayServiceImpl implements HolidayService {
     @Override
     public UUID createHoliday(CreateHolidayRequest createHolidayRequest) {
 
-        Optional<Semester> semesterOpt = semesterRepository.findById(createHolidayRequest.getSemester_id());
+        Optional<Semester> semesterOpt = semesterRepository.findById1(createHolidayRequest.getSemester_id());
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
@@ -101,7 +101,7 @@ public class HolidayServiceImpl implements HolidayService {
             throw new EntityNotFoundException("exception.Holiday.not_found");
         });
 
-        Optional<Semester> semesterOpt = semesterRepository.findById(createHolidayRequest.getSemester_id());
+        Optional<Semester> semesterOpt = semesterRepository.findById1(createHolidayRequest.getSemester_id());
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });

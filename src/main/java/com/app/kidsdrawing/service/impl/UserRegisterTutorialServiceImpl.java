@@ -136,7 +136,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createUserRegisterTutorialRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createUserRegisterTutorialRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -188,7 +188,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createUserRegisterTutorialRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createUserRegisterTutorialRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

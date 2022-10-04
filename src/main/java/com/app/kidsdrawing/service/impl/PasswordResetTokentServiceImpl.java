@@ -38,7 +38,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
     
     @Override
     public GetPasswordResetTokenResponse resetPassword(String email) {
-        Optional<User> userOpt = userRepository.findByEmail(email);
+        Optional<User> userOpt = userRepository.findByEmail1(email);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

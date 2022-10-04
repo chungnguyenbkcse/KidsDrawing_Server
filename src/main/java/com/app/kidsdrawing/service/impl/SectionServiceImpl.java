@@ -108,7 +108,7 @@ public class SectionServiceImpl implements SectionService{
     @Override
     public UUID createSection(CreateSectionRequest createSectionRequest) {
 
-        Optional <Classes> classOpt = classRepository.findById(createSectionRequest.getClasses_id());
+        Optional <Classes> classOpt = classRepository.findById1(createSectionRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });
@@ -143,7 +143,7 @@ public class SectionServiceImpl implements SectionService{
             throw new EntityNotFoundException("exception.Section.not_found");
         });
 
-        Optional <Classes> classOpt = classRepository.findById(createSectionRequest.getClasses_id());
+        Optional <Classes> classOpt = classRepository.findById1(createSectionRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });

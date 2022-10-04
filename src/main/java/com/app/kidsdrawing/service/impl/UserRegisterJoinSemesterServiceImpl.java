@@ -319,12 +319,12 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.max_participant.not_register");
         }
 
-        Optional <User> studentOpt = userRepository.findById(createUserRegisterJoinSemesterRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createUserRegisterJoinSemesterRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <User> payer_idOpt = userRepository.findById(createUserRegisterJoinSemesterRequest.getPayer_id());
+        Optional <User> payer_idOpt = userRepository.findById1(createUserRegisterJoinSemesterRequest.getPayer_id());
         User payer = payer_idOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_payer.not_found");
         });
@@ -364,12 +364,12 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById(createUserRegisterJoinSemesterRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createUserRegisterJoinSemesterRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <User> payer_idOpt = userRepository.findById(createUserRegisterJoinSemesterRequest.getPayer_id());
+        Optional <User> payer_idOpt = userRepository.findById1(createUserRegisterJoinSemesterRequest.getPayer_id());
         User payer = payer_idOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_payer.not_found");
         });

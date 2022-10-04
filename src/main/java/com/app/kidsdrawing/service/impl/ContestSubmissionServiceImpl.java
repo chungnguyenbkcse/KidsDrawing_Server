@@ -146,7 +146,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     @Override
     public UUID createContestSubmission(CreateContestSubmissionRequest createContestSubmissionRequest) {
 
-        Optional <User> studentOpt = userRepository.findById(createContestSubmissionRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createContestSubmissionRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
@@ -184,7 +184,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById(createContestSubmissionRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createContestSubmissionRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });

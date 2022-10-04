@@ -628,7 +628,7 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseAlreadyCreateException("exception.course.course_taken");
         }
 
-        Optional<User> userOpt = userRepository.findById(createCourseRequest.getCreator_id());
+        Optional<User> userOpt = userRepository.findById1(createCourseRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -683,7 +683,7 @@ public class CourseServiceImpl implements CourseService {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById(createCourseRequest.getCreator_id());
+        Optional<User> userOpt = userRepository.findById1(createCourseRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

@@ -113,7 +113,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             throw new EntityNotFoundException("exception.max_participant.not_register");
         }
 
-        Optional <User> teacherOpt = userRepository.findById(createUserRegisterJoinContestRequest.getStudent_id());
+        Optional <User> teacherOpt = userRepository.findById1(createUserRegisterJoinContestRequest.getStudent_id());
         User teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -150,7 +150,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             throw new EntityNotFoundException("exception.contest.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById(createUserRegisterJoinContestRequest.getStudent_id());
+        Optional <User> teacherOpt = userRepository.findById1(createUserRegisterJoinContestRequest.getStudent_id());
         User teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

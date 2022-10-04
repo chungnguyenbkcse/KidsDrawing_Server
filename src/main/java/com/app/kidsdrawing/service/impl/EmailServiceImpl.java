@@ -125,7 +125,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public String sendMailByClass(CreateEmailDetailRequest details, UUID id) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById1(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -173,7 +173,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, UUID id) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById1(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });

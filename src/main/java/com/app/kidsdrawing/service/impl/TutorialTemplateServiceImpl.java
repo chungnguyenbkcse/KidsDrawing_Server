@@ -101,7 +101,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
             throw new EntityNotFoundException("exception.sectionTemplate.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createTutorialTemplateRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createTutorialTemplateRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });

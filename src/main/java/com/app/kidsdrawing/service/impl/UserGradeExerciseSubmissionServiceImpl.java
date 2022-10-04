@@ -275,7 +275,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseAndClass(UUID exercise_id, UUID classes_id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
-        Optional<Classes> classOpt = classRepository.findById(classes_id);
+        Optional<Classes> classOpt = classRepository.findById2(classes_id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -416,7 +416,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     @Override
     public UUID createUserGradeExerciseSubmission(CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
 
-        Optional <User> userOpt = userRepository.findById(createUserGradeExerciseSubmissionRequest.getTeacher_id());
+        Optional <User> userOpt = userRepository.findById1(createUserGradeExerciseSubmissionRequest.getTeacher_id());
         User teacher = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
@@ -459,7 +459,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
         listUserGradeExerciseSubmission.forEach(content-> {
             if (content.getTeacher().getId().compareTo(teacher_id) == 0 && content.getExerciseSubmission().getId().compareTo(submission_id) == 0){
                 UserGradeExerciseSubmission updatedUserGradeExerciseSubmission = content;
-                Optional <User> userOpt = userRepository.findById(createUserGradeExerciseSubmissionRequest.getTeacher_id());
+                Optional <User> userOpt = userRepository.findById1(createUserGradeExerciseSubmissionRequest.getTeacher_id());
                 User teacher = userOpt.orElseThrow(() -> {
                     throw new EntityNotFoundException("exception.user_teacher.not_found");
                 });

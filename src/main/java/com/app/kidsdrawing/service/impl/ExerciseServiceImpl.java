@@ -74,7 +74,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> allExerciseSubmitedNotGradeResponses = new ArrayList<>();
         List<GetExerciseResponse> allExerciseSubmitedGradedResponses = new ArrayList<>();
 
-        Optional<Classes> classOpt = classRepository.findById(classes_id);
+        Optional<Classes> classOpt = classRepository.findById1(classes_id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
