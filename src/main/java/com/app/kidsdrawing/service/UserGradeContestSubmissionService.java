@@ -14,8 +14,8 @@ public interface UserGradeContestSubmissionService {
     ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByTeacherId(UUID id);
     ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByStudentId(UUID id);
     ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestId(UUID id);
-    GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(UUID id);
+    GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(UUID teacher_id, UUID contest_submission_id);
     UUID createUserGradeContestSubmission(CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest);
-    UUID removeUserGradeContestSubmissionById(UUID id);
+    UUID removeUserGradeContestSubmissionById(UUID student_id, UUID submisstion_id);
     UUID updateUserGradeContestSubmissionById(UUID student_id, UUID submisstion_id, CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest);
 }

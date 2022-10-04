@@ -71,15 +71,15 @@ public class UserGradeContestSubmissionController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserGradeContestSubmissionResponse> getUserGradeContestSubmissionById(@PathVariable UUID id) {
-        return ResponseEntity.ok().body(userGradeContestSubmissionService.getUserGradeContestSubmissionById(id));
+    @GetMapping(value = "/{teacher_id}/{contest_submission_id}")
+    public ResponseEntity<GetUserGradeContestSubmissionResponse> getUserGradeContestSubmissionById(@PathVariable("teacher_id") UUID teacher_id, @PathVariable("contest_submission_id") UUID contest_submission_id) {
+        return ResponseEntity.ok().body(userGradeContestSubmissionService.getUserGradeContestSubmissionById(teacher_id, contest_submission_id));
     }
 
     @CrossOrigin
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserGradeContestSubmissionById(@PathVariable UUID id) {
-        UUID userGradeContestSubmissionId = userGradeContestSubmissionService.removeUserGradeContestSubmissionById(id);
+    @DeleteMapping(value = "/{teacher_id}/{contest_submission_id}")
+    public ResponseEntity<String> deleteUserGradeContestSubmissionById(@PathVariable("teacher_id") UUID teacher_id, @PathVariable("contest_submission_id") UUID contest_submission_id) {
+        UUID userGradeContestSubmissionId = userGradeContestSubmissionService.removeUserGradeContestSubmissionById(teacher_id, contest_submission_id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userGradeContestSubmissionId).toUri();
         return ResponseEntity.created(location).build();

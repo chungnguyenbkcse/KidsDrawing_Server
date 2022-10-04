@@ -64,7 +64,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByTeacherId(UUID id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
-        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByTeacherId(id);
+        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByTeacherId2(id);
         listUserGradeContestSubmission.forEach(content -> {
             GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
                 .teacher_id(content.getTeacher().getId())
@@ -145,8 +145,8 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(UUID id) {
-        Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findById(id);
+    public GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(UUID teacher_id, UUID contest_submission_id) {
+        Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findByTeacherIdAndContestSubmissionId(teacher_id, contest_submission_id);
         UserGradeContestSubmission userGradeContestSubmission = userGradeContestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContestSubmission.not_found");
         });
@@ -192,14 +192,14 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public UUID removeUserGradeContestSubmissionById(UUID id) {
-        Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findById(id);
+    public UUID removeUserGradeContestSubmissionById(UUID teacher_id, UUID contest_submission_id) {
+        Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findByTeacherIdAndContestSubmissionId(teacher_id, contest_submission_id);
         userGradeContestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContestSubmission.not_found");
         });
 
-        userGradeContestSubmissionRepository.deleteById(id);
-        return id;
+        userGradeContestSubmissionRepository.deleteById(teacher_id, contest_submission_id);
+        return teacher_id;
     }
 
     @Override

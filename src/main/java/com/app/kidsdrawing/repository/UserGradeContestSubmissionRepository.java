@@ -24,16 +24,24 @@ public interface UserGradeContestSubmissionRepository extends JpaRepository <Use
 	)
     Page<UserGradeContestSubmission> findAll(Pageable pageable);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher  JOIN FETCH e.contestSubmission WHERE e.id = :id")
-    Optional<UserGradeContestSubmission> findById(UUID id);
+    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher  JOIN FETCH e.contestSubmission WHERE e.teacher = ?1 AND e.contestSubmission = ?2")
+    Optional<UserGradeContestSubmission> findByTeacherIdAndContestSubmissionId(UUID teacher_id, UUID contest_submission_id);
+
+    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher WHERE e.teacher = :id")
+    List<UserGradeContestSubmission> findByTeacherId1(UUID id);
 
     @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher  JOIN FETCH e.contestSubmission WHERE e.teacher = :id")
-    List<UserGradeContestSubmission> findByTeacherId(UUID id);
+    List<UserGradeContestSubmission> findByTeacherId2(UUID id);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher  JOIN FETCH e.contestSubmission WHERE e.contestSubmission = :id")
-    List<UserGradeContestSubmission> findByContestSubmissionId(UUID id);
+    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission WHERE e.contestSubmission = :id")
+    List<UserGradeContestSubmission> findByContestSubmissionId1(UUID id);
+
+    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission JOIN FETCH e.teacher  WHERE e.contestSubmission = :id")
+    List<UserGradeContestSubmission> findByContestSubmissionId2(UUID id);
     
     boolean existsById(UUID id);
     boolean existsByContestSubmissionId(UUID id);
-    void deleteById(UUID id);
+
+    @Query("DELETE FROM UserGradeContestSubmission e WHERE e.teacher = ?1 AND e.contestSubmission = ?2")
+    void deleteById(UUID teacher_id, UUID contest_submission_id);
 }
