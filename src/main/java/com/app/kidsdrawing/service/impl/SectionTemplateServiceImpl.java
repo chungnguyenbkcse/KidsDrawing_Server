@@ -85,7 +85,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
 
     @Override
     public GetSectionTemplateResponse getSectionTemplateById(UUID id) {
-        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById(id);
+        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById2(id);
         SectionTemplate section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });
@@ -129,7 +129,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
 
     @Override
     public UUID removeSectionTemplateById(UUID id) {
-        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById(id);
+        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById1(id);
         sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });
@@ -140,7 +140,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
 
     @Override
     public UUID updateSectionTemplateById(UUID id, CreateSectionTemplateRequest createSectionTemplateRequest) {
-        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById(id);
+        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById1(id);
         SectionTemplate updatedSectionTemplate = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });

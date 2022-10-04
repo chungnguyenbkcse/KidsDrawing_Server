@@ -429,7 +429,7 @@ public class SemesterServiceImpl implements SemesterService {
                         number ++;
                         listClassOfSemesterClass.add(savedClass);
     
-                        List<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId(semester_class.getCourse().getId());
+                        List<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId1(semester_class.getCourse().getId());
                         sectionTemplateOpt.forEach(section_template -> {
                             Section savedSection = Section.builder()
                                 .classes(savedClass)

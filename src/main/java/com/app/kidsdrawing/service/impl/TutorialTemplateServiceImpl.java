@@ -96,7 +96,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
     @Override
     public UUID createTutorialTemplate(CreateTutorialTemplateRequest createTutorialTemplateRequest) {
 
-        Optional <SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findById(createTutorialTemplateRequest.getSection_template_id());
+        Optional <SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findById1(createTutorialTemplateRequest.getSection_template_id());
         SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.sectionTemplate.not_found");
         });
@@ -135,7 +135,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
             throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
         });
 
-        Optional <SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findById(createTutorialTemplateRequest.getSection_template_id());
+        Optional <SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findById1(createTutorialTemplateRequest.getSection_template_id());
         SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.sectionTemplate.not_found");
         });
