@@ -135,7 +135,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
     @Override
     public GetTeacherLeaveResponse getTeacherLeaveById(UUID id) {
-        Optional<TeacherLeave> teacherLeaveOpt = teacherLeaveRepository.findById(id);
+        Optional<TeacherLeave> teacherLeaveOpt = teacherLeaveRepository.findById2(id);
         TeacherLeave teacherLeave = teacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
@@ -219,7 +219,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
     @Override
     public UUID removeTeacherLeaveById(UUID id) {
-        Optional<TeacherLeave> teacherLeaveOpt = teacherLeaveRepository.findById(id);
+        Optional<TeacherLeave> teacherLeaveOpt = teacherLeaveRepository.findById1(id);
         teacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
@@ -230,7 +230,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
     @Override
     public UUID updateTeacherLeaveById(UUID id, CreateTeacherLeaveRequest createTeacherLeaveRequest) {
-        Optional<TeacherLeave> TeacherLeaveOpt = teacherLeaveRepository.findById(id);
+        Optional<TeacherLeave> TeacherLeaveOpt = teacherLeaveRepository.findById1(id);
         TeacherLeave updatedTeacherLeave = TeacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
@@ -267,7 +267,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
     @Override
     public GetTeacherLeaveResponse updateStatusTeacherLeaveById(UUID id, CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
-        Optional<TeacherLeave> TeacherLeaveOpt = teacherLeaveRepository.findById(id);
+        Optional<TeacherLeave> TeacherLeaveOpt = teacherLeaveRepository.findById2(id);
         TeacherLeave updatedTeacherLeave = TeacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });

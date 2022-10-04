@@ -23,21 +23,36 @@ public interface TeacherLeaveRepository extends JpaRepository <TeacherLeave, UUI
 	)
     Page<TeacherLeave> findAll(Pageable pageable);
 
+    @Query("FROM TeacherLeave e WHERE e.id = :id")
+    Optional<TeacherLeave> findById1(UUID id);
+
     @Query("FROM TeacherLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.id = :id")
-    Optional<TeacherLeave> findById(UUID id);
+    Optional<TeacherLeave> findById2(UUID id);
     
     boolean existsById(UUID id);
     void deleteById(UUID id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.teacher = :id")
-    List<TeacherLeave> findByTeacherId(UUID id);
+    @Query("FROM TeacherLeave e JOIN FETCH e.teacher WHERE e.teacher = :id")
+    List<TeacherLeave> findByTeacherId1(UUID id);
+
+    @Query("FROM TeacherLeave e JOIN FETCH e.teacher JOIN FETCH e.classes JOIN FETCH e.section  JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.teacher = :id")
+    List<TeacherLeave> findByTeacherId2(UUID id);
+
+    @Query("FROM TeacherLeave e JOIN FETCH e.classes WHERE e.classes = :id")
+    List<TeacherLeave> findByClassesId1(UUID id);
 
     @Query("FROM TeacherLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.classes = :id")
-    List<TeacherLeave> findByClassesId(UUID id);
+    List<TeacherLeave> findByClassesId2(UUID id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.section = :id")
-    List<TeacherLeave> findBySectionId(UUID id);
+    @Query("FROM TeacherLeave e JOIN FETCH e.section WHERE e.section = :id")
+    List<TeacherLeave> findBySectionId1(UUID id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.substitute_teacher = :id")
-    List<TeacherLeave> findBySubstituteTeacherId(UUID id);
+    @Query("FROM TeacherLeave e JOIN FETCH e.section JOIN FETCH e.classes JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.section = :id")
+    List<TeacherLeave> findBySectionId2(UUID id);
+
+    @Query("FROM TeacherLeave e JOIN FETCH e.substitute_teacher WHERE e.substitute_teacher = :id")
+    List<TeacherLeave> findBySubstituteTeacherId1(UUID id);
+
+    @Query("FROM TeacherLeave e JOIN FETCH e.substitute_teacher JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer WHERE e.substitute_teacher = :id")
+    List<TeacherLeave> findBySubstituteTeacherId2(UUID id);
 }
