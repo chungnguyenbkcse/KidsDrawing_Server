@@ -64,7 +64,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserAttendanceBySection(UUID id) {
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
-        List<UserAttendance> listUserAttendance = userAttendanceRepository.findBySectionId(id);
+        List<UserAttendance> listUserAttendance = userAttendanceRepository.findBySectionId2(id);
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                 .id(content.getId())
@@ -90,7 +90,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserAttendanceByStudent(UUID id) {
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
-        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId(id);
+        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId2(id);
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                 .id(content.getId())
@@ -117,7 +117,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserAttendanceByClassAndStudent(UUID classes_id, UUID student_id) {
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
-        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId(student_id);
+        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId2(student_id);
         listUserAttendance.forEach(content -> {
             if (content.getSection().getClasses().getId().compareTo(classes_id) == 0) {
                 GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
@@ -193,7 +193,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
 
     @Override
     public GetUserAttendanceResponse getUserAttendanceById(UUID id) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById(id);
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById2(id);
         UserAttendance userAttendance = userAttendanceOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
@@ -239,7 +239,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     
     @Override
     public UUID removeUserAttendanceById(UUID id) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById(id);
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById1(id);
         userAttendanceOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
@@ -250,7 +250,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
 
     @Override
     public UUID updateUserAttendanceById(UUID id, CreateUserAttendanceRequest createUserAttendanceRequest) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById(id);
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById1(id);
         UserAttendance updatedUserAttendance = userAttendanceOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
