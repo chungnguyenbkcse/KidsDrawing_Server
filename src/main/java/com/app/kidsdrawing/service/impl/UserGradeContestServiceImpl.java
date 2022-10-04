@@ -80,7 +80,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
 
     @Override
     public GetUserGradeContestResponse getUserGradeContestById(UUID id) {
-        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
+        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById2(id);
         UserGradeContest userGradeContest = userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
         });
@@ -109,7 +109,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
 
     @Override
     public UUID removeUserGradeContestById(UUID id) {
-        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
+        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById1(id);
         userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
         });
@@ -120,7 +120,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
 
     @Override
     public UUID updateUserGradeContestById(UUID id, CreateUserGradeContestRequest createUserGradeContestRequest) {
-        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
+        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById1(id);
         UserGradeContest updatedUserGradeContest = userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
         });
