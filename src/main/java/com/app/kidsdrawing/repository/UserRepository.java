@@ -29,6 +29,9 @@ public interface UserRepository extends JpaRepository <User, UUID>{
     @Query("SELECT e FROM User e WHERE e.id = :id")
     Optional<User> findById1(UUID id);
 
+    @Query("SELECT e FROM User e JOIN FETCH e.userRegisterJoinSemesters2 WHERE e.id = :id")
+    Optional<User> findById3(UUID id);
+
     @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent WHERE e.id = :id")
     Optional<User> findById2(UUID id);
     
@@ -58,4 +61,7 @@ public interface UserRepository extends JpaRepository <User, UUID>{
 
     @Query("FROM User e JOIN FETCH e.parent WHERE e.parent = :id")
     List<User> findByParentId(UUID id);
+
+    @Query("FROM User e JOIN FETCH e.parent JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH s.holidays JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime  WHERE e.parent = :id")
+    List<User> findByParentId1(UUID id);
 }

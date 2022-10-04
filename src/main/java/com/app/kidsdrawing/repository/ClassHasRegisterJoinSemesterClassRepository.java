@@ -21,7 +21,10 @@ public interface ClassHasRegisterJoinSemesterClassRepository extends JpaReposito
     @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester")
     List<ClassHasRegisterJoinSemesterClass> findAll();
 
-    @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester WHERE c.id = :id ")
+    @Query("FROM ClassHasRegisterJoinSemesterClass chr  JOIN FETCH chr.classes c1 JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges")
+    List<ClassHasRegisterJoinSemesterClass> findAll1();
+
+    @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c JOIN FETCH c.classes  WHERE c.id = :id ")
     Optional<ClassHasRegisterJoinSemesterClass> findById(ClassHasRegisterJoinSemesterClassKey id);
 
     @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester JOIN FETCH c.classes WHERE c.classes = ?1 AND c.userRegisterJoinSemester = ?2")
@@ -38,4 +41,7 @@ public interface ClassHasRegisterJoinSemesterClassRepository extends JpaReposito
 
     @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester WHERE c.classes = :id")
     List<ClassHasRegisterJoinSemesterClass> findByClassesId2(UUID id);
+
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester u JOIN FETCH u.student WHERE c.classes = :id")
+    List<ClassHasRegisterJoinSemesterClass> findByClassesId3(UUID id);
 }

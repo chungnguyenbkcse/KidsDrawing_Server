@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -99,7 +100,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allScheduleTime = new ArrayList<>();
         List<List<GetStudentResponse>> allStudentDoneResponses = new ArrayList<>();
         List<List<GetStudentResponse>> allStudentDoingResponses = new ArrayList<>();
-        List<Classes> listClass = classRepository.findAll();
+        List<Classes> listClass = classRepository.findAll1();
         LocalDateTime time_now = LocalDateTime.now();
         listClass.forEach(ele -> {
             schedule = "";
@@ -177,7 +178,7 @@ public class ClassesServiceImpl implements ClassesService {
 
                 else {
                     List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
-                            .findByClassesId2(ele.getId());
+                            .findByClassesId3(ele.getId());
                     GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                             .id(ele.getId())
                             .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
@@ -257,13 +258,13 @@ public class ClassesServiceImpl implements ClassesService {
             allClassResponses.add(classResponse);
 
             Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                    .findById(content.getUserRegisterTeachSemester().getId());
+                    .findById2(content.getUserRegisterTeachSemester().getId());
             UserRegisterTeachSemester userRegisterTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
             });
 
             Optional<SemesterClass> semester_classOpt = semesterClassRepository
-                    .findById(userRegisterTeachSemester.getSemesterClass().getId());
+                    .findById3(userRegisterTeachSemester.getSemesterClass().getId());
             SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.semester_class.not_found");
             });
@@ -298,7 +299,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .build();
             allCourseResponses.add(courseResponse);
 
-            String parent_name = userRegisterTeachSemester.getTeacher().getParent().getUsername();
+            String parent_name = "";
 
             GetStudentResponse userResponse = GetStudentResponse.builder()
                     .id(userRegisterTeachSemester.getTeacher().getId())
@@ -331,49 +332,48 @@ public class ClassesServiceImpl implements ClassesService {
         List<GetClassesParentResponse> allClassDoingResponses = new ArrayList<>();
         List<GetClassesParentResponse> allClassDoneResponses = new ArrayList<>();
 
-        Optional<User> userOpt = userRepository.findById1(id);
+        Optional<User> userOpt = userRepository.findById3(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
         LocalDateTime time_now = LocalDateTime.now();
-        List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository
-                .findByStudentId1(id);
+        Set<UserRegisterJoinSemester> allUserRegisterJoinSemesters = user.getUserRegisterJoinSemesters2();
 
         List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
-                .findAll();
+                .findAll1();
 
         allClassHasRegisterJoinSemesterClass.forEach(class_has_join_semester_class -> {
             if (allUserRegisterJoinSemesters.contains(class_has_join_semester_class.getUserRegisterJoinSemester())) {
                 /*
                  * LocalDateTime res = getEndSectionOfClass(
-                 * class_has_join_semester_class.getUserRegisterJoinSemester().
+                 * class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().
                  * getClassHasRegisterJoinSemesterClass().getClasses().getId());
                  */
-                if (time_now.isAfter(class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                if (time_now.isAfter(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                         .getSemester().getEnd_time()) == false) {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                             .id(class_has_join_semester_class.getClasses().getId())
                             .student_id(id)
                             .semester_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getSemester().getId())
-                            .semester_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .semester_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getSemester().getName())
                             .user_register_join_semester_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getId())
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getId())
                             .course_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getId())
                             .course_name(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getName())
                             .student_name(user.getFirstName() + " " + user.getLastName())
-                            .semester_class_id(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .semester_class_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getId())
-                            .semester_class_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .semester_class_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getName())
-                            .link_url(class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                            .link_url(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                     .getCourse().getImage_url())
                             .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getTeacher().getId())
@@ -383,20 +383,20 @@ public class ClassesServiceImpl implements ClassesService {
                                     + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                             .getTeacher().getLastName())
                             .art_age_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getArtAges().getId())
                             .art_age_name(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getArtAges().getName())
                             .art_level_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getArtLevels().getId())
-                            .art_level_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .art_level_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getCourse().getArtLevels().getName())
                             .art_type_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getArtTypes().getId())
-                            .art_type_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .art_type_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getCourse().getArtTypes().getName())
                             .total_section(class_has_join_semester_class.getClasses().getSections().size())
                             .total_student(class_has_join_semester_class.getClasses()
@@ -415,25 +415,25 @@ public class ClassesServiceImpl implements ClassesService {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                             .id(class_has_join_semester_class.getClasses().getId())
                             .student_id(id)
-                            .semester_class_id(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .semester_class_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getId())
-                            .semester_class_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .semester_class_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getName())
                             .student_name(user.getFirstName() + " " + user.getLastName())
                             .semester_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getSemester().getId())
-                            .semester_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .semester_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getSemester().getName())
                             .course_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getId())
                             .user_register_join_semester_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getId())
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getId())
                             .course_name(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getName())
-                            .link_url(class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                            .link_url(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                     .getCourse().getImage_url())
                             .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getTeacher().getId())
@@ -443,20 +443,20 @@ public class ClassesServiceImpl implements ClassesService {
                                     + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                             .getTeacher().getLastName())
                             .art_age_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getArtAges().getId())
                             .art_age_name(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getArtAges().getName())
                             .art_level_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getArtLevels().getId())
-                            .art_level_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .art_level_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getCourse().getArtLevels().getName())
                             .art_type_id(
-                                    class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                             .getCourse().getArtTypes().getId())
-                            .art_type_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                            .art_type_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass().getCourse().getArtTypes().getName())
                             .total_section(class_has_join_semester_class.getClasses().getSections().size())
                             .total_student(class_has_join_semester_class.getClasses()
@@ -482,16 +482,14 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getClassesStudentForParentId(UUID parent_id) {
-        List<User> pageUser = userRepository.findByParentId(parent_id);
+        List<User> pageUser = userRepository.findByParentId1(parent_id);
         List<GetClassesParentResponse> allClassDoingResponses = new ArrayList<>();
         List<GetClassesParentResponse> allClassDoneResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
+        List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
+                    .findAll1();
         pageUser.forEach(student -> {
-            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository
-                    .findByStudentId1(student.getId());
-
-            List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
-                    .findAll();
+            Set<UserRegisterJoinSemester> allUserRegisterJoinSemesters = student.getUserRegisterJoinSemesters2();
 
             allClassHasRegisterJoinSemesterClass.forEach(class_has_join_semester_class -> {
                 if (allUserRegisterJoinSemesters
@@ -503,24 +501,24 @@ public class ClassesServiceImpl implements ClassesService {
                                 .id(class_has_join_semester_class.getClasses().getId())
                                 .student_id(student.getId())
                                 .user_register_join_semester_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getId())
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getId())
                                 .semester_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getSemester().getId())
-                                .semester_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .semester_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getSemester().getName())
                                 .course_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getId())
                                 .course_name(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getName())
                                 .student_name(student.getFirstName() + " " + student.getLastName())
-                                .semester_class_id(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .semester_class_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getId())
-                                .semester_class_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .semester_class_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getName())
-                                .link_url(class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                .link_url(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                         .getCourse().getImage_url())
                                 .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getTeacher().getId())
@@ -530,20 +528,20 @@ public class ClassesServiceImpl implements ClassesService {
                                         + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                                 .getTeacher().getLastName())
                                 .art_age_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getArtAges().getId())
                                 .art_age_name(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getArtAges().getName())
                                 .art_level_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getArtLevels().getId())
-                                .art_level_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .art_level_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getCourse().getArtLevels().getName())
                                 .art_type_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getArtTypes().getId())
-                                .art_type_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .art_type_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getCourse().getArtTypes().getName())
                                 .total_section(class_has_join_semester_class.getClasses().getSections().size())
                                 .total_student(class_has_join_semester_class.getClasses()
@@ -563,24 +561,24 @@ public class ClassesServiceImpl implements ClassesService {
                                 .id(class_has_join_semester_class.getClasses().getId())
                                 .student_id(student.getId())
                                 .user_register_join_semester_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getId())
-                                .semester_class_id(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getId())
+                                .semester_class_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getId())
-                                .semester_class_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .semester_class_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getName())
                                 .student_name(student.getFirstName() + " " + student.getLastName())
                                 .semester_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getSemester().getId())
-                                .semester_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .semester_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getSemester().getName())
                                 .course_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getId())
                                 .course_name(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getName())
-                                .link_url(class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                .link_url(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                         .getCourse().getImage_url())
                                 .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getTeacher().getId())
@@ -590,20 +588,20 @@ public class ClassesServiceImpl implements ClassesService {
                                         + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                                 .getTeacher().getLastName())
                                 .art_age_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getArtAges().getId())
                                 .art_age_name(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getArtAges().getName())
                                 .art_level_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getArtLevels().getId())
-                                .art_level_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .art_level_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getCourse().getArtLevels().getName())
                                 .art_type_id(
-                                        class_has_join_semester_class.getUserRegisterJoinSemester().getSemesterClass()
+                                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                                 .getCourse().getArtTypes().getId())
-                                .art_type_name(class_has_join_semester_class.getUserRegisterJoinSemester()
+                                .art_type_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass().getCourse().getArtTypes().getName())
                                 .total_section(class_has_join_semester_class.getClasses().getSections().size())
                                 .total_student(class_has_join_semester_class.getClasses()
@@ -632,51 +630,46 @@ public class ClassesServiceImpl implements ClassesService {
     public ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(UUID id) {
         List<GetClassesStudentResponse> allClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository
-                .findByStudentId1(id);
+                .findByStudentId3(id);
         listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
-            List<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository
-                    .findByUserRegisterJoinSemesterId2(user_register_join_semester.getId());
-            classHasRegisterJoinSemesterClassOpt.forEach(ele -> {
+            ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClassOpt = user_register_join_semester.getClassHasRegisterJoinSemesterClass();
                 GetClassesStudentResponse classResponse = GetClassesStudentResponse.builder()
-                        .id(ele.getClasses().getId())
+                        .id(classHasRegisterJoinSemesterClassOpt.getClasses().getId())
                         .user_register_join_semester_id(
-                                ele.getUserRegisterJoinSemester().getId())
-                        .link_url(ele.getUserRegisterJoinSemester().getSemesterClass()
+                                classHasRegisterJoinSemesterClassOpt.getUserRegisterJoinSemester().getId())
+                        .link_url(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                 .getCourse().getImage_url())
-                        .user_register_join_semester_id(
-                                ele.getUserRegisterJoinSemester().getId())
-                        .teacher_id(ele.getClasses().getUserRegisterTeachSemester()
+                        .teacher_id(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester()
                                 .getTeacher().getId())
-                        .teacher_name(ele.getClasses().getUserRegisterTeachSemester()
+                        .teacher_name(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester()
                                 .getTeacher().getFirstName()
                                 + " "
-                                + ele.getClasses().getUserRegisterTeachSemester().getTeacher()
+                                + classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getTeacher()
                                         .getLastName())
-                        .art_age_id(ele.getUserRegisterJoinSemester().getSemesterClass()
+                        .art_age_id(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                 .getCourse().getArtAges().getId())
-                        .art_age_name(ele.getUserRegisterJoinSemester().getSemesterClass()
+                        .art_age_name(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                 .getCourse().getArtAges().getName())
-                        .art_level_id(ele.getUserRegisterJoinSemester().getSemesterClass()
+                        .art_level_id(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                 .getCourse().getArtLevels().getId())
-                        .art_level_name(ele.getUserRegisterJoinSemester().getSemesterClass()
+                        .art_level_name(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                 .getCourse().getArtLevels().getName())
-                        .art_type_id(ele.getUserRegisterJoinSemester().getSemesterClass()
+                        .art_type_id(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                 .getCourse().getArtTypes().getId())
-                        .art_type_name(ele.getUserRegisterJoinSemester().getSemesterClass()
+                        .art_type_name(classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getSemesterClass()
                                 .getCourse().getArtTypes().getName())
-                        .total_section(ele.getClasses().getSections().size())
-                        .total_student(ele.getClasses()
+                        .total_section(classHasRegisterJoinSemesterClassOpt.getClasses().getSections().size())
+                        .total_student(classHasRegisterJoinSemesterClassOpt.getClasses()
                                 .getClassHasRegisterJoinSemesterClasses().size())
-                        .creator_id(ele.getClasses().getUser().getId())
+                        .creator_id(classHasRegisterJoinSemesterClassOpt.getClasses().getUser().getId())
                         .user_register_teach_semester(
-                                ele.getClasses().getUserRegisterTeachSemester().getId())
-                        .security_code(ele.getClasses().getSecurity_code())
-                        .name(ele.getClasses().getName())
-                        .create_time(ele.getClasses().getCreate_time())
-                        .update_time(ele.getClasses().getUpdate_time())
+                            classHasRegisterJoinSemesterClassOpt.getClasses().getUserRegisterTeachSemester().getId())
+                        .security_code(classHasRegisterJoinSemesterClassOpt.getClasses().getSecurity_code())
+                        .name(classHasRegisterJoinSemesterClassOpt.getClasses().getName())
+                        .create_time(classHasRegisterJoinSemesterClassOpt.getClasses().getCreate_time())
+                        .update_time(classHasRegisterJoinSemesterClassOpt.getClasses().getUpdate_time())
                         .build();
                 allClassResponses.add(classResponse);
-            });
         });
         Map<String, Object> response = new HashMap<>();
         response.put("classes", allClassResponses);
@@ -686,22 +679,14 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleAllClass() {
         LocalDateTime time_now = LocalDateTime.now();
-        List<Semester> allSemesters = semesterRepository.findAll();
+        List<Semester> allSemesters = semesterRepository.findAll1();
         List<Classes> allClassDoing = new ArrayList<>();
         allSemesters.forEach(semester -> {
             if (semester.getEnd_time().isAfter(time_now)) {
-                semesterClassRepository.findBySemesterId1(semester.getId()).forEach(semester_class -> {
-                    userRegisterTeachSemesterRepository.findBySemesterClassId1(semester_class.getId())
+                semester.getSemesterClass().forEach(semester_class -> {
+                    semester_class.getUserRegisterTeachSemesters()
                             .forEach(user_register_teache_semester -> {
-                                if (classRepository.existsByUserRegisterTeachSemesterId(
-                                        user_register_teache_semester.getId())) {
-                                    List<Classes> classesOtp = classRepository
-                                            .findByUserRegisterTeachSemesterId(
-                                                    user_register_teache_semester.getId());
-                                    classesOtp.forEach(classes_ele -> {
-                                        allClassDoing.add(classes_ele);
-                                    });
-                                }
+                                allClassDoing.add(user_register_teache_semester.getClasses());
                             });
                 });
             }
@@ -719,34 +704,24 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     public LocalDateTime getEndSectionOfClass(UUID id) {
-        Optional<Classes> classOpt = classRepository.findById1(id);
+        Optional<Classes> classOpt = classRepository.findById2(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                .findById(classes.getUserRegisterTeachSemester().getId());
-        UserRegisterTeachSemester userRegisterTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
-        });
+        UserRegisterTeachSemester userRegisterTeachSemester = classes.getUserRegisterTeachSemester();
 
-        Optional<SemesterClass> semester_classOpt = semesterClassRepository
-                .findById(userRegisterTeachSemester.getSemesterClass().getId());
-        SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.semester_class.not_found");
-        });
+        SemesterClass semesterCouse = userRegisterTeachSemester.getSemesterClass();
 
         List<Integer> dayOfWeeks = new ArrayList<>();
+        List<LessonTime> lessonTimeResponses = new ArrayList<>();
+        
         semesterCouse.getSchedules().forEach(ele -> {
             dayOfWeeks.add(ele.getDate_of_week());
+            lessonTimeResponses.add(ele.getLessonTime());
         });
 
         Collections.sort(dayOfWeeks);
-
-        List<LessonTime> lessonTimeResponses = new ArrayList<>();
-        semesterCouse.getSchedules().forEach(ele -> {
-            lessonTimeResponses.add(ele.getLessonTime());
-        });
 
         List<LocalDate> list_holiday = new ArrayList<>();
         semesterCouse.getSemester().getHolidays().forEach(holiday -> {
@@ -841,22 +816,15 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     public List<Map<String, List<List<LocalDateTime>>>> getScheduleDetailOfClass(UUID id) {
-        Optional<Classes> classOpt = classRepository.findById2(id);
+        Optional<Classes> classOpt = classRepository.findById4(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                .findById(classes.getUserRegisterTeachSemester().getId());
-        UserRegisterTeachSemester userRegisterTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
-        });
+        UserRegisterTeachSemester userRegisterTeachSemester = classes.getUserRegisterTeachSemester();
 
-        Optional<SemesterClass> semester_classOpt = semesterClassRepository
-                .findById(userRegisterTeachSemester.getSemesterClass().getId());
-        SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.semester_class.not_found");
-        });
+
+        SemesterClass semesterCouse = userRegisterTeachSemester.getSemesterClass();
 
         List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
         semesterCouse.getSchedules().forEach(schedule_item -> {
@@ -977,7 +945,7 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleChild(UUID child_id) {
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
-                .findByStudentId2(child_id);
+                .findByStudentId4(child_id);
         List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
         userRegisterJoinSemester.forEach(user_register_join_semester -> {
@@ -1114,19 +1082,14 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleAllChild(UUID parent_id) {
-        List<User> listChilds = userRepository.findByParentId(parent_id);
+        List<User> listChilds = userRepository.findByParentId1(parent_id);
         List<Map<String, List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>>>> allCalendarForAllChild = new ArrayList<>();
         listChilds.forEach(child -> {
-            List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
-                    .findByStudentId2(child.getId());
+            Set<UserRegisterJoinSemester> userRegisterJoinSemester = child.getUserRegisterJoinSemesters2();
             List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
             LocalDateTime time_now = LocalDateTime.now();
             userRegisterJoinSemester.forEach(user_register_join_semester -> {
-                Optional<SemesterClass> semester_classOpt = semesterClassRepository
-                        .findById(user_register_join_semester.getSemesterClass().getId());
-                SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
-                    throw new EntityNotFoundException("exception.semester_class.not_found");
-                });
+                SemesterClass semesterCouse = user_register_join_semester.getSemesterClass();
 
                 if (semesterCouse.getSemester().getEnd_time().isAfter(time_now)) {
                     List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
@@ -1261,7 +1224,7 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getInforDetailOfClass(UUID id) {
         Map<String, Object> response = new HashMap<>();
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById3(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -1275,11 +1238,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .update_time(classes.getUpdate_time())
                 .build());
 
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                .findById(classes.getUserRegisterTeachSemester().getId());
-        UserRegisterTeachSemester userRegisterTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
-        });
+        UserRegisterTeachSemester userRegisterTeachSemester = classes.getUserRegisterTeachSemester();
 
         response.put("teacher", GetUserResponse.builder()
                 .id(userRegisterTeachSemester.getTeacher().getId())
@@ -1295,11 +1254,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .createTime(userRegisterTeachSemester.getTeacher().getCreateTime())
                 .build());
 
-        Optional<SemesterClass> semester_classOpt = semesterClassRepository
-                .findById(userRegisterTeachSemester.getSemesterClass().getId());
-        SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.semester_class.not_found");
-        });
+        SemesterClass semesterCouse = userRegisterTeachSemester.getSemesterClass();
 
         response.put("course", GetCourseResponse.builder()
                 .id(semesterCouse.getCourse().getId())
@@ -1330,8 +1285,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .build());
 
         List<GetStudentResponse> listStudents = new ArrayList<>();
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
-                .findByClassesId2(classes.getId());
+        Set<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classes.getClassHasRegisterJoinSemesterClasses();
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
             UUID parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
             String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
@@ -1355,6 +1309,9 @@ public class ClassesServiceImpl implements ClassesService {
         });
 
         List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
+        List<Integer> dayOfWeeks = new ArrayList<>();
+        List<LessonTime> lessonTimeResponses = new ArrayList<>();
+
         semesterCouse.getSchedules().forEach(schedule_item -> {
             GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
                     .id(schedule_item.getId())
@@ -1364,19 +1321,11 @@ public class ClassesServiceImpl implements ClassesService {
                     .date_of_week(schedule_item.getDate_of_week())
                     .build();
             allScheduleResponses.add(scheduleResponse);
-        });
-
-        List<Integer> dayOfWeeks = new ArrayList<>();
-        semesterCouse.getSchedules().forEach(ele -> {
-            dayOfWeeks.add(ele.getDate_of_week());
-        });
-
-        Collections.sort(dayOfWeeks);
-
-        List<LessonTime> lessonTimeResponses = new ArrayList<>();
-        semesterCouse.getSchedules().forEach(schedule_item -> {
+            dayOfWeeks.add(schedule_item.getDate_of_week());
             lessonTimeResponses.add(schedule_item.getLessonTime());
         });
+
+         Collections.sort(dayOfWeeks);
 
         List<LocalDate> list_holiday = new ArrayList<>();
         semesterCouse.getSemester().getHolidays().forEach(holiday -> {

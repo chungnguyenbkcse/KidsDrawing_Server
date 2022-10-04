@@ -24,6 +24,9 @@ public interface ClassesRepository extends JpaRepository <Classes, UUID>{
     @Query("FROM Classes c  JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester")
     List<Classes> findAll();
 
+    @Query("FROM Classes c1  JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges")
+    List<Classes> findAll1();
+
     @Query("SELECT count(c.id) = 1 FROM Classes c WHERE c.userRegisterTeachSemester = :id")
     Boolean existsByUserRegisterTeachSemesterId(UUID id);
 
@@ -35,6 +38,15 @@ public interface ClassesRepository extends JpaRepository <Classes, UUID>{
 
     @Query("SELECT c FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester WHERE c.id = :id ")
     Optional<Classes> findById2(UUID id);
+
+    @Query("SELECT c1 FROM Classes c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.course c JOIN FETCH sc.schedules JOIN FETCH sc.semester s JOIN FETCH s.holidays WHERE c1.id = :id ")
+    Optional<Classes> findById3(UUID id);
+
+    @Query("SELECT c1 FROM Classes c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s JOIN FETCH s.holidays WHERE c1.id = :id ")
+    Optional<Classes> findById4(UUID id);
+
+    @Query("SELECT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses  chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s JOIN FETCH s.holidays JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE c1.id = :id ")
+    Optional<Classes> findById5(UUID id);
 
     @Query("FROM Classes c JOIN FETCH c.user WHERE c.user = :id")
     List<Classes> findByCreatorId1(UUID id);

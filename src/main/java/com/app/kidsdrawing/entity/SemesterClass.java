@@ -48,6 +48,9 @@ public class SemesterClass {
     @OneToMany(mappedBy="semesterClass")
     private Set<Schedule> schedules;
 
+    @OneToMany(mappedBy="semesterClass")
+    private Set<UserRegisterTeachSemester> userRegisterTeachSemesters;
+
     @Column(name = "max_participant")
     private Integer max_participant;
 
