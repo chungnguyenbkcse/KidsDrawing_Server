@@ -297,7 +297,7 @@ public class ExerciseServiceImpl implements ExerciseService{
 
     @Override
     public GetExerciseResponse getExerciseById(UUID id) {
-        Optional<Exercise> exerciseOpt = exerciseRepository.findById(id);
+        Optional<Exercise> exerciseOpt = exerciseRepository.findById2(id);
         Exercise exercise = exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");
         });
@@ -343,7 +343,7 @@ public class ExerciseServiceImpl implements ExerciseService{
 
     @Override
     public UUID removeExerciseById(UUID id) {
-        Optional<Exercise> exerciseOpt = exerciseRepository.findById(id);
+        Optional<Exercise> exerciseOpt = exerciseRepository.findById1(id);
         exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");
         });
@@ -354,7 +354,7 @@ public class ExerciseServiceImpl implements ExerciseService{
 
     @Override
     public UUID updateExerciseById(UUID id, CreateExerciseRequest createExerciseRequest) {
-        Optional<Exercise> exerciseOpt = exerciseRepository.findById(id);
+        Optional<Exercise> exerciseOpt = exerciseRepository.findById1(id);
         Exercise updatedExercise = exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");
         });

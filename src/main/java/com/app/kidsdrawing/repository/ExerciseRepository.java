@@ -24,14 +24,23 @@ public interface ExerciseRepository extends JpaRepository <Exercise, UUID>{
 	)
     Page<Exercise> findAll(Pageable pageable);
 
+    @Query("FROM Exercise e WHERE e.id = :id")
+    Optional<Exercise> findById1(UUID id);
+
     @Query("FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel WHERE e.id = :id")
-    Optional<Exercise> findById(UUID id);
+    Optional<Exercise> findById2(UUID id);
 
     @Query("FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel WHERE e.section = :id")
-    List<Exercise> findBySectionId(UUID id);
+    List<Exercise> findBySectionId1(UUID id);
+
+    @Query("FROM Exercise e JOIN FETCH e.section WHERE e.section = :id")
+    List<Exercise> findBySectionId2(UUID id);
+
+    @Query("FROM Exercise e JOIN FETCH e.exerciseLevel WHERE e.exerciseLevel = :id")
+    List<Exercise> findByLevelId1(UUID id);
 
     @Query("FROM Exercise e JOIN FETCH e.exerciseLevel JOIN FETCH e.section WHERE e.exerciseLevel = :id")
-    List<Exercise> findByLevelId(UUID id);
+    List<Exercise> findByLevelId2(UUID id);
 
     @Query("SELECT count(e.id) = 1 FROM Exercise e WHERE e.id = :id")
     boolean existsById(UUID id);

@@ -276,7 +276,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <Exercise> exerciseOpt = exerciseRepository.findById(createExerciseSubmissionRequest.getExercise_id());
+        Optional <Exercise> exerciseOpt = exerciseRepository.findById1(createExerciseSubmissionRequest.getExercise_id());
         Exercise exercise = exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.exercise.not_found");
         });
@@ -314,7 +314,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <Exercise> exerciseOpt = exerciseRepository.findById(createExerciseSubmissionRequest.getExercise_id());
+        Optional <Exercise> exerciseOpt = exerciseRepository.findById1(createExerciseSubmissionRequest.getExercise_id());
         Exercise exercise = exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.exercise.not_found");
         });
