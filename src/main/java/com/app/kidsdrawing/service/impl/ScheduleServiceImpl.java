@@ -79,7 +79,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public GetScheduleResponse getScheduleById(UUID id){
-        Optional<Schedule> scheduleOpt = scheduleRepository.findById(id);
+        Optional<Schedule> scheduleOpt = scheduleRepository.findById2(id);
         Schedule schedule = scheduleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Schedule.not_found");
         });
@@ -117,7 +117,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public UUID removeScheduleById(UUID id) {
-        Optional<Schedule> scheduleOpt = scheduleRepository.findById(id);
+        Optional<Schedule> scheduleOpt = scheduleRepository.findById1(id);
         scheduleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Schedule.not_found");
         });
@@ -128,7 +128,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public UUID updateScheduleById(UUID id, CreateScheduleRequest createScheduleRequest) {
-        Optional<Schedule> scheduleOpt = scheduleRepository.findById(id);
+        Optional<Schedule> scheduleOpt = scheduleRepository.findById1(id);
         Schedule updatedSchedule = scheduleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Schedule.not_found");
         });
