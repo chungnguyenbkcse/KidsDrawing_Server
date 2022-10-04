@@ -46,6 +46,7 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise JOIN FETCH e.student WHERE e.exercise = :id")
     List<ExerciseSubmission> findByExerciseId2(UUID id);
 
+    
     @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise JOIN FETCH e.student WHERE e.exercise = ?1 AND e.student= ?2")
     List<ExerciseSubmission> findByExerciseIdAndStudentId(UUID exercise_id, UUID student_id);
 }
