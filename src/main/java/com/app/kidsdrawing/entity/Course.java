@@ -87,4 +87,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private Set<SectionTemplate> sectionTemplates;
+
+    @OneToMany(mappedBy = "course")
+    private Set<SemesterClass> semesterClasses;
 }

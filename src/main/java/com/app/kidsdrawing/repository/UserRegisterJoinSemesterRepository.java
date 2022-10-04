@@ -42,7 +42,7 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student WHERE e.student = :id")
     List<UserRegisterJoinSemester> findByStudentId1(UUID id);
 
-    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass WHERE e.student = :id")
+    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE e.student = :id")
     List<UserRegisterJoinSemester> findByStudentId2(UUID id);
 
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student JOIN FETCH e.classHasRegisterJoinSemesterClass chr JOIN FETCH chr.classes  c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE e.student = :id")

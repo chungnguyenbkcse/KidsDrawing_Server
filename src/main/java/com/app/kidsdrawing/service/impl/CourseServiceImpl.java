@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -115,11 +116,11 @@ public class CourseServiceImpl implements CourseService {
             }
         });
 
-        List<Course> allCourses = courseRepository.findAll();
+        List<Course> allCourses = courseRepository.findAll1();
         allCourses.forEach(course -> {
             if (listCourseRegisted.contains(course) == false) {
                 total = 0;
-                List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId2(course.getId());
+                Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
 
                 allSemesterClass.forEach(semester_course -> {
                     if (semesterNexts.contains(semester_course.getSemester())){

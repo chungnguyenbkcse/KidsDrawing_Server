@@ -24,6 +24,9 @@ public interface CourseRepository extends JpaRepository <Course, UUID>{
     @Query("SELECT c FROM Course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.create_time")
     List<Course> findAll();
 
+    @Query("SELECT c FROM Course c JOIN FETCH c.semesterClasses sc JOIN FETCH sc.semester JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.create_time")
+    List<Course> findAll1();
+
     @Query("FROM Course c WHERE c.name = :name")
     Optional<Course> findByName1(String name);
 
