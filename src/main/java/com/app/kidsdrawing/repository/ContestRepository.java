@@ -24,11 +24,17 @@ public interface ContestRepository extends JpaRepository <Contest, UUID>{
     @Query("SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.start_time")
     List<Contest> findAll();
 
+    @Query("FROM Contest c WHERE c.id = :id")
+    Optional<Contest> findById1(UUID id);
+
     @Query("FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.id = :id")
-    Optional<Contest> findById(UUID id);
+    Optional<Contest> findById2(UUID id);
+
+    @Query("FROM Contest c WHERE c.name = :name")
+    Optional<Contest> findByName1(String name);
 
     @Query("FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.name = :name")
-    Optional<Contest> findByName(String name);
+    Optional<Contest> findByName2(String name);
 
     @Query("SELECT count(c.id) = 1 FROM Contest c WHERE c.id = :id")
     boolean existsById(UUID id);
@@ -38,12 +44,21 @@ public interface ContestRepository extends JpaRepository <Contest, UUID>{
 
     void deleteById(UUID id);
 
+    @Query("FROM Contest c JOIN FETCH c.artAges WHERE c.artAges = :artAges")
+    List<Contest> findByArtAgeId1(UUID artAges);
+
     @Query("FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.user JOIN FETCH c.artTypes WHERE c.artAges = :artAges")
-    List<Contest> findByArtAgeId(UUID artAges);
+    List<Contest> findByArtAgeId2(UUID artAges);
+
+    @Query("FROM Contest c JOIN FETCH c.artTypes WHERE c.artTypes = :artTypes")
+    List<Contest> findByArtTypeId1(UUID artTypes);
 
     @Query("FROM Contest c JOIN FETCH c.artTypes JOIN FETCH c.user JOIN FETCH c.artAges WHERE c.artTypes = :artTypes")
-    List<Contest> findByArtTypeId(UUID artTypes);
+    List<Contest> findByArtTypeId2(UUID artTypes);
+
+    @Query("FROM Contest c JOIN FETCH c.user WHERE c.user = :user")
+    List<Contest> findByCreatorId1(UUID user);
 
     @Query("FROM Contest c JOIN FETCH c.user JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE c.user = :user")
-    List<Contest> findByCreatorId(UUID user);
+    List<Contest> findByCreatorId2(UUID user);
 }

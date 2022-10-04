@@ -562,7 +562,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public GetContestResponse getContestByName(String name) {
-        Optional<Contest> contestOpt = contestRepository.findByName(name);
+        Optional<Contest> contestOpt = contestRepository.findByName2(name);
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
@@ -601,7 +601,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public GetContestResponse getContestById(UUID id) {
-        Optional<Contest> contestOpt = contestRepository.findById(id);
+        Optional<Contest> contestOpt = contestRepository.findById2(id);
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
@@ -679,7 +679,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public UUID removeContestById(UUID id) {
-        Optional<Contest> contestOpt = contestRepository.findById(id);
+        Optional<Contest> contestOpt = contestRepository.findById1(id);
         contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
@@ -689,7 +689,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public UUID updateContestById(UUID id, CreateContestRequest createContestRequest) {
-        Optional<Contest> contestOpt = contestRepository.findById(id);
+        Optional<Contest> contestOpt = contestRepository.findById1(id);
         Contest updatedContest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });

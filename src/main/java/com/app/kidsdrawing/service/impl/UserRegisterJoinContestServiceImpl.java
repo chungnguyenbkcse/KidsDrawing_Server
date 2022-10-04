@@ -103,7 +103,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
 
     @Override
     public UUID createUserRegisterJoinContest(CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
-        Optional <Contest> contestOpt = contestRepository.findById(createUserRegisterJoinContestRequest.getContest_id());
+        Optional <Contest> contestOpt = contestRepository.findById1(createUserRegisterJoinContestRequest.getContest_id());
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.contest.not_found");
         });
@@ -145,7 +145,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             throw new EntityNotFoundException("exception.UserRegisterJoinContest.not_found");
         });
 
-        Optional <Contest> contestOpt = contestRepository.findById(createUserRegisterJoinContestRequest.getContest_id());
+        Optional <Contest> contestOpt = contestRepository.findById1(createUserRegisterJoinContestRequest.getContest_id());
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.contest.not_found");
         });
