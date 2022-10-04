@@ -57,7 +57,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserReadNotificationByUserId(UUID id) {
         List<GetUserReadNotificationResponse> allUserReadNotificationResponses = new ArrayList<>();
-        List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findByUserId(id);
+        List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findByUserId2(id);
         listUserReadNotification.forEach(content -> {
             if (content.getUser().getId().compareTo(id) == 0){
                 GetUserReadNotificationResponse uuserReadNotificationResponse = GetUserReadNotificationResponse.builder()
@@ -122,7 +122,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
 
     @Override
     public UUID removeUserReadNotificationById(UUID id) {
-        Optional<UserReadNotification> uuserReadNotificationOpt = uuserReadNotificationRepository.findById(id);
+        Optional<UserReadNotification> uuserReadNotificationOpt = uuserReadNotificationRepository.findById1(id);
         uuserReadNotificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserReadNotification.not_found");
         });

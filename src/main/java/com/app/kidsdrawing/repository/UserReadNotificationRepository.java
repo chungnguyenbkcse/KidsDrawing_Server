@@ -23,17 +23,26 @@ public interface UserReadNotificationRepository extends JpaRepository <UserReadN
 	)
     Page<UserReadNotification> findAll(Pageable pageable);
 
+    @Query("FROM UserReadNotification e WHERE e.id = :id")
+    Optional<UserReadNotification> findById1(UUID id);
+
     @Query("FROM UserReadNotification e JOIN FETCH e.user  JOIN FETCH e.notification WHERE e.id = :id")
-    Optional<UserReadNotification> findById(UUID id);
+    Optional<UserReadNotification> findById2(UUID id);
     
     boolean existsByUserId(UUID id);
     boolean existsByNotificationId(UUID id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.user  JOIN FETCH e.notification WHERE e.notification = :id")
-    List<UserReadNotification> findByNotificationId(UUID id);
+    @Query("FROM UserReadNotification e JOIN FETCH e.notification WHERE e.notification = :id")
+    List<UserReadNotification> findByNotificationId1(UUID id);
+
+    @Query("FROM UserReadNotification e JOIN FETCH e.notification JOIN FETCH e.user  WHERE e.notification = :id")
+    List<UserReadNotification> findByNotificationId2(UUID id);
+
+    @Query("FROM UserReadNotification e JOIN FETCH e.user WHERE e.user = :id")
+    List<UserReadNotification> findByUserId1(UUID id);
 
     @Query("FROM UserReadNotification e JOIN FETCH e.user  JOIN FETCH e.notification WHERE e.user = :id")
-    List<UserReadNotification> findByUserId(UUID id);
+    List<UserReadNotification> findByUserId2(UUID id);
 
     void deleteById(UUID id);
 }
