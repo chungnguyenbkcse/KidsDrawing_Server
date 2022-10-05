@@ -67,4 +67,7 @@ public interface UserRepository extends JpaRepository <User, UUID>{
 
     @Query("FROM User x JOIN FETCH x.parent JOIN FETCH x.userRegisterJoinContests e JOIN FETCH e.student JOIN FETCH e.contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE x.parent = :id")
     List<User> findByParentId2(UUID id);
+
+    @Query("FROM User e JOIN FETCH e.parent JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH sc.course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE e.parent = :id")
+    List<User> findByParentId3(UUID id);
 }

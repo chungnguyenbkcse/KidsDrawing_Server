@@ -18,6 +18,9 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, U
     @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ORDER BY e.id")
     List<SemesterClass> findAll();
 
+    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY e.id")
+    List<SemesterClass> findAll1();
+
     @Query(
 		value = "SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ORDER BY e.id",
 		countQuery = "SELECT e FROM SemesterClass e INNER JOIN e.semester  INNER JOIN e.course ORDER BY e.id"
@@ -40,7 +43,7 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, U
     @Query("FROM SemesterClass e JOIN FETCH e.semester  WHERE e.semester = :id")
     List<SemesterClass> findBySemesterId1(UUID id);
 
-    @Query("FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course WHERE e.semester = :id")
+    @Query("FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c WHERE e.semester = :id")
     List<SemesterClass> findBySemesterId2(UUID id);
 
     @Query("FROM SemesterClass e JOIN FETCH e.course WHERE e.course = :id")
