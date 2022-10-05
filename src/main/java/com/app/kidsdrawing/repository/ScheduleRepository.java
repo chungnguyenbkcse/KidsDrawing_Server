@@ -14,12 +14,12 @@ import com.app.kidsdrawing.entity.Schedule;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository <Schedule, UUID>{
-    @Query("SELECT e FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass ORDER BY e.id")
+    @Query("SELECT e FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass ")
     List<Schedule> findAll();
 
     @Query(
-		value = "SELECT e FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass ORDER BY e.id",
-		countQuery = "SELECT e FROM Schedule e INNER JOIN e.lessonTime  INNER JOIN e.semesterClass ORDER BY e.id"
+		value = "SELECT e FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass ",
+		countQuery = "SELECT e FROM Schedule e INNER JOIN e.lessonTime  INNER JOIN e.semesterClass "
 	)
     Page<Schedule> findAll(Pageable pageable);
 
@@ -29,16 +29,16 @@ public interface ScheduleRepository extends JpaRepository <Schedule, UUID>{
     @Query("FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass WHERE e.id = :id")
     Optional<Schedule> findById2(UUID id);
 
-    @Query("FROM Schedule e JOIN FETCH e.lessonTime WHERE e.lessonTime = :id")
+    @Query("FROM Schedule e JOIN FETCH e.lessonTime lt WHERE lt.id = :id")
     List<Schedule> findByLessonTime1(UUID id);
 
-    @Query("FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass WHERE e.lessonTime = :id")
+    @Query("FROM Schedule e JOIN FETCH e.lessonTime lt JOIN FETCH e.semesterClass WHERE lt.id = :id")
     List<Schedule> findByLessonTime2(UUID id);
 
-    @Query("FROM Schedule e JOIN FETCH e.semesterClass WHERE e.semesterClass = :id")
+    @Query("FROM Schedule e JOIN FETCH e.semesterClass sc WHERE sc.id = :id")
     List<Schedule> findBySemesterClassId1(UUID id);
 
-    @Query("FROM Schedule e JOIN FETCH e.semesterClass JOIN FETCH e.lessonTime WHERE e.semesterClass = :id")
+    @Query("FROM Schedule e JOIN FETCH e.semesterClass sc JOIN FETCH e.lessonTime WHERE sc.id = :id")
     List<Schedule> findBySemesterClassId2(UUID id);
     
     boolean existsById(UUID id);

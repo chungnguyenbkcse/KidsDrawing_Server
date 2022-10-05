@@ -15,12 +15,12 @@ import com.app.kidsdrawing.entity.Tutorial;
 @Repository
 public interface TutorialRepository extends JpaRepository <Tutorial, UUID>{
 
-    @Query("SELECT e FROM Tutorial e JOIN FETCH e.section  JOIN FETCH e.creator ORDER BY e.id")
+    @Query("SELECT e FROM Tutorial e JOIN FETCH e.section  JOIN FETCH e.creator ")
     List<Tutorial> findAll();
 
     @Query(
-		value = "SELECT e FROM Tutorial e JOIN FETCH e.section  JOIN FETCH e.creator ORDER BY e.id",
-		countQuery = "SELECT e FROM Tutorial e INNER JOIN e.section  INNER JOIN e.creator ORDER BY e.id"
+		value = "SELECT e FROM Tutorial e JOIN FETCH e.section  JOIN FETCH e.creator ",
+		countQuery = "SELECT e FROM Tutorial e INNER JOIN e.section  INNER JOIN e.creator "
 	)
     Page<Tutorial> findAll(Pageable pageable);
 
@@ -30,10 +30,10 @@ public interface TutorialRepository extends JpaRepository <Tutorial, UUID>{
     @Query("FROM Tutorial e JOIN FETCH e.section  JOIN FETCH e.creator WHERE e.id = :id")
     Optional<Tutorial> findById2(UUID id);
 
-    @Query("FROM Tutorial e JOIN FETCH e.section  WHERE e.section = :id")
+    @Query("FROM Tutorial e JOIN FETCH e.section  se WHERE se.id = :id")
     Optional<Tutorial> findBySectionId1(UUID id);
 
-    @Query("FROM Tutorial e JOIN FETCH e.section  JOIN FETCH e.creator WHERE e.section = :id")
+    @Query("FROM Tutorial e JOIN FETCH e.section  se JOIN FETCH e.creator WHERE se.id = :id")
     Optional<Tutorial> findBySectionId2(UUID id);
     
     boolean existsById(UUID id);

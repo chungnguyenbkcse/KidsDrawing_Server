@@ -32,16 +32,16 @@ public interface UserReadNotificationRepository extends JpaRepository <UserReadN
     boolean existsByUserId(UUID id);
     boolean existsByNotificationId(UUID id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.notification WHERE e.notification = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.notification no WHERE no.id = :id")
     List<UserReadNotification> findByNotificationId1(UUID id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.notification JOIN FETCH e.user  WHERE e.notification = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.notification no JOIN FETCH e.user  WHERE no.id = :id")
     List<UserReadNotification> findByNotificationId2(UUID id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.user WHERE e.user = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.user u WHERE u.id = :id")
     List<UserReadNotification> findByUserId1(UUID id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.user  JOIN FETCH e.notification WHERE e.user = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.user u JOIN FETCH e.notification WHERE u.id = :id")
     List<UserReadNotification> findByUserId2(UUID id);
 
     void deleteById(UUID id);

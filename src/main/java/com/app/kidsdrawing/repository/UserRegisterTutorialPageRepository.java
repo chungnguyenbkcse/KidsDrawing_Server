@@ -14,12 +14,12 @@ import com.app.kidsdrawing.entity.UserRegisterTutorialPage;
 
 @Repository
 public interface UserRegisterTutorialPageRepository extends JpaRepository <UserRegisterTutorialPage, UUID>{
-    @Query("SELECT e FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial ORDER BY e.id")
+    @Query("SELECT e FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial ")
     List<UserRegisterTutorialPage> findAll();
 
     @Query(
-		value = "SELECT e FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial ORDER BY e.id",
-		countQuery = "SELECT e FROM UserRegisterTutorialPage e INNER JOIN e.userRegisterTutorial ORDER BY e.id"
+		value = "SELECT e FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial ",
+		countQuery = "SELECT e FROM UserRegisterTutorialPage e INNER JOIN e.userRegisterTutorial "
 	)
     Page<UserRegisterTutorialPage> findAll(Pageable pageable);
 
@@ -29,7 +29,7 @@ public interface UserRegisterTutorialPageRepository extends JpaRepository <UserR
     @Query("FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial WHERE e.id = :id")
     Optional<UserRegisterTutorialPage> findById2(UUID id);
 
-    @Query("FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial WHERE e.userRegisterTutorial = :id")
+    @Query("FROM UserRegisterTutorialPage e JOIN FETCH e.userRegisterTutorial urt WHERE urt.id = :id")
     List<UserRegisterTutorialPage> findByUserRegisterTutorialId(UUID id);
     
     boolean existsById(UUID id);

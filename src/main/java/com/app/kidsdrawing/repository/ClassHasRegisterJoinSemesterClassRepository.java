@@ -27,21 +27,21 @@ public interface ClassHasRegisterJoinSemesterClassRepository extends JpaReposito
     @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c JOIN FETCH c.classes  WHERE c.id = :id ")
     Optional<ClassHasRegisterJoinSemesterClass> findById(ClassHasRegisterJoinSemesterClassKey id);
 
-    @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester JOIN FETCH c.classes WHERE c.classes = ?1 AND c.userRegisterJoinSemester = ?2")
+    @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester urj JOIN FETCH c.classes cl WHERE cl.id = ?1 AND urj = ?2")
     Optional<ClassHasRegisterJoinSemesterClass> findByClassIdAndUserRegisterJoinSemester(UUID class_id, UUID user_register_join_semester_id);
 
-    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester WHERE c.userRegisterJoinSemester = :id")
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester urj WHERE urj.id = :id")
     List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterId1(UUID id);
 
-    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester JOIN FETCH c.classes WHERE c.userRegisterJoinSemester = :id")
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester urj JOIN FETCH c.classes cl WHERE urj.id = :id")
     List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterId2(UUID id);
 
-    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  WHERE c.classes = :id")
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl WHERE cl.id = :id")
     List<ClassHasRegisterJoinSemesterClass> findByClassesId1(UUID id);
 
-    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester WHERE c.classes = :id")
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl JOIN FETCH c.userRegisterJoinSemester WHERE cl.id = :id")
     List<ClassHasRegisterJoinSemesterClass> findByClassesId2(UUID id);
 
-    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester u JOIN FETCH u.student WHERE c.classes = :id")
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl JOIN FETCH c.userRegisterJoinSemester u JOIN FETCH u.student WHERE cl.id = :id")
     List<ClassHasRegisterJoinSemesterClass> findByClassesId3(UUID id);
 }

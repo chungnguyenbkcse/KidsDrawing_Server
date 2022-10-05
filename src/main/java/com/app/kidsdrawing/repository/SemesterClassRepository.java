@@ -15,15 +15,15 @@ import com.app.kidsdrawing.entity.SemesterClass;
 @Repository
 public interface SemesterClassRepository extends JpaRepository <SemesterClass, UUID>{
     
-    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ORDER BY e.id")
+    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ")
     List<SemesterClass> findAll();
 
-    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY e.id")
+    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ")
     List<SemesterClass> findAll1();
 
     @Query(
-		value = "SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ORDER BY e.id",
-		countQuery = "SELECT e FROM SemesterClass e INNER JOIN e.semester  INNER JOIN e.course ORDER BY e.id"
+		value = "SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ",
+		countQuery = "SELECT e FROM SemesterClass e INNER JOIN e.semester  INNER JOIN e.course "
 	)
     Page<SemesterClass> findAll(Pageable pageable);
 
@@ -40,15 +40,15 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, U
     boolean existsByName(String name);
     void deleteById(UUID id);
 
-    @Query("FROM SemesterClass e JOIN FETCH e.semester  WHERE e.semester = :id")
+    @Query("FROM SemesterClass e JOIN FETCH e.semester  se WHERE se.id = :id")
     List<SemesterClass> findBySemesterId1(UUID id);
 
-    @Query("FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c WHERE e.semester = :id")
+    @Query("FROM SemesterClass e JOIN FETCH e.semester se JOIN FETCH e.course c WHERE se.id = :id")
     List<SemesterClass> findBySemesterId2(UUID id);
 
-    @Query("FROM SemesterClass e JOIN FETCH e.course WHERE e.course = :id")
+    @Query("FROM SemesterClass e JOIN FETCH e.course co WHERE co.id = :id")
     List<SemesterClass> findByCourseId1(UUID id);
 
-    @Query("FROM SemesterClass e JOIN FETCH e.course JOIN FETCH e.semester  WHERE e.course = :id")
+    @Query("FROM SemesterClass e JOIN FETCH e.course co JOIN FETCH e.semester  WHERE co.id = :id")
     List<SemesterClass> findByCourseId2(UUID id);
 }

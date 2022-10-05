@@ -14,12 +14,12 @@ import com.app.kidsdrawing.entity.SectionTemplate;
 
 @Repository
 public interface SectionTemplateRepository extends JpaRepository <SectionTemplate, UUID>{
-    @Query("SELECT e FROM SectionTemplate e JOIN FETCH e.course JOIN FETCH e.user ORDER BY e.id")
+    @Query("SELECT e FROM SectionTemplate e JOIN FETCH e.course JOIN FETCH e.user ")
     List<SectionTemplate> findAll();
 
     @Query(
-		value = "SELECT e FROM SectionTemplate e  JOIN FETCH e.course JOIN FETCH e.user ORDER BY e.id",
-		countQuery = "SELECT e FROM SectionTemplate e  INNER JOIN e.course INNER JOIN e.user ORDER BY e.id"
+		value = "SELECT e FROM SectionTemplate e  JOIN FETCH e.course JOIN FETCH e.user ",
+		countQuery = "SELECT e FROM SectionTemplate e  INNER JOIN e.course INNER JOIN e.user "
 	)
     Page<SectionTemplate> findAll(Pageable pageable);
 
@@ -29,22 +29,22 @@ public interface SectionTemplateRepository extends JpaRepository <SectionTemplat
     @Query("FROM SectionTemplate e JOIN FETCH e.course JOIN FETCH e.user  WHERE e.id = :id")
     Optional<SectionTemplate> findById2(UUID id);
     
-    @Query("FROM SectionTemplate e JOIN FETCH e.course WHERE e.course = :id")
+    @Query("FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = :id")
     List<SectionTemplate> findByCourseId1(UUID id);
 
-    @Query("FROM SectionTemplate e JOIN FETCH e.course JOIN FETCH e.user WHERE e.course = :id")
+    @Query("FROM SectionTemplate e JOIN FETCH e.course co JOIN FETCH e.user WHERE co.id = :id")
     List<SectionTemplate> findByCourseId2(UUID id);
 
-    @Query("FROM SectionTemplate e JOIN FETCH e.course WHERE e.course = ?1 AND e.number = ?2")
+    @Query("FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = ?1 AND e.number = ?2")
     Optional<SectionTemplate> findByCourseIdAndNumber1(UUID course_id, int number);
 
-    @Query("FROM SectionTemplate e  JOIN FETCH e.course JOIN FETCH e.user WHERE e.course = ?1 AND e.number = ?2")
+    @Query("FROM SectionTemplate e  JOIN FETCH e.course co JOIN FETCH e.user WHERE co.id = ?1 AND e.number = ?2")
     Optional<SectionTemplate> findByCourseIdAndNumber2(UUID course_id, int number);
 
-    @Query("FROM SectionTemplate e JOIN FETCH e.user WHERE e.user = :id")
+    @Query("FROM SectionTemplate e JOIN FETCH e.user u WHERE u.id = :id")
     List<SectionTemplate> findByCreatorId1(UUID id);
 
-    @Query("FROM SectionTemplate e JOIN FETCH e.user  JOIN FETCH e.course WHERE e.user = :id")
+    @Query("FROM SectionTemplate e JOIN FETCH e.user u JOIN FETCH e.course WHERE u.id = :id")
     List<SectionTemplate> findByCreatorId2(UUID id);
 
     boolean existsById(UUID id);

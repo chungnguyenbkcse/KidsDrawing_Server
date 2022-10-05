@@ -15,12 +15,12 @@ import com.app.kidsdrawing.entity.LessonTime;
 @Repository
 public interface LessonTimeRepository extends JpaRepository <LessonTime, UUID>{
 
-    @Query("SELECT e FROM LessonTime e ORDER BY e.start_time")
+    @Query("SELECT e FROM LessonTime e ")
     List<LessonTime> findAll();
 
     @Query(
-		value = "SELECT e FROM LessonTime e ORDER BY e.start_time",
-		countQuery = "SELECT e FROM LessonTime e ORDER BY e.start_time"
+		value = "SELECT e FROM LessonTime e ",
+		countQuery = "SELECT e FROM LessonTime e "
 	)
     Page<LessonTime> findAll(Pageable pageable);
 

@@ -15,12 +15,12 @@ import com.app.kidsdrawing.entity.Exercise;
 @Repository
 public interface ExerciseRepository extends JpaRepository <Exercise, UUID>{
 
-    @Query("SELECT e FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel ORDER BY e.create_time")
+    @Query("SELECT e FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel ")
     List<Exercise> findAll();
 
     @Query(
-		value = "SELECT e FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel ORDER BY e.create_time",
-		countQuery = "SELECT e FROM Exercise e INNER JOIN e.section INNER JOIN e.exerciseLevel ORDER BY e.create_time"
+		value = "SELECT e FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel ",
+		countQuery = "SELECT e FROM Exercise e INNER JOIN e.section INNER JOIN e.exerciseLevel "
 	)
     Page<Exercise> findAll(Pageable pageable);
 
@@ -30,16 +30,16 @@ public interface ExerciseRepository extends JpaRepository <Exercise, UUID>{
     @Query("FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel WHERE e.id = :id")
     Optional<Exercise> findById2(UUID id);
 
-    @Query("FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel WHERE e.section = :id")
+    @Query("FROM Exercise e JOIN FETCH e.section s JOIN FETCH e.exerciseLevel WHERE s.id = :id")
     List<Exercise> findBySectionId1(UUID id);
 
-    @Query("FROM Exercise e JOIN FETCH e.section WHERE e.section = :id")
+    @Query("FROM Exercise e JOIN FETCH e.section s WHERE s.id = :id")
     List<Exercise> findBySectionId2(UUID id);
 
-    @Query("FROM Exercise e JOIN FETCH e.exerciseLevel WHERE e.exerciseLevel = :id")
+    @Query("FROM Exercise e JOIN FETCH e.exerciseLevel el WHERE el.id = :id")
     List<Exercise> findByLevelId1(UUID id);
 
-    @Query("FROM Exercise e JOIN FETCH e.exerciseLevel JOIN FETCH e.section WHERE e.exerciseLevel = :id")
+    @Query("FROM Exercise e JOIN FETCH e.exerciseLevel el JOIN FETCH e.section WHERE el.id = :id")
     List<Exercise> findByLevelId2(UUID id);
 
     @Query("SELECT count(e.id) = 1 FROM Exercise e WHERE e.id = :id")

@@ -14,12 +14,12 @@ import com.app.kidsdrawing.entity.Section;
 
 @Repository
 public interface SectionRepository extends JpaRepository <Section, UUID>{
-    @Query("SELECT e FROM Section e JOIN FETCH e.classes ORDER BY e.id")
+    @Query("SELECT e FROM Section e JOIN FETCH e.classes ")
     List<Section> findAll();
 
     @Query(
-		value = "SELECT e FROM Section e JOIN FETCH e.classes ORDER BY e.id",
-		countQuery = "SELECT e FROM Section e INNER JOIN e.classes ORDER BY e.id"
+		value = "SELECT e FROM Section e JOIN FETCH e.classes ",
+		countQuery = "SELECT e FROM Section e INNER JOIN e.classes "
 	)
     Page<Section> findAll(Pageable pageable);
 
@@ -29,7 +29,7 @@ public interface SectionRepository extends JpaRepository <Section, UUID>{
     @Query("FROM Section e JOIN FETCH e.classes WHERE e.id = :id")
     Optional<Section> findById2(UUID id);
 
-    @Query("FROM Section e JOIN FETCH e.classes WHERE e.classes = :id ORDER BY e.number")
+    @Query("FROM Section e JOIN FETCH e.classes cl WHERE cl.id = :id ")
     List<Section> findByClassesId(UUID id);
 
     boolean existsById(UUID id);

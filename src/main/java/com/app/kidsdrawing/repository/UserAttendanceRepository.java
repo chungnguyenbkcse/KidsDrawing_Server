@@ -29,20 +29,20 @@ public interface UserAttendanceRepository extends JpaRepository <UserAttendance,
     @Query("FROM UserAttendance e JOIN FETCH e.student  JOIN FETCH e.section WHERE e.id = :id")
     Optional<UserAttendance> findById2(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.section WHERE e.section = :id")
+    @Query("FROM UserAttendance e JOIN FETCH e.section se WHERE se.id = :id")
     List<UserAttendance> findBySectionId1(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.section JOIN FETCH e.student  WHERE e.section = :id")
+    @Query("FROM UserAttendance e JOIN FETCH e.section se JOIN FETCH e.student  WHERE se.id = :id")
     List<UserAttendance> findBySectionId2(UUID id);
     
     boolean existsById(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.student  WHERE e.student = :id")
+    @Query("FROM UserAttendance e JOIN FETCH e.student st WHERE st.id = :id")
     List<UserAttendance> findByStudentId1(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.student  JOIN FETCH e.section WHERE e.student = :id")
+    @Query("FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section WHERE st.id = :id")
     List<UserAttendance> findByStudentId2(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.student  JOIN FETCH e.section WHERE e.section = ?1 AND e.student = ?2")
+    @Query("FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section se WHERE se.id = ?1 AND st.id = ?2")
     List<UserAttendance> findBySectionIdAndStudentId(UUID section_id, UUID student_id);
 }

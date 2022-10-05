@@ -30,7 +30,7 @@ public interface ClassesRepository extends JpaRepository <Classes, UUID>{
     @Query("SELECT count(c.id) = 1 FROM Classes c WHERE c.userRegisterTeachSemester = :id")
     Boolean existsByUserRegisterTeachSemesterId(UUID id);
 
-    @Query("FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester WHERE c.userRegisterTeachSemester = :id")
+    @Query("FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester urt WHERE urt.id = :id")
     List<Classes> findByUserRegisterTeachSemesterId(UUID id);
 
     @Query("SELECT c FROM Classes c WHERE c.id = :id ")
@@ -48,9 +48,9 @@ public interface ClassesRepository extends JpaRepository <Classes, UUID>{
     @Query("SELECT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses  chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s JOIN FETCH s.holidays JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE c1.id = :id ")
     Optional<Classes> findById5(UUID id);
 
-    @Query("FROM Classes c JOIN FETCH c.user WHERE c.user = :id")
+    @Query("FROM Classes c JOIN FETCH c.user u WHERE u.id = :id")
     List<Classes> findByCreatorId1(UUID id);
 
-    @Query("FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester WHERE c.user = :id")
+    @Query("FROM Classes c JOIN FETCH c.user  u JOIN FETCH c.userRegisterTeachSemester WHERE u.id = :id")
     List<Classes> findByCreatorId2(UUID id);
 }

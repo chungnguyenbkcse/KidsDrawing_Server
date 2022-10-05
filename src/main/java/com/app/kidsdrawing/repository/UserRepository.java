@@ -14,15 +14,15 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository <User, UUID>{
-    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent ORDER BY e.id")
+    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent ")
     List<User> findAll();
 
-    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent LEFT JOIN FETCH e.roles ORDER BY e.id")
+    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent LEFT JOIN FETCH e.roles ")
     List<User> findAllFetchRole();
 
     @Query(
-		value = "SELECT e FROM User e LEFT JOIN FETCH e.parent ORDER BY e.id",
-		countQuery = "SELECT e FROM User e LEFT JOIN e.parent ORDER BY e.id"
+		value = "SELECT e FROM User e LEFT JOIN FETCH e.parent ",
+		countQuery = "SELECT e FROM User e LEFT JOIN e.parent "
 	)
     Page<User> findAll(Pageable pageable);
 
@@ -59,15 +59,15 @@ public interface UserRepository extends JpaRepository <User, UUID>{
     @Query("FROM User e LEFT JOIN FETCH e.parent WHERE e.email = :email")
     Optional<User> findByEmail2(String email);
 
-    @Query("FROM User e JOIN FETCH e.parent WHERE e.parent = :id")
+    @Query("FROM User e JOIN FETCH e.parent p WHERE p.id = :id")
     List<User> findByParentId(UUID id);
 
-    @Query("FROM User e JOIN FETCH e.parent JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH s.holidays JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime  WHERE e.parent = :id")
+    @Query("FROM User e JOIN FETCH e.parent p JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH s.holidays JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime  WHERE p.id = :id")
     List<User> findByParentId1(UUID id);
 
-    @Query("FROM User x JOIN FETCH x.parent JOIN FETCH x.userRegisterJoinContests e JOIN FETCH e.student JOIN FETCH e.contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE x.parent = :id")
+    @Query("FROM User x JOIN FETCH x.parent p JOIN FETCH x.userRegisterJoinContests e JOIN FETCH e.student JOIN FETCH e.contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE p.id = :id")
     List<User> findByParentId2(UUID id);
 
-    @Query("FROM User e JOIN FETCH e.parent JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH sc.course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE e.parent = :id")
+    @Query("FROM User e JOIN FETCH e.parent p JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH sc.course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE p.id = :id")
     List<User> findByParentId3(UUID id);
 }

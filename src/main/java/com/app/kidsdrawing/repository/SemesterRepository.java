@@ -14,15 +14,15 @@ import com.app.kidsdrawing.entity.Semester;
 
 @Repository
 public interface SemesterRepository extends JpaRepository <Semester, UUID>{
-    @Query("SELECT e FROM Semester e JOIN FETCH e.user ORDER BY e.id")
+    @Query("SELECT e FROM Semester e JOIN FETCH e.user ")
     List<Semester> findAll();
 
-    @Query("SELECT e FROM Semester e JOIN FETCH e.user JOIN FETCH e.semesterClass sc JOIN FETCH sc.userRegisterTeachSemesters urt JOIN FETCH urt.classes ORDER BY e.id")
+    @Query("SELECT e FROM Semester e JOIN FETCH e.user JOIN FETCH e.semesterClass sc JOIN FETCH sc.userRegisterTeachSemesters urt JOIN FETCH urt.classes ")
     List<Semester> findAll1();
 
     @Query(
-		value = "SELECT e FROM Semester e JOIN FETCH e.user ORDER BY e.id",
-		countQuery = "SELECT e FROM Semester e INNER JOIN e.user ORDER BY e.id"
+		value = "SELECT e FROM Semester e JOIN FETCH e.user ",
+		countQuery = "SELECT e FROM Semester e INNER JOIN e.user "
 	)
     Page<Semester> findAll(Pageable pageable);
 

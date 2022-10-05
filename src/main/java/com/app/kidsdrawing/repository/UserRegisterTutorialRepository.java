@@ -15,12 +15,12 @@ import com.app.kidsdrawing.entity.UserRegisterTutorial;
 @Repository
 public interface UserRegisterTutorialRepository extends JpaRepository <UserRegisterTutorial, UUID>{
     
-    @Query("SELECT e FROM UserRegisterTutorial e JOIN FETCH e.section  JOIN FETCH e.creator ORDER BY e.id")
+    @Query("SELECT e FROM UserRegisterTutorial e JOIN FETCH e.section  JOIN FETCH e.creator ")
     List<UserRegisterTutorial> findAll();
 
     @Query(
-		value = "SELECT e FROM UserRegisterTutorial e JOIN FETCH e.section  JOIN FETCH e.creator ORDER BY e.id",
-		countQuery = "SELECT e FROM UserRegisterTutorial e INNER JOIN e.section  INNER JOIN e.creator ORDER BY e.id"
+		value = "SELECT e FROM UserRegisterTutorial e JOIN FETCH e.section  JOIN FETCH e.creator ",
+		countQuery = "SELECT e FROM UserRegisterTutorial e INNER JOIN e.section  INNER JOIN e.creator "
 	)
     Page<UserRegisterTutorial> findAll(Pageable pageable);
 
@@ -33,9 +33,9 @@ public interface UserRegisterTutorialRepository extends JpaRepository <UserRegis
     boolean existsById(UUID id);
     void deleteById(UUID id);
 
-    @Query("FROM UserRegisterTutorial e JOIN FETCH e.section  WHERE e.section = :id")
+    @Query("FROM UserRegisterTutorial e JOIN FETCH e.section se WHERE se.id = :id")
     List<UserRegisterTutorial> findBySectionId1(UUID id);
 
-    @Query("FROM UserRegisterTutorial e JOIN FETCH e.section  JOIN FETCH e.creator WHERE e.section = :id")
+    @Query("FROM UserRegisterTutorial e JOIN FETCH e.section se JOIN FETCH e.creator WHERE se.id = :id")
     List<UserRegisterTutorial> findBySectionId2(UUID id);
 }

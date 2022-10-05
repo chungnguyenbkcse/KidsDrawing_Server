@@ -29,7 +29,7 @@ public interface HolidayRepository extends JpaRepository <Holiday, UUID>{
     @Query("FROM Holiday e JOIN FETCH e.semester WHERE e.id = :id")
     Optional<Holiday> findById2(UUID id);
 
-    @Query("FROM Holiday e JOIN FETCH e.semester WHERE e.semester = :id")
+    @Query("FROM Holiday e JOIN FETCH e.semester s WHERE s.id = :id")
     Optional<Holiday> findBySemesterId(UUID id);
 
     @Query("SELECT COUNT(e.id) = 1 FROM Holiday e WHERE e.id = :id")

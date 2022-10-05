@@ -15,12 +15,12 @@ import com.app.kidsdrawing.entity.Notification;
 @Repository
 public interface NotificationRepository extends JpaRepository <Notification, UUID>{
 
-    @Query("SELECT e FROM Notification e ORDER BY e.time")
+    @Query("SELECT e FROM Notification e ")
     List<Notification> findAll();
 
     @Query(
-		value = "SELECT e FROM Notification e ORDER BY e.time",
-		countQuery = "SELECT e FROM Notification e ORDER BY e.time"
+		value = "SELECT e FROM Notification e ",
+		countQuery = "SELECT e FROM Notification e "
 	)
     Page<Notification> findAll(Pageable pageable);
 

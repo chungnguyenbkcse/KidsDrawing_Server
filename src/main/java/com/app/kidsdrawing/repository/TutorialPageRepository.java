@@ -14,12 +14,12 @@ import com.app.kidsdrawing.entity.TutorialPage;
 
 @Repository
 public interface TutorialPageRepository extends JpaRepository <TutorialPage, UUID>{
-    @Query("SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ORDER BY e.id")
+    @Query("SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ")
     List<TutorialPage> findAll();
 
     @Query(
-		value = "SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ORDER BY e.id",
-		countQuery = "SELECT e FROM TutorialPage e INNER JOIN e.tutorial ORDER BY e.id"
+		value = "SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ",
+		countQuery = "SELECT e FROM TutorialPage e INNER JOIN e.tutorial "
 	)
     Page<TutorialPage> findAll(Pageable pageable);
 
@@ -32,6 +32,6 @@ public interface TutorialPageRepository extends JpaRepository <TutorialPage, UUI
     boolean existsById(UUID id);
     void deleteById(UUID id);
 
-    @Query("FROM TutorialPage e JOIN FETCH e.tutorial WHERE e.tutorial = :id")
+    @Query("FROM TutorialPage e JOIN FETCH e.tutorial t WHERE t.id = :id")
     List<TutorialPage> findByTutorialId(UUID id);
 }

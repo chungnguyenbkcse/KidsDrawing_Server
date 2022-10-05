@@ -14,12 +14,12 @@ import com.app.kidsdrawing.entity.UserRegisterJoinContest;
 
 @Repository
 public interface UserRegisterJoinContestRepository extends JpaRepository <UserRegisterJoinContest, UUID>{
-    @Query("SELECT e FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest ORDER BY e.id")
+    @Query("SELECT e FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest ")
     List<UserRegisterJoinContest> findAll();
 
     @Query(
-		value = "SELECT e FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest ORDER BY e.id",
-		countQuery = "SELECT e FROM UserRegisterJoinContest e INNER JOIN e.student  INNER JOIN e.contest ORDER BY e.id"
+		value = "SELECT e FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest ",
+		countQuery = "SELECT e FROM UserRegisterJoinContest e INNER JOIN e.student  INNER JOIN e.contest "
 	)
     Page<UserRegisterJoinContest> findAll(Pageable pageable);
 
@@ -29,19 +29,19 @@ public interface UserRegisterJoinContestRepository extends JpaRepository <UserRe
     @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest WHERE e.id = :id")
     Optional<UserRegisterJoinContest> findById2(UUID id);
     
-    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.contest WHERE e.contest = :id")
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.contest co WHERE co.id = :id")
     List<UserRegisterJoinContest> findByContestId1(UUID id);
 
-    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.contest JOIN FETCH e.student  WHERE e.contest = :id")
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.contest co JOIN FETCH e.student  WHERE co.id = :id")
     List<UserRegisterJoinContest> findByContestId2(UUID id);
 
-    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student WHERE e.student = :id")
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student st WHERE st.id = :id")
     List<UserRegisterJoinContest> findByStudentId1(UUID id);
 
-    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student  JOIN FETCH e.contest WHERE e.student = :id")
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student st JOIN FETCH e.contest WHERE st.id = :id")
     List<UserRegisterJoinContest> findByStudentId2(UUID id);
 
-    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student JOIN FETCH e.contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE e.student = :id")
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student st JOIN FETCH e.contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE st.id = :id")
     List<UserRegisterJoinContest> findByStudentId3(UUID id);
     
     boolean existsById(UUID id);

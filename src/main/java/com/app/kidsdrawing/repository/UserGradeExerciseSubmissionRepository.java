@@ -14,28 +14,28 @@ import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
 
 @Repository
 public interface UserGradeExerciseSubmissionRepository extends JpaRepository <UserGradeExerciseSubmission, UUID>{
-    @Query("SELECT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission ORDER BY e.id")
+    @Query("SELECT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission ")
     List<UserGradeExerciseSubmission> findAll();
 
     @Query(
-		value = "SELECT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission ORDER BY e.id",
-		countQuery = "SELECT e FROM UserGradeExerciseSubmission e INNER JOIN e.teacher  INNER JOIN e.exerciseSubmission ORDER BY e.id"
+		value = "SELECT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission ",
+		countQuery = "SELECT e FROM UserGradeExerciseSubmission e INNER JOIN e.teacher  INNER JOIN e.exerciseSubmission "
 	)
     Page<UserGradeExerciseSubmission> findAll(Pageable pageable);
 
     @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission WHERE e.teacher = ?1 AND e.exerciseSubmission = ?2")
     Optional<UserGradeExerciseSubmission> findByTeacherIdAndExerciseSubmissionId(UUID teacher_id, UUID exercise_submission_id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  WHERE e.teacher = :id")
+    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher te WHERE te.id = :id")
     List<UserGradeExerciseSubmission> findByTeacherId1(UUID id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission WHERE e.teacher = :id")
+    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher te JOIN FETCH e.exerciseSubmission WHERE te.id = :id")
     List<UserGradeExerciseSubmission> findByTeacherId2(UUID id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission WHERE e.exerciseSubmission = :id")
+    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es WHERE es.id = :id")
     List<UserGradeExerciseSubmission> findByExerciseSubmissionId1(UUID id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission  JOIN FETCH e.teacher  WHERE e.exerciseSubmission = :id")
+    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher  WHERE es.id = :id")
     List<UserGradeExerciseSubmission> findByExerciseSubmissionId2(UUID id);
     
     boolean existsById(UUID id);
