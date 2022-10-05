@@ -52,6 +52,12 @@ public interface UserGradeExerciseSubmissionRepository extends JpaRepository <Us
 
     @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE ex.id = ?1 AND cl.id = ?2")
     List<UserGradeExerciseSubmission> findByExerciseAndClass(UUID exercise_id, UUID class_id);
+
+    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE ex.id = ?1 AND st.id = ?2")
+    List<UserGradeExerciseSubmission> findByExerciseAndStudent(UUID exercise_id, UUID student_id);
+
+    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE cl.id = ?1 AND st.id = ?2")
+    List<UserGradeExerciseSubmission> findByClassAndStudent(UUID class_id, UUID student_id);
     
     boolean existsById(UUID id);
     boolean existsByExerciseSubmissionId(UUID id);

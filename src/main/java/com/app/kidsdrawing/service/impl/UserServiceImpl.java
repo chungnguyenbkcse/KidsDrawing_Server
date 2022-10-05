@@ -73,13 +73,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllStudents(String role_name) {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findByName(role_name);
-        Role role = roleOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.role.not_found");
-        });
+        List<User> pageUser = userRepository.findAllStudent();
         pageUser.forEach(user -> {
-            if (user.getRoles().contains(role) == true){
                 GetStudentResponse userResponse = GetStudentResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -97,7 +92,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .parents(user.getParent().getId())
                     .build();
                 allUserResponses.add(userResponse);
-            }
         });
         Map<String, Object> response = new HashMap<>();
         response.put("students", allUserResponses);
@@ -156,11 +150,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override 
     public ResponseEntity<Map<String, Object>> getReportUserNew(int year, String role_name) {
         List<Integer> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findByName(role_name);
-        Role role = roleOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.role.not_found");
-        });
+        List<User> pageUser = userRepository.findAllUserByRole(role_name);
+        
         total_user_of_jan = 0;
         total_user_of_feb = 0;
         total_user_of_mar = 0;
@@ -174,7 +165,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         total_user_of_nov = 0;
         total_user_of_dec = 0;
         pageUser.forEach(user -> {
-            if (user.getRoles().contains(role) == true && user.getCreateTime().getYear() == year){
+            if (user.getCreateTime().getYear() == year){
                 if (user.getCreateTime().getMonth().toString().equals("JANUARY")){
                     total_user_of_jan += 1;
                 }
@@ -246,13 +237,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllParents(String role_name) {
         List<GetUserResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findByName(role_name);
-        Role role = roleOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.role.not_found");
-        });
+        List<User> pageUser = userRepository.findAllUserByRole(role_name);
+
         pageUser.forEach(user -> {
-            if (user.getRoles().contains(role) == true){
                 GetUserResponse userResponse = GetUserResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -268,7 +255,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .createTime(user.getCreateTime())
                     .build();
                 allUserResponses.add(userResponse);
-            }
         });
         Map<String, Object> response = new HashMap<>();
         response.put("parents", allUserResponses);
@@ -278,18 +264,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllTeacher() {
         List<GetTeacherResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAllFetchRole();
-        Optional<Role> roleOpt = roleRepository.findByName("TEACHER_USER");
-        Role role = roleOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.role.not_found");
-        });
+        List<User> pageUser = userRepository.findAllUserByRole("TEACHER_USER");
+        
         List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationResponses = new ArrayList<>();
         List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationDoingResponses = new ArrayList<>();
         List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationNotAcceptResponses = new ArrayList<>();
         List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
         Map<String, Object> response = new HashMap<>();
         pageUser.forEach(user -> {
-            if (user.getRoles().contains(role) == true){
                 GetTeacherResponse userResponse = GetTeacherResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -345,7 +327,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     }
                 });
                 allTeacherRegisterQualificationResponses.add(teacherRegisterQualificationResponses);
-            }
         });
         response.put("teachers", allUserResponses);
         response.put("teacher_register_qualifications", allTeacherRegisterQualificationResponses);

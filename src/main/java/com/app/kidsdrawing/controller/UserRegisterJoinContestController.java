@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,16 +30,14 @@ public class UserRegisterJoinContestController {
 
     @CrossOrigin
     @GetMapping(value = "/student/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByTeacherId(@PathVariable UUID id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByTeacherId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByTeacherId(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByStudentId(id));
     } 
 
     @CrossOrigin
     @GetMapping(value = "/contest/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByContestId(@PathVariable UUID id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByTeacherId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByContestId(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByContestId(id));
     }
 
     @CrossOrigin

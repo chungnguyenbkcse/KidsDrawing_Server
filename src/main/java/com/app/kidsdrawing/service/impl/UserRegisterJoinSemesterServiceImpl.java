@@ -102,14 +102,12 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(UUID id) {
         List<GetUserRegisterJoinSemesterScheduleClassResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassId1(id);
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassId3(id);
         listUserRegisterJoinSemester.forEach(content -> {
-            if (content.getStatus().equals("Completed")) {
-                GetUserRegisterJoinSemesterScheduleClassResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterScheduleClassResponse.builder()
-                    .id(content.getId())
-                    .build();
-                allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
-            }
+            GetUserRegisterJoinSemesterScheduleClassResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterScheduleClassResponse.builder()
+                .id(content.getId())
+                .build();
+            allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -166,7 +164,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     @Override
     public ResponseEntity<Map<String, Object>> getReportUserRegisterJoinSemester(int year) {
         List<Integer> allUserRegisterJoinSemesterResponses = new ArrayList<>();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll1();
         total_user_of_jan = 0;
         total_user_of_feb = 0;
         total_user_of_mar = 0;

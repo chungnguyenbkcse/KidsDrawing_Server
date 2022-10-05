@@ -55,7 +55,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorial() {
         List<GetUserRegisterTutorialResponse> allUserRegisterTutorialResponses = new ArrayList<>();
-        List<UserRegisterTutorial> listUserRegisterTutorial = userRegisterTutorialRepository.findAll();
+        List<UserRegisterTutorial> listUserRegisterTutorial = userRegisterTutorialRepository.findAll1();
         listUserRegisterTutorial.forEach(content -> {
             GetUserRegisterTutorialResponse UserRegisterTutorialResponse = GetUserRegisterTutorialResponse.builder()
                 .id(content.getId())

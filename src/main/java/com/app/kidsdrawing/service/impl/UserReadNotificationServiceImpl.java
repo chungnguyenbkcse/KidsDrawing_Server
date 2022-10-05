@@ -77,16 +77,14 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserReadNotificationBynNotificationId(UUID id) {
         List<GetUserReadNotificationResponse> allUserReadNotificationResponses = new ArrayList<>();
-        List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findAll();
+        List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findByNotificationId2(id);
         listUserReadNotification.forEach(content -> {
-            if (content.getNotification().getId().compareTo(id) == 0){
                 GetUserReadNotificationResponse uuserReadNotificationResponse = GetUserReadNotificationResponse.builder()
                     .user_id(content.getUser().getId())
                     .notification_id(content.getNotification().getId())
                     .is_read(content.getIs_read())
                     .build();
                 allUserReadNotificationResponses.add(uuserReadNotificationResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();

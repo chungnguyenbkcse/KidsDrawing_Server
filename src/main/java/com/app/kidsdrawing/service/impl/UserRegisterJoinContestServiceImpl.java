@@ -9,9 +9,6 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -40,50 +37,38 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByTeacherId(int page, int size, UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByStudentId(UUID id) {
         List<GetUserRegisterJoinContestResponse> allUserRegisterJoinContestResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findAll(paging);
-        pageUserRegisterJoinContest.getContent().forEach(content -> {
-            if (content.getStudent().getId().compareTo(id) == 0){
+        List<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findByStudentId2(id);
+        pageUserRegisterJoinContest.forEach(content -> {
                 GetUserRegisterJoinContestResponse userRegisterJoinContestResponse = GetUserRegisterJoinContestResponse.builder()
                     .id(content.getId())
                     .student_id(id)
                     .contest_id(content.getContest().getId())
                     .build();
                     allUserRegisterJoinContestResponses.add(userRegisterJoinContestResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();
         response.put("teacher_grade_contest", allUserRegisterJoinContestResponses);
-        response.put("currentPage", pageUserRegisterJoinContest.getNumber());
-        response.put("totalItems", pageUserRegisterJoinContest.getTotalElements());
-        response.put("totalPages", pageUserRegisterJoinContest.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByContestId(int page, int size, UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByContestId(UUID id) {
         List<GetUserRegisterJoinContestResponse> allUserRegisterJoinContestResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findAll(paging);
-        pageUserRegisterJoinContest.getContent().forEach(content -> {
-            if (content.getContest().getId().compareTo(id) == 0){
+        List<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findByContestId2(id);
+        pageUserRegisterJoinContest.forEach(content -> {
                 GetUserRegisterJoinContestResponse userRegisterJoinContestResponse = GetUserRegisterJoinContestResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
                     .contest_id(id)
                     .build();
                     allUserRegisterJoinContestResponses.add(userRegisterJoinContestResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();
         response.put("teacher_grade_contest", allUserRegisterJoinContestResponses);
-        response.put("currentPage", pageUserRegisterJoinContest.getNumber());
-        response.put("totalItems", pageUserRegisterJoinContest.getTotalElements());
-        response.put("totalPages", pageUserRegisterJoinContest.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
