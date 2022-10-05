@@ -88,22 +88,20 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByStudentId(UUID id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
-        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
+        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByStudent(id);
         listUserGradeContestSubmission.forEach(content -> {
-            if (content.getContestSubmission().getStudent().getId().compareTo(id) == 0){
-                GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                    .teacher_id(content.getTeacher().getId())
-                    .student_id(content.getContestSubmission().getStudent().getId())
-                    .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
-                    .contest_id(content.getContestSubmission().getContest().getId())
-                    .contest_name(content.getContestSubmission().getContest().getName())
-                    .contest_submission_id(content.getContestSubmission().getId())
-                    .feedback(content.getFeedback())
-                    .score(content.getScore())
-                    .time(content.getTime())
-                    .build();
-                allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
-            }
+            GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                .teacher_id(content.getTeacher().getId())
+                .student_id(content.getContestSubmission().getStudent().getId())
+                .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                .contest_id(content.getContestSubmission().getContest().getId())
+                .contest_name(content.getContestSubmission().getContest().getName())
+                .contest_submission_id(content.getContestSubmission().getId())
+                .feedback(content.getFeedback())
+                .score(content.getScore())
+                .time(content.getTime())
+                .build();
+            allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -114,29 +112,21 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestId(UUID id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
-        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
-        List<ContestSubmission> allContestSubmissionResponses = new ArrayList<>();
-        List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findAll();
-        listContestSubmission.forEach(content -> {
-            if (content.getContest().getId().compareTo(id) == 0){
-                allContestSubmissionResponses.add(content);
-            }
-        });
+        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByContest(id);
+
         listUserGradeContestSubmission.forEach(content -> {
-            if (allContestSubmissionResponses.contains(content.getContestSubmission())){
-                GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                    .teacher_id(content.getTeacher().getId())
-                    .student_id(content.getContestSubmission().getStudent().getId())
-                    .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
-                    .contest_id(content.getContestSubmission().getContest().getId())
-                    .contest_name(content.getContestSubmission().getContest().getName())
-                    .contest_submission_id(content.getContestSubmission().getId())
-                    .feedback(content.getFeedback())
-                    .score(content.getScore())
-                    .time(content.getTime())
-                    .build();
-                allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
-            }
+            GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                .teacher_id(content.getTeacher().getId())
+                .student_id(content.getContestSubmission().getStudent().getId())
+                .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                .contest_id(content.getContestSubmission().getContest().getId())
+                .contest_name(content.getContestSubmission().getContest().getName())
+                .contest_submission_id(content.getContestSubmission().getId())
+                .feedback(content.getFeedback())
+                .score(content.getScore())
+                .time(content.getTime())
+                .build();
+            allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();

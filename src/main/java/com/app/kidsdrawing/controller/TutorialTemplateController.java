@@ -36,8 +36,8 @@ public class TutorialTemplateController {
     
     @CrossOrigin
     @GetMapping(value = "/section-template/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialTemplateBySectionId(@PathVariable UUID id) {
-        return ResponseEntity.ok().body(tutorialTemplateService.getAllTutorialTemplateBySectionTemplate(id));
+    public ResponseEntity<GetTutorialTemplateResponse> getAllTutorialTemplateBySectionId(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(tutorialTemplateService.getTutorialTemplateBySectionTemplate(id));
     }
 
     @CrossOrigin

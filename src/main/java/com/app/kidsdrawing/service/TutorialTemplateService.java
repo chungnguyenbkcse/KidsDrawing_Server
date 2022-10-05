@@ -10,7 +10,7 @@ import com.app.kidsdrawing.dto.GetTutorialTemplateResponse;
 
 public interface TutorialTemplateService {
     ResponseEntity<Map<String, Object>> getAllTutorialTemplate();
-    ResponseEntity<Map<String, Object>> getAllTutorialTemplateBySectionTemplate(UUID id);
+    GetTutorialTemplateResponse getTutorialTemplateBySectionTemplate(UUID id);
     GetTutorialTemplateResponse getTutorialTemplateById(UUID id);
     UUID createTutorialTemplate(CreateTutorialTemplateRequest createTutorialTemplateRequest);
     UUID removeTutorialTemplateById(UUID id);

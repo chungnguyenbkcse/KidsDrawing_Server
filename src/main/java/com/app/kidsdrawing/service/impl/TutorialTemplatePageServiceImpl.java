@@ -55,18 +55,16 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageByTutorialTemplateId(UUID id) {
         List<GetTutorialTemplatePageResponse> allTutorialTemplatePageResponses = new ArrayList<>();
-        List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findAll();
+        List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findByTutorialTemplateId(id);
         listTutorialTemplatePage.forEach(content -> {
-            if (content.getTutorialTemplate().getId().compareTo(id) == 0){
-                GetTutorialTemplatePageResponse tutorialPageResponse = GetTutorialTemplatePageResponse.builder()
-                    .id(content.getId())
-                    .tutorial_template_id(content.getTutorialTemplate().getId())
-                    .name(content.getName())
-                    .description(content.getDescription())
-                    .number(content.getNumber())
-                    .build();
-                allTutorialTemplatePageResponses.add(tutorialPageResponse);
-            }
+            GetTutorialTemplatePageResponse tutorialPageResponse = GetTutorialTemplatePageResponse.builder()
+                .id(content.getId())
+                .tutorial_template_id(content.getTutorialTemplate().getId())
+                .name(content.getName())
+                .description(content.getDescription())
+                .number(content.getNumber())
+                .build();
+            allTutorialTemplatePageResponses.add(tutorialPageResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -77,7 +75,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionTemplateId(UUID id) {
         List<GetTutorialTemplatePageResponse> allTutorialTemplatePageResponses = new ArrayList<>();
-        List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findAll();
+        List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findBySectionTemplateId(id);
         listTutorialTemplatePage.forEach(content -> {
             if (content.getTutorialTemplate().getSectionTemplate().getId().compareTo(id) == 0){
                 GetTutorialTemplatePageResponse tutorialPageResponse = GetTutorialTemplatePageResponse.builder()

@@ -56,25 +56,18 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialTemplateBySectionTemplate(UUID id) {
-        List<GetTutorialTemplateResponse> allTutorialTemplateResponses = new ArrayList<>();
-        List<TutorialTemplate> listTutorialTemplate = tutorialTemplateRepository.findAll();
-        listTutorialTemplate.forEach(content -> {
-            if (content.getSectionTemplate().getId().compareTo(id) == 0){
-                GetTutorialTemplateResponse tutorialTemplateResponse = GetTutorialTemplateResponse.builder()
-                    .id(content.getId())
-                    .section_template_id(id)
-                    .name(content.getName())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allTutorialTemplateResponses.add(tutorialTemplateResponse);
-            }
+    public GetTutorialTemplateResponse getTutorialTemplateBySectionTemplate(UUID id) {
+        Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId2(id);
+        TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
         });
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("TutorialTemplate", allTutorialTemplateResponses);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return GetTutorialTemplateResponse.builder()
+            .id(tutorialTemplate.getId())
+            .section_template_id(tutorialTemplate.getSectionTemplate().getId())
+            .name(tutorialTemplate.getName())
+            .create_time(tutorialTemplate.getCreate_time())
+            .update_time(tutorialTemplate.getUpdate_time())
+            .build();
     }
 
     @Override

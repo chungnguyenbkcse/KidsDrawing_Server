@@ -44,4 +44,10 @@ public interface UserGradeContestSubmissionRepository extends JpaRepository <Use
 
     @Query("DELETE FROM UserGradeContestSubmission e WHERE e.teacher = ?1 AND e.contestSubmission = ?2")
     void deleteById(UUID teacher_id, UUID contest_submission_id);
+
+    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs JOIN FETCH cs.student st JOIN FETCH e.teacher  WHERE st.id = :id")
+    List<UserGradeContestSubmission> findByStudent(UUID id);
+
+    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs JOIN FETCH cs.contest co JOIN FETCH e.teacher  WHERE co.id = :id")
+    List<UserGradeContestSubmission> findByContest(UUID id);
 }
