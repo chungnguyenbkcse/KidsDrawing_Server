@@ -64,15 +64,6 @@ public class SemesterController {
     }
 
     @CrossOrigin
-    @PostMapping(value="/calender/{id}")
-    public ResponseEntity<String> getCalendarForSemster(@PathVariable UUID id, @RequestBody CreateHolidayRequest createHolidayResquest) {
-        UUID semesterId = semesterService.setCalenderForSemester(id, createHolidayResquest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{semesterId}")
-                .buildAndExpand(semesterId).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @CrossOrigin
     @GetMapping
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesters() {
         return ResponseEntity.ok().body(semesterService.getAllSemester());

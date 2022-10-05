@@ -12,7 +12,6 @@ import com.app.kidsdrawing.dto.GetSemesterResponse;
 public interface SemesterService {
     ResponseEntity<Map<String, Object>> getAllSemester();
     ResponseEntity<Map<String, Object>> getAllSemesterNext();
-    UUID setCalenderForSemester(UUID id, CreateHolidayRequest createHolidayResquest);
     UUID setClassForSemester(UUID id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest);
     GetSemesterResponse getSemesterById(UUID id);
     UUID createSemester(CreateSemesterRequest createSemesterRequest);

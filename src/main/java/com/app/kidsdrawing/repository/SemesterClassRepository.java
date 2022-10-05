@@ -15,11 +15,14 @@ import com.app.kidsdrawing.entity.SemesterClass;
 @Repository
 public interface SemesterClassRepository extends JpaRepository <SemesterClass, UUID>{
     
-    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ")
+    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course JOIN FETCH e.schedules")
     List<SemesterClass> findAll();
 
     @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ")
     List<SemesterClass> findAll1();
+
+    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE st.id = ?1 AND c.id =?2")
+    List<SemesterClass> findAllSemesterClassByStudentAndCourse(UUID student_id, UUID course_id);
 
     @Query(
 		value = "SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ",
@@ -51,4 +54,7 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, U
 
     @Query("FROM SemesterClass e JOIN FETCH e.course co JOIN FETCH e.semester  WHERE co.id = :id")
     List<SemesterClass> findByCourseId2(UUID id);
+
+    @Query("FROM SemesterClass e JOIN FETCH e.course c JOIN FETCH e.semester JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.id = :id")
+    List<SemesterClass> findByCourseId3(UUID id);
 }

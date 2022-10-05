@@ -34,4 +34,7 @@ public interface TutorialPageRepository extends JpaRepository <TutorialPage, UUI
 
     @Query("FROM TutorialPage e JOIN FETCH e.tutorial t WHERE t.id = :id")
     List<TutorialPage> findByTutorialId(UUID id);
+
+    @Query("FROM TutorialPage e JOIN FETCH e.tutorial t JOIN FETCH t.section s WHERE s.id = :id")
+    List<TutorialPage> findBySection(UUID id);
 }

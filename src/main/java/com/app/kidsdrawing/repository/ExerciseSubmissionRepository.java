@@ -19,6 +19,15 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     @Query("SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise JOIN FETCH e.student ")
     List<ExerciseSubmission> findAll();
 
+    @Query("SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE cl.id =?1 AND st.id =?2")
+    List<ExerciseSubmission> findAllExerciseSubmissionByClassAndStudent(UUID class_id, UUID student_id);
+
+    @Query("SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE se.id =?1 AND st.id =?2")
+    List<ExerciseSubmission> findAllExerciseSubmissionBySectionAndStudent(UUID section_id, UUID student_id);
+
+    @Query("SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE cl .id =?1")
+    List<ExerciseSubmission> findAllExerciseSubmissionByClass(UUID class_id);
+
     @Query(
 		value = "SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise JOIN FETCH e.student ",
 		countQuery = "SELECT e FROM ExerciseSubmission e INNER JOIN e.exercise INNER JOIN e.student "

@@ -10,7 +10,7 @@ import com.app.kidsdrawing.dto.GetTutorialResponse;
 
 public interface TutorialService {
     ResponseEntity<Map<String, Object>> getAllTutorial();
-    ResponseEntity<Map<String, Object>> getAllTutorialBySection(UUID id);
+    GetTutorialResponse getTutorialBySection(UUID id);
     ResponseEntity<Map<String, Object>> getAllTutorialByCreator(UUID id);
     ResponseEntity<Map<String, Object>> getAllTutorialByCreatorSection(UUID creator_id, UUID section_id);
     GetTutorialResponse getTutorialById(UUID id);

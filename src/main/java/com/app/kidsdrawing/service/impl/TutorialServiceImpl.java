@@ -61,52 +61,43 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialBySection(UUID id) {
-        List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
-        List<Tutorial> listTutorial = tutorialRepository.findAll();
-        listTutorial.forEach(content -> {
-            if (content.getSection().getId().compareTo(id) == 0){
-                GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
-                    .id(content.getId())
-                    .section_id(content.getSection().getId())
-                    .creator_id(content.getCreator().getId())
-                    .creator_name(content.getCreator().getFirstName() + " " + content.getCreator().getLastName())
-                    .section_number(content.getSection().getNumber())
-                    .classes_id(content.getSection().getClasses().getId())
-                    .class_name(content.getSection().getClasses().getName())
-                    .name(content.getName())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allTutorialResponses.add(tutorialResponse);
-            }
+    public GetTutorialResponse getTutorialBySection(UUID id) {
+        Optional<Tutorial> tutorialOpt = tutorialRepository.findBySectionId2(id);
+        Tutorial tutorial = tutorialOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Tutorial.not_found");
         });
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("Tutorial", allTutorialResponses);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return GetTutorialResponse.builder()
+            .id(tutorial.getId())
+            .section_id(tutorial.getSection().getId())
+            .creator_id(tutorial.getCreator().getId())
+            .creator_name(tutorial.getCreator().getFirstName() + " " + tutorial.getCreator().getLastName())
+            .section_number(tutorial.getSection().getNumber())
+            .classes_id(tutorial.getSection().getClasses().getId())
+            .class_name(tutorial.getSection().getClasses().getName())
+            .name(tutorial.getName())
+            .create_time(tutorial.getCreate_time())
+            .update_time(tutorial.getUpdate_time())
+            .build();
     }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialByCreator(UUID id) {
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
-        List<Tutorial> listTutorial = tutorialRepository.findAll();
+        List<Tutorial> listTutorial = tutorialRepository.findByCreatorId2(id);
         listTutorial.forEach(content -> {
-            if (content.getCreator().getId().compareTo(id) == 0){
-                GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
-                    .id(content.getId())
-                    .section_id(content.getSection().getId())
-                    .creator_id(content.getCreator().getId())
-                    .creator_name(content.getCreator().getFirstName() + " " + content.getCreator().getLastName())
-                    .section_number(content.getSection().getNumber())
-                    .classes_id(content.getSection().getClasses().getId())
-                    .class_name(content.getSection().getClasses().getName())
-                    .name(content.getName())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allTutorialResponses.add(tutorialResponse);
-            }
+            GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
+                .id(content.getId())
+                .section_id(content.getSection().getId())
+                .creator_id(content.getCreator().getId())
+                .creator_name(content.getCreator().getFirstName() + " " + content.getCreator().getLastName())
+                .section_number(content.getSection().getNumber())
+                .classes_id(content.getSection().getClasses().getId())
+                .class_name(content.getSection().getClasses().getName())
+                .name(content.getName())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allTutorialResponses.add(tutorialResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -117,9 +108,8 @@ public class TutorialServiceImpl implements TutorialService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialByCreatorSection(UUID creator_id, UUID section_id) {
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
-        List<Tutorial> listTutorial = tutorialRepository.findAll();
+        List<Tutorial> listTutorial = tutorialRepository.findByCreatorAndSection(creator_id, section_id);
         listTutorial.forEach(content -> {
-            if (content.getSection().getId().compareTo(section_id) == 0 && content.getCreator().getId().compareTo(creator_id) == 0){
                 GetTutorialResponse tutorialResponse = GetTutorialResponse.builder()
                     .id(content.getId())
                     .section_id(content.getSection().getId())
@@ -133,7 +123,6 @@ public class TutorialServiceImpl implements TutorialService{
                     .update_time(content.getUpdate_time())
                     .build();
                 allTutorialResponses.add(tutorialResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();

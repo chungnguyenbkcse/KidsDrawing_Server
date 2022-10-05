@@ -2,7 +2,6 @@ package com.app.kidsdrawing.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +29,7 @@ import com.app.kidsdrawing.entity.UserAttendance;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
-import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Holiday;
-import com.app.kidsdrawing.entity.Schedule;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
@@ -42,14 +39,10 @@ import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepositor
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.HolidayRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
-import com.app.kidsdrawing.repository.SectionTemplateRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
-import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
-import com.app.kidsdrawing.repository.TutorialTemplateRepository;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
-import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.SemesterService;
 
@@ -61,22 +54,18 @@ import lombok.RequiredArgsConstructor;
 public class SemesterServiceImpl implements SemesterService {
 
     private final SemesterRepository semesterRepository;
-    private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
-    private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final ClassesRepository classRepository;
     private final UserRepository userRepository;
-    private final SectionTemplateRepository sectionTemplateRepository;
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
     private final UserAttendanceRepository userAttendanceRepository;
-    private final TutorialTemplateRepository tutorialTemplateRepository;
     //private final EmailService emailService;
     //private final FCMService fcmService;
     private final TutorialRepository tutorialRepository;
     private final TutorialPageRepository tutorialPageRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
-    private static int counter = 0;
+    //private static int counter = 0;
     private static int check_count = 0;
     private static int number = 1;
     @Override
@@ -132,98 +121,6 @@ public class SemesterServiceImpl implements SemesterService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Override
-    public UUID setCalenderForSemester(UUID id, CreateHolidayRequest createHolidayResquest) {
-        // Lấy học kì
-        Optional<Semester> semesterOpt = semesterRepository.findById1(id);
-        Semester semester = semesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.Semester.not_found");
-        });
-
-        List<Course> allCourseResponses = new ArrayList<>();
-        //List<Course> pageCourse = classRepository.findAllUsingFetch();
-        List<SemesterClass> allSemesterClassResponses = new ArrayList<>();
-        List<Schedule> allScheduleResponses = new ArrayList<>();
-        //List<Schedule> pageSchedule = scheduleRepository.findAll();
-        //List<LessonTime> pageLessonTime = lessonTimeRepository.findAll();
-
-        semester.getSemesterClass().forEach(semester_class -> {
-            allSemesterClassResponses.add(semester_class);
-            semester_class.getSchedules().forEach(ele -> {
-                allScheduleResponses.add(ele);
-            });
-            allCourseResponses.add(semester_class.getCourse());
-        });
-
-        List<Classes> listClass = classRepository.findAll();
-        List<List<Classes>> allClassOfSemesterClassResponses = new ArrayList<>();        
-        allSemesterClassResponses.forEach(semester_class -> {
-            List<Classes> list_class = new ArrayList<>();
-            listClass.forEach(ele_class -> {
-                if (ele_class.getUserRegisterTeachSemester().getSemesterClass().getId().compareTo(semester_class.getId()) == 0){
-                    list_class.add(ele_class);
-                }
-            });
-            allClassOfSemesterClassResponses.add(list_class);
-        });
-
-        createHolidayResquest.getTime().forEach(holiday -> {
-            Holiday saveHoliday = Holiday.builder()
-                .day(holiday)
-                .semester(semester)
-                .build();
-            holidayRepository.save(saveHoliday);
-        });
-
-        Optional <User> userOpt = userRepository.findByUsername1("admin");
-        User creator = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_creator.not_found");
-        });
-
-        allClassOfSemesterClassResponses.forEach( list_class -> {
-            List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
-            List<SectionTemplate> allSectionTemplate = new ArrayList<>();
-            listSectionTemplate.forEach(section_template -> {
-                if (section_template.getCourse().getId().compareTo(list_class.get(0).getUserRegisterTeachSemester().getSemesterClass().getCourse().getId()) == 0){
-                    allSectionTemplate.add(section_template);
-                    section_template.getCourse().getNum_of_section();
-                }
-            });
-            list_class.forEach(ele -> {
-                allSectionTemplate.forEach(ele_section_tmp -> {
-                    Section savedSection = Section.builder()
-                        .classes(ele)
-                        .name(ele_section_tmp.getName())
-                        .number(ele_section_tmp.getNumber())
-                        .teaching_form(ele_section_tmp.getTeaching_form())
-                        .build();
-                    sectionRepository.save(savedSection);
-
-                    Tutorial savedTutorial = Tutorial.builder()
-                        .section(savedSection)
-                        .creator(creator)
-                        .name("Giáo trình " + ele_section_tmp.getName())
-                        .build();
-                    tutorialRepository.save(savedTutorial);
-
-                    Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId1(ele_section_tmp.getId());
-                    TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
-                        throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
-                    });
-                    tutorialTemplate.getTutorialTemplatePages().forEach(tutorial_page -> {
-                        TutorialPage savedTutorialPage = TutorialPage.builder()
-                            .tutorial(savedTutorial)
-                            .name(tutorial_page.getName())
-                            .description(tutorial_page.getDescription())
-                            .number(tutorial_page.getNumber())
-                            .build();
-                        tutorialPageRepository.save(savedTutorialPage);
-                    });
-                });
-            });
-        }); 
-        return id;
-    }
 
     public static int[][] foo(int N, int x, int m, int M) { // ham can viet
         int numOfBasicArr = N / x;
@@ -311,16 +208,14 @@ public class SemesterServiceImpl implements SemesterService {
     @Override
     public UUID setClassForSemester(UUID id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
-        Optional<Semester> semesterOpt = semesterRepository.findById1(id);
+        Optional<Semester> semesterOpt = semesterRepository.findById3(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        Set<SemesterClass> allSemesterClassResponses = semester.getSemesterClass();
+        Set<SemesterClass> allSemesterClassBySemester = semester.getSemesterClass();
 
-        System.out.println("Số lớp mở: " + String.valueOf(allSemesterClassResponses.size()));
-
-        List<Classes> listClassOfSemesterClass = new ArrayList<>();
+        System.out.println("Total semester class in semester: " + String.valueOf(allSemesterClassBySemester.size()));
         
         createHolidayResquest.getTime().forEach(holiday -> {
             Holiday saveHoliday = Holiday.builder()
@@ -339,23 +234,15 @@ public class SemesterServiceImpl implements SemesterService {
         // Danh sách giáo viên đăng kí dạy
         check_count = 0;
         number = 1;
-        allSemesterClassResponses.forEach(semester_class -> {
+        allSemesterClassBySemester.forEach(semester_class -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
-            List<UserRegisterJoinSemester> allUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId1(semester_class.getId());
-
-            List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = new ArrayList<>();
-
-
-            allUserRegisterJoinSemesters.forEach(ele -> {
-                if (ele.getStatus().equals("Completed")) {
-                    listUserRegisterJoinSemesters.add(ele);
-                }
-            });
+            Set<UserRegisterJoinSemester> listUserRegisterJoinSemesters = semester_class.getUserRegisterJoinSemesters();
 
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
-            List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemesterClassId2(semester_class.getId());
+            Set<UserRegisterTeachSemester> allUserRegisterTeachSemesters = semester_class.getUserRegisterTeachSemesters();
 
-            List<Integer> list_total_register_of_teacher = new ArrayList<>();
+            /* List<Integer> list_total_register_of_teacher = new ArrayList<>();
+
             if (check_count == 0){
                 allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
                     list_total_register_of_teacher.add(0);
@@ -378,15 +265,15 @@ public class SemesterServiceImpl implements SemesterService {
                         // Checking elements
                         if (list_total_register_of_teacher.get(j) < list_total_register_of_teacher.get(i)) {
                             Collections.swap(list_total_register_of_teacher, i, j);
-                            Collections.swap(allUserRegisterTeachSemesters, i, j);
+                            Collections.swap(new ArrayList<>(allUserRegisterTeachSemesters), i, j);
                         }
                     }
                 }
-            }
+            } */
 
-            System.out.println("Id lop mo: " + String.valueOf(semester_class.getId()));
-            System.out.println("So luong giao vien dang ki: " + String.valueOf(allUserRegisterTeachSemesters.size()));
-            System.out.println("So hoc sinh dang ki mo lop: " + String.valueOf(listUserRegisterJoinSemesters.size()));
+            System.out.println("class_id: " + String.valueOf(semester_class.getId()));
+            System.out.println("Total user_register_teach_semester: " + String.valueOf(allUserRegisterTeachSemesters.size()));
+            System.out.println("Total user_register_join_semester: " + String.valueOf(listUserRegisterJoinSemesters.size()));
 
             // Lấy các group có thể chia được
             if (listUserRegisterJoinSemesters.size() >= min) {
@@ -401,14 +288,14 @@ public class SemesterServiceImpl implements SemesterService {
                         List<UserRegisterJoinSemester> validUserRegisterSemesters = new ArrayList<>(); 
                         for(int j = 0; j < list_group[i].length; j++){
                             int idx = list_group[i][j] - 1;
-                            validUserRegisterSemesters.add(listUserRegisterJoinSemesters.get(idx));
+                            validUserRegisterSemesters.add(new ArrayList<>(listUserRegisterJoinSemesters).get(idx));
                         }
                         System.out.println("Số học sinh đc xếp: " + String.valueOf(validUserRegisterSemesters.size()));
                         String key = getSaltString();
                         System.out.println("Lớp thứ: " + String.valueOf(i));
                         Classes savedClass = Classes.builder()
                             .user(creator)
-                            .userRegisterTeachSemester(allUserRegisterTeachSemesters.get(i))
+                            .userRegisterTeachSemester(new ArrayList<>(allUserRegisterTeachSemesters).get(i))
                             .security_code(key)
                             .link_meeting("https://meet.jit.si/" + String.valueOf(key))
                             .name(semester_class.getName() + "-" +  String.valueOf(number) + " thuộc học kì " + String.valueOf(semester.getNumber()) + " năm học " + String.valueOf(semester.getYear()))
@@ -427,9 +314,9 @@ public class SemesterServiceImpl implements SemesterService {
                             classHasRegisterJoinSemesterClassRepository.save(savedClassHasRegisterJoinSemesterClass);
                         });
                         number ++;
-                        listClassOfSemesterClass.add(savedClass);
+                        //listClassOfSemesterClass.add(savedClass);
     
-                        List<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId1(semester_class.getCourse().getId());
+                        Set<SectionTemplate> sectionTemplateOpt = semester_class.getCourse().getSectionTemplates();
                         sectionTemplateOpt.forEach(section_template -> {
                             Section savedSection = Section.builder()
                                 .classes(savedClass)
@@ -455,10 +342,7 @@ public class SemesterServiceImpl implements SemesterService {
                                 .build();
                             tutorialRepository.save(savedTutorial);
 
-                            Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId1(section_template.getId());
-                            TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
-                                throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
-                            });
+                            TutorialTemplate tutorialTemplate = section_template.getTutorialTemplate();
 
                             tutorialTemplate.getTutorialTemplatePages().forEach(tutorial_page -> {
                                 TutorialPage savedTutorialPage = TutorialPage.builder()
@@ -477,7 +361,7 @@ public class SemesterServiceImpl implements SemesterService {
                 } 
             } 
             check_count ++; 
-            System.out.println("Lan: " + String.valueOf(check_count));
+            System.out.println("Loop: " + String.valueOf(check_count));
             //throw new EntityNotFoundException("exception.end.end"); 
         });
         return UUID.randomUUID(); 

@@ -42,9 +42,8 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         List<GetTeacherRegisterQuanlificationTeacherResponse> allTeacherRegisterQualificationApprovedResponses = new ArrayList<>();
         List<GetTeacherRegisterQuanlificationTeacherResponse> allTeacherRegisterQualificationNotApprovedResponses = new ArrayList<>();
         List<GetTeacherRegisterQuanlificationTeacherResponse> allTeacherRegisterQualificationNotApproveNowResponses = new ArrayList<>();
-        List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
+        List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findByTeacherId2(id);
         pageTeacherRegisterQualification.forEach(ele -> {
-            if (ele.getTeacher().getId().compareTo(id) == 0){
                 if (ele.getStatus().equals("Approved")){
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
@@ -93,7 +92,6 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .build();
                     allTeacherRegisterQualificationNotApproveNowResponses.add(teacherRegisterQuanlificationTeacherResponse);
                 }
-            } 
         });
 
         Map<String, Object> response = new HashMap<>();

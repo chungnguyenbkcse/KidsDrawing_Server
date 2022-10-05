@@ -35,6 +35,15 @@ public interface TutorialRepository extends JpaRepository <Tutorial, UUID>{
 
     @Query("FROM Tutorial e JOIN FETCH e.section  se JOIN FETCH e.creator WHERE se.id = :id")
     Optional<Tutorial> findBySectionId2(UUID id);
+
+    @Query("FROM Tutorial e JOIN FETCH e.creator cr WHERE cr.id = :id")
+    Optional<Tutorial> findByCreatorId1(UUID id);
+
+    @Query("FROM Tutorial e JOIN FETCH e.creator cr JOIN FETCH e.section  se WHERE cr.id = :id")
+    List<Tutorial> findByCreatorId2(UUID id);
+
+    @Query("FROM Tutorial e JOIN FETCH e.creator cr JOIN FETCH e.section  se WHERE cr.id = ?1 AND se.id = ?2")
+    List<Tutorial> findByCreatorAndSection(UUID creator_id, UUID section_id);
     
     boolean existsById(UUID id);
     Boolean existsByName(String name);

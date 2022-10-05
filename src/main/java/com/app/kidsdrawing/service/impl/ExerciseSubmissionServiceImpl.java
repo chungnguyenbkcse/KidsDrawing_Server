@@ -17,12 +17,10 @@ import com.app.kidsdrawing.dto.CreateExerciseSubmissionRequest;
 import com.app.kidsdrawing.dto.GetExerciseSubmissionResponse;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.User;
-import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
-import com.app.kidsdrawing.repository.UserGradeExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ExerciseSubmissionService;
 
@@ -34,7 +32,6 @@ import lombok.RequiredArgsConstructor;
 public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService {
     
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
-    private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
     private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
 
@@ -62,190 +59,97 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByStudentId(UUID id) {
-        List<GetExerciseSubmissionResponse> allExerciseNotGradedSubmissionResponses = new ArrayList<>();
-        List<GetExerciseSubmissionResponse> allExerciseGradedSubmissionResponses = new ArrayList<>();
-        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAll();
-        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
-        List<ExerciseSubmission> exersiceGraded = new ArrayList<>();
-        listUserGradeExerciseSubmission.forEach(ele -> {
-            exersiceGraded.add(ele.getExerciseSubmission());
-        });
+        List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
+        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findByStudentId2(id);
+
         listExerciseSubmission.forEach(content -> {
-            if (content.getStudent().getId().compareTo(id) == 0){
-                if (exersiceGraded.contains(content)) {
-                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                        .id(content.getId())
-                        .exercise_id(content.getExercise().getId())
-                        .student_id(content.getStudent().getId())
-                        .exercise_name(content.getExercise().getName())
-                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                        .image_url(content.getImage_url())
-                        .create_time(content.getCreate_time())
-                        .update_time(content.getUpdate_time())
-                        .build();
-                    allExerciseGradedSubmissionResponses.add(exerciseSubmissionResponse);
-                }
-                else {
-                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                        .id(content.getId())
-                        .exercise_id(content.getExercise().getId())
-                        .student_id(content.getStudent().getId())
-                        .exercise_name(content.getExercise().getName())
-                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                        .image_url(content.getImage_url())
-                        .create_time(content.getCreate_time())
-                        .update_time(content.getUpdate_time())
-                        .build();
-                        allExerciseNotGradedSubmissionResponses.add(exerciseSubmissionResponse);
-                }
-                
-            }
+            GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                .id(content.getId())
+                .exercise_id(content.getExercise().getId())
+                .student_id(content.getStudent().getId())
+                .exercise_name(content.getExercise().getName())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .image_url(content.getImage_url())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            exerciseResponses.add(exerciseSubmissionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("exercise_not_graded", allExerciseNotGradedSubmissionResponses);
-        response.put("exercise_graded", allExerciseGradedSubmissionResponses);
+        response.put("exercise", exerciseResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByExerciseId(UUID id) {
-        List<GetExerciseSubmissionResponse> allExerciseNotGradedSubmissionResponses = new ArrayList<>();
-        List<GetExerciseSubmissionResponse> allExerciseGradedSubmissionResponses = new ArrayList<>();
-        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAll();
-        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
-        List<ExerciseSubmission> exersiceGraded = new ArrayList<>();
-        listUserGradeExerciseSubmission.forEach(ele -> {
-            exersiceGraded.add(ele.getExerciseSubmission());
-        });
-        listExerciseSubmission.forEach(content -> {
-            if (content.getExercise().getId().compareTo(id) == 0){
-                if (exersiceGraded.contains(content)) {
-                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                        .id(content.getId())
-                        .exercise_id(content.getExercise().getId())
-                        .student_id(content.getStudent().getId())
-                        .exercise_name(content.getExercise().getName())
-                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                        .image_url(content.getImage_url())
-                        .create_time(content.getCreate_time())
-                        .update_time(content.getUpdate_time())
-                        .build();
-                    allExerciseGradedSubmissionResponses.add(exerciseSubmissionResponse);
-                }
-                else {
-                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                        .id(content.getId())
-                        .exercise_id(content.getExercise().getId())
-                        .student_id(content.getStudent().getId())
-                        .exercise_name(content.getExercise().getName())
-                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                        .image_url(content.getImage_url())
-                        .create_time(content.getCreate_time())
-                        .update_time(content.getUpdate_time())
-                        .build();
-                        allExerciseNotGradedSubmissionResponses.add(exerciseSubmissionResponse);
-                }
-            }
+        List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
+        List<ExerciseSubmission> exerciseSubmissionByExercise = exerciseSubmissionRepository.findByExerciseId2(id); 
+        
+        exerciseSubmissionByExercise.forEach(content -> {
+            GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                .id(content.getId())
+                .exercise_id(content.getExercise().getId())
+                .student_id(content.getStudent().getId())
+                .exercise_name(content.getExercise().getName())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .image_url(content.getImage_url())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            exerciseResponses.add(exerciseSubmissionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("exercise_not_graded", allExerciseNotGradedSubmissionResponses);
-        response.put("exercise_graded", allExerciseGradedSubmissionResponses);
+        response.put("exercise", exerciseResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassAndStudent(UUID class_id, UUID student_id) {
-        List<GetExerciseSubmissionResponse> allExerciseNotGradedSubmissionResponses = new ArrayList<>();
-        List<GetExerciseSubmissionResponse> allExerciseGradedSubmissionResponses = new ArrayList<>();
-        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findByStudentId2(student_id);
-        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
-        List<ExerciseSubmission> exersiceGraded = new ArrayList<>();
-        listUserGradeExerciseSubmission.forEach(ele -> {
-            exersiceGraded.add(ele.getExerciseSubmission());
-        });
+        List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
+        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(class_id, student_id);
+        
         listExerciseSubmission.forEach(content -> {
-            if (content.getExercise().getSection().getClasses().getId().compareTo(class_id) == 0){
-                if (exersiceGraded.contains(content)) {
-                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                        .id(content.getId())
-                        .exercise_id(content.getExercise().getId())
-                        .student_id(content.getStudent().getId())
-                        .exercise_name(content.getExercise().getName())
-                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                        .image_url(content.getImage_url())
-                        .create_time(content.getCreate_time())
-                        .update_time(content.getUpdate_time())
-                        .build();
-                    allExerciseGradedSubmissionResponses.add(exerciseSubmissionResponse);
-                }
-                else {
-                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                        .id(content.getId())
-                        .exercise_id(content.getExercise().getId())
-                        .student_id(content.getStudent().getId())
-                        .exercise_name(content.getExercise().getName())
-                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                        .image_url(content.getImage_url())
-                        .create_time(content.getCreate_time())
-                        .update_time(content.getUpdate_time())
-                        .build();
-                        allExerciseNotGradedSubmissionResponses.add(exerciseSubmissionResponse);
-                }
-            }
+            GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                .id(content.getId())
+                .exercise_id(content.getExercise().getId())
+                .student_id(content.getStudent().getId())
+                .exercise_name(content.getExercise().getName())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .image_url(content.getImage_url())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            exerciseResponses.add(exerciseSubmissionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("exercise_not_graded", allExerciseNotGradedSubmissionResponses);
-        response.put("exercise_graded", allExerciseGradedSubmissionResponses);
+        response.put("exercise", exerciseResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassId(UUID id) {
-        List<GetExerciseSubmissionResponse> allExerciseNotGradedSubmissionResponses = new ArrayList<>();
-        List<GetExerciseSubmissionResponse> allExerciseGradedSubmissionResponses = new ArrayList<>();
-        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAll();
-        List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();
-        List<ExerciseSubmission> exersiceGraded = new ArrayList<>();
-        listUserGradeExerciseSubmission.forEach(ele -> {
-            exersiceGraded.add(ele.getExerciseSubmission());
-        });
+        List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
+        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClass(id);
+        
         listExerciseSubmission.forEach(content -> {
-            if (content.getExercise().getSection().getClasses().getId().compareTo(id) == 0){
-                if (exersiceGraded.contains(content)) {
-                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                        .id(content.getId())
-                        .exercise_id(content.getExercise().getId())
-                        .student_id(content.getStudent().getId())
-                        .exercise_name(content.getExercise().getName())
-                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                        .image_url(content.getImage_url())
-                        .create_time(content.getCreate_time())
-                        .update_time(content.getUpdate_time())
-                        .build();
-                    allExerciseGradedSubmissionResponses.add(exerciseSubmissionResponse);
-                }
-                else {
-                    GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                        .id(content.getId())
-                        .exercise_id(content.getExercise().getId())
-                        .student_id(content.getStudent().getId())
-                        .exercise_name(content.getExercise().getName())
-                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                        .image_url(content.getImage_url())
-                        .create_time(content.getCreate_time())
-                        .update_time(content.getUpdate_time())
-                        .build();
-                        allExerciseNotGradedSubmissionResponses.add(exerciseSubmissionResponse);
-                }
-            }
+            GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                .id(content.getId())
+                .exercise_id(content.getExercise().getId())
+                .student_id(content.getStudent().getId())
+                .exercise_name(content.getExercise().getName())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .image_url(content.getImage_url())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            exerciseResponses.add(exerciseSubmissionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("exercise_not_graded", allExerciseNotGradedSubmissionResponses);
-        response.put("exercise_graded", allExerciseGradedSubmissionResponses);
+        response.put("exercise", exerciseResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

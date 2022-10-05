@@ -142,7 +142,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findByParentId(id);
+        List<User> pageUser = userRepository.findByParentId1(id);
         pageUser.forEach(student -> {
             List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId2(student.getId());
             listStudentLeave.forEach(content -> {
@@ -212,9 +212,8 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
-        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByClassesId2(id);
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getId().compareTo(id) == 0) {
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
@@ -231,7 +230,6 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     .update_time(content.getUpdate_time())
                     .build();
                 allStudentLeaveResponses.add(StudentLeaveResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -242,26 +240,24 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllStudentLeaveByTeacher(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
-        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAllStudentLeaveByTeacher(id);
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getUserRegisterTeachSemester().getTeacher().getId().compareTo(id) == 0) {
-                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
-                    .id(content.getId())
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                    .reviewer_id(content.getReviewer().getId())
-                    .section_id(content.getSection().getId())
-                    .section_number(content.getSection().getNumber())
-                    .section_name(content.getSection().getName())
-                    .classes_id(content.getClasses().getId())
-                    .class_name(content.getClasses().getName())
-                    .status(content.getStatus())
-                    .description(content.getDescription())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allStudentLeaveResponses.add(StudentLeaveResponse);
-            }
+            GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .reviewer_id(content.getReviewer().getId())
+                .section_id(content.getSection().getId())
+                .section_number(content.getSection().getNumber())
+                .section_name(content.getSection().getName())
+                .classes_id(content.getClasses().getId())
+                .class_name(content.getClasses().getName())
+                .status(content.getStatus())
+                .description(content.getDescription())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allStudentLeaveResponses.add(StudentLeaveResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -272,26 +268,24 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     @Override 
     public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(UUID classes_id, UUID student_id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
-        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByClassesAndStudent(classes_id, student_id);
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getId().compareTo(classes_id) == 0 && content.getStudent().getId().compareTo(student_id) == 0) {
-                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
-                    .id(content.getId())
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                    .reviewer_id(content.getReviewer().getId())
-                    .section_id(content.getSection().getId())
-                    .section_number(content.getSection().getNumber())
-                    .section_name(content.getSection().getName())
-                    .classes_id(content.getClasses().getId())
-                    .class_name(content.getClasses().getName())
-                    .status(content.getStatus())
-                    .description(content.getDescription())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allStudentLeaveResponses.add(StudentLeaveResponse);
-            }
+            GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .reviewer_id(content.getReviewer().getId())
+                .section_id(content.getSection().getId())
+                .section_number(content.getSection().getNumber())
+                .section_name(content.getSection().getName())
+                .classes_id(content.getClasses().getId())
+                .class_name(content.getClasses().getName())
+                .status(content.getStatus())
+                .description(content.getDescription())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allStudentLeaveResponses.add(StudentLeaveResponse);
         });
 
         Map<String, Object> response = new HashMap<>();

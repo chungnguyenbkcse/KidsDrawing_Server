@@ -36,8 +36,8 @@ public class TutorialController {
     
     @CrossOrigin
     @GetMapping(value = "/section/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialBySectionId(@PathVariable UUID id) {
-        return ResponseEntity.ok().body(tutorialService.getAllTutorialBySection(id));
+    public ResponseEntity<GetTutorialResponse> getAllTutorialBySectionId(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(tutorialService.getTutorialBySection(id));
     }
 
     @CrossOrigin

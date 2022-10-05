@@ -72,28 +72,26 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     @Override
     public ResponseEntity<Map<String, Object>> getTeacherLeaveByTeacher(UUID id) {
         List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
-        List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
+        List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findByTeacherId2(id);
         listTeacherLeave.forEach(content -> {
-            if (content.getSubstitute_teacher().getId().compareTo(id) == 0) {
-                GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
-                    .id(content.getId())
-                    .teacher_id(content.getTeacher().getId())
-                    .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
-                    .reviewer_id(content.getReviewer().getId())
-                    .section_id(content.getSection().getId())
-                    .section_number(content.getSection().getNumber())
-                    .section_name(content.getSection().getName())
-                    .classes_id(content.getClasses().getId())
-                    .class_name(content.getClasses().getName())
-                    .substitute_teacher_id(content.getSubstitute_teacher().getId())
-                    .substitute_teacher_name(content.getSubstitute_teacher().getFirstName() + " " + content.getSubstitute_teacher().getLastName())
-                    .status(content.getStatus())
-                    .description(content.getDescription())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allTeacherLeaveResponses.add(TeacherLeaveResponse);
-            }
+            GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
+                .id(content.getId())
+                .teacher_id(content.getTeacher().getId())
+                .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                .reviewer_id(content.getReviewer().getId())
+                .section_id(content.getSection().getId())
+                .section_number(content.getSection().getNumber())
+                .section_name(content.getSection().getName())
+                .classes_id(content.getClasses().getId())
+                .class_name(content.getClasses().getName())
+                .substitute_teacher_id(content.getSubstitute_teacher().getId())
+                .substitute_teacher_name(content.getSubstitute_teacher().getFirstName() + " " + content.getSubstitute_teacher().getLastName())
+                .status(content.getStatus())
+                .description(content.getDescription())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allTeacherLeaveResponses.add(TeacherLeaveResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -104,9 +102,8 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     @Override
     public ResponseEntity<Map<String, Object>> getTeacherLeaveByClassId(UUID id) {
         List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
-        List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findAll();
+        List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findByClassesId2(id);
         listTeacherLeave.forEach(content -> {
-            if (content.getClasses().getId().compareTo(id) == 0) {
                 GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
                     .id(content.getId())
                     .teacher_id(content.getTeacher().getId())
@@ -125,7 +122,6 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                     .update_time(content.getUpdate_time())
                     .build();
                 allTeacherLeaveResponses.add(TeacherLeaveResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();

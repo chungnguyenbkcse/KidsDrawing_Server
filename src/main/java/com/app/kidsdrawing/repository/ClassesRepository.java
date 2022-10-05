@@ -31,7 +31,7 @@ public interface ClassesRepository extends JpaRepository <Classes, UUID>{
     Boolean existsByUserRegisterTeachSemesterId(UUID id);
 
     @Query("FROM Classes c JOIN FETCH c.user  JOIN FETCH c.userRegisterTeachSemester urt WHERE urt.id = :id")
-    List<Classes> findByUserRegisterTeachSemesterId(UUID id);
+    Optional<Classes> findByUserRegisterTeachSemesterId(UUID id);
 
     @Query("SELECT c FROM Classes c WHERE c.id = :id ")
     Optional<Classes> findById1(UUID id);

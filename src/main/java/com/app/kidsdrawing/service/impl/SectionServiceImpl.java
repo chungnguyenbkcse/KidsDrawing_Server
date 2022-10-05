@@ -60,7 +60,7 @@ public class SectionServiceImpl implements SectionService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllSectionByClassId(UUID id) {
         List<GetSectionResponse> allSectionResponses = new ArrayList<>();
-        List<Section> listSection = sectionRepository.findAll();
+        List<Section> listSection = sectionRepository.findByClassesId(id);
         listSection.forEach(content -> {
             if (content.getClasses().getId().compareTo(id) == 0){
                 GetSectionResponse sectionResponse = GetSectionResponse.builder()

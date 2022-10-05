@@ -61,21 +61,19 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllSectionTemplateByCourseId(UUID id) {
         List<GetSectionTemplateResponse> allSectionTemplateResponses = new ArrayList<>();
-        List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
+        List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findByCourseId2(id);
         listSectionTemplate.forEach(content -> {
-            if (content.getCourse().getId().compareTo(id) == 0){
-                GetSectionTemplateResponse sectionResponse = GetSectionTemplateResponse.builder()
-                    .id(content.getId())
-                    .creator_id(content.getUser().getId())
-                    .course_id(id)
-                    .name(content.getName())   
-                    .number(content.getNumber())
-                    .teaching_form(content.getTeaching_form())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allSectionTemplateResponses.add(sectionResponse);
-            }
+            GetSectionTemplateResponse sectionResponse = GetSectionTemplateResponse.builder()
+                .id(content.getId())
+                .creator_id(content.getUser().getId())
+                .course_id(id)
+                .name(content.getName())   
+                .number(content.getNumber())
+                .teaching_form(content.getTeaching_form())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allSectionTemplateResponses.add(sectionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();

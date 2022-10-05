@@ -64,4 +64,7 @@ public class SectionTemplate {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
+
+    @OneToOne(mappedBy="sectionTemplate")
+    private TutorialTemplate tutorialTemplate;
 }

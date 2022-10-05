@@ -58,18 +58,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override 
     public ResponseEntity<Map<String, Object>> getAllScheduleBySemesterClassId(UUID id) {
         List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
-        List<Schedule> pageSchedule = scheduleRepository.findAll();
+        List<Schedule> pageSchedule = scheduleRepository.findBySemesterClassId2(id);
         pageSchedule.forEach(schedule -> {
-            if (schedule.getSemesterClass().getId().compareTo(id) == 0){
-                GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
-                    .id(schedule.getId())
-                    .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")
-                    .lesson_time_id(schedule.getLessonTime().getId())
-                    .semester_classes_id(schedule.getSemesterClass().getId())
-                    .date_of_week(schedule.getDate_of_week())
-                    .build();
-                allScheduleResponses.add(scheduleResponse);
-            }
+            GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
+                .id(schedule.getId())
+                .lesson_time("Thứ " + schedule.getDate_of_week().toString() + " (" + schedule.getLessonTime().getStart_time().toString() + " - " + schedule.getLessonTime().getEnd_time().toString() + ")")
+                .lesson_time_id(schedule.getLessonTime().getId())
+                .semester_classes_id(schedule.getSemesterClass().getId())
+                .date_of_week(schedule.getDate_of_week())
+                .build();
+            allScheduleResponses.add(scheduleResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
