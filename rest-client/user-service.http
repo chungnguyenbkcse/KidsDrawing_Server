@@ -794,11 +794,11 @@ POST {{rest}}/user
 Content-Type: application/json
 
 {
-    "username": "teacher-9",
+    "username": "teacher-10",
     "password": "12345678aA@",
-    "email": "teacher-9@gmail.com",
+    "email": "teacher-10@gmail.com",
     "firstName": "teacher",
-    "lastName": "9",
+    "lastName": "10",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,

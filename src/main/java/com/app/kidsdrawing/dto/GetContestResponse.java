@@ -28,6 +28,8 @@ public class GetContestResponse {
     private UUID creator_id;
     private UUID art_age_id;
     private UUID art_type_id;
+    private String art_age_name;
+    private String art_type_name;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

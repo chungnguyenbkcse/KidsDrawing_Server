@@ -175,9 +175,8 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllContest(int page, int size) {
         List<GetContestResponse> allContestResponses = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size);
-        Page<Contest> pageContest = contestRepository.findAll1(paging);
-        pageContest.getContent().forEach(contest -> {
+        List<Contest> pageContest = contestRepository.findAll1();
+        pageContest.forEach(contest -> {
             total = 0;
             Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
             Set<ContestSubmission> listContestSubmissionByContest = contest.getContestSubmissions();
@@ -202,6 +201,8 @@ public class ContestServiceImpl implements ContestService {
                     .is_enabled(contest.getIs_enabled())
                     .art_age_id(contest.getArtAges().getId())
                     .art_type_id(contest.getArtTypes().getId())
+                    .art_age_name(contest.getArtAges().getName())
+                    .art_type_name(contest.getArtTypes().getName())
                     .creator_id(contest.getUser().getId())
                     .create_time(contest.getCreate_time())
                     .update_time(contest.getUpdate_time())
@@ -211,9 +212,6 @@ public class ContestServiceImpl implements ContestService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("art_age", allContestResponses);
-        response.put("currentPage", pageContest.getNumber());
-        response.put("totalItems", pageContest.getTotalElements());
-        response.put("totalPages", pageContest.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

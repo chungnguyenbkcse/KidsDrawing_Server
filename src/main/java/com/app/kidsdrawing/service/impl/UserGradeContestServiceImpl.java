@@ -59,18 +59,16 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserGradeContestByContestId(UUID id) {
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
-        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
+        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findByContestId2(id);
         pageUserGradeContest.forEach(content -> {
-            if (content.getContest().getId().compareTo(id) == 0){
-                GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
-                    .id(content.getId())
-                    .teacher_id(content.getUser().getId())
-                    .contest_id(id)
-                    .teacher_name(content.getUser().getFirstName() + " " + content.getUser().getLastName())
-                    .contest_name(content.getContest().getName())
-                    .build();
-                    allUserGradeContestResponses.add(userGradeContestResponse);
-            }
+            GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
+                .id(content.getId())
+                .teacher_id(content.getUser().getId())
+                .contest_id(id)
+                .teacher_name(content.getUser().getFirstName() + " " + content.getUser().getLastName())
+                .contest_name(content.getContest().getName())
+                .build();
+                allUserGradeContestResponses.add(userGradeContestResponse);
         });
 
         Map<String, Object> response = new HashMap<>();

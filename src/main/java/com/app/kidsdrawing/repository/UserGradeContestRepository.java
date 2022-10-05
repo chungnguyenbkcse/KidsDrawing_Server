@@ -14,12 +14,12 @@ import com.app.kidsdrawing.entity.UserGradeContest;
 
 @Repository
 public interface UserGradeContestRepository extends JpaRepository <UserGradeContest, UUID>{
-    @Query("SELECT e FROM UserGradeContest e JOIN FETCH e.user  JOIN FETCH e.contest ORDER BY e.id")
+    @Query("SELECT e FROM UserGradeContest e JOIN FETCH e.user  JOIN FETCH e.contest ")
     List<UserGradeContest> findAll();
 
     @Query(
-		value = "SELECT e FROM UserGradeContest e JOIN FETCH e.user  JOIN FETCH e.contest ORDER BY e.id",
-		countQuery = "SELECT e FROM UserGradeContest e INNER JOIN e.user  INNER JOIN e.contest ORDER BY e.id"
+		value = "SELECT e FROM UserGradeContest e JOIN FETCH e.user  JOIN FETCH e.contest ",
+		countQuery = "SELECT e FROM UserGradeContest e INNER JOIN e.user  INNER JOIN e.contest "
 	)
     Page<UserGradeContest> findAll(Pageable pageable);
 
@@ -29,16 +29,16 @@ public interface UserGradeContestRepository extends JpaRepository <UserGradeCont
     @Query("FROM UserGradeContest e JOIN FETCH e.user  JOIN FETCH e.contest WHERE e.id = :id")
     Optional<UserGradeContest> findById2(UUID id);
 
-    @Query("FROM UserGradeContest e JOIN FETCH e.contest WHERE e.contest = :id")
+    @Query("FROM UserGradeContest e JOIN FETCH e.contest c WHERE c.id = :id")
     List<UserGradeContest> findByContestId1(UUID id);
 
-    @Query("FROM UserGradeContest e JOIN FETCH e.contest JOIN FETCH e.user WHERE e.contest = :id")
+    @Query("FROM UserGradeContest e JOIN FETCH e.contest c JOIN FETCH e.user WHERE c.id = :id")
     List<UserGradeContest> findByContestId2(UUID id);
 
-    @Query("FROM UserGradeContest e JOIN FETCH e.user WHERE e.user = :id")
+    @Query("FROM UserGradeContest e JOIN FETCH e.user u WHERE u.id = :id")
     List<UserGradeContest> findByTeacherId1(UUID id);
 
-    @Query("FROM UserGradeContest e JOIN FETCH e.user  JOIN FETCH e.contest WHERE e.user = :id")
+    @Query("FROM UserGradeContest e JOIN FETCH e.user  u JOIN FETCH e.contest WHERE u.id = :id")
     List<UserGradeContest> findByTeacherId2(UUID id);
     
     boolean existsById(UUID id);
