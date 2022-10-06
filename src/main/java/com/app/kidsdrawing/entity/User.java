@@ -160,4 +160,7 @@ public class User{
     @OneToMany(mappedBy="user")
     private Set<UserReadNotification> userReadNotifications;
 
+    @OneToMany(mappedBy="user")
+    private Set<SectionTemplate> sectionTemplates;
+
 }

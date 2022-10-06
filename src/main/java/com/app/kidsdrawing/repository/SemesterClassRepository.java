@@ -15,7 +15,7 @@ import com.app.kidsdrawing.entity.SemesterClass;
 @Repository
 public interface SemesterClassRepository extends JpaRepository <SemesterClass, UUID>{
     
-    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course JOIN FETCH e.schedules")
+    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ")
     List<SemesterClass> findAll();
 
     @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ")
