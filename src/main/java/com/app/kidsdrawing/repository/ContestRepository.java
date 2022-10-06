@@ -22,19 +22,19 @@ public interface ContestRepository extends JpaRepository <Contest, UUID>{
     Page<Contest> findAll(Pageable pageable);
 
     @Query(
-		value = "SELECT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ",
+		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ",
 		countQuery = "SELECT COUNT(c) FROM Contest c LEFT JOIN c.userRegisterJoinContests LEFT JOIN c.contestSubmissions INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user "
 	)
     Page<Contest> findAll1(Pageable pageable);
 
     @Query(
-		value = "SELECT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ",
+		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ",
 		countQuery = "SELECT c FROM Contest c LEFT JOIN c.userRegisterJoinContests LEFT JOIN c.contestSubmissions cs LEFT JOIN cs.userGradeContestSubmissions INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user "
 	)
     Page<Contest> findAll3(Pageable pageable);
 
     @Query(
-		value = "SELECT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ",
+		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ",
 		countQuery = "SELECT COUNT(c) FROM Contest c INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user "
 	)
     Page<Contest> findAll2(Pageable pageable);
@@ -42,7 +42,7 @@ public interface ContestRepository extends JpaRepository <Contest, UUID>{
     @Query("SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ")
     List<Contest> findAll();
 
-    @Query("SELECT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ")
     List<Contest> findAll1();
 
     @Query("SELECT COUNT(c.id) FROM Contest c")
@@ -57,7 +57,7 @@ public interface ContestRepository extends JpaRepository <Contest, UUID>{
     @Query("FROM Contest c WHERE c.name = :name")
     Optional<Contest> findByName1(String name);
 
-    @Query("FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.name = :name")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.name = :name")
     Optional<Contest> findByName2(String name);
 
     @Query("SELECT count(c.id) = 1 FROM Contest c WHERE c.id = :id")

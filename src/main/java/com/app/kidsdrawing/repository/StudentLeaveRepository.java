@@ -53,6 +53,6 @@ public interface StudentLeaveRepository extends JpaRepository <StudentLeave, UUI
     @Query("FROM StudentLeave e JOIN FETCH e.section se JOIN FETCH e.classes JOIN FETCH e.student JOIN FETCH e.reviewer WHERE se.id = :id")
     List<StudentLeave> findBySectionId2(UUID id);
 
-    @Query("FROM StudentLeave e JOIN FETCH e.classes cl JOIN FETCH e.section JOIN FETCH e.student st JOIN FETCH e.reviewer WHERE cl.id = ?1 AND st.id = ?2")
+    @Query("SELECT DISTINCT e FROM StudentLeave e JOIN FETCH e.classes cl JOIN FETCH e.section JOIN FETCH e.student st JOIN FETCH e.reviewer WHERE cl.id = ?1 AND st.id = ?2")
     List<StudentLeave> findByClassesAndStudent(UUID class_id ,UUID student_id);
 }

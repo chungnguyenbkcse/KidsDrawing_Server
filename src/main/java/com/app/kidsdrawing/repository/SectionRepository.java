@@ -29,7 +29,7 @@ public interface SectionRepository extends JpaRepository <Section, UUID>{
     @Query("FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher WHERE e.id = :id")
     Optional<Section> findById2(UUID id);
 
-    @Query("FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher WHERE cl.id = :id ")
+    @Query("SELECT DISTINCT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher WHERE cl.id = :id ")
     List<Section> findByClassesId(UUID id);
 
     boolean existsById(UUID id);

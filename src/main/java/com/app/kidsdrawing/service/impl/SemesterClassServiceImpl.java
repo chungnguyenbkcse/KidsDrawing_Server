@@ -52,6 +52,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
+            System.out.print(semesterClass.getSchedules().size());
             GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                     .id(semesterClass.getId())
                     .name(semesterClass.getName())

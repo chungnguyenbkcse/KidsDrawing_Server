@@ -18,7 +18,7 @@ public interface UserRegisterTutorialRepository extends JpaRepository <UserRegis
     @Query("SELECT e FROM UserRegisterTutorial e JOIN FETCH e.section  se JOIN FETCH e.creator JOIN FETCH se.classes")
     List<UserRegisterTutorial> findAll();
 
-    @Query("SELECT e FROM UserRegisterTutorial e JOIN FETCH e.section  se JOIN FETCH e.creator JOIN FETCH se.classes")
+    @Query("SELECT DISTINCT e FROM UserRegisterTutorial e JOIN FETCH e.section  se JOIN FETCH e.creator JOIN FETCH se.classes")
     List<UserRegisterTutorial> findAll1();
 
     @Query(

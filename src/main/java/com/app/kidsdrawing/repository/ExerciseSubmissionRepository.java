@@ -19,13 +19,13 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     @Query("SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise JOIN FETCH e.student ")
     List<ExerciseSubmission> findAll();
 
-    @Query("SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE cl.id =?1 AND st.id =?2")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE cl.id =?1 AND st.id =?2")
     List<ExerciseSubmission> findAllExerciseSubmissionByClassAndStudent(UUID class_id, UUID student_id);
 
-    @Query("SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE se.id =?1 AND st.id =?2")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE se.id =?1 AND st.id =?2")
     List<ExerciseSubmission> findAllExerciseSubmissionBySectionAndStudent(UUID section_id, UUID student_id);
 
-    @Query("SELECT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE cl .id =?1")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE cl.id =?1")
     List<ExerciseSubmission> findAllExerciseSubmissionByClass(UUID class_id);
 
     @Query(
@@ -56,6 +56,6 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     List<ExerciseSubmission> findByExerciseId2(UUID id);
 
     
-    @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student s WHERE ex.id = ?1 AND s.id = ?2")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student s WHERE ex.id = ?1 AND s.id = ?2")
     List<ExerciseSubmission> findByExerciseIdAndStudentId(UUID exercise_id, UUID student_id);
 }

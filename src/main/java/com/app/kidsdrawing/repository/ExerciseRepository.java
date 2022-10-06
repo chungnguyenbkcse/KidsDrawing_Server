@@ -18,10 +18,10 @@ public interface ExerciseRepository extends JpaRepository <Exercise, UUID>{
     @Query("SELECT e FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel ")
     List<Exercise> findAll();
 
-    @Query("SELECT e FROM Exercise e JOIN FETCH e.exerciseLevel JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.classHasRegisterJoinSemesterClasses chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE cl.id = ?1 AND st.id = ?2")
+    @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.exerciseLevel JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.classHasRegisterJoinSemesterClasses chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE cl.id = ?1 AND st.id = ?2")
     List<Exercise> findAllExerciseByClassAndStudent(UUID class_id, UUID student_id);
 
-    @Query("SELECT e FROM Exercise e JOIN FETCH e.exerciseLevel JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.classHasRegisterJoinSemesterClasses chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE se.id = ?1 AND st.id = ?2")
+    @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.exerciseLevel JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.classHasRegisterJoinSemesterClasses chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE se.id = ?1 AND st.id = ?2")
     List<Exercise> findAllExerciseBySectionAndStudent(UUID section_id, UUID student_id);
 
     @Query(

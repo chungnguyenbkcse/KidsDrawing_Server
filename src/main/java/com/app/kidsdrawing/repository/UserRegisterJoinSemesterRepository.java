@@ -18,7 +18,7 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     @Query("SELECT e FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass ")
     List<UserRegisterJoinSemester> findAll();
 
-    @Query("SELECT e FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass sc JOIN FETCH sc.course JOIN FETCH sc.semester ")
+    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.student  JOIN FETCH e.payer JOIN FETCH e.semesterClass sc JOIN FETCH sc.course JOIN FETCH sc.semester ")
     List<UserRegisterJoinSemester> findAll1();
 
     @Query("SELECT SUM(e.price) FROM UserRegisterJoinSemester e  WHERE e.status = 'Completed'")
@@ -45,7 +45,7 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass sc JOIN FETCH e.student  JOIN FETCH e.payer WHERE sc.id = :id")
     List<UserRegisterJoinSemester> findBySemesterClassId2(UUID id);
 
-    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass sc JOIN FETCH e.student  JOIN FETCH e.payer WHERE e.status = 'Completed'")
+    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass sc JOIN FETCH e.student  JOIN FETCH e.payer WHERE e.status = 'Completed'")
     List<UserRegisterJoinSemester> findBySemesterClassId3(UUID id);
 
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student st WHERE st.id = :id")
@@ -54,10 +54,10 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.payer JOIN FETCH e.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE st.id = :id")
     List<UserRegisterJoinSemester> findByStudentId2(UUID id);
 
-    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.classHasRegisterJoinSemesterClass chr JOIN FETCH chr.classes  c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE st.id = :id")
+    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.classHasRegisterJoinSemesterClass chr JOIN FETCH chr.classes  c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE st.id = :id")
     List<UserRegisterJoinSemester> findByStudentId3(UUID id);
 
-    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.classHasRegisterJoinSemesterClass chr JOIN FETCH chr.classes  c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE st.id = :id")
+    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.classHasRegisterJoinSemesterClass chr JOIN FETCH chr.classes  c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE st.id = :id")
     List<UserRegisterJoinSemester> findByStudentId4(UUID id);
 
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.payer pa WHERE pa.id = :id")

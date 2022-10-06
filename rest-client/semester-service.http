@@ -81,4 +81,4 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/semester/65a881ce-d04b-4de4-9a34-c90baa491152
+GET  {{rest}}/semester/6246554e-11b1-4a6f-b51e-53dded886589

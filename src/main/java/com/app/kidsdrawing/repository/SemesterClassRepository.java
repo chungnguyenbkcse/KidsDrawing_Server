@@ -18,7 +18,7 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, U
     @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course ")
     List<SemesterClass> findAll();
 
-    @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ")
+    @Query("SELECT  DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ")
     List<SemesterClass> findAll1();
 
     @Query("SELECT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE st.id = ?1 AND c.id =?2")

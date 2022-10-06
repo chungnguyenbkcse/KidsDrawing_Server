@@ -24,7 +24,7 @@ public interface UserGradeContestSubmissionRepository extends JpaRepository <Use
 	)
     Page<UserGradeContestSubmission> findAll(Pageable pageable);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher te JOIN FETCH e.contestSubmission cs WHERE te.id = ?1 AND cs.id = ?2")
+    @Query("SELECT DISTINCT e FROM UserGradeContestSubmission e JOIN FETCH e.teacher te JOIN FETCH e.contestSubmission cs WHERE te.id = ?1 AND cs.id = ?2")
     Optional<UserGradeContestSubmission> findByTeacherIdAndContestSubmissionId(UUID teacher_id, UUID contest_submission_id);
 
     @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher te WHERE te.id = :id")
