@@ -11,8 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -49,9 +47,8 @@ public class UserAttendance{
     @UpdateTimestamp
     private LocalDateTime updateTime = LocalDateTime.now();
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     private User student;
      
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)

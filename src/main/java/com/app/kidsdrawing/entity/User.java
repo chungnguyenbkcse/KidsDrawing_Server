@@ -163,4 +163,7 @@ public class User{
     @OneToMany(mappedBy="user")
     private Set<SectionTemplate> sectionTemplates;
 
+    @OneToMany(mappedBy="student")
+    private Set<UserAttendance> userAttendances;
+
 }
