@@ -16,13 +16,19 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
     ResponseEntity<Map<String, Object>> getAllStudents(String role_name);
 
+    ResponseEntity<Map<String, Object>> getTotalStudents();
+
     ResponseEntity<Map<String, Object>> getAllUser();
 
     ResponseEntity<Map<String, Object>> getAllParents(String role_name);
 
+    ResponseEntity<Map<String, Object>> getTotalParents();
+
     ResponseEntity<Map<String, Object>> getReportUserNew(int year, String role_name);
 
     ResponseEntity<Map<String, Object>> getAllTeacher();
+
+    ResponseEntity<Map<String, Object>> getTotalTeachers();
 
     GetUserInfoResponse getUserInfoById(UUID id);
 

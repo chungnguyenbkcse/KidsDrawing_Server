@@ -74,6 +74,14 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllMoneyUserRegisterJoinSemester() {
+        Float listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll2();
+        Map<String, Object> response = new HashMap<>();
+        response.put("total_money", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Override 
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClass(UUID id) {
         List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();

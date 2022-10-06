@@ -57,6 +57,24 @@ public class UserController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/teacher/total")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalTeachers() {
+        return ResponseEntity.ok().body(userService.getTotalTeachers());
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/student/total")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalStudents() {
+        return ResponseEntity.ok().body(userService.getTotalStudents());
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/parent/total")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalParents() {
+        return ResponseEntity.ok().body(userService.getTotalParents());
+    }
+
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUser() {
         return ResponseEntity.ok().body(userService.getAllUser());

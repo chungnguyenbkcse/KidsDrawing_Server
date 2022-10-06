@@ -99,6 +99,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getTotalStudents() {
+        int listUserRegisterJoinSemester = userRepository.findAll1();
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getTotalParents() {
+        int listUserRegisterJoinSemester = userRepository.findAll2();
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getTotalTeachers() {
+        int listUserRegisterJoinSemester = userRepository.findAll3();
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllUser() {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findAll();

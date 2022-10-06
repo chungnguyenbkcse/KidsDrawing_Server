@@ -96,6 +96,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getTotalCourse() {
+        int listUserRegisterJoinSemester = courseRepository.findAll2();
+        Map<String, Object> response = new HashMap<>();
+        response.put("course", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(UUID id) {
         List<GetCourseNewResponse> courses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByStudentId2(id);

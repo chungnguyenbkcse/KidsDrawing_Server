@@ -173,6 +173,14 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getTotalContest() {
+        int listUserRegisterJoinSemester = contestRepository.findAll2();
+        Map<String, Object> response = new HashMap<>();
+        response.put("contest", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllContest(int page, int size) {
         List<GetContestResponse> allContestResponses = new ArrayList<>();
         List<Contest> pageContest = contestRepository.findAll1();

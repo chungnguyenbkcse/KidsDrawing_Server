@@ -59,6 +59,12 @@ public class CourseController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/total")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalCourse() {
+        return ResponseEntity.ok().body(courseService.getTotalCourse());
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/parent/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseByParentId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(courseService.getAllCourseByParentId(id));

@@ -9,6 +9,7 @@ import com.app.kidsdrawing.dto.GetCourseResponse;
 
 public interface CourseService {
     ResponseEntity<Map<String, Object>> getAllCourse();
+    ResponseEntity<Map<String, Object>> getTotalCourse();
     ResponseEntity<Map<String, Object>> getAllCourseByArtTypeId(UUID id);
     ResponseEntity<Map<String, Object>> getAllCourseByArtAgeId(UUID id);
     ResponseEntity<Map<String, Object>> getAllCourseByArtLevelId(UUID id);

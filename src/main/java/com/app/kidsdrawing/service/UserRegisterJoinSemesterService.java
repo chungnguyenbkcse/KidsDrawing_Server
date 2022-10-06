@@ -12,6 +12,7 @@ import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
 
 public interface UserRegisterJoinSemesterService {
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemester();
+    ResponseEntity<Map<String, Object>> getAllMoneyUserRegisterJoinSemester();
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClass(UUID id);
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterBySemesterClassScheduleClass(UUID id);
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByPayerId(UUID id);
