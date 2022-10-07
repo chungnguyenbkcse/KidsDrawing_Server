@@ -90,4 +90,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private Set<SemesterClass> semesterClasses;
+
+    @OneToMany(mappedBy = "course")
+    private Set<TeacherRegisterQualification> teacherRegisterQualifications;
 }

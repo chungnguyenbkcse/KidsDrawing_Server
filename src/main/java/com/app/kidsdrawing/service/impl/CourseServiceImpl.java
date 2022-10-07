@@ -96,6 +96,30 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllCourseForTeacher(UUID teacher_id) {
+        List<GetCourseResponse> allCourseResponses = new ArrayList<>();
+        List<Course> pageCourse = courseRepository.findAllCourseNewForTeacher(teacher_id);
+        pageCourse.forEach(course -> {
+            GetCourseResponse courseResponse = GetCourseResponse.builder()
+                    .id(course.getId())
+                    .name(course.getName())
+                    .description(course.getDescription())
+                    .num_of_section(course.getNum_of_section())
+                    .image_url(course.getImage_url())
+                    .price(course.getPrice())
+                    .creator_id(course.getUser().getId())
+                    .create_time(course.getCreate_time())
+                    .update_time(course.getUpdate_time())
+                    .build();
+            allCourseResponses.add(courseResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("courses", allCourseResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getTotalCourse() {
         int listUserRegisterJoinSemester = courseRepository.findAll2();
         Map<String, Object> response = new HashMap<>();
