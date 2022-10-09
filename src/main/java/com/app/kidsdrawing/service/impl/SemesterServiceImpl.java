@@ -347,7 +347,7 @@ public class SemesterServiceImpl implements SemesterService {
                     if (i < total_class){
                         List<UserRegisterJoinSemester> validUserRegisterSemesters = new ArrayList<>(); 
                         for(int j = 0; j < list_group.get(i).size(); j++){
-                            int idx = list_group.get(i).get(j);
+                            int idx = list_group.get(i).get(j) - 1;
                             validUserRegisterSemesters.add(new ArrayList<>(listUserRegisterJoinSemesters).get(idx));
                         }
                         System.out.println("So hoc sinh duoc xep: " + String.valueOf(validUserRegisterSemesters.size()));
