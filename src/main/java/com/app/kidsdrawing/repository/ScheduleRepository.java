@@ -29,16 +29,16 @@ public interface ScheduleRepository extends JpaRepository <Schedule, UUID>{
     @Query("FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass WHERE e.id = :id")
     Optional<Schedule> findById2(UUID id);
 
-    @Query("FROM Schedule e JOIN FETCH e.lessonTime lt WHERE lt.id = :id")
+    @Query("SELECT DISTINCT e FROM Schedule e JOIN FETCH e.lessonTime lt WHERE lt.id = :id")
     List<Schedule> findByLessonTime1(UUID id);
 
-    @Query("FROM Schedule e JOIN FETCH e.lessonTime lt JOIN FETCH e.semesterClass WHERE lt.id = :id")
+    @Query("SELECT DISTINCT e FROM Schedule e JOIN FETCH e.lessonTime lt JOIN FETCH e.semesterClass WHERE lt.id = :id")
     List<Schedule> findByLessonTime2(UUID id);
 
-    @Query("FROM Schedule e JOIN FETCH e.semesterClass sc WHERE sc.id = :id")
+    @Query("SELECT DISTINCT e FROM Schedule e JOIN FETCH e.semesterClass sc WHERE sc.id = :id")
     List<Schedule> findBySemesterClassId1(UUID id);
 
-    @Query("FROM Schedule e JOIN FETCH e.semesterClass sc JOIN FETCH e.lessonTime WHERE sc.id = :id")
+    @Query("SELECT DISTINCT e FROM Schedule e JOIN FETCH e.semesterClass sc JOIN FETCH e.lessonTime WHERE sc.id = :id")
     List<Schedule> findBySemesterClassId2(UUID id);
     
     boolean existsById(UUID id);

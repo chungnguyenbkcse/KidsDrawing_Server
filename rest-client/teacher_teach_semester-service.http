@@ -28,7 +28,7 @@ Content-Type: application/json
 ### GET TEACHER GRADE semester ACTION ###
 # @name get_teacher_grade_semester
 
-GET {{rest}}/teacher-teach-semester/17
+GET {{rest}}/teacher-teach-semester/teacher/8d751edb-7e9c-466d-a0e3-69fec1593194
 
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester

@@ -122,7 +122,6 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                 GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                     .id(content.getId())
                     .teacher_id(content.getTeacher().getId())
-                    .reviewer_id(content.getReviewer().getId())
                     .course_id(content.getCourse().getId())
                     .degree_photo_url(content.getDegree_photo_url())
                     .status(content.getStatus())

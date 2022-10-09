@@ -11,6 +11,7 @@ import com.app.kidsdrawing.dto.GetContestResponse;
 public interface ContestService {
     ResponseEntity<Map<String, Object>> getAllContest(int page, int size);
     ResponseEntity<Map<String, Object>> getTotalContest();
+    ResponseEntity<Map<String, Object>> getTotalContestForStudent(UUID student_id);
     ResponseEntity<Map<String, Object>> getAllContestByArtTypeId(int page, int size, UUID id);
     ResponseEntity<Map<String, Object>> getAllContestByArtAgeId(int page, int size, UUID id);
     ResponseEntity<Map<String, Object>> getAllContestByParent(UUID parent_id);

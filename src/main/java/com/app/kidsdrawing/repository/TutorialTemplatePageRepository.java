@@ -30,10 +30,10 @@ public interface TutorialTemplatePageRepository extends JpaRepository <TutorialT
     @Query("FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate WHERE e.id = :id")
     Optional<TutorialTemplatePage> findById2(UUID id);
 
-    @Query("FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate tp WHERE tp.id = :id")
+    @Query("SELECT DISTINCT e FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate tp WHERE tp.id = :id")
     List<TutorialTemplatePage> findByTutorialTemplateId(UUID id);
 
-    @Query("FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate tp JOIN FETCH tp.sectionTemplate st WHERE st.id = :id")
+    @Query("SELECT DISTINCT e FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate tp JOIN FETCH tp.sectionTemplate st WHERE st.id = :id")
     List<TutorialTemplatePage> findBySectionTemplateId(UUID id);
     
     boolean existsById(UUID id);

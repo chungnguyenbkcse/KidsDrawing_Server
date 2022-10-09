@@ -43,16 +43,16 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     @Query("SELECT COUNT(e.id) = 1 FROM ExerciseSubmission e WHERE e.id = :id")
     boolean existsById(UUID id);
 
-    @Query("FROM ExerciseSubmission e JOIN FETCH e.student s WHERE s.id = :id")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.student s WHERE s.id = :id")
     List<ExerciseSubmission> findByStudentId1(UUID id);
 
-    @Query("FROM ExerciseSubmission e JOIN FETCH e.student s JOIN FETCH e.exercise WHERE s.id = :id")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.student s JOIN FETCH e.exercise WHERE s.id = :id")
     List<ExerciseSubmission> findByStudentId2(UUID id);
 
-    @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise ex WHERE ex.id = :id")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex WHERE ex.id = :id")
     List<ExerciseSubmission> findByExerciseId1(UUID id);
 
-    @Query("FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student WHERE ex.id = :id")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student WHERE ex.id = :id")
     List<ExerciseSubmission> findByExerciseId2(UUID id);
 
     

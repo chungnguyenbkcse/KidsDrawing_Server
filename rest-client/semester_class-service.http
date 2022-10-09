@@ -71,7 +71,7 @@ GET {{rest}}/semester-class/new
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/semester-class/student-course/adb99134-a577-4c2e-b565-c61ff1c3e1ca/65ec59de-46cd-407b-86de-6ce571d5b8e7
+GET {{rest}}/semester-class/student-course/817ea4e7-2a52-463b-a7bd-b2db1dd9e514/6c1db240-6bf8-4635-b04a-bb5c9a31d6b1
 
 
 ### GET ART TYPE ACTION ###

@@ -16,16 +16,16 @@ public interface ContestSubmissionRepository extends JpaRepository <ContestSubmi
     @Query("SELECT count(c.id) = 1 FROM ContestSubmission c WHERE c.id = :id")
     boolean existsById(UUID id);
 
-    @Query("FROM ContestSubmission c  JOIN FETCH c.contest co WHERE co.id = :id")
+    @Query("SELECT DISTINCT c  FROM ContestSubmission c  JOIN FETCH c.contest co WHERE co.id = :id")
     List<ContestSubmission> findByContestId1(UUID id);
 
-    @Query("FROM ContestSubmission c JOIN FETCH c.userGradeContestSubmissions JOIN FETCH c.contest  co JOIN FETCH c.student WHERE co.id = :id")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c JOIN FETCH c.userGradeContestSubmissions JOIN FETCH c.contest  co JOIN FETCH c.student WHERE co.id = :id")
     List<ContestSubmission> findByContestId2(UUID id);
 
-    @Query("FROM ContestSubmission c  JOIN FETCH c.student s WHERE s.id = :id")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student s WHERE s.id = :id")
     List<ContestSubmission> findByStudentId1(UUID id);
 
-    @Query("FROM ContestSubmission c  JOIN FETCH c.student  s JOIN FETCH c.userGradeContestSubmissions WHERE s.id = :id")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student  s JOIN FETCH c.userGradeContestSubmissions WHERE s.id = :id")
     List<ContestSubmission> findByStudentId2(UUID id);
 
     @Query("FROM ContestSubmission c  JOIN FETCH c.student  JOIN FETCH c.contest ")

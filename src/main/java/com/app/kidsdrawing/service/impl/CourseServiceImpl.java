@@ -70,7 +70,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourse() {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
-        List<Course> pageCourse = courseRepository.findAll();
+        List<Course> pageCourse = courseRepository.findAll3();
         pageCourse.forEach(course -> {
             GetCourseResponse courseResponse = GetCourseResponse.builder()
                     .id(course.getId())
@@ -83,7 +83,11 @@ public class CourseServiceImpl implements CourseService {
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
+                    .art_age_name(course.getArtAges().getName())
+                    .art_type_name(course.getArtTypes().getName())
+                    .art_level_name(course.getArtLevels().getName())
                     .creator_id(course.getUser().getId())
+                    .checked_tutoral(course.getSectionTemplates().size() > 0 ? true : false)
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .build();
@@ -92,6 +96,14 @@ public class CourseServiceImpl implements CourseService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("courses", allCourseResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getTotalCourseForStudent(UUID student_id) {
+        List<Course> listUserRegisterJoinSemester = courseRepository.findTotalCourseForStudent(student_id);
+        Map<String, Object> response = new HashMap<>();
+        response.put("course", listUserRegisterJoinSemester.size());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

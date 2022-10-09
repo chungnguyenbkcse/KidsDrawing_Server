@@ -36,6 +36,6 @@ public interface PasswordTokenRepository extends JpaRepository <PasswordResetTok
     @Query("FROM PasswordResetToken e JOIN FETCH e.user WHERE e.token = :token")
     Optional<PasswordResetToken> findByToken2(String token);
 
-    @Query("FROM PasswordResetToken e JOIN FETCH e.user u WHERE u.id = :id")
+    @Query("SELECT DISTINCT e FROM PasswordResetToken e JOIN FETCH e.user u WHERE u.id = :id")
     List<PasswordResetToken> findByUserId(UUID id);
 }

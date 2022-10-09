@@ -290,9 +290,9 @@ public class SemesterServiceImpl implements SemesterService {
                             int idx = list_group[i][j] - 1;
                             validUserRegisterSemesters.add(new ArrayList<>(listUserRegisterJoinSemesters).get(idx));
                         }
-                        System.out.println("Số học sinh đc xếp: " + String.valueOf(validUserRegisterSemesters.size()));
+                        System.out.println("So hoc sinh duoc xep: " + String.valueOf(validUserRegisterSemesters.size()));
                         String key = getSaltString();
-                        System.out.println("Lớp thứ: " + String.valueOf(i));
+                        System.out.println("Lop thu: " + String.valueOf(i));
                         Classes savedClass = Classes.builder()
                             .user(creator)
                             .userRegisterTeachSemester(new ArrayList<>(allUserRegisterTeachSemesters).get(i))

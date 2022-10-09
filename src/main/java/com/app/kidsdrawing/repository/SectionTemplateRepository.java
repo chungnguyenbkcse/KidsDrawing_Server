@@ -29,16 +29,16 @@ public interface SectionTemplateRepository extends JpaRepository <SectionTemplat
     @Query("FROM SectionTemplate e JOIN FETCH e.course JOIN FETCH e.user  WHERE e.id = :id")
     Optional<SectionTemplate> findById2(UUID id);
     
-    @Query("FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = :id")
+    @Query("SELECT DISTINCT e FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = :id")
     List<SectionTemplate> findByCourseId1(UUID id);
 
-    @Query("FROM SectionTemplate e JOIN FETCH e.course co JOIN FETCH e.user WHERE co.id = :id")
+    @Query("SELECT DISTINCT e FROM SectionTemplate e JOIN FETCH e.course co JOIN FETCH e.user WHERE co.id = :id")
     List<SectionTemplate> findByCourseId2(UUID id);
 
-    @Query("FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = ?1 AND e.number = ?2")
+    @Query("SELECT DISTINCT e FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = ?1 AND e.number = ?2")
     Optional<SectionTemplate> findByCourseIdAndNumber1(UUID course_id, int number);
 
-    @Query("FROM SectionTemplate e  JOIN FETCH e.course co JOIN FETCH e.user WHERE co.id = ?1 AND e.number = ?2")
+    @Query("SELECT DISTINCT e FROM SectionTemplate e  JOIN FETCH e.course co JOIN FETCH e.user WHERE co.id = ?1 AND e.number = ?2")
     Optional<SectionTemplate> findByCourseIdAndNumber2(UUID course_id, int number);
 
     @Query("FROM SectionTemplate e JOIN FETCH e.user u WHERE u.id = :id")

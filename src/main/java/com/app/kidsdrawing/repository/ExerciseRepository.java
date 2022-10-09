@@ -36,16 +36,16 @@ public interface ExerciseRepository extends JpaRepository <Exercise, UUID>{
     @Query("FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel WHERE e.id = :id")
     Optional<Exercise> findById2(UUID id);
 
-    @Query("FROM Exercise e JOIN FETCH e.section s JOIN FETCH e.exerciseLevel WHERE s.id = :id")
+    @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.section s JOIN FETCH e.exerciseLevel WHERE s.id = :id")
     List<Exercise> findBySectionId1(UUID id);
 
-    @Query("FROM Exercise e JOIN FETCH e.section s WHERE s.id = :id")
+    @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.section s WHERE s.id = :id")
     List<Exercise> findBySectionId2(UUID id);
 
-    @Query("FROM Exercise e JOIN FETCH e.exerciseLevel el WHERE el.id = :id")
+    @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.exerciseLevel el WHERE el.id = :id")
     List<Exercise> findByLevelId1(UUID id);
 
-    @Query("FROM Exercise e JOIN FETCH e.exerciseLevel el JOIN FETCH e.section WHERE el.id = :id")
+    @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.exerciseLevel el JOIN FETCH e.section WHERE el.id = :id")
     List<Exercise> findByLevelId2(UUID id);
 
     @Query("SELECT count(e.id) = 1 FROM Exercise e WHERE e.id = :id")

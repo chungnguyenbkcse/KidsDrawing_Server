@@ -48,6 +48,9 @@ public interface ContestRepository extends JpaRepository <Contest, UUID>{
     @Query("SELECT COUNT(c.id) FROM Contest c")
     int findAll2();
 
+    @Query("SELECT DISTINCT c FROM Contest c JOIN FETCH c.userRegisterJoinContests ur JOIN FETCH ur.student st WHERE st.id = ?1")
+    List<Contest> findAll3(UUID student_id);
+
     @Query("FROM Contest c WHERE c.id = :id")
     Optional<Contest> findById1(UUID id);
 

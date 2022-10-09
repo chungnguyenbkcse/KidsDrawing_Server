@@ -27,11 +27,17 @@ public interface CourseRepository extends JpaRepository <Course, UUID>{
     @Query("SELECT DISTINCT c FROM Course c LEFT JOIN FETCH c.semesterClasses sc LEFT JOIN FETCH sc.semester JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user ")
     List<Course> findAll1();
 
+    @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user LEFT JOIN FETCH c.sectionTemplates")
+    List<Course> findAll3();
+
     @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.teacherRegisterQualifications tr JOIN FETCH tr.teacher te WHERE te.id != ?1")
     List<Course> findAllCourseNewForTeacher(UUID teacher_id);
 
-    @Query("SELECT COUNT(c.id) FROM Course c ")
+    @Query("SELECT COUNT(c.id) FROM Course c")
     int findAll2();
+
+    @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.semesterClasses sc JOIN FETCH sc.userRegisterJoinSemesters ur JOIN FETCH ur.student st WHERE st.id = ?1")
+    List<Course> findTotalCourseForStudent(UUID student_id);
 
     @Query("FROM Course c WHERE c.name = :name")
     Optional<Course> findByName1(String name);

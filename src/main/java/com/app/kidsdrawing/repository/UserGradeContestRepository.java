@@ -29,16 +29,16 @@ public interface UserGradeContestRepository extends JpaRepository <UserGradeCont
     @Query("FROM UserGradeContest e JOIN FETCH e.user  JOIN FETCH e.contest WHERE e.id = :id")
     Optional<UserGradeContest> findById2(UUID id);
 
-    @Query("FROM UserGradeContest e JOIN FETCH e.contest c WHERE c.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContest e JOIN FETCH e.contest c WHERE c.id = :id")
     List<UserGradeContest> findByContestId1(UUID id);
 
-    @Query("FROM UserGradeContest e JOIN FETCH e.contest c JOIN FETCH e.user WHERE c.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContest e JOIN FETCH e.contest c JOIN FETCH e.user WHERE c.id = :id")
     List<UserGradeContest> findByContestId2(UUID id);
 
-    @Query("FROM UserGradeContest e JOIN FETCH e.user u WHERE u.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContest e JOIN FETCH e.user u WHERE u.id = :id")
     List<UserGradeContest> findByTeacherId1(UUID id);
 
-    @Query("FROM UserGradeContest e JOIN FETCH e.user  u JOIN FETCH e.contest WHERE u.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContest e JOIN FETCH e.user  u JOIN FETCH e.contest WHERE u.id = :id")
     List<UserGradeContest> findByTeacherId2(UUID id);
     
     boolean existsById(UUID id);

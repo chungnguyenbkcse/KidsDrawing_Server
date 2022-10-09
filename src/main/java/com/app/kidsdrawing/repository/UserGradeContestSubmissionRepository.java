@@ -27,16 +27,16 @@ public interface UserGradeContestSubmissionRepository extends JpaRepository <Use
     @Query("SELECT DISTINCT e FROM UserGradeContestSubmission e JOIN FETCH e.teacher te JOIN FETCH e.contestSubmission cs WHERE te.id = ?1 AND cs.id = ?2")
     Optional<UserGradeContestSubmission> findByTeacherIdAndContestSubmissionId(UUID teacher_id, UUID contest_submission_id);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher te WHERE te.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContestSubmission e JOIN FETCH e.teacher te WHERE te.id = :id")
     List<UserGradeContestSubmission> findByTeacherId1(UUID id);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.teacher te JOIN FETCH e.contestSubmission WHERE te.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContestSubmission e JOIN FETCH e.teacher te JOIN FETCH e.contestSubmission WHERE te.id = :id")
     List<UserGradeContestSubmission> findByTeacherId2(UUID id);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs WHERE cs.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs WHERE cs.id = :id")
     List<UserGradeContestSubmission> findByContestSubmissionId1(UUID id);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs JOIN FETCH e.teacher  WHERE cs.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs JOIN FETCH e.teacher  WHERE cs.id = :id")
     List<UserGradeContestSubmission> findByContestSubmissionId2(UUID id);
     
     boolean existsById(UUID id);
@@ -45,9 +45,9 @@ public interface UserGradeContestSubmissionRepository extends JpaRepository <Use
     @Query("DELETE FROM UserGradeContestSubmission e WHERE e.teacher = ?1 AND e.contestSubmission = ?2")
     void deleteById(UUID teacher_id, UUID contest_submission_id);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs JOIN FETCH cs.student st JOIN FETCH e.teacher  WHERE st.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs JOIN FETCH cs.student st JOIN FETCH e.teacher  WHERE st.id = :id")
     List<UserGradeContestSubmission> findByStudent(UUID id);
 
-    @Query("FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs JOIN FETCH cs.contest co JOIN FETCH e.teacher  WHERE co.id = :id")
+    @Query("SELECT DISTINCT e FROM UserGradeContestSubmission e JOIN FETCH e.contestSubmission cs JOIN FETCH cs.contest co JOIN FETCH e.teacher  WHERE co.id = :id")
     List<UserGradeContestSubmission> findByContest(UUID id);
 }

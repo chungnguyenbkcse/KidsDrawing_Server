@@ -29,18 +29,18 @@ public interface UserAttendanceRepository extends JpaRepository <UserAttendance,
     @Query("FROM UserAttendance e JOIN FETCH e.student  JOIN FETCH e.section WHERE e.id = :id")
     Optional<UserAttendance> findById2(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.section se WHERE se.id = :id")
+    @Query("SELECT DISTINCT e  FROM UserAttendance e JOIN FETCH e.section se WHERE se.id = :id")
     List<UserAttendance> findBySectionId1(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.section se JOIN FETCH e.student  WHERE se.id = :id")
+    @Query("SELECT DISTINCT e FROM UserAttendance e JOIN FETCH e.section se JOIN FETCH e.student  WHERE se.id = :id")
     List<UserAttendance> findBySectionId2(UUID id);
     
     boolean existsById(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.student st WHERE st.id = :id")
+    @Query("SELECT DISTINCT e FROM UserAttendance e JOIN FETCH e.student st WHERE st.id = :id")
     List<UserAttendance> findByStudentId1(UUID id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section WHERE st.id = :id")
+    @Query("SELECT DISTINCT e  FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section WHERE st.id = :id")
     List<UserAttendance> findByStudentId2(UUID id);
 
     @Query("SELECT DISTINCT e FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section se WHERE se.id = ?1 AND st.id = ?2")
@@ -49,6 +49,6 @@ public interface UserAttendanceRepository extends JpaRepository <UserAttendance,
     @Query("SELECT DISTINCT e FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section se JOIN FETCH se.classes cl WHERE cl.id = ?1 AND st.id = ?2")
     List<UserAttendance> findByClassIdAndStudentId(UUID class_id, UUID student_id);
 
-    @Query("FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section se JOIN FETCH se.classes cl WHERE cl.id = ?1")
+    @Query("SELECT DISTINCT e FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section se JOIN FETCH se.classes cl WHERE cl.id = ?1")
     List<UserAttendance> findByClassId(UUID class_id);
 }
