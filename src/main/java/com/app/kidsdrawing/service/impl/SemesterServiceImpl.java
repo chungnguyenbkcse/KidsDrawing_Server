@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.transaction.Transactional;
 
@@ -205,6 +207,61 @@ public class SemesterServiceImpl implements SemesterService {
         }
     }
 
+    public static List<List<Integer>> foo(Integer N) {
+        List<Integer> collection = IntStream.rangeClosed(1, N)
+                .boxed().collect(Collectors.toList());
+        int partitionSize = 5;
+        int partitionSizeMax = 6;
+        int partitionSizeMin = 4;
+
+        List<List<Integer>> partitions = new ArrayList<>();
+ 
+        for (int i = 0; i < collection.size(); i += partitionSize) {
+            partitions.add(collection.subList(i, Math.min(i + partitionSize,
+                    collection.size())));
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+
+        List<Integer> item = new ArrayList<>();
+        if (partitions.get(partitions.size() - 1).size() < partitionSizeMin && partitions.get(partitions.size() - 1).size() + partitionSize <= partitionSizeMax) {
+            for (int i = 0; i < partitions.size(); i++) {
+                if (i == partitions.size() - 2){
+                    item.addAll(partitions.get(i));
+                }
+                else if (i == partitions.size() - 1){
+                    item.addAll(partitions.get(i));
+                    res.add(item);
+                }
+                else {
+                    res.add(partitions.get(i));
+                }
+            }
+
+            
+        }
+        // Xep cho den khi nao khong thoa man dk -> co phan ko the xep duoc
+        else if (partitions.get(partitions.size() - 1).size() < partitionSizeMin && partitions.get(partitions.size() - 1).size() + partitionSize > partitionSizeMax){
+            for (int i = 0; i < partitions.size(); i++) {
+                if (i == partitions.size() - 2){
+                    item.addAll(partitions.get(i));
+                }
+                else if (i == partitions.size() - 1){
+                    item.addAll(partitions.get(i).subList(0, partitionSizeMax - partitionSize));
+                    res.add(item);
+                    res.add(partitions.get(i).subList(partitionSizeMax - partitionSize, partitions.get(i).size()));
+                }
+                else {
+                    res.add(partitions.get(i));
+                }
+            }
+        }
+        else {
+            res = partitions;
+        }
+        return res;
+    }
+
     @Override
     public UUID setClassForSemester(UUID id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
@@ -277,17 +334,20 @@ public class SemesterServiceImpl implements SemesterService {
 
             // Lấy các group có thể chia được
             if (listUserRegisterJoinSemesters.size() >= min) {
-                int[][] list_group = foo(listUserRegisterJoinSemesters.size(), partion, min, max);
-                System.out.println(" Ket qua chi lop: " + String.valueOf(list_group.length));
-                print2D(list_group);
+                List<List<Integer>> list_group = foo(listUserRegisterJoinSemesters.size());
+                System.out.println(" Ket qua chi lop: " + String.valueOf(list_group.size()));
+                System.out.println(list_group);
                 // Số lớp có thể chia
-                int total_class = list_group.length;
+                int total_class = 0;
+                if (list_group.get(list_group.size() - 1).size() < 5){
+                    total_class = list_group.size() - 1;
+                }
                 for (int i = 0; i < allUserRegisterTeachSemesters.size(); i++) {
                     //Danh sách học viên lớp thứ i
                     if (i < total_class){
                         List<UserRegisterJoinSemester> validUserRegisterSemesters = new ArrayList<>(); 
-                        for(int j = 0; j < list_group[i].length; j++){
-                            int idx = list_group[i][j] - 1;
+                        for(int j = 0; j < list_group.get(i).size(); j++){
+                            int idx = list_group.get(i).get(j);
                             validUserRegisterSemesters.add(new ArrayList<>(listUserRegisterJoinSemesters).get(idx));
                         }
                         System.out.println("So hoc sinh duoc xep: " + String.valueOf(validUserRegisterSemesters.size()));
