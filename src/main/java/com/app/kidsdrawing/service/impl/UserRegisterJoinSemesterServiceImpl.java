@@ -52,7 +52,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemester() {
         List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll3();
         listUserRegisterJoinSemester.forEach(content -> {
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
@@ -62,6 +62,8 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
                 .semester_classes_id(content.getSemesterClass().getId())
                 .payer_id(content.getPayer().getId())
+                .payer_name(content.getPayer().getUsername())
+                .course_name(content.getSemesterClass().getCourse().getName())
                 .price(content.getPrice())
                 .time(content.getTime())
                 .status(content.getStatus())

@@ -20,6 +20,8 @@ public class GetUserRegisterJoinSemesterResponse {
     private String link_url;
     private UUID semester_classes_id;
     private UUID payer_id;
+    private String payer_name;
+    private String course_name;
     private Float price;
     private String status;
     private LocalDateTime time;
