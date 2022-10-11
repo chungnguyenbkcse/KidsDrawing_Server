@@ -210,9 +210,9 @@ public class SemesterServiceImpl implements SemesterService {
     public static List<List<Integer>> foo(Integer N) {
         List<Integer> collection = IntStream.rangeClosed(1, N)
                 .boxed().collect(Collectors.toList());
-        int partitionSize = 5;
-        int partitionSizeMax = 6;
-        int partitionSizeMin = 4;
+        int partitionSize = 6;
+        int partitionSizeMax = 10;
+        int partitionSizeMin = 5;
 
         List<List<Integer>> partitions = new ArrayList<>();
  
@@ -224,6 +224,7 @@ public class SemesterServiceImpl implements SemesterService {
         List<List<Integer>> res = new ArrayList<>();
 
         List<Integer> item = new ArrayList<>();
+        List<Integer> item_1 = new ArrayList<>();
         if (partitions.get(partitions.size() - 1).size() < partitionSizeMin && partitions.get(partitions.size() - 1).size() + partitionSize <= partitionSizeMax) {
             for (int i = 0; i < partitions.size(); i++) {
                 if (i == partitions.size() - 2){
@@ -242,17 +243,37 @@ public class SemesterServiceImpl implements SemesterService {
         }
         // Xep cho den khi nao khong thoa man dk -> co phan ko the xep duoc
         else if (partitions.get(partitions.size() - 1).size() < partitionSizeMin && partitions.get(partitions.size() - 1).size() + partitionSize > partitionSizeMax){
-            for (int i = 0; i < partitions.size(); i++) {
-                if (i == partitions.size() - 2){
-                    item.addAll(partitions.get(i));
+            int x = (partitions.get(partitions.size() - 1).size() + partitionSize) / 2;
+            //System.out.println(x);
+            if (x >= partitionSizeMin) {
+                for (int i = 0; i < partitions.size(); i++) {
+                    if (i == partitions.size() - 2){
+                        item.addAll(partitions.get(i).subList(0, x));
+                        res.add(item);
+                        item_1.addAll(partitions.get(i).subList(x, partitionSize));
+                    }
+                    else if (i == partitions.size() - 1){
+                        item_1.addAll(partitions.get(i));
+                        res.add(item_1);
+                    }
+                    else {
+                        res.add(partitions.get(i));
+                    }
                 }
-                else if (i == partitions.size() - 1){
-                    item.addAll(partitions.get(i).subList(0, partitionSizeMax - partitionSize));
-                    res.add(item);
-                    res.add(partitions.get(i).subList(partitionSizeMax - partitionSize, partitions.get(i).size()));
-                }
-                else {
-                    res.add(partitions.get(i));
+            }
+            else {
+                for (int i = 0; i < partitions.size(); i++) {
+                    if (i == partitions.size() - 2){
+                        item.addAll(partitions.get(i));
+                    }
+                    else if (i == partitions.size() - 1){
+                        item.addAll(partitions.get(i).subList(0, partitionSizeMax - partitionSize));
+                        res.add(item);
+                        res.add(partitions.get(i).subList(partitionSizeMax - partitionSize, partitions.get(i).size()));
+                    }
+                    else {
+                        res.add(partitions.get(i));
+                    }
                 }
             }
         }
