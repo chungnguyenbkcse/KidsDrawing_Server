@@ -2,7 +2,9 @@ package com.app.kidsdrawing.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateCourseRequest;
 import com.app.kidsdrawing.dto.GetCourseNewResponse;
+import com.app.kidsdrawing.dto.GetCourseParentNewResponse;
 import com.app.kidsdrawing.dto.GetCourseResponse;
 import com.app.kidsdrawing.dto.GetCourseTeacherResponse;
 import com.app.kidsdrawing.dto.GetReportCourseResponse;
@@ -187,6 +190,127 @@ public class CourseServiceImpl implements CourseService {
                     .creator_id(course.getUser().getId())
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
+                    .total(total)
+                    .build();
+                courses.add(courseResponse);
+            }
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("courses", courses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public static void countFrequencies(ArrayList<Course> list)
+    { 
+        // hash set is created and elements of
+        // arraylist are inserted into it
+        Set<Course> st = new HashSet<Course>(list);
+        for (Course s : st)
+            System.out.println(s + ": " + Collections.frequency(list, s));
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllCourseNewByParentId(UUID id) {
+        List<GetCourseParentNewResponse> courses = new ArrayList<>();
+        List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByPayerId2(id);
+        System.out.println(userRegisterJoinSemesters.size());
+        List<Course> listCourseRegisted = new ArrayList<>();
+        Map<String, Set<User>> res = new HashMap<>();
+        userRegisterJoinSemesters.forEach(user_register_join_semester -> {
+            if (user_register_join_semester.getStatus().equals("Completed")){
+                listCourseRegisted.add(user_register_join_semester.getSemesterClass().getCourse());
+                if (res.containsKey(user_register_join_semester.getSemesterClass().getCourse().getName()) == false) {
+                    Set<User> users = new HashSet<>();
+                    users.add(user_register_join_semester.getStudent());
+                    res.put(user_register_join_semester.getSemesterClass().getCourse().getName(), users);
+                }
+                else {
+                    Set<User> users = res.get(user_register_join_semester.getSemesterClass().getCourse().getName());
+                    users.add(user_register_join_semester.getStudent());
+                    res.replace(user_register_join_semester.getSemesterClass().getCourse().getName(), users);
+                }
+            }
+        });
+
+        System.out.println(res.size());
+
+        List<Semester> semesterNexts = new ArrayList<>();
+        LocalDateTime time_now = LocalDateTime.now();
+        List<Semester> pageSemester = semesterRepository.findAll();
+        pageSemester.forEach(semester -> {
+            if (time_now.isBefore(semester.getStart_time())) {
+                semesterNexts.add(semester);
+            }
+        });
+
+        List<Course> allCourses = courseRepository.findAll1();
+        allCourses.forEach(course -> {
+            if (listCourseRegisted.contains(course) == false) {
+                total = 0;
+                Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
+
+                allSemesterClass.forEach(semester_course -> {
+                    if (semesterNexts.contains(semester_course.getSemester())){
+                        total ++;
+                    }
+                });
+                GetCourseParentNewResponse courseResponse = GetCourseParentNewResponse.builder()
+                    .id(course.getId())
+                    .name(course.getName())
+                    .description(course.getDescription())
+                    .num_of_section(course.getNum_of_section())
+                    .image_url(course.getImage_url())
+                    .price(course.getPrice())
+                    .is_enabled(course.getIs_enabled())
+                    .art_age_id(course.getArtAges().getId())
+                    .art_type_id(course.getArtTypes().getId())
+                    .art_level_id(course.getArtLevels().getId())
+                    .art_age_name(course.getArtAges().getName())
+                    .art_level_name(course.getArtLevels().getName())
+                    .art_type_name(course.getArtTypes().getName())
+                    .creator_id(course.getUser().getId())
+                    .create_time(course.getCreate_time())
+                    .update_time(course.getUpdate_time())
+                    .student_registered_name(new HashSet<>())
+                    .student_registered_id(new HashSet<>())
+                    .total(total)
+                    .build();
+                courses.add(courseResponse);
+            }
+            else {
+                total = 0;
+                Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
+
+                allSemesterClass.forEach(semester_course -> {
+                    if (semesterNexts.contains(semester_course.getSemester())){
+                        total ++;
+                    }
+                });
+                Set<String> student_names = new HashSet<>();
+                Set<UUID> student_ids = new HashSet<>();
+                res.get(course.getName()).forEach(ele -> {
+                    student_names.add(ele.getUsername());
+                    student_ids.add(ele.getId());
+                });
+                GetCourseParentNewResponse courseResponse = GetCourseParentNewResponse.builder()
+                    .id(course.getId())
+                    .name(course.getName())
+                    .description(course.getDescription())
+                    .num_of_section(course.getNum_of_section())
+                    .image_url(course.getImage_url())
+                    .price(course.getPrice())
+                    .is_enabled(course.getIs_enabled())
+                    .art_age_id(course.getArtAges().getId())
+                    .art_type_id(course.getArtTypes().getId())
+                    .art_level_id(course.getArtLevels().getId())
+                    .art_age_name(course.getArtAges().getName())
+                    .art_level_name(course.getArtLevels().getName())
+                    .art_type_name(course.getArtTypes().getName())
+                    .creator_id(course.getUser().getId())
+                    .create_time(course.getCreate_time())
+                    .update_time(course.getUpdate_time())
+                    .student_registered_name(student_names)
+                    .student_registered_id(student_ids)
                     .total(total)
                     .build();
                 courses.add(courseResponse);

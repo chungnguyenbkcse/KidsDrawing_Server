@@ -85,4 +85,10 @@ GET  {{rest}}/course/student-new/18
 ### GET CONTEST ACTION ###
 # @name get_contest
 
+GET  {{rest}}/course/parent-new/18
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
 GET  {{rest}}/course/teacher-new/8d751edb-7e9c-466d-a0e3-69fec1593194
