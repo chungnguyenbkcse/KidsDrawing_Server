@@ -18,12 +18,8 @@ public class GetContestParentResponse {
     private UUID id;
     private String name;
     private String description;
-    private String student_name;
-    private UUID student_id;
     private Integer max_participant;
     private Integer total_register_contest;
-    private Integer total_contest_submission;
-    private Integer total_contest_submission_graded;
     private LocalDateTime registration_time;
     private String image_url;
     private LocalDateTime start_time;
