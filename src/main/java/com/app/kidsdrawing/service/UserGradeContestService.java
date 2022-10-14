@@ -14,5 +14,6 @@ public interface UserGradeContestService {
     GetUserGradeContestResponse getUserGradeContestById(UUID id);
     UUID createUserGradeContest(CreateUserGradeContestRequest createUserGradeContestRequest);
     UUID removeUserGradeContestById(UUID id);
+    UUID removeUserGradeContestByContest(UUID id);
     UUID updateUserGradeContestById(UUID id, CreateUserGradeContestRequest createUserGradeContestRequest);
 }

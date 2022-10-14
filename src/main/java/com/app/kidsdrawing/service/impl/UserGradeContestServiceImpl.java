@@ -92,8 +92,16 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
 
     @Override
     public UUID createUserGradeContest(CreateUserGradeContestRequest createUserGradeContestRequest) {
-        Contest contest = contestRepository.getById(createUserGradeContestRequest.getContest_id());
-        User teacher = userRepository.getById(createUserGradeContestRequest.getTeacher_id());
+        Optional<Contest> contestOpt = contestRepository.findById1(createUserGradeContestRequest.getContest_id());
+        Contest contest = contestOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Contest.not_found");
+        });
+
+        Optional<User> teacherOpt = userRepository.findById1(createUserGradeContestRequest.getTeacher_id());
+        User teacher = teacherOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.teacher.not_found");
+        });
+
         UserGradeContest savedUserGradeContest = UserGradeContest.builder()
                 .user(teacher)
                 .contest(contest)
@@ -111,6 +119,16 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
         });
 
         userGradeContestRepository.deleteById(id);
+        return id;
+    }
+
+    @Override 
+    public UUID removeUserGradeContestByContest(UUID id) {
+        List<UserGradeContest> userGradeContests = userGradeContestRepository.findByContestId1(id);
+
+        userGradeContests.forEach(ele -> {
+            userGradeContestRepository.deleteById(ele.getId());
+        });
         return id;
     }
 

@@ -640,7 +640,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public UUID createContest(CreateContestRequest createContestRequest) {
+    public GetContestResponse createContest(CreateContestRequest createContestRequest) {
         if (contestRepository.existsByName(createContestRequest.getName())) {
             throw new ContestAlreadyCreateException("exception.contest.contest_taken");
         }
@@ -675,7 +675,9 @@ public class ContestServiceImpl implements ContestService {
                 .build();
         contestRepository.save(savedContest);
 
-        return savedContest.getId();
+        return GetContestResponse.builder()
+                .id(savedContest.getId())
+                .build();
     }
 
     @Override

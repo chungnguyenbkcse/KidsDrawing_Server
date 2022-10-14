@@ -72,4 +72,13 @@ public class UserGradeContestController {
                 .buildAndExpand(UserGradeContestId).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @CrossOrigin
+    @DeleteMapping(value = "/contest/{id}")
+    public ResponseEntity<String> deleteUserGradeContestByContest(@PathVariable UUID id) {
+        UUID UserGradeContestId = userGradeContestService.removeUserGradeContestByContest(id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(UserGradeContestId).toUri();
+        return ResponseEntity.created(location).build();
+    }
 }

@@ -33,10 +33,7 @@ public class ContestController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<GetContestResponse> createContest(@RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) CreateContestRequest createContestRequest) {
-        UUID contestId = contestService.createContest(createContestRequest);
-        ServletUriComponentsBuilder.fromCurrentRequest().path("/{contestId}")
-                .buildAndExpand(contestId).toUri();
-        return ResponseEntity.ok().body(contestService.getContestById(contestId));
+        return ResponseEntity.ok().body(contestService.createContest(createContestRequest));
     }
 
     @CrossOrigin

@@ -19,7 +19,7 @@ public interface ContestService {
     ResponseEntity<Map<String, Object>> getAllContestByTeacher(UUID id);
     GetContestResponse getContestByName(String name);
     GetContestResponse getContestById(UUID id);
-    UUID createContest(CreateContestRequest createContestRequest);
+    GetContestResponse createContest(CreateContestRequest createContestRequest);
     UUID removeContestById(UUID id);
     UUID updateContestById(UUID id, CreateContestRequest createContestRequest);
 }

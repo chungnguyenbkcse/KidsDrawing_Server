@@ -54,7 +54,7 @@ public interface ContestRepository extends JpaRepository <Contest, UUID>{
     @Query("FROM Contest c WHERE c.id = :id")
     Optional<Contest> findById1(UUID id);
 
-    @Query("FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.id = :id")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.id = :id")
     Optional<Contest> findById2(UUID id);
 
     @Query("FROM Contest c WHERE c.name = :name")
