@@ -286,12 +286,16 @@ public class CourseServiceImpl implements CourseService {
                         total ++;
                     }
                 });
+                
                 Set<String> student_names = new HashSet<>();
                 Set<UUID> student_ids = new HashSet<>();
-                res.get(course.getName()).forEach(ele -> {
-                    student_names.add(ele.getUsername());
-                    student_ids.add(ele.getId());
-                });
+                if (res.containsKey(course.getName())){
+                    res.get(course.getName()).forEach(ele -> {
+                        student_names.add(ele.getUsername());
+                        student_ids.add(ele.getId());
+                    });
+                }
+                
                 GetCourseParentNewResponse courseResponse = GetCourseParentNewResponse.builder()
                     .id(course.getId())
                     .name(course.getName())

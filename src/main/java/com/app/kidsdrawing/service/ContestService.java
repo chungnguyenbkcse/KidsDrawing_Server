@@ -15,6 +15,7 @@ public interface ContestService {
     ResponseEntity<Map<String, Object>> getAllContestByArtTypeId(int page, int size, UUID id);
     ResponseEntity<Map<String, Object>> getAllContestByArtAgeId(int page, int size, UUID id);
     ResponseEntity<Map<String, Object>> getAllContestByParent(UUID parent_id);
+    ResponseEntity<Map<String, Object>> getContestNewByParent(UUID parent_id);
     ResponseEntity<Map<String, Object>> getAllContestByStudent(UUID student_id);
     ResponseEntity<Map<String, Object>> getAllContestByTeacher(UUID id);
     GetContestResponse getContestByName(String name);

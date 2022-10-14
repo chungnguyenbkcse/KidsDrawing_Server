@@ -50,6 +50,12 @@ public class ContestController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/parent-new/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getContestNewByParent(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(contestService.getContestNewByParent(id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/total")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalContest() {
         return ResponseEntity.ok().body(contestService.getTotalContest());

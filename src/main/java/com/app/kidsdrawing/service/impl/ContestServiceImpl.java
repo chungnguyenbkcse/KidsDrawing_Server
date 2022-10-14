@@ -3,6 +3,7 @@ package com.app.kidsdrawing.service.impl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateContestRequest;
+import com.app.kidsdrawing.dto.GetContestParentResponse;
 import com.app.kidsdrawing.dto.GetContestResponse;
 import com.app.kidsdrawing.dto.GetContestStudentResponse;
 import com.app.kidsdrawing.dto.GetContestTeacherResponse;
@@ -359,7 +361,7 @@ public class ContestServiceImpl implements ContestService {
         });
 
         allContest.forEach(contest -> {
-            if (!allContestForStudent.contains(contest) && time_now.isBefore(contest.getRegistration_time())) {
+            if (!allContestForStudent.contains(contest) && time_now.isBefore(contest.getStart_time()) && time_now.isAfter(contest.getRegistration_time())) {
                 List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId1(contest.getId());
                 GetContestStudentResponse contestOpeningResponse = GetContestStudentResponse.builder()
@@ -390,22 +392,85 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getContestNewByParent(UUID parent_id) {
+        List<GetContestParentResponse> contestsResponse = new ArrayList<>();
+        List<UserRegisterJoinContest> userRegisterJoinContests = userRegisterJoinContestRepository.findByParent(parent_id);
+        System.out.print(userRegisterJoinContests.size());
+        List<Contest> listContestRegisted = new ArrayList<>();
+        Map<String, Set<User>> res = new HashMap<>();
+        LocalDateTime time_now = LocalDateTime.now();
+        userRegisterJoinContests.forEach(user_register_join_contest -> {
+            if (time_now.isAfter(user_register_join_contest.getContest().getRegistration_time()) && time_now.isBefore(user_register_join_contest.getContest().getStart_time())){
+                listContestRegisted.add(user_register_join_contest.getContest());
+                if (res.containsKey(user_register_join_contest.getContest().getName()) == false) {
+                    Set<User> users = new HashSet<>();
+                    users.add(user_register_join_contest.getStudent());
+                    res.put(user_register_join_contest.getContest().getName(), users);
+                }
+                else {
+                    Set<User> users = res.get(user_register_join_contest.getContest().getName());
+                    users.add(user_register_join_contest.getStudent());
+                    res.replace(user_register_join_contest.getContest().getName(), users);
+                }
+            }
+        });
+
+        List<Contest> allContests = contestRepository.findAll3();
+        allContests.forEach(contest -> {
+            if (time_now.isAfter(contest.getRegistration_time()) && time_now.isBefore(contest.getStart_time())){
+                Set<String> student_names = new HashSet<>();
+                Set<UUID> student_ids = new HashSet<>();
+                
+                if (res.containsKey(contest.getName())){
+                    res.get(contest.getName()).forEach(ele -> {
+                        student_names.add(ele.getUsername());
+                        student_ids.add(ele.getId());
+                    });
+                }
+
+                List<UserRegisterJoinContest> userRegisterJoinContest1s = userRegisterJoinContestRepository.findByContestId1(contest.getId());
+                GetContestParentResponse contestResponse = GetContestParentResponse.builder()
+                        .id(contest.getId())
+                        .name(contest.getName())
+                        .description(contest.getDescription())
+                        .max_participant(contest.getMax_participant())
+                        .total_register_contest(userRegisterJoinContest1s.size())
+                        .registration_time(contest.getRegistration_time())
+                        .image_url(contest.getImage_url())
+                        .start_time(contest.getStart_time())
+                        .end_time(contest.getEnd_time())
+                        .is_enabled(contest.getIs_enabled())
+                        .art_age_name(contest.getArtAges().getName())
+                        .art_type_name(contest.getArtTypes().getName())
+                        .student_registered_name(student_names)
+                        .student_registered_id(student_ids)
+                        .build();
+                contestsResponse.add(contestResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("contests", contestsResponse);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllContestByParent(UUID parent_id) {
-        List<GetContestStudentResponse> allContestNotOpenNowResponses = new ArrayList<>();
-        List<GetContestStudentResponse> allContestOpeningResponses = new ArrayList<>();
-        List<GetContestStudentResponse> allContestEndResponses = new ArrayList<>();
-        List<GetContestStudentResponse> allContestNewResponses = new ArrayList<>();
+        List<GetContestParentResponse> allContestNotOpenNowResponses = new ArrayList<>();
+        List<GetContestParentResponse> allContestOpeningResponses = new ArrayList<>();
+        List<GetContestParentResponse> allContestEndResponses = new ArrayList<>();
+        List<GetContestParentResponse> allContestNewResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
         List<User> pageUser = userRepository.findByParentId(parent_id);
         List<Contest> allContest = contestRepository.findAll1();
 
         pageUser.forEach(student -> {
             Set<UserRegisterJoinContest> listRegisterJoinContest = student.getUserRegisterJoinContests();
-            List<Contest> allContestForStudent = new ArrayList<>();
+            List<Contest> allContestForParent = new ArrayList<>();
 
             listRegisterJoinContest.forEach(ele -> {
                 total = 0;
-                allContestForStudent.add(ele.getContest());
+                allContestForParent.add(ele.getContest());
                 Set<UserRegisterJoinContest> listUserRegisterContestByContest = ele.getContest().getUserRegisterJoinContests();
                 Set<ContestSubmission> listContestSubmissionByContest = ele.getContest().getContestSubmissions();
                 listContestSubmissionByContest.forEach(contest_submission -> {
@@ -414,7 +479,7 @@ public class ContestServiceImpl implements ContestService {
                     }
                 });
                 if (time_now.isAfter(ele.getContest().getRegistration_time()) == false) {
-                    GetContestStudentResponse contestNotOpenNowResponse = GetContestStudentResponse.builder()
+                    GetContestParentResponse contestNotOpenNowResponse = GetContestParentResponse.builder()
                             .id(ele.getContest().getId())
                             .name(ele.getContest().getName())
                             .description(ele.getContest().getDescription())
@@ -434,7 +499,7 @@ public class ContestServiceImpl implements ContestService {
                             .build();
                     allContestNotOpenNowResponses.add(contestNotOpenNowResponse);
                 } else if (time_now.isAfter(ele.getContest().getEnd_time()) == true) {
-                    GetContestStudentResponse contestEndResponse = GetContestStudentResponse.builder()
+                    GetContestParentResponse contestEndResponse = GetContestParentResponse.builder()
                             .id(ele.getContest().getId())
                             .name(ele.getContest().getName())
                             .description(ele.getContest().getDescription())
@@ -455,7 +520,7 @@ public class ContestServiceImpl implements ContestService {
                     allContestEndResponses.add(contestEndResponse);
                 } else if (time_now.isAfter(ele.getContest().getStart_time()) == true
                         && time_now.isAfter(ele.getContest().getEnd_time()) == false) {
-                    GetContestStudentResponse contestOpeningResponse = GetContestStudentResponse.builder()
+                    GetContestParentResponse contestOpeningResponse = GetContestParentResponse.builder()
                             .id(ele.getContest().getId())
                             .name(ele.getContest().getName())
                             .student_id(student.getId())
@@ -478,10 +543,10 @@ public class ContestServiceImpl implements ContestService {
             });
 
             allContest.forEach(contest -> {
-                if (!allContestForStudent.contains(contest) && time_now.isBefore(contest.getRegistration_time())) {
+                if (time_now.isBefore(contest.getStart_time()) && time_now.isAfter(contest.getRegistration_time())) {
                     List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                             .findByContestId1(contest.getId());
-                    GetContestStudentResponse contestOpeningResponse = GetContestStudentResponse.builder()
+                    GetContestParentResponse contestOpeningResponse = GetContestParentResponse.builder()
                             .id(contest.getId())
                             .name(contest.getName())
                             .description(contest.getDescription())
