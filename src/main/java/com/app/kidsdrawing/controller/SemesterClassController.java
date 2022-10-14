@@ -92,6 +92,12 @@ public class SemesterClassController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/parent-course/{parent_id}/{course_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSemesterClassNewByParentAndCourse(@PathVariable("parent_id") UUID parent_id, @PathVariable("course_id") UUID course_id) {
+        return ResponseEntity.ok().body(semesterCourseService.getAllSemesterClassNewByParentAndCourse(parent_id, course_id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/{id}")
     public ResponseEntity<GetSemesterClassResponse> getSemesterClassById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(semesterCourseService.getSemesterClassById(id));

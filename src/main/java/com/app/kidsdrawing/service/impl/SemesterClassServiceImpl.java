@@ -3,9 +3,11 @@ package com.app.kidsdrawing.service.impl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateSemesterClassRequest;
 import com.app.kidsdrawing.dto.GetCourseTeacherResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassForScheduleClassResponse;
+import com.app.kidsdrawing.dto.GetSemesterClassParentResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassStudentResponse;
 import com.app.kidsdrawing.entity.Course;
@@ -110,6 +113,149 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 allSemesterClassResponses.add(semesterClassResponse);
             }
         });
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_classes", allSemesterClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByParentAndCourse(UUID id, UUID course_id) {
+        List<GetSemesterClassParentResponse> allSemesterClassResponses = new ArrayList<>();
+        LocalDateTime time_now = LocalDateTime.now();
+        List<SemesterClass> allSemesterClassByParentAndCourse = semesterClassRepository.findAllSemesterClassByParentAndCourse1(id, course_id);
+
+        List<SemesterClass> allSemesterClassByParentAndCourse1 = semesterClassRepository.findAllSemesterClassByParentAndCourse2(id, course_id);
+
+        List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
+
+        allSemesterClassByParentAndCourse.forEach(semester_class -> {
+            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+                Set<UUID> student_ids = new HashSet<>();
+                Set<String> student_name = new HashSet<>();
+                semester_class.getUserRegisterJoinSemesters().forEach(ele -> {
+                    student_ids.add(ele.getStudent().getId());
+                    student_name.add(ele.getStudent().getUsername());
+                });
+                schedule = "";
+                semester_class.getSchedules().forEach(schedule_item -> {            
+                    if (schedule.equals("")) {
+                        schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
+                                + schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                + schedule_item.getLessonTime().getEnd_time().toString() + ")";
+                    } else {
+                        schedule = schedule + ", Thứ " + schedule_item.getDate_of_week() + " ("
+                                + schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                + schedule_item.getLessonTime().getEnd_time().toString() + ")";
+                    }
+                });
+                GetSemesterClassParentResponse semesterClassResponse = GetSemesterClassParentResponse.builder()
+                        .course_id(semester_class.getCourse().getId())
+                        .id(semester_class.getId())
+                        .semester_name(semester_class.getSemester().getName())
+                        .description(semester_class.getCourse().getDescription())
+                        .image_url(semester_class.getCourse().getImage_url())
+                        .name(semester_class.getName())
+                        .course_name(semester_class.getCourse().getName())
+                        .art_age_name(semester_class.getCourse().getArtAges().getName())
+                        .art_level_name(semester_class.getCourse().getArtLevels().getName())
+                        .art_type_name(semester_class.getCourse().getArtTypes().getName())
+                        .price(semester_class.getCourse().getPrice())
+                        .registration_deadline(semester_class.getRegistration_time())
+                        .num_of_section(semester_class.getCourse().getNum_of_section())
+                        .schedule(schedule)
+                        .max_participant(semester_class.getMax_participant())
+                        .semester_id(semester_class.getSemester().getId())
+                        .student_registered_id(student_ids)
+                        .student_registered_name(student_name)
+                        .status("Payed")
+                        .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+        });
+
+
+        allSemesterClassByParentAndCourse1.forEach(semester_class -> {
+            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+                Set<UUID> student_ids = new HashSet<>();
+                Set<String> student_name = new HashSet<>();
+                semester_class.getUserRegisterJoinSemesters().forEach(ele -> {
+                    student_ids.add(ele.getStudent().getId());
+                    student_name.add(ele.getStudent().getUsername());
+                });
+                schedule = "";
+                semester_class.getSchedules().forEach(schedule_item -> {            
+                    if (schedule.equals("")) {
+                        schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
+                                + schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                + schedule_item.getLessonTime().getEnd_time().toString() + ")";
+                    } else {
+                        schedule = schedule + ", Thứ " + schedule_item.getDate_of_week() + " ("
+                                + schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                + schedule_item.getLessonTime().getEnd_time().toString() + ")";
+                    }
+                });
+                GetSemesterClassParentResponse semesterClassResponse = GetSemesterClassParentResponse.builder()
+                        .course_id(semester_class.getCourse().getId())
+                        .id(semester_class.getId())
+                        .semester_name(semester_class.getSemester().getName())
+                        .description(semester_class.getCourse().getDescription())
+                        .image_url(semester_class.getCourse().getImage_url())
+                        .name(semester_class.getName())
+                        .course_name(semester_class.getCourse().getName())
+                        .art_age_name(semester_class.getCourse().getArtAges().getName())
+                        .art_level_name(semester_class.getCourse().getArtLevels().getName())
+                        .art_type_name(semester_class.getCourse().getArtTypes().getName())
+                        .price(semester_class.getCourse().getPrice())
+                        .registration_deadline(semester_class.getRegistration_time())
+                        .num_of_section(semester_class.getCourse().getNum_of_section())
+                        .schedule(schedule)
+                        .max_participant(semester_class.getMax_participant())
+                        .semester_id(semester_class.getSemester().getId())
+                        .student_registered_id(student_ids)
+                        .student_registered_name(student_name)
+                        .status("Not payed now")
+                        .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+        });
+
+        allSemesterClass.forEach(semester_class -> {
+            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now) && allSemesterClassByParentAndCourse.contains(semester_class) == false) {
+                schedule = "";
+                semester_class.getSchedules().forEach(schedule_item -> {            
+                    if (schedule.equals("")) {
+                        schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
+                                + schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                + schedule_item.getLessonTime().getEnd_time().toString() + ")";
+                    } else {
+                        schedule = schedule + ", Thứ " + schedule_item.getDate_of_week() + " ("
+                                + schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                + schedule_item.getLessonTime().getEnd_time().toString() + ")";
+                    }
+                });
+                GetSemesterClassParentResponse semesterClassResponse = GetSemesterClassParentResponse.builder()
+                        .course_id(semester_class.getCourse().getId())
+                        .id(semester_class.getId())
+                        .semester_name(semester_class.getSemester().getName())
+                        .description(semester_class.getCourse().getDescription())
+                        .image_url(semester_class.getCourse().getImage_url())
+                        .name(semester_class.getName())
+                        .course_name(semester_class.getCourse().getName())
+                        .art_age_name(semester_class.getCourse().getArtAges().getName())
+                        .art_level_name(semester_class.getCourse().getArtLevels().getName())
+                        .art_type_name(semester_class.getCourse().getArtTypes().getName())
+                        .price(semester_class.getCourse().getPrice())
+                        .registration_deadline(semester_class.getRegistration_time())
+                        .num_of_section(semester_class.getCourse().getNum_of_section())
+                        .schedule(schedule)
+                        .max_participant(semester_class.getMax_participant())
+                        .semester_id(semester_class.getSemester().getId())
+                        .status("Not Payed")
+                        .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+        });
+
         Map<String, Object> response = new HashMap<>();
         response.put("semester_classes", allSemesterClassResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
