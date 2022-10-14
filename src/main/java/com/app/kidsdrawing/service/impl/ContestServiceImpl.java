@@ -302,7 +302,7 @@ public class ContestServiceImpl implements ContestService {
                     total = total + 1;
                 }
             });
-            if (time_now.isAfter(ele.getContest().getRegistration_time()) == false) {
+            if (time_now.isAfter(ele.getContest().getRegistration_time()) && time_now.isBefore(ele.getContest().getStart_time())) {
                 GetContestStudentResponse contestNotOpenNowResponse = GetContestStudentResponse.builder()
                         .id(ele.getContest().getId())
                         .name(ele.getContest().getName())
@@ -320,7 +320,7 @@ public class ContestServiceImpl implements ContestService {
                         .art_type_name(ele.getContest().getArtTypes().getName())
                         .build();
                 allContestNotOpenNowResponses.add(contestNotOpenNowResponse);
-            } else if (time_now.isAfter(ele.getContest().getEnd_time()) == true) {
+            } else if (time_now.isAfter(ele.getContest().getEnd_time())) {
                 GetContestStudentResponse contestEndResponse = GetContestStudentResponse.builder()
                         .id(ele.getContest().getId())
                         .name(ele.getContest().getName())
@@ -338,8 +338,8 @@ public class ContestServiceImpl implements ContestService {
                         .art_type_name(ele.getContest().getArtTypes().getName())
                         .build();
                 allContestEndResponses.add(contestEndResponse);
-            } else if (time_now.isAfter(ele.getContest().getStart_time()) == true
-                    && time_now.isAfter(ele.getContest().getEnd_time()) == false) {
+            } else if (time_now.isAfter(ele.getContest().getStart_time())
+                    && time_now.isBefore(ele.getContest().getEnd_time())) {
                 GetContestStudentResponse contestOpeningResponse = GetContestStudentResponse.builder()
                         .id(ele.getContest().getId())
                         .name(ele.getContest().getName())
@@ -478,7 +478,7 @@ public class ContestServiceImpl implements ContestService {
                         total = total + 1;
                     }
                 });
-                if (time_now.isAfter(ele.getContest().getRegistration_time()) == false) {
+                if (time_now.isAfter(ele.getContest().getRegistration_time()) && time_now.isBefore(ele.getContest().getStart_time())) {
                     GetContestStudentResponse contestNotOpenNowResponse = GetContestStudentResponse.builder()
                             .id(ele.getContest().getId())
                             .name(ele.getContest().getName())
@@ -498,7 +498,7 @@ public class ContestServiceImpl implements ContestService {
                             .art_type_name(ele.getContest().getArtTypes().getName())
                             .build();
                     allContestNotOpenNowResponses.add(contestNotOpenNowResponse);
-                } else if (time_now.isAfter(ele.getContest().getEnd_time()) == true) {
+                } else if (time_now.isAfter(ele.getContest().getEnd_time())) {
                     GetContestStudentResponse contestEndResponse = GetContestStudentResponse.builder()
                             .id(ele.getContest().getId())
                             .name(ele.getContest().getName())
@@ -518,8 +518,8 @@ public class ContestServiceImpl implements ContestService {
                             .art_type_name(ele.getContest().getArtTypes().getName())
                             .build();
                     allContestEndResponses.add(contestEndResponse);
-                } else if (time_now.isAfter(ele.getContest().getStart_time()) == true
-                        && time_now.isAfter(ele.getContest().getEnd_time()) == false) {
+                } else if (time_now.isAfter(ele.getContest().getStart_time())
+                        && time_now.isBefore(ele.getContest().getEnd_time())) {
                             GetContestStudentResponse contestOpeningResponse = GetContestStudentResponse.builder()
                             .id(ele.getContest().getId())
                             .name(ele.getContest().getName())
