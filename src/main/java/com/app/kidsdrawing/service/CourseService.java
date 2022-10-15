@@ -20,6 +20,7 @@ public interface CourseService {
     ResponseEntity<Map<String, Object>> getAllCourseByStudentId(UUID id);
     ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(UUID id);
     ResponseEntity<Map<String, Object>> getAllCourseNewByParentId(UUID id);
+    ResponseEntity<Map<String, Object>> getAllCourseNewByTeacherId(UUID id);
     ResponseEntity<Map<String, Object>> getReportCourse(int year);
     GetCourseResponse getCourseByName(String name);
     GetCourseResponse getCourseById(UUID id);

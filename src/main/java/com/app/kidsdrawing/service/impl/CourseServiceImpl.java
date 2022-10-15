@@ -21,6 +21,7 @@ import com.app.kidsdrawing.dto.CreateCourseRequest;
 import com.app.kidsdrawing.dto.GetCourseNewResponse;
 import com.app.kidsdrawing.dto.GetCourseParentNewResponse;
 import com.app.kidsdrawing.dto.GetCourseResponse;
+import com.app.kidsdrawing.dto.GetCourseTeacherNewResponse;
 import com.app.kidsdrawing.dto.GetCourseTeacherResponse;
 import com.app.kidsdrawing.dto.GetReportCourseResponse;
 import com.app.kidsdrawing.dto.GetCourseParentResponse;
@@ -69,6 +70,7 @@ public class CourseServiceImpl implements CourseService {
     private final SemesterRepository semesterRepository;
     private static String schedule = "";
     private static int total = 0;
+    private static int teacher_register_total = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourse() {
@@ -207,6 +209,56 @@ public class CourseServiceImpl implements CourseService {
         Set<Course> st = new HashSet<Course>(list);
         for (Course s : st)
             System.out.println(s + ": " + Collections.frequency(list, s));
+    }
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllCourseNewByTeacherId(UUID id) {
+        List<GetCourseTeacherNewResponse> courses = new ArrayList<>();
+        List<Course> allCourses = courseRepository.findAllCourseNewForTeacher1(id);
+        LocalDateTime time_now = LocalDateTime.now();
+        allCourses.forEach(course -> {
+            total = 0;
+            teacher_register_total = 0;
+            if (course.getSemesterClasses().size() > 0){
+                Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
+                allSemesterClass.forEach(semester_course -> {
+                    if (time_now.isBefore(semester_course.getRegistration_time())){
+                        total ++;
+                        if (semester_course.getUserRegisterTeachSemesters().size() > 0) {
+                            semester_course.getUserRegisterTeachSemesters().forEach(ele -> {
+                                if (ele.getTeacher().getId().compareTo(id) == 0){
+                                    teacher_register_total ++;
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            
+            GetCourseTeacherNewResponse courseResponse = GetCourseTeacherNewResponse.builder()
+                .id(course.getId())
+                .name(course.getName())
+                .description(course.getDescription())
+                .num_of_section(course.getNum_of_section())
+                .image_url(course.getImage_url())
+                .price(course.getPrice())
+                .is_enabled(course.getIs_enabled())
+                .art_age_id(course.getArtAges().getId())
+                .art_type_id(course.getArtTypes().getId())
+                .art_level_id(course.getArtLevels().getId())
+                .art_age_name(course.getArtAges().getName())
+                .art_level_name(course.getArtLevels().getName())
+                .art_type_name(course.getArtTypes().getName())
+                .create_time(course.getCreate_time())
+                .update_time(course.getUpdate_time())
+                .total(total)
+                .total_registed(teacher_register_total)
+                .build();
+            courses.add(courseResponse);
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("courses", courses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override

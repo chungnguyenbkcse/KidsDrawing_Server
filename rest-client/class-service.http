@@ -61,7 +61,7 @@ GET  {{rest}}/classes/info/1
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/student/18
+GET  {{rest}}/classes/student/817ea4e7-2a52-463b-a7bd-b2db1dd9e514
 
 ### GET classes ACTION ###
 # @name get_classes

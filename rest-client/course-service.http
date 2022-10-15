@@ -92,3 +92,9 @@ GET  {{rest}}/course/parent-new/7ba06a10-ddec-4825-8032-26f79f94ffa9
 # @name get_contest
 
 GET  {{rest}}/course/teacher-new/8d751edb-7e9c-466d-a0e3-69fec1593194
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/course/teacher/new/8d751edb-7e9c-466d-a0e3-69fec1593194
