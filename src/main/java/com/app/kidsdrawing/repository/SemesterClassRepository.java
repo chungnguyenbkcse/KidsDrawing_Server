@@ -24,6 +24,9 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, U
     @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE st.id = ?1 AND c.id =?2")
     List<SemesterClass> findAllSemesterClassByStudentAndCourse(UUID student_id, UUID course_id);
 
+    @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester LEFT JOIN FETCH e.userRegisterTeachSemesters urt LEFT JOIN FETCH urt.teacher te  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes WHERE te.id = ?1 AND c.id =?2")
+    List<SemesterClass> findAllSemesterClassByTeacherAndCourse(UUID teacher_id, UUID course_id);
+
     @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH urj.payer pa JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE pa.id = ?1 AND c.id =?2 AND urj.status = 'Completed'")
     List<SemesterClass> findAllSemesterClassByParentAndCourse1(UUID student_id, UUID course_id);
 
