@@ -1,0 +1,69 @@
+### ADMIN ACTION ###
+
+# @name login_admin
+@admin_access_token = {{login_admin.response.body.accessToken}}
+@admin_refresh_token = {{login_admin.response.body.refreshToken}}
+POST {{rest}}/auth
+Content-Type: application/json
+
+{
+    "username": "teacher-1",
+    "password": "12345678aA@"
+}
+
+@rest = {{$dotenv HOST}}/{{$dotenv API}}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/user-attendance
+Content-Type: application/json
+
+{
+    "tutorial_id": 1,
+    "name": "Trang 1",
+    "description": "xxx",
+    "number": 1
+}
+
+### CREATE CONTEST ACTION ###
+# @name create_contest
+
+POST {{rest}}/user-attendance
+Content-Type: application/json
+
+{
+    "name": "Học kì 2 năm học 2022",
+    "description": "",
+    "number": 2,
+    "start_time": "2022-12-12T12:59:11.332",
+    "year": 2022,
+    "creator_id": 3
+}
+
+### 
+# @name update_contest
+
+PUT {{rest}}/user-attendance/1
+Content-Type: application/json
+
+{
+    "name": "Học kì 1 năm học 2022",
+    "description": "xxx",
+    "number": 1,
+    "start_time": "2022-08-12T12:59:11.332",
+    "year": 2022,
+    "creator_id": 3
+}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-attendance
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-attendance/section/336eb357-0118-498f-842b-130bea371e24
+Authorization: Bearer {{admin_access_token}}

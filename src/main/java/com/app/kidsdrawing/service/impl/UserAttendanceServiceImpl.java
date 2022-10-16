@@ -255,4 +255,17 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
 
         return updatedUserAttendance.getId();
     }
+
+    @Override
+    public UUID updateUserAttendanceBySectionAndStudent(UUID section_id, UUID student_id) {
+        List<UserAttendance> userAttendanceOpt = userAttendanceRepository.findAll();
+        System.out.print(userAttendanceOpt.size());
+        userAttendanceOpt.forEach(ele -> {
+            if (ele.getStudent().getId().compareTo(student_id) == 0 && ele.getSection().getId().compareTo(section_id) == 0){
+                ele.setStatus(true);
+            }
+        });
+
+        return section_id;
+    }
 }

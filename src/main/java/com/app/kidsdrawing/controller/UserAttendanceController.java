@@ -59,6 +59,15 @@ public class UserAttendanceController {
     }
 
     @CrossOrigin
+    @PutMapping(value = "/section-student/{section_id}/{student_id}")
+    public ResponseEntity<GetUserAttendanceResponse> putUserAttendanceBySectionAndStudent(@PathVariable("section_id") UUID section_id, @PathVariable("student_id") UUID student_id) {
+        UUID tutorialPageId = tutorialTemplate.updateUserAttendanceBySectionAndStudent(section_id, student_id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{tutorialPageId}")
+                .buildAndExpand(tutorialPageId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/class-student/{class_id}/{student_id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserAttendanceByClassAndStudent(@PathVariable("class_id") UUID class_id, @PathVariable("student_id") UUID student_id) {
         return ResponseEntity.ok().body(tutorialTemplate.getAllUserAttendanceByClassAndStudent(class_id, student_id));

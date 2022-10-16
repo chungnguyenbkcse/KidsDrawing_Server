@@ -19,4 +19,5 @@ public interface UserAttendanceService {
     UUID createUserAttendance(CreateUserAttendanceRequest createUserAttendanceRequest);
     UUID removeUserAttendanceById(UUID id);
     UUID updateUserAttendanceById(UUID id, CreateUserAttendanceRequest createUserAttendanceRequest);
+    UUID updateUserAttendanceBySectionAndStudent(UUID section_id, UUID student_id);
 }

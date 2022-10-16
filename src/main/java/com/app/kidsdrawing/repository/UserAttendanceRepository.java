@@ -14,12 +14,12 @@ import com.app.kidsdrawing.entity.UserAttendance;
 
 @Repository
 public interface UserAttendanceRepository extends JpaRepository <UserAttendance, UUID>{
-    @Query("SELECT e FROM UserAttendance e JOIN FETCH e.student  JOIN FETCH e.section ORDER BY e.id")
+    @Query("SELECT e FROM UserAttendance e JOIN FETCH e.student  JOIN FETCH e.section ")
     List<UserAttendance> findAll();
 
     @Query(
-		value = "SELECT e FROM UserAttendance e JOIN FETCH e.student  JOIN FETCH e.section ORDER BY e.id",
-		countQuery = "SELECT e FROM UserAttendance e INNER JOIN e.student  INNER JOIN e.section ORDER BY e.id"
+		value = "SELECT e FROM UserAttendance e JOIN FETCH e.student  JOIN FETCH e.section ",
+		countQuery = "SELECT e FROM UserAttendance e INNER JOIN e.student  INNER JOIN e.section "
 	)
     Page<UserAttendance> findAll(Pageable pageable);
 
