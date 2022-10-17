@@ -95,7 +95,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     @Override
     public UUID createUserReadNotification(CreateUserReadNotificationRequest createUserReadNotificationRequest) {
 
-        Optional <User> userOpt = userRepository.findByUsername1(createUserReadNotificationRequest.getUser_id());
+        Optional <User> userOpt = userRepository.findById1(createUserReadNotificationRequest.getUser_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -132,7 +132,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     @Override
     public UUID updateUserReadNotificationById(CreateUserReadNotificationRequest createUserReadNotificationRequest) {
         //UserReadNotificationKey index = new UserReadNotificationKey(student_id, submission_id);
-        Optional <User> userOpt = userRepository.findByUsername1(createUserReadNotificationRequest.getUser_id());
+        Optional <User> userOpt = userRepository.findById1(createUserReadNotificationRequest.getUser_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -143,7 +143,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
         });
         List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findAll();
         listUserReadNotification.forEach(content-> {
-            if (content.getUser().getUsername().equals(createUserReadNotificationRequest.getUser_id()) && content.getNotification().getId().compareTo(createUserReadNotificationRequest.getNotification_id()) == 0){
+            if (content.getUser().getId().compareTo(createUserReadNotificationRequest.getUser_id()) == 0 && content.getNotification().getId().compareTo(createUserReadNotificationRequest.getNotification_id()) == 0){
                 UserReadNotification updatedUserReadNotification = content;
                 UserReadNotificationKey idx = new UserReadNotificationKey(user.getId(), notification.getId());
             
