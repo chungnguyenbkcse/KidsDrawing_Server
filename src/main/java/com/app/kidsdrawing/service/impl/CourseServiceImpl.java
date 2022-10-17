@@ -92,7 +92,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_type_name(course.getArtTypes().getName())
                     .art_level_name(course.getArtLevels().getName())
                     .creator_id(course.getUser().getId())
-                    .checked_tutoral(course.getSectionTemplates().size() > 0 ? true : false)
+                    .checked_tutoral(course.getSectionTemplates().size() == course.getNum_of_section() ? true : false)
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .build();
