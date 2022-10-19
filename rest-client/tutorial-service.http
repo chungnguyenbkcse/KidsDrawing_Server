@@ -54,4 +54,4 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/tutorial/4
+GET  {{rest}}/tutorial/section/048ba1d2-1556-4c83-b17b-c71430634b61
