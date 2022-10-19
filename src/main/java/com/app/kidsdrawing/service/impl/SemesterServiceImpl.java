@@ -359,10 +359,8 @@ public class SemesterServiceImpl implements SemesterService {
                 System.out.println(" Ket qua chi lop: " + String.valueOf(list_group.size()));
                 System.out.println(list_group);
                 // Số lớp có thể chia
-                int total_class = 0;
-                if (list_group.get(list_group.size() - 1).size() < 5){
-                    total_class = list_group.size() - 1;
-                }
+                int total_class = list_group.size();
+                
                 for (int i = 0; i < allUserRegisterTeachSemesters.size(); i++) {
                     //Danh sách học viên lớp thứ i
                     if (i < total_class){
