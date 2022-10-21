@@ -19,7 +19,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 6,
+    "parent_id": "e62a628d-c06b-49fa-84bf-3e1ebfc24c79",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -41,7 +41,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 6,
+    "parent_id": "e62a628d-c06b-49fa-84bf-3e1ebfc24c79",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -63,7 +63,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 7,
+    "parent_id": "8b346e96-7d67-4be0-8723-925b6eb5ee9b",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -85,7 +85,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 7,
+    "parent_id": "8b346e96-7d67-4be0-8723-925b6eb5ee9b",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -107,7 +107,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 8,
+    "parent_id": "ab441502-c8ed-4e16-8660-1fe78dbfb20b",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -129,7 +129,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 8,
+    "parent_id": "ab441502-c8ed-4e16-8660-1fe78dbfb20b",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -151,7 +151,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 9,
+    "parent_id": "2ed5f3e7-3122-4c6a-ad19-5d162e1ba99c",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -173,7 +173,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 9,
+    "parent_id": "2ed5f3e7-3122-4c6a-ad19-5d162e1ba99c",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -196,7 +196,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 10,
+    "parent_id": "9e077ae2-68a2-4408-aedc-764719b944cf",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -219,7 +219,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 10,
+    "parent_id": "9e077ae2-68a2-4408-aedc-764719b944cf",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -242,7 +242,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 6,
+    "parent_id": "a6e4533b-c8b1-4a34-a287-25942a7b618b",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -265,7 +265,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 11,
+    "parent_id": "a6e4533b-c8b1-4a34-a287-25942a7b618b",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -287,7 +287,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 11,
+    "parent_id": "f8074370-e48a-46d0-9da3-34e239867c44",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -310,7 +310,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 12,
+    "parent_id": "f8074370-e48a-46d0-9da3-34e239867c44",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -334,7 +334,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 12,
+    "parent_id": "118020c1-fc70-4447-8b47-214312fecaff",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -356,7 +356,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 13,
+    "parent_id": "118020c1-fc70-4447-8b47-214312fecaff",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -378,7 +378,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 13,
+    "parent_id": "d7e0ed6e-7bcb-4aa7-a9fe-9063b4f8707b",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -401,7 +401,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 14,
+    "parent_id": "d7e0ed6e-7bcb-4aa7-a9fe-9063b4f8707b",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -423,7 +423,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 14,
+    "parent_id": "87238c06-648f-4012-9244-081a316bb39e",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -446,7 +446,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 15,
+    "parent_id": "87238c06-648f-4012-9244-081a316bb39e",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -459,17 +459,17 @@ POST {{rest}}/registration
 Content-Type: application/json
 
 {
-    "username": "student-21",
+    "username": "student-40",
     "password": "12345678aA@",
-    "email": "student-21@gmail.com",
+    "email": "student-40@gmail.com",
     "firstName": "student",
-    "lastName": "21",
+    "lastName": "40",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
     "phone": null,
     "address": null,
-    "parent_id": 15,
+    "parent_id": "3646e54e-97fd-41b2-9977-23448b7664bb",
     "roleNames": ["STUDENT_USER"]
 }
 
@@ -673,11 +673,11 @@ POST {{rest}}/user
 Content-Type: application/json
 
 {
-    "username": "parent-10",
+    "username": "parent-20",
     "password": "12345678aA@",
-    "email": "parent-10@gmail.com",
+    "email": "parent-20@gmail.com",
     "firstName": "parent",
-    "lastName": "10",
+    "lastName": "20",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -698,7 +698,7 @@ Content-Type: application/json
     "password": "12345678aA@",
     "email": "chungnguyen10012000@gmail.com",
     "firstName": "admin",
-    "lastName": "1",
+    "lastName": "",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -794,11 +794,11 @@ POST {{rest}}/user
 Content-Type: application/json
 
 {
-    "username": "teacher-10",
+    "username": "teacher-20",
     "password": "12345678aA@",
-    "email": "teacher-10@gmail.com",
+    "email": "teacher-20@gmail.com",
     "firstName": "teacher",
-    "lastName": "10",
+    "lastName": "20",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
@@ -908,6 +908,11 @@ Content-Type: application/json
 
 # @name get_all_user_by_student
 GET {{rest}}/user/teacher
+Authorization: Bearer {{student_access_token}}
+
+###
+# @name get_all_user_by_student
+GET {{rest}}/user/parent
 Authorization: Bearer {{student_access_token}}
 
 ###
