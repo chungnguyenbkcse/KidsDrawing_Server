@@ -6,21 +6,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetStudentLeaveResponse {
-    private Long id;
-    private Long section_id;
+    private UUID id;
+    private UUID section_id;
     private int section_number;
     private String section_name;
-    private Long classes_id;
+    private UUID classes_id;
     private String class_name;
-    private Long student_id;
+    private UUID student_id;
     private String student_name;
-    private Long reviewer_id;
+    private UUID reviewer_id;
     private String description;
     private String status;
     private LocalDateTime create_time;

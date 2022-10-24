@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -67,11 +68,11 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByStudent(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByStudent(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
-        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId(id);
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId2(id);
         listStudentLeave.forEach(content -> {
             if (content.getStatus().equals("Approved")) {
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
@@ -137,13 +138,13 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByParent(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByParent(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findByParentId(id);
+        List<User> pageUser = userRepository.findByParentId1(id);
         pageUser.forEach(student -> {
-            List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId(student.getId());
+            List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId2(student.getId());
             listStudentLeave.forEach(content -> {
                 if (content.getStatus().equals("Approved")) {
                     GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
@@ -209,11 +210,10 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
-        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByClassesId2(id);
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getId() == id) {
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
@@ -230,7 +230,6 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     .update_time(content.getUpdate_time())
                     .build();
                 allStudentLeaveResponses.add(StudentLeaveResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -239,28 +238,26 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByTeacher(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByTeacher(UUID id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
-        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAllStudentLeaveByTeacher(id);
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getUserRegisterTeachSemester().getTeacher().getId() == id) {
-                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
-                    .id(content.getId())
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                    .reviewer_id(content.getReviewer().getId())
-                    .section_id(content.getSection().getId())
-                    .section_number(content.getSection().getNumber())
-                    .section_name(content.getSection().getName())
-                    .classes_id(content.getClasses().getId())
-                    .class_name(content.getClasses().getName())
-                    .status(content.getStatus())
-                    .description(content.getDescription())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allStudentLeaveResponses.add(StudentLeaveResponse);
-            }
+            GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .reviewer_id(content.getReviewer().getId())
+                .section_id(content.getSection().getId())
+                .section_number(content.getSection().getNumber())
+                .section_name(content.getSection().getName())
+                .classes_id(content.getClasses().getId())
+                .class_name(content.getClasses().getName())
+                .status(content.getStatus())
+                .description(content.getDescription())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allStudentLeaveResponses.add(StudentLeaveResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -269,28 +266,26 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(Long classes_id, Long student_id) {
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(UUID classes_id, UUID student_id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
-        List<StudentLeave> listStudentLeave = studentLeaveRepository.findAll();
+        List<StudentLeave> listStudentLeave = studentLeaveRepository.findByClassesAndStudent(classes_id, student_id);
         listStudentLeave.forEach(content -> {
-            if (content.getClasses().getId() == classes_id && content.getStudent().getId() == student_id) {
-                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
-                    .id(content.getId())
-                    .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                    .reviewer_id(content.getReviewer().getId())
-                    .section_id(content.getSection().getId())
-                    .section_number(content.getSection().getNumber())
-                    .section_name(content.getSection().getName())
-                    .classes_id(content.getClasses().getId())
-                    .class_name(content.getClasses().getName())
-                    .status(content.getStatus())
-                    .description(content.getDescription())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allStudentLeaveResponses.add(StudentLeaveResponse);
-            }
+            GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .reviewer_id(content.getReviewer().getId())
+                .section_id(content.getSection().getId())
+                .section_number(content.getSection().getNumber())
+                .section_name(content.getSection().getName())
+                .classes_id(content.getClasses().getId())
+                .class_name(content.getClasses().getName())
+                .status(content.getStatus())
+                .description(content.getDescription())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allStudentLeaveResponses.add(StudentLeaveResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -299,8 +294,8 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public GetStudentLeaveResponse getStudentLeaveById(Long id) {
-        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById(id);
+    public GetStudentLeaveResponse getStudentLeaveById(UUID id) {
+        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById2(id);
         StudentLeave StudentLeave = StudentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
@@ -323,24 +318,24 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest) {
+    public UUID createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest) {
 
-        Optional <User> studentOpt = userRepository.findById(createStudentLeaveRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createStudentLeaveRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <User> adminOpt = userRepository.findById((long) 1);
+        Optional <User> adminOpt = userRepository.findByUsername1("admin");
         User admin = adminOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createStudentLeaveRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createStudentLeaveRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <Classes> classOpt = classRepository.findById(createStudentLeaveRequest.getClasses_id());
+        Optional <Classes> classOpt = classRepository.findById1(createStudentLeaveRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });
@@ -359,8 +354,8 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long removeStudentLeaveById(Long id) {
-        Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById(id);
+    public UUID removeStudentLeaveById(UUID id) {
+        Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById1(id);
         studentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
@@ -370,23 +365,23 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long updateStudentLeaveById(Long id, CreateStudentLeaveRequest createStudentLeaveRequest) {
-        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById(id);
+    public UUID updateStudentLeaveById(UUID id, CreateStudentLeaveRequest createStudentLeaveRequest) {
+        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findById1(id);
         StudentLeave updatedStudentLeave = StudentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById(createStudentLeaveRequest.getStudent_id());
+        Optional <User> studentOpt = userRepository.findById1(createStudentLeaveRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createStudentLeaveRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createStudentLeaveRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <Classes> classOpt = classRepository.findById(createStudentLeaveRequest.getClasses_id());
+        Optional <Classes> classOpt = classRepository.findById1(createStudentLeaveRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });
@@ -400,8 +395,8 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long updateStatusStudentLeaveById(Long id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest) {
-        Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById(id);
+    public UUID updateStatusStudentLeaveById(UUID id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest) {
+        Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById1(id);
         StudentLeave updatedStudentLeave = studentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });

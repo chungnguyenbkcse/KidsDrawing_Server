@@ -28,6 +28,42 @@ Content-Type: application/json
 ### CREATE SCHEDULE CLASS ACTION ###
 # @name create_schedule_class
 
+POST {{rest}}/semester/schedule-class/1
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "time": ["2022-01-01"]
+}
+
+
+### CREATE SCHEDULE CLASS ACTION ###
+# @name create_schedule_class
+
+POST {{rest}}/semester/schedule-class/2
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "time": ["2022-04-02", "2022-05-05"]
+}
+
+
+### CREATE SCHEDULE CLASS ACTION ###
+# @name create_schedule_class
+
+POST {{rest}}/semester/schedule-class/3
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "time": ["2022-07-07", "2022-08-08"]
+}
+
+
+### CREATE SCHEDULE CLASS ACTION ###
+# @name create_schedule_class
+
 POST {{rest}}/semester/schedule-class/heroku/4
 Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json

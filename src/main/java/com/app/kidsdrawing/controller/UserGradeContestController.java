@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,20 +30,20 @@ public class UserGradeContestController {
 
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByTeacherId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByTeacherId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userGradeContestService.getAllUserGradeContestByTeacherId(id));
     } 
 
     @CrossOrigin
     @GetMapping(value = "/contest/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByContestId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestByContestId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userGradeContestService.getAllUserGradeContestByContestId(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserGradeContest(@RequestBody CreateUserGradeContestRequest createUserGradeContestRequest) {
-        Long userGradeContestId = userGradeContestService.createUserGradeContest(createUserGradeContestRequest);
+        UUID userGradeContestId = userGradeContestService.createUserGradeContest(createUserGradeContestRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userGradeContestId}")
                 .buildAndExpand(userGradeContestId).toUri();
         return ResponseEntity.created(location).build();
@@ -50,8 +51,8 @@ public class UserGradeContestController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateUserGradeContest(@PathVariable Long id, @RequestBody CreateUserGradeContestRequest createUserGradeContestRequest) {
-        Long UserGradeContestId = userGradeContestService.updateUserGradeContestById(id,createUserGradeContestRequest);
+    public ResponseEntity<String> updateUserGradeContest(@PathVariable UUID id, @RequestBody CreateUserGradeContestRequest createUserGradeContestRequest) {
+        UUID UserGradeContestId = userGradeContestService.updateUserGradeContestById(id,createUserGradeContestRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(UserGradeContestId).toUri();
         return ResponseEntity.created(location).build();
@@ -59,14 +60,23 @@ public class UserGradeContestController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserGradeContestResponse> getUserGradeContestById(@PathVariable Long id) {
+    public ResponseEntity<GetUserGradeContestResponse> getUserGradeContestById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userGradeContestService.getUserGradeContestById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserGradeContestById(@PathVariable Long id) {
-        Long UserGradeContestId = userGradeContestService.removeUserGradeContestById(id);
+    public ResponseEntity<String> deleteUserGradeContestById(@PathVariable UUID id) {
+        UUID UserGradeContestId = userGradeContestService.removeUserGradeContestById(id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(UserGradeContestId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @DeleteMapping(value = "/contest/{id}")
+    public ResponseEntity<String> deleteUserGradeContestByContest(@PathVariable UUID id) {
+        UUID UserGradeContestId = userGradeContestService.removeUserGradeContestByContest(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(UserGradeContestId).toUri();
         return ResponseEntity.created(location).build();

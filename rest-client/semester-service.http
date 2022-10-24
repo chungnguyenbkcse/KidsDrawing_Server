@@ -27,7 +27,7 @@ Authorization: Bearer {{admin_access_token}}
     "start_time": "2022-09-01T00:00:00",
     "end_time": "2022-11-01T00:00:00",
     "year": 2022,
-    "creator_id": 1
+    "creator_id": "1951832a-1fc6-4515-98b6-2b1835b6dc6e"
 }
 
 
@@ -81,4 +81,4 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/semester
+GET  {{rest}}/semester/6246554e-11b1-4a6f-b51e-53dded886589

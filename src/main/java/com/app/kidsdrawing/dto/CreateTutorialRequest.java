@@ -1,10 +1,10 @@
 package com.app.kidsdrawing.dto;
 
-import lombok.Data;
+import lombok.Data;                                   import java.util.UUID;
 
 @Data
 public class CreateTutorialRequest {
-    private Long section_id;
-    private Long creator_id;
+    private UUID section_id;
+    private UUID creator_id;
     private String name;
 }

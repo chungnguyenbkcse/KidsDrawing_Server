@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -61,15 +62,13 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserAttendanceBySection(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserAttendanceBySection(UUID id) {
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
-        List<UserAttendance> listUserAttendance = userAttendanceRepository.findBySectionId(id);
+        List<UserAttendance> listUserAttendance = userAttendanceRepository.findBySectionId2(id);
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                 .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .course_id(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                .course_name(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
                 .email(content.getStudent().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
@@ -87,15 +86,13 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserAttendanceByStudent(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserAttendanceByStudent(UUID id) {
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
-        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId(id);
+        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId2(id);
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                 .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .course_id(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                .course_name(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
                 .email(content.getStudent().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
@@ -114,26 +111,22 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserAttendanceByClassAndStudent(Long classes_id, Long student_id) {
+    public ResponseEntity<Map<String, Object>> getAllUserAttendanceByClassAndStudent(UUID classes_id, UUID student_id) {
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
-        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId(student_id);
+        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByClassIdAndStudentId(classes_id, student_id);
         listUserAttendance.forEach(content -> {
-            if (content.getSection().getClasses().getId() == classes_id) {
-                GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
-                    .id(content.getId())
-                    .section_number(content.getSection().getNumber())
-                    .course_id(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                    .course_name(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
-                    .email(content.getStudent().getEmail())
-                    .section_id(content.getSection().getId())
-                    .student_id(content.getStudent().getId())
-                    .section_name(content.getSection().getName())
-                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                    .create_time(content.getCreateTime())
-                    .update_time(content.getUpdateTime())
-                    .build();
-                allUserAttendanceResponses.add(userAttendanceResponse);
-            }
+            GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
+                .id(content.getId())
+                .section_number(content.getSection().getNumber())
+                .email(content.getStudent().getEmail())
+                .section_id(content.getSection().getId())
+                .student_id(content.getStudent().getId())
+                .section_name(content.getSection().getName())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .create_time(content.getCreateTime())
+                .update_time(content.getUpdateTime())
+                .build();
+            allUserAttendanceResponses.add(userAttendanceResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -142,26 +135,22 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserAttendanceByClass(Long classes_id) {
+    public ResponseEntity<Map<String, Object>> getAllUserAttendanceByClass(UUID classes_id) {
         List<GetUserAttendanceResponse> allUserAttendanceResponses = new ArrayList<>();
-        List<UserAttendance> listUserAttendance = userAttendanceRepository.findAll();
+        List<UserAttendance> listUserAttendance = userAttendanceRepository.findByClassId(classes_id);
         listUserAttendance.forEach(content -> {
-            if (content.getSection().getClasses().getId() == classes_id) {
-                GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
-                    .id(content.getId())
-                    .section_number(content.getSection().getNumber())
-                    .course_id(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                    .course_name(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
-                    .email(content.getStudent().getEmail())
-                    .section_id(content.getSection().getId())
-                    .student_id(content.getStudent().getId())
-                    .section_name(content.getSection().getName())
-                    .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
-                    .create_time(content.getCreateTime())
-                    .update_time(content.getUpdateTime())
-                    .build();
-                allUserAttendanceResponses.add(userAttendanceResponse);
-            }
+            GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
+                .id(content.getId())
+                .section_number(content.getSection().getNumber())
+                .email(content.getStudent().getEmail())
+                .section_id(content.getSection().getId())
+                .student_id(content.getStudent().getId())
+                .section_name(content.getSection().getName())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .create_time(content.getCreateTime())
+                .update_time(content.getUpdateTime())
+                .build();
+            allUserAttendanceResponses.add(userAttendanceResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -171,28 +160,26 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
 
 
     @Override
-    public GetUserAttendanceResponse getAllUserAttendanceBySectionAndStudent(Long section_id, Long student_id) {
-        UserAttendance userAttendance = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
+    public GetUserAttendanceResponse getAllUserAttendanceBySectionAndStudent(UUID section_id, UUID student_id) {
+        List<UserAttendance> userAttendance = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
         return GetUserAttendanceResponse.builder()
-            .id(userAttendance.getId())
-            .section_number(userAttendance.getSection().getNumber())
-            .course_id(userAttendance.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-            .course_name(userAttendance.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
-            .email(userAttendance.getStudent().getEmail())
-            .section_id(userAttendance.getSection().getId())
-            .student_id(userAttendance.getStudent().getId())
-            .section_name(userAttendance.getSection().getName())
-            .student_name(userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
-            .create_time(userAttendance.getCreateTime())
-            .update_time(userAttendance.getUpdateTime())
+            .id(userAttendance.get(0).getId())
+            .section_number(userAttendance.get(0).getSection().getNumber())
+            .email(userAttendance.get(0).getStudent().getEmail())
+            .section_id(userAttendance.get(0).getSection().getId())
+            .student_id(userAttendance.get(0).getStudent().getId())
+            .section_name(userAttendance.get(0).getSection().getName())
+            .student_name(userAttendance.get(0).getStudent().getFirstName() + " " + userAttendance.get(0).getStudent().getLastName())
+            .create_time(userAttendance.get(0).getCreateTime())
+            .update_time(userAttendance.get(0).getUpdateTime())
             .build();
     }
 
 
 
     @Override
-    public GetUserAttendanceResponse getUserAttendanceById(Long id) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById(id);
+    public GetUserAttendanceResponse getUserAttendanceById(UUID id) {
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById2(id);
         UserAttendance userAttendance = userAttendanceOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
@@ -200,8 +187,6 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         return GetUserAttendanceResponse.builder()
             .id(userAttendance.getId())
             .section_number(userAttendance.getSection().getNumber())
-            .course_id(userAttendance.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-            .course_name(userAttendance.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
             .email(userAttendance.getStudent().getEmail())
             .section_id(userAttendance.getSection().getId())
             .student_id(userAttendance.getStudent().getId())
@@ -213,14 +198,14 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     }
 
     @Override
-    public Long createUserAttendance(CreateUserAttendanceRequest createUserAttendanceRequest) {
+    public UUID createUserAttendance(CreateUserAttendanceRequest createUserAttendanceRequest) {
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createUserAttendanceRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createUserAttendanceRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createUserAttendanceRequest.getStudent_id());
+        Optional <User> userOpt = userRepository.findById1(createUserAttendanceRequest.getStudent_id());
         User student = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
@@ -237,8 +222,8 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
 
     
     @Override
-    public Long removeUserAttendanceById(Long id) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById(id);
+    public UUID removeUserAttendanceById(UUID id) {
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById1(id);
         userAttendanceOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
@@ -248,18 +233,18 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     }
 
     @Override
-    public Long updateUserAttendanceById(Long id, CreateUserAttendanceRequest createUserAttendanceRequest) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById(id);
+    public UUID updateUserAttendanceById(UUID id, CreateUserAttendanceRequest createUserAttendanceRequest) {
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById1(id);
         UserAttendance updatedUserAttendance = userAttendanceOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createUserAttendanceRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createUserAttendanceRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createUserAttendanceRequest.getStudent_id());
+        Optional <User> userOpt = userRepository.findById1(createUserAttendanceRequest.getStudent_id());
         User student = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.student.not_found");
         });
@@ -269,5 +254,18 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         updatedUserAttendance.setStudent(student);
 
         return updatedUserAttendance.getId();
+    }
+
+    @Override
+    public UUID updateUserAttendanceBySectionAndStudent(UUID section_id, UUID student_id) {
+        List<UserAttendance> userAttendanceOpt = userAttendanceRepository.findAll();
+        System.out.print(userAttendanceOpt.size());
+        userAttendanceOpt.forEach(ele -> {
+            if (ele.getStudent().getId().compareTo(student_id) == 0 && ele.getSection().getId().compareTo(section_id) == 0){
+                ele.setStatus(true);
+            }
+        });
+
+        return section_id;
     }
 }

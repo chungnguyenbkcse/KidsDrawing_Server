@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,7 +32,7 @@ public class ArtAgeController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createArtAge(@RequestBody CreateArtAgeRequest createArtAgeRequest) {
-        Long artAgeId = artAgeService.createArtAge(createArtAgeRequest);
+        UUID artAgeId = artAgeService.createArtAge(createArtAgeRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{artAgeId}")
                 .buildAndExpand(artAgeId).toUri();
         return ResponseEntity.created(location).build();
@@ -39,8 +40,8 @@ public class ArtAgeController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateArtAge(@PathVariable Long id, @RequestBody CreateArtAgeRequest createArtAgeRequest) {
-        Long artAgeId = artAgeService.updateArtAgeById(id,createArtAgeRequest);
+    public ResponseEntity<String> updateArtAge(@PathVariable UUID id, @RequestBody CreateArtAgeRequest createArtAgeRequest) {
+        UUID artAgeId = artAgeService.updateArtAgeById(id,createArtAgeRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(artAgeId).toUri();
         return ResponseEntity.created(location).build();
@@ -55,14 +56,14 @@ public class ArtAgeController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetArtAgeResponse> getArtAgeById(@PathVariable Long id) {
+    public ResponseEntity<GetArtAgeResponse> getArtAgeById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(artAgeService.getArtAgeById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteArtAgeById(@PathVariable Long id) {
-        Long artAgeId = artAgeService.removeArtAgeById(id);
+    public ResponseEntity<String> deleteArtAgeById(@PathVariable UUID id) {
+        UUID artAgeId = artAgeService.removeArtAgeById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(artAgeId).toUri();
         return ResponseEntity.created(location).build();

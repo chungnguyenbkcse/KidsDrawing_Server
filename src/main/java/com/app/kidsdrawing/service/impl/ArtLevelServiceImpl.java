@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -55,7 +56,7 @@ public class ArtLevelServiceImpl implements ArtLevelService {
     }
 
     @Override
-    public GetArtLevelResponse getArtLevelById(Long id){
+    public GetArtLevelResponse getArtLevelById(UUID id){
         Optional<ArtLevel> artLevelOpt = artLevelRepository.findById(id);
         ArtLevel artLevel = artLevelOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtLevel.not_found");
@@ -69,7 +70,7 @@ public class ArtLevelServiceImpl implements ArtLevelService {
     }
 
     @Override
-    public Long createArtLevel(CreateArtLevelRequest createArtLevelRequest) {
+    public UUID createArtLevel(CreateArtLevelRequest createArtLevelRequest) {
         if (artLevelRepository.existsByName(createArtLevelRequest.getName())) {
             throw new ArtLevelAlreadyCreateException("exception.art_level.art_level_taken");
         }
@@ -84,7 +85,7 @@ public class ArtLevelServiceImpl implements ArtLevelService {
     }
 
     @Override
-    public Long removeArtLevelById(Long id) {
+    public UUID removeArtLevelById(UUID id) {
         Optional<ArtLevel> artLevelOpt = artLevelRepository.findById(id);
         artLevelOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtLevel.not_found");
@@ -95,7 +96,7 @@ public class ArtLevelServiceImpl implements ArtLevelService {
     }
 
     @Override
-    public Long updateArtLevelById(Long id, CreateArtLevelRequest createArtLevelRequest) {
+    public UUID updateArtLevelById(UUID id, CreateArtLevelRequest createArtLevelRequest) {
         Optional<ArtLevel> artLevelOpt = artLevelRepository.findById(id);
         ArtLevel updatedArtLevel = artLevelOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtLevel.not_found");

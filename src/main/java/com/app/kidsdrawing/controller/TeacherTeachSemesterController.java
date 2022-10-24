@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,14 +37,14 @@ public class TeacherTeachSemesterController {
 
     @CrossOrigin
     @GetMapping(value = "/semester-class/schedule-class/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherTeachSemesterBySemesterClassSchedule(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherTeachSemesterBySemesterClassSchedule(@PathVariable UUID id) {
         return ResponseEntity.ok().body(teacherTeachSemesterService.getAllTeacherTeachSemesterBySemesterClassSchedule(id));
     } 
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createTeacherTeachSemester(@RequestBody CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
-        Long teacherTeachSemesterId = teacherTeachSemesterService.createTeacherTeachSemester(createTeacherTeachSemesterRequest);
+        UUID teacherTeachSemesterId = teacherTeachSemesterService.createTeacherTeachSemester(createTeacherTeachSemesterRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{teacherTeachSemesterId}")
                 .buildAndExpand(teacherTeachSemesterId).toUri();
         return ResponseEntity.created(location).build();
@@ -51,8 +52,8 @@ public class TeacherTeachSemesterController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateTeacherTeachSemester(@PathVariable Long id, @RequestBody CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
-        Long teacherTeachSemesterId = teacherTeachSemesterService.updateTeacherTeachSemesterById(id,createTeacherTeachSemesterRequest);
+    public ResponseEntity<String> updateTeacherTeachSemester(@PathVariable UUID id, @RequestBody CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
+        UUID teacherTeachSemesterId = teacherTeachSemesterService.updateTeacherTeachSemesterById(id,createTeacherTeachSemesterRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(teacherTeachSemesterId).toUri();
         return ResponseEntity.created(location).build();
@@ -60,14 +61,14 @@ public class TeacherTeachSemesterController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetTeacherTeachSemesterResponse> getTeacherTeachSemesterById(@PathVariable Long id) {
+    public ResponseEntity<GetTeacherTeachSemesterResponse> getTeacherTeachSemesterById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(teacherTeachSemesterService.getTeacherTeachSemesterById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteTeacherTeachSemesterById(@PathVariable Long id) {
-        Long teacherTeachSemesterId = teacherTeachSemesterService.removeTeacherTeachSemesterById(id);
+    public ResponseEntity<String> deleteTeacherTeachSemesterById(@PathVariable UUID id) {
+        UUID teacherTeachSemesterId = teacherTeachSemesterService.removeTeacherTeachSemesterById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(teacherTeachSemesterId).toUri();
         return ResponseEntity.created(location).build();

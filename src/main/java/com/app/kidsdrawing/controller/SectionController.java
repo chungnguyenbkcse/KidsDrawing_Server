@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,14 +36,14 @@ public class SectionController {
     
     @CrossOrigin
     @GetMapping(value = "/class/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionByClassId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionByClassId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(sectionService.getAllSectionByClassId(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createSection(@RequestBody CreateSectionRequest createSectionRequest) {
-        Long sectionId = sectionService.createSection(createSectionRequest);
+        UUID sectionId = sectionService.createSection(createSectionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{sectionId}")
                 .buildAndExpand(sectionId).toUri();
         return ResponseEntity.created(location).build();
@@ -50,8 +51,8 @@ public class SectionController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateSection(@PathVariable Long id, @RequestBody CreateSectionRequest createSectionRequest) {
-        Long sectionId = sectionService.updateSectionById(id,createSectionRequest);
+    public ResponseEntity<String> updateSection(@PathVariable UUID id, @RequestBody CreateSectionRequest createSectionRequest) {
+        UUID sectionId = sectionService.updateSectionById(id,createSectionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(sectionId).toUri();
         return ResponseEntity.created(location).build();
@@ -59,14 +60,14 @@ public class SectionController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetSectionResponse> getSectionById(@PathVariable Long id) {
+    public ResponseEntity<GetSectionResponse> getSectionById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(sectionService.getSectionById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteSectionById(@PathVariable Long id) {
-        Long SectionId = sectionService.removeSectionById(id);
+    public ResponseEntity<String> deleteSectionById(@PathVariable UUID id) {
+        UUID SectionId = sectionService.removeSectionById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(SectionId).toUri();
         return ResponseEntity.created(location).build();

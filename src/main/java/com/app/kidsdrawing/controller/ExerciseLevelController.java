@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,7 +37,7 @@ public class ExerciseLevelController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createExerciseLevel(@RequestBody CreateExerciseLevelRequest createExerciseLevelRequest) {
-        Long exerciseLevelId = exerciseLevelService.createExerciseLevel(createExerciseLevelRequest);
+        UUID exerciseLevelId = exerciseLevelService.createExerciseLevel(createExerciseLevelRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{exerciseLevelId}")
                 .buildAndExpand(exerciseLevelId).toUri();
         return ResponseEntity.created(location).build();
@@ -44,8 +45,8 @@ public class ExerciseLevelController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateExerciseLevel(@PathVariable Long id, @RequestBody CreateExerciseLevelRequest createExerciseLevelRequest) {
-        Long exerciseLevelId = exerciseLevelService.updateExerciseLevelById(id,createExerciseLevelRequest);
+    public ResponseEntity<String> updateExerciseLevel(@PathVariable UUID id, @RequestBody CreateExerciseLevelRequest createExerciseLevelRequest) {
+        UUID exerciseLevelId = exerciseLevelService.updateExerciseLevelById(id,createExerciseLevelRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(exerciseLevelId).toUri();
         return ResponseEntity.created(location).build();
@@ -53,14 +54,14 @@ public class ExerciseLevelController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetExerciseLevelResponse> getExerciseLevelById(@PathVariable Long id) {
+    public ResponseEntity<GetExerciseLevelResponse> getExerciseLevelById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(exerciseLevelService.getExerciseLevelById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteExerciseLevelById(@PathVariable Long id) {
-        Long exerciseLevelId = exerciseLevelService.removeExerciseLevelById(id);
+    public ResponseEntity<String> deleteExerciseLevelById(@PathVariable UUID id) {
+        UUID exerciseLevelId = exerciseLevelService.removeExerciseLevelById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(exerciseLevelId).toUri();
         return ResponseEntity.created(location).build();

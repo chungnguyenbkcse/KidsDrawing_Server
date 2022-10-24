@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,13 +37,13 @@ public class TeacherLeaveController {
 
     @CrossOrigin
     @GetMapping(value = "/class/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherLeave(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherLeave(@PathVariable UUID id) {
         return ResponseEntity.ok().body(teacherLeaveService.getTeacherLeaveByClassId(id));
     }
     
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherLeaveByTeacher(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherLeaveByTeacher(@PathVariable UUID id) {
         return ResponseEntity.ok().body(teacherLeaveService.getTeacherLeaveByTeacher(id));
     }
 
@@ -54,8 +55,8 @@ public class TeacherLeaveController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateTeacherLeave(@PathVariable Long id, @RequestBody CreateTeacherLeaveRequest createTeacherLeaveRequest) {
-        Long TeacherLeaveId = teacherLeaveService.updateTeacherLeaveById(id,createTeacherLeaveRequest);
+    public ResponseEntity<String> updateTeacherLeave(@PathVariable UUID id, @RequestBody CreateTeacherLeaveRequest createTeacherLeaveRequest) {
+        UUID TeacherLeaveId = teacherLeaveService.updateTeacherLeaveById(id,createTeacherLeaveRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(TeacherLeaveId).toUri();
         return ResponseEntity.created(location).build();
@@ -63,20 +64,20 @@ public class TeacherLeaveController {
 
     @CrossOrigin
     @PutMapping(value = "/admin/{id}")
-    public ResponseEntity<GetTeacherLeaveResponse> updateStatusTeacherLeave(@PathVariable Long id, @RequestBody CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
+    public ResponseEntity<GetTeacherLeaveResponse> updateStatusTeacherLeave(@PathVariable UUID id, @RequestBody CreateReviewTeacherLeaveRequest createReviewTeacherLeaveRequest) {
         return ResponseEntity.ok().body(teacherLeaveService.updateStatusTeacherLeaveById(id, createReviewTeacherLeaveRequest));
     }
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetTeacherLeaveResponse> getTeacherLeaveById(@PathVariable Long id) {
+    public ResponseEntity<GetTeacherLeaveResponse> getTeacherLeaveById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(teacherLeaveService.getTeacherLeaveById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteTeacherLeaveById(@PathVariable Long id) {
-        Long TeacherLeaveId = teacherLeaveService.removeTeacherLeaveById(id);
+    public ResponseEntity<String> deleteTeacherLeaveById(@PathVariable UUID id) {
+        UUID TeacherLeaveId = teacherLeaveService.removeTeacherLeaveById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(TeacherLeaveId).toUri();
         return ResponseEntity.created(location).build();

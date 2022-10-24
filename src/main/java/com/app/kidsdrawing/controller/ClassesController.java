@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,7 +31,7 @@ public class ClassesController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createClass(@RequestBody CreateClassRequest createClassRequest) {
-        Long classId = classService.createClass(createClassRequest);
+        UUID classId = classService.createClass(createClassRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{classId}")
                 .buildAndExpand(classId).toUri();
         return ResponseEntity.created(location).build();
@@ -38,8 +39,8 @@ public class ClassesController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateClass(@PathVariable Long id, @RequestBody CreateClassRequest createClassRequest) {
-        Long classId = classService.updateClassById(id,createClassRequest);
+    public ResponseEntity<String> updateClass(@PathVariable UUID id, @RequestBody CreateClassRequest createClassRequest) {
+        UUID classId = classService.updateClassById(id,createClassRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(classId).toUri();
         return ResponseEntity.created(location).build();
@@ -53,31 +54,31 @@ public class ClassesController {
 
     @CrossOrigin
     @GetMapping(value="/schedule-child/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforDetailAllClass(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforDetailAllClass(@PathVariable UUID id) {
         return ResponseEntity.ok().body(classService.getInforScheduleChild(id));
     }
 
     @CrossOrigin
     @GetMapping(value="/parent/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesStudentForParentId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesStudentForParentId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(classService.getClassesStudentForParentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value="/student/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesForStudentId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesForStudentId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(classService.getClassesForStudentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value="/student/detail/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesStudentForStudentId(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesStudentForStudentId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(classService.getClassesStudentForStudentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value="/schedule-allchild/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforScheduleAllChild(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforScheduleAllChild(@PathVariable UUID id) {
         return ResponseEntity.ok().body(classService.getInforScheduleAllChild(id));
     }
 
@@ -89,7 +90,7 @@ public class ClassesController {
 
     @CrossOrigin
     @GetMapping(value = "/info/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforDetailOfClass(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforDetailOfClass(@PathVariable UUID id) {
         return ResponseEntity.ok().body(classService.getInforDetailOfClass(id));
     } 
 
@@ -102,20 +103,20 @@ public class ClassesController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetClassResponse> getClassById(@PathVariable Long id) {
+    public ResponseEntity<GetClassResponse> getClassById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(classService.getClassById(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public  ResponseEntity<ResponseEntity<Map<String, Object>>>  getInforDetailOfClassByTeacherId(@PathVariable Long id) {
+    public  ResponseEntity<ResponseEntity<Map<String, Object>>>  getInforDetailOfClassByTeacherId(@PathVariable UUID id) {
         return ResponseEntity.ok().body(classService.getInforDetailOfClassByTeacherId(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteClassById(@PathVariable Long id) {
-        Long classId = classService.removeClassById(id);
+    public ResponseEntity<String> deleteClassById(@PathVariable UUID id) {
+        UUID classId = classService.removeClassById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(classId).toUri();
         return ResponseEntity.created(location).build();

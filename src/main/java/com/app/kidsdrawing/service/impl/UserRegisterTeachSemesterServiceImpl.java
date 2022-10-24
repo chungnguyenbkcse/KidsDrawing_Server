@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -57,9 +58,9 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTeacherTeachSemesterBySemesterClassSchedule(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllTeacherTeachSemesterBySemesterClassSchedule(UUID id) {
         List<GetUserRegisterTeachSemesterScheduleClassResponse> allTeacherTeachSemesterResponses = new ArrayList<>();
-        List<UserRegisterTeachSemester> listTeacherTeachSemester = userRegisterTeachSemesterRepository.findBySemesterClassId(id);
+        List<UserRegisterTeachSemester> listTeacherTeachSemester = userRegisterTeachSemesterRepository.findBySemesterClassId1(id);
         listTeacherTeachSemester.forEach(content -> {
             GetUserRegisterTeachSemesterScheduleClassResponse teacherTeachSemesterResponse = GetUserRegisterTeachSemesterScheduleClassResponse.builder()
                 .id(content.getId())
@@ -73,8 +74,8 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     }
 
     @Override
-    public GetTeacherTeachSemesterResponse getTeacherTeachSemesterById(Long id) {
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById(id);
+    public GetTeacherTeachSemesterResponse getTeacherTeachSemesterById(UUID id) {
+        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById2(id);
         UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
@@ -88,13 +89,13 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     }
 
     @Override
-    public Long createTeacherTeachSemester(CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
-        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById(createTeacherTeachSemesterRequest.getSemester_classes_id());
+    public UUID createTeacherTeachSemester(CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
+        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById1(createTeacherTeachSemesterRequest.getSemester_classes_id());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById(createTeacherTeachSemesterRequest.getTeacher_id());
+        Optional <User> teacherOpt = userRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
         User teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
@@ -111,8 +112,8 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     }
 
     @Override
-    public Long removeTeacherTeachSemesterById(Long id) {
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById(id);
+    public UUID removeTeacherTeachSemesterById(UUID id) {
+        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById1(id);
         teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
@@ -122,18 +123,18 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     }
 
     @Override
-    public Long updateTeacherTeachSemesterById(Long id, CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById(id);
+    public UUID updateTeacherTeachSemesterById(UUID id, CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
+        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById1(id);
         UserRegisterTeachSemester updatedTeacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
 
-        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById(createTeacherTeachSemesterRequest.getSemester_classes_id());
+        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById1(createTeacherTeachSemesterRequest.getSemester_classes_id());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById(createTeacherTeachSemesterRequest.getTeacher_id());
+        Optional <User> teacherOpt = userRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
         User teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });

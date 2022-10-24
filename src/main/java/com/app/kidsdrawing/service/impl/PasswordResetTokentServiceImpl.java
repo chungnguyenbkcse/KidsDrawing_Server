@@ -38,7 +38,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
     
     @Override
     public GetPasswordResetTokenResponse resetPassword(String email) {
-        Optional<User> userOpt = userRepository.findByEmail(email);
+        Optional<User> userOpt = userRepository.findByEmail1(email);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -60,14 +60,14 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
     }
 
     @Override
-    public Long savePassword(CreateResetPasswordRequest createResetPasswordRequest) {
+    public UUID savePassword(CreateResetPasswordRequest createResetPasswordRequest) {
         String result = validatePasswordResetToken(createResetPasswordRequest.getToken());
 
         if(result != null) {
             throw new EntityNotFoundException(result);
         }
 
-        Optional<PasswordResetToken> passwordResetTokenOpt = passwordTokenRepository.findByToken(createResetPasswordRequest.getToken());
+        Optional<PasswordResetToken> passwordResetTokenOpt = passwordTokenRepository.findByToken2(createResetPasswordRequest.getToken());
         PasswordResetToken passwordResetToken = passwordResetTokenOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.PasswordResetToken.not_found");
         });
@@ -94,7 +94,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
 
     @Override
     public String validatePasswordResetToken(String token) {
-        Optional<PasswordResetToken> passwordTokenOpt = passwordTokenRepository.findByToken(token);
+        Optional<PasswordResetToken> passwordTokenOpt = passwordTokenRepository.findByToken1(token);
         PasswordResetToken passToken  = passwordTokenOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.PasswordResetToken.not_found");
         });

@@ -21,10 +21,10 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "teacher_id": 3,
-    "exercise_submission_id": 6,
-    "feedback": "Bài làm vo cung tốt",
-    "score": 7
+    "teacher_id": 1,
+    "exercise_submission_id": 14,
+    "feedback": "Bài làm tốt",
+    "score": 8
 }
 
 ### CREATE CONTEST ACTION ###

@@ -3,6 +3,7 @@ package com.app.kidsdrawing.entity;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -26,17 +27,23 @@ public class ClassHasRegisterJoinSemesterClass {
     @EmbeddedId
     ClassHasRegisterJoinSemesterClassKey id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("classesId")
     @JoinColumn(name = "classes_id")
     Classes classes;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId("userRegisterJoinSemesterId")
     @JoinColumn(name = "user_register_join_semester_id")
     UserRegisterJoinSemester userRegisterJoinSemester;
 
     @Column(name = "review_star")
     private Integer review_star;
+
+    @Column(name = "student_feedback")
+    private String student_feedback;
+
+    @Column(name = "teacher_feedback")
+    private String teacher_feedback;
 
 }

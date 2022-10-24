@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,22 +30,20 @@ public class UserRegisterJoinContestController {
 
     @CrossOrigin
     @GetMapping(value = "/student/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByTeacherId(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByTeacherId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByTeacherId(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByStudentId(id));
     } 
 
     @CrossOrigin
     @GetMapping(value = "/contest/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByContestId(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByTeacherId(page, size, id));
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByContestId(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByContestId(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserRegisterJoinContest(@RequestBody CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
-        Long userRegisterJoinContestId = userRegisterJoinContestService.createUserRegisterJoinContest(createUserRegisterJoinContestRequest);
+        UUID userRegisterJoinContestId = userRegisterJoinContestService.createUserRegisterJoinContest(createUserRegisterJoinContestRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterJoinContestId}")
                 .buildAndExpand(userRegisterJoinContestId).toUri();
         return ResponseEntity.created(location).build();
@@ -53,8 +51,8 @@ public class UserRegisterJoinContestController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateUserRegisterJoinContest(@PathVariable Long id, @RequestBody CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
-        Long userRegisterJoinContestId = userRegisterJoinContestService.updateUserRegisterJoinContestById(id,createUserRegisterJoinContestRequest);
+    public ResponseEntity<String> updateUserRegisterJoinContest(@PathVariable UUID id, @RequestBody CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
+        UUID userRegisterJoinContestId = userRegisterJoinContestService.updateUserRegisterJoinContestById(id,createUserRegisterJoinContestRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userRegisterJoinContestId).toUri();
         return ResponseEntity.created(location).build();
@@ -62,14 +60,14 @@ public class UserRegisterJoinContestController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserRegisterJoinContestResponse> getUserRegisterJoinContestById(@PathVariable Long id) {
+    public ResponseEntity<GetUserRegisterJoinContestResponse> getUserRegisterJoinContestById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userRegisterJoinContestService.getUserRegisterJoinContestById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserRegisterJoinContestById(@PathVariable Long id) {
-        Long userRegisterJoinContestId = userRegisterJoinContestService.removeUserRegisterJoinContestById(id);
+    public ResponseEntity<String> deleteUserRegisterJoinContestById(@PathVariable UUID id) {
+        UUID userRegisterJoinContestId = userRegisterJoinContestService.removeUserRegisterJoinContestById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userRegisterJoinContestId).toUri();
         return ResponseEntity.created(location).build();

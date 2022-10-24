@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -52,7 +53,7 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorialPageByUserRegiseterTutorial(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorialPageByUserRegiseterTutorial(UUID id) {
         List<GetUserRegisterTutorialPageResponse> allUserRegisterTutorialPageResponses = new ArrayList<>();
         List<UserRegisterTutorialPage> listUserRegisterTutorialPage = userRegisterTutorialPageRepository.findByUserRegisterTutorialId(id);
         listUserRegisterTutorialPage.forEach(content -> {
@@ -72,8 +73,8 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
     }
 
     @Override
-    public GetUserRegisterTutorialPageResponse getUserRegisterTutorialPageById(Long id) {
-        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById(id);
+    public GetUserRegisterTutorialPageResponse getUserRegisterTutorialPageById(UUID id) {
+        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById2(id);
         UserRegisterTutorialPage UserRegisterTutorialPage = UserRegisterTutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorialPage.not_found");
         });
@@ -88,8 +89,8 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
     }
 
     @Override
-    public Long createUserRegisterTutorialPage(CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
-        Optional <UserRegisterTutorial> user_register_tutorialOpt = userRegisterTutorialRepository.findById(createUserRegisterTutorialPageRequest.getUser_register_tutorial_id());
+    public UUID createUserRegisterTutorialPage(CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
+        Optional <UserRegisterTutorial> user_register_tutorialOpt = userRegisterTutorialRepository.findById1(createUserRegisterTutorialPageRequest.getUser_register_tutorial_id());
         UserRegisterTutorial userRegisterTutorial = user_register_tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_register_tutorial.not_found");
         });
@@ -106,8 +107,8 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
     }
 
     @Override
-    public Long removeUserRegisterTutorialPageById(Long id) {
-        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById(id);
+    public UUID removeUserRegisterTutorialPageById(UUID id) {
+        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById1(id);
         UserRegisterTutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorialPage.not_found");
         });
@@ -117,13 +118,13 @@ public class UserRegisterTutorialPageServiceImpl implements UserRegisterTutorial
     }
 
     @Override
-    public Long updateUserRegisterTutorialPageById(Long id, CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
-        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById(id);
+    public UUID updateUserRegisterTutorialPageById(UUID id, CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
+        Optional<UserRegisterTutorialPage> UserRegisterTutorialPageOpt = userRegisterTutorialPageRepository.findById1(id);
         UserRegisterTutorialPage updatedUserRegisterTutorialPage = UserRegisterTutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorialPage.not_found");
         });
 
-        Optional <UserRegisterTutorial> user_register_tutorialOpt = userRegisterTutorialRepository.findById(createUserRegisterTutorialPageRequest.getUser_register_tutorial_id());
+        Optional <UserRegisterTutorial> user_register_tutorialOpt = userRegisterTutorialRepository.findById1(createUserRegisterTutorialPageRequest.getUser_register_tutorial_id());
         UserRegisterTutorial userRegisterTutorial = user_register_tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_register_tutorial.not_found");
         });

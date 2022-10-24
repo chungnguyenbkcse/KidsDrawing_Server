@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -61,9 +62,9 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByTeacherId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByTeacherId(UUID id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
-        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByTeacherId(id);
+        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByTeacherId2(id);
         listUserGradeContestSubmission.forEach(content -> {
             GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
                 .teacher_id(content.getTeacher().getId())
@@ -85,24 +86,22 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByStudentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByStudentId(UUID id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
-        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
+        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByStudent(id);
         listUserGradeContestSubmission.forEach(content -> {
-            if (content.getContestSubmission().getStudent().getId() == id){
-                GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                    .teacher_id(content.getTeacher().getId())
-                    .student_id(content.getContestSubmission().getStudent().getId())
-                    .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
-                    .contest_id(content.getContestSubmission().getContest().getId())
-                    .contest_name(content.getContestSubmission().getContest().getName())
-                    .contest_submission_id(content.getContestSubmission().getId())
-                    .feedback(content.getFeedback())
-                    .score(content.getScore())
-                    .time(content.getTime())
-                    .build();
-                allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
-            }
+            GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                .teacher_id(content.getTeacher().getId())
+                .student_id(content.getContestSubmission().getStudent().getId())
+                .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                .contest_id(content.getContestSubmission().getContest().getId())
+                .contest_name(content.getContestSubmission().getContest().getName())
+                .contest_submission_id(content.getContestSubmission().getId())
+                .feedback(content.getFeedback())
+                .score(content.getScore())
+                .time(content.getTime())
+                .build();
+            allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -111,31 +110,23 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestId(UUID id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
-        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
-        List<ContestSubmission> allContestSubmissionResponses = new ArrayList<>();
-        List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findAll();
-        listContestSubmission.forEach(content -> {
-            if (content.getContest().getId() == id){
-                allContestSubmissionResponses.add(content);
-            }
-        });
+        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByContest(id);
+
         listUserGradeContestSubmission.forEach(content -> {
-            if (allContestSubmissionResponses.contains(content.getContestSubmission())){
-                GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                    .teacher_id(content.getTeacher().getId())
-                    .student_id(content.getContestSubmission().getStudent().getId())
-                    .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
-                    .contest_id(content.getContestSubmission().getContest().getId())
-                    .contest_name(content.getContestSubmission().getContest().getName())
-                    .contest_submission_id(content.getContestSubmission().getId())
-                    .feedback(content.getFeedback())
-                    .score(content.getScore())
-                    .time(content.getTime())
-                    .build();
-                allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
-            }
+            GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                .teacher_id(content.getTeacher().getId())
+                .student_id(content.getContestSubmission().getStudent().getId())
+                .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                .contest_id(content.getContestSubmission().getContest().getId())
+                .contest_name(content.getContestSubmission().getContest().getName())
+                .contest_submission_id(content.getContestSubmission().getId())
+                .feedback(content.getFeedback())
+                .score(content.getScore())
+                .time(content.getTime())
+                .build();
+            allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -144,8 +135,8 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(Long id) {
-        Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findById(id);
+    public GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(UUID teacher_id, UUID contest_submission_id) {
+        Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findByTeacherIdAndContestSubmissionId(teacher_id, contest_submission_id);
         UserGradeContestSubmission userGradeContestSubmission = userGradeContestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContestSubmission.not_found");
         });
@@ -164,14 +155,14 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public Long createUserGradeContestSubmission(CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
+    public UUID createUserGradeContestSubmission(CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
 
-        Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getTeacher_id());
+        Optional <User> userOpt = userRepository.findById1(createUserGradeContestSubmissionRequest.getTeacher_id());
         User teacher = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 
-        Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(createUserGradeContestSubmissionRequest.getContest_submission_id());
+        Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById1(createUserGradeContestSubmissionRequest.getContest_submission_id());
         ContestSubmission contestSubmission = contestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
@@ -191,30 +182,30 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public Long removeUserGradeContestSubmissionById(Long id) {
-        Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findById(id);
+    public UUID removeUserGradeContestSubmissionById(UUID teacher_id, UUID contest_submission_id) {
+        Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findByTeacherIdAndContestSubmissionId(teacher_id, contest_submission_id);
         userGradeContestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContestSubmission.not_found");
         });
 
-        userGradeContestSubmissionRepository.deleteById(id);
-        return id;
+        userGradeContestSubmissionRepository.deleteById(teacher_id, contest_submission_id);
+        return teacher_id;
     }
 
     @Override
-    public Long updateUserGradeContestSubmissionById(Long teacher_id, Long submission_id, CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
+    public UUID updateUserGradeContestSubmissionById(UUID teacher_id, UUID submission_id, CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
         //UserGradeContestSubmissionKey index = new UserGradeContestSubmissionKey(teacher_id, submission_id);
 
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();
         listUserGradeContestSubmission.forEach(content-> {
-            if (content.getTeacher().getId() == teacher_id && content.getContestSubmission().getId() == submission_id){
+            if (content.getTeacher().getId().compareTo(teacher_id) == 0  && content.getContestSubmission().getId().compareTo(submission_id) == 0){
                 UserGradeContestSubmission updatedUserGradeContestSubmission = content;
-                Optional <User> userOpt = userRepository.findById(createUserGradeContestSubmissionRequest.getTeacher_id());
+                Optional <User> userOpt = userRepository.findById1(createUserGradeContestSubmissionRequest.getTeacher_id());
                 User teacher = userOpt.orElseThrow(() -> {
                     throw new EntityNotFoundException("exception.user_teacher.not_found");
                 });
             
-                Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById(createUserGradeContestSubmissionRequest.getContest_submission_id());
+                Optional <ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById1(createUserGradeContestSubmissionRequest.getContest_submission_id());
                 ContestSubmission contestSubmission = contestSubmissionOpt.orElseThrow(() -> {
                     throw new EntityNotFoundException("exception.ContestSubmission.not_found");
                 });

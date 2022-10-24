@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -55,7 +56,7 @@ public class ArtAgeServiceImpl implements ArtAgeService {
     }
 
     @Override
-    public GetArtAgeResponse getArtAgeById(Long id){
+    public GetArtAgeResponse getArtAgeById(UUID id){
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(id);
         ArtAge artAge = artAgeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtAge.not_found");
@@ -69,7 +70,7 @@ public class ArtAgeServiceImpl implements ArtAgeService {
     }
 
     @Override
-    public Long createArtAge(CreateArtAgeRequest createArtAgeRequest) {
+    public UUID createArtAge(CreateArtAgeRequest createArtAgeRequest) {
         if (artAgeRepository.existsByName(createArtAgeRequest.getName())) {
             throw new ArtAgeAlreadyCreateException("exception.art_age.art_age_taken");
         }
@@ -84,7 +85,7 @@ public class ArtAgeServiceImpl implements ArtAgeService {
     }
 
     @Override
-    public Long removeArtAgeById(Long id) {
+    public UUID removeArtAgeById(UUID id) {
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(id);
         artAgeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtAge.not_found");
@@ -95,7 +96,7 @@ public class ArtAgeServiceImpl implements ArtAgeService {
     }
 
     @Override
-    public Long updateArtAgeById(Long id, CreateArtAgeRequest createArtAgeRequest) {
+    public UUID updateArtAgeById(UUID id, CreateArtAgeRequest createArtAgeRequest) {
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(id);
         ArtAge updatedArtAge = artAgeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtAge.not_found");

@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,8 +36,8 @@ public class NotificationController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateNotification(@PathVariable Long id, @RequestBody CreateNotificationRequest createNotificationRequest) {
-        Long notificationId = notificationService.updateNotificationById(id,createNotificationRequest);
+    public ResponseEntity<String> updateNotification(@PathVariable UUID id, @RequestBody CreateNotificationRequest createNotificationRequest) {
+        UUID notificationId = notificationService.updateNotificationById(id,createNotificationRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(notificationId).toUri();
         return ResponseEntity.created(location).build();
@@ -50,14 +51,14 @@ public class NotificationController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetNotificationResponse> getNotificationById(@PathVariable Long id) {
+    public ResponseEntity<GetNotificationResponse> getNotificationById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(notificationService.getNotificationById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteNotificationById(@PathVariable Long id) {
-        Long notificationId = notificationService.removeNotificationById(id);
+    public ResponseEntity<String> deleteNotificationById(@PathVariable UUID id) {
+        UUID notificationId = notificationService.removeNotificationById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(notificationId).toUri();
         return ResponseEntity.created(location).build();

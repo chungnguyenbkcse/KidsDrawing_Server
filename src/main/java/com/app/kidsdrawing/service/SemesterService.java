@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.service;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
@@ -11,11 +12,9 @@ import com.app.kidsdrawing.dto.GetSemesterResponse;
 public interface SemesterService {
     ResponseEntity<Map<String, Object>> getAllSemester();
     ResponseEntity<Map<String, Object>> getAllSemesterNext();
-    Long setCalenderForSemester(Long id, CreateHolidayRequest createHolidayResquest);
-    Long setClassForSemester(Long id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest);
-    Long setClassForSemesterHeroku(Long id, int partion, int min, int max);
-    GetSemesterResponse getSemesterById(Long id);
-    Long createSemester(CreateSemesterRequest createSemesterRequest);
-    Long removeSemesterById(Long id);
-    Long updateSemesterById(Long id, CreateSemesterRequest createSemesterRequest);
+    UUID setClassForSemester(UUID id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest);
+    GetSemesterResponse getSemesterById(UUID id);
+    UUID createSemester(CreateSemesterRequest createSemesterRequest);
+    UUID removeSemesterById(UUID id);
+    UUID updateSemesterById(UUID id, CreateSemesterRequest createSemesterRequest);
 }

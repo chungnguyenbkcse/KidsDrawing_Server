@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.service;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
@@ -10,14 +11,14 @@ import com.app.kidsdrawing.dto.GetStudentLeaveResponse;
 
 public interface StudentLeaveService {
     ResponseEntity<Map<String, Object>> getAllStudentLeave();
-    ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(Long id);
-    ResponseEntity<Map<String, Object>> getAllStudentLeaveByTeacher(Long id);
-    ResponseEntity<Map<String, Object>> getAllStudentLeaveByStudent(Long id);
-    ResponseEntity<Map<String, Object>> getAllStudentLeaveByParent(Long id);
-    ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(Long classes_id, Long student_id);
-    GetStudentLeaveResponse getStudentLeaveById(Long id);
-    Long createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest);
-    Long removeStudentLeaveById(Long id);
-    Long updateStudentLeaveById(Long id, CreateStudentLeaveRequest createStudentLeaveRequest);
-    Long updateStatusStudentLeaveById(Long id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest);
+    ResponseEntity<Map<String, Object>> getAllStudentLeaveByClass(UUID id);
+    ResponseEntity<Map<String, Object>> getAllStudentLeaveByTeacher(UUID id);
+    ResponseEntity<Map<String, Object>> getAllStudentLeaveByStudent(UUID id);
+    ResponseEntity<Map<String, Object>> getAllStudentLeaveByParent(UUID id);
+    ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(UUID classes_id, UUID student_id);
+    GetStudentLeaveResponse getStudentLeaveById(UUID id);
+    UUID createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest);
+    UUID removeStudentLeaveById(UUID id);
+    UUID updateStudentLeaveById(UUID id, CreateStudentLeaveRequest createStudentLeaveRequest);
+    UUID updateStatusStudentLeaveById(UUID id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest);
 }

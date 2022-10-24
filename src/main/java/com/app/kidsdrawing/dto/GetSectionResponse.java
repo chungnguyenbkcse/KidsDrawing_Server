@@ -6,14 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetSectionResponse {
-    private Long id;
-    private Long classes_id;
+    private UUID id;
+    private UUID classes_id;
     private String name;
     private Integer number;
     private String teacher_name;

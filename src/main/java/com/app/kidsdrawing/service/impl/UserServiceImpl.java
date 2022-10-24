@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -22,7 +23,6 @@ import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetTeacherResponse;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
-import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
@@ -30,7 +30,6 @@ import com.app.kidsdrawing.exception.UserAlreadyRegisteredException;
 import com.app.kidsdrawing.repository.RoleRepository;
 import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
 import com.app.kidsdrawing.repository.UserRepository;
-import com.app.kidsdrawing.service.EmailService;
 import com.app.kidsdrawing.service.UserService;
 import com.app.kidsdrawing.util.AuthUtil;
 
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
+    //private final EmailService emailService;
     private final AuthUtil authUtil;
     private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
     private static int total_user_of_jan = 0;
@@ -72,15 +71,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private static int total_user_of_dec = 0;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllStudents(Long role_id) {
+    public ResponseEntity<Map<String, Object>> getAllStudents(String role_name) {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById(role_id);
-        Role role = roleOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.role.not_found");
-        });
+        List<User> pageUser = userRepository.findAllStudent();
         pageUser.forEach(user -> {
-            if (user.getRoles().contains(role) == true){
                 GetStudentResponse userResponse = GetStudentResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -98,7 +92,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .parents(user.getParent().getId())
                     .build();
                 allUserResponses.add(userResponse);
-            }
         });
         Map<String, Object> response = new HashMap<>();
         response.put("students", allUserResponses);
@@ -106,7 +99,46 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id) {
+    public ResponseEntity<Map<String, Object>> getTotalStudents() {
+        int listUserRegisterJoinSemester = userRepository.findAll1();
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getTotalParents() {
+        int listUserRegisterJoinSemester = userRepository.findAll2();
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getTotalTeachers() {
+        int listUserRegisterJoinSemester = userRepository.findAll3();
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", listUserRegisterJoinSemester);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllUser() {
+        List<GetStudentResponse> allUserResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findAll();
+        pageUser.forEach(user -> {
+                GetStudentResponse userResponse = GetStudentResponse.builder()
+                    .id(user.getId())
+                    .build();
+                allUserResponses.add(userResponse);
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("students", allUserResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllChildForParentId(UUID id) {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findByParentId(id);
         pageUser.forEach(user -> {
@@ -140,13 +172,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getReportUserNew(int year, Long role_id) {
+    public ResponseEntity<Map<String, Object>> getReportUserNew(int year, String role_name) {
         List<Integer> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById(role_id);
-        Role role = roleOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.role.not_found");
-        });
+        List<User> pageUser = userRepository.findAllUserByRole(role_name);
+        
         total_user_of_jan = 0;
         total_user_of_feb = 0;
         total_user_of_mar = 0;
@@ -160,38 +189,38 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         total_user_of_nov = 0;
         total_user_of_dec = 0;
         pageUser.forEach(user -> {
-            if (user.getRoles().contains(role) == true && user.getCreateTime().getYear() == year){
-                if (user.getCreateTime().getMonth().toString() == "JANUARY"){
+            if (user.getCreateTime().getYear() == year){
+                if (user.getCreateTime().getMonth().toString().equals("JANUARY")){
                     total_user_of_jan += 1;
                 }
-                else if (user.getCreateTime().getMonth().toString() == "FEBRUARY"){
+                else if (user.getCreateTime().getMonth().toString().equals("FEBRUARY")){
                     total_user_of_feb += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "MARCH"){
+                else if (user.getCreateTime().getMonth().toString().equals("MARCH")){
                     total_user_of_mar += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "APRIL"){
+                else if (user.getCreateTime().getMonth().toString().equals("APRIL")){
                     total_user_of_apr += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "MAY"){
+                else if (user.getCreateTime().getMonth().toString().equals("MAY")){
                     total_user_of_may += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "JUNE"){
+                else if (user.getCreateTime().getMonth().toString().equals("JUNE")){
                     total_user_of_jun += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "JULY"){
+                else if (user.getCreateTime().getMonth().toString().equals("JULY")){
                     total_user_of_jul += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "AUGUST"){
+                else if (user.getCreateTime().getMonth().toString().equals("AUGUST")){
                     total_user_of_aug += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "SEPTEMBER"){
+                else if (user.getCreateTime().getMonth().toString().equals("SEPTEMBER")){
                     total_user_of_sep += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString() == "OCTOBER"){
+                else if (user.getCreateTime().getMonth().toString().equals("OCTOBER")){
                     total_user_of_oct += 1;
                 }
-                else if (user.getCreateTime().getMonth().toString() == "NOVEMBER"){
+                else if (user.getCreateTime().getMonth().toString().equals("NOVEMBER")){
                     total_user_of_nov += 1;
                 }
                 else {
@@ -218,8 +247,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long updateUserStatus(Long id, CreateUserStatusRequest createUserStatusRequest) {
-        Optional<User> userOpt = userRepository.findById(id);
+    public UUID updateUserStatus(UUID id, CreateUserStatusRequest createUserStatusRequest) {
+        Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -230,15 +259,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllParents(Long role_id) {
+    public ResponseEntity<Map<String, Object>> getAllParents(String role_name) {
         List<GetUserResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById(role_id);
-        Role role = roleOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.role.not_found");
-        });
+        List<User> pageUser = userRepository.findAllUserByRole(role_name);
+
         pageUser.forEach(user -> {
-            if (user.getRoles().contains(role) == true){
                 GetUserResponse userResponse = GetUserResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -254,7 +279,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .createTime(user.getCreateTime())
                     .build();
                 allUserResponses.add(userResponse);
-            }
         });
         Map<String, Object> response = new HashMap<>();
         response.put("parents", allUserResponses);
@@ -264,18 +288,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllTeacher() {
         List<GetTeacherResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAll();
-        Optional<Role> roleOpt = roleRepository.findById((long) 2);
-        Role role = roleOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.role.not_found");
-        });
+        List<User> pageUser = userRepository.findAllUserByRole("TEACHER_USER");
+        
         List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationResponses = new ArrayList<>();
         List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationDoingResponses = new ArrayList<>();
         List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationNotAcceptResponses = new ArrayList<>();
         List<TeacherRegisterQualification> pageTeacherRegisterQualification = teacherRegisterQualificationRepository.findAll();
         Map<String, Object> response = new HashMap<>();
         pageUser.forEach(user -> {
-            if (user.getRoles().contains(role) == true){
                 GetTeacherResponse userResponse = GetTeacherResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -296,7 +316,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 List<GetTeacherRegisterQualificationResponse> teacherRegisterQualificationDoingResponses = new ArrayList<>();
                 List<GetTeacherRegisterQualificationResponse> teacherRegisterQualificationNotAcceptResponses = new ArrayList<>();
                 pageTeacherRegisterQualification.forEach(content -> {
-                    if (content.getTeacher().getId() == user.getId() && content.getStatus() == "Accept"){
+                    if (content.getTeacher().getId().compareTo(user.getId()) == 0 && content.getStatus().equals("Accept")){
                         GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                             .id(content.getId())
                             .teacher_id(content.getTeacher().getId())
@@ -307,7 +327,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                             .build();
                         teacherRegisterQualificationResponses.add(teacherRegisterQualificationResponse);
                     }
-                    else if (content.getTeacher().getId() == user.getId() && content.getStatus() == "Doing"){
+                    else if (content.getTeacher().getId().compareTo(user.getId()) == 0 && content.getStatus().equals("Doing")){
                         GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                             .id(content.getId())
                             .teacher_id(content.getTeacher().getId())
@@ -331,7 +351,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     }
                 });
                 allTeacherRegisterQualificationResponses.add(teacherRegisterQualificationResponses);
-            }
         });
         response.put("teachers", allUserResponses);
         response.put("teacher_register_qualifications", allTeacherRegisterQualificationResponses);
@@ -342,7 +361,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public GetUserInfoResponse getUserInfoByUsername(String username) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUsername2(username);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -363,12 +382,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public GetUserInfoResponse getUserInfoById(Long id) {
-        Optional<User> userOpt = userRepository.findById(id);
+    public GetUserInfoResponse getUserInfoById(UUID id) {
+        Optional<User> userOpt = userRepository.findById2(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
-        Long a = (long) 0;
+        UUID a = UUID.randomUUID();
         if (user.getParent() != null) {
             a = user.getParent().getId();
         }
@@ -400,7 +419,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long createUser(CreateUserRequest createUserRequest) {
+    public UUID createUser(CreateUserRequest createUserRequest) {
         String encodedPassword = passwordEncoder.encode(createUserRequest.getPassword());
 
         if (userRepository.existsByUsername(createUserRequest.getUsername())) {
@@ -410,7 +429,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserAlreadyRegisteredException("exception.user.email_taken");
         }
 
-        Optional <User> userOpt = userRepository.findById(createUserRequest.getParent_id());
+        Optional <User> userOpt = userRepository.findById1(createUserRequest.getParent_id());
         User parent = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.parent.not_found");
         });
@@ -445,7 +464,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public Long createStudent(CreateStudentRequest createStudentOrParentRequest) {
+    public UUID createStudent(CreateStudentRequest createStudentOrParentRequest) {
         String encodedPassword = passwordEncoder.encode(createStudentOrParentRequest.getPassword());
 
         if (userRepository.existsByUsername(createStudentOrParentRequest.getUsername())) {
@@ -479,9 +498,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .roles(new HashSet<>(validRoles))
                 .build();
         userRepository.save(savedUser);
-        String msgBody = "Chúc mừng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + createStudentOrParentRequest.getPassword() + "\n";
+        /* String msgBody = "Chúc mừng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + createStudentOrParentRequest.getPassword() + "\n";
         EmailDetails details = new EmailDetails(savedUser.getEmail(), msgBody, "Thông báo tạo tài khoản thành công", "");
-        emailService.sendSimpleMail(details);
+        emailService.sendSimpleMail(details); */
 
         return savedUser.getId();
     }
@@ -499,7 +518,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long createTeacher(CreateTeacherRequest createTeacherRequest) {
+    public UUID createTeacher(CreateTeacherRequest createTeacherRequest) {
         String password = getSaltString();
         String encodedPassword = passwordEncoder.encode(password);
 
@@ -535,16 +554,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .build();
         userRepository.save(savedUser);
 
-        String msgBody = "Chúc mưng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + password + "\n";
+        /* String msgBody = "Chúc mưng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + password + "\n";
         EmailDetails details = new EmailDetails(savedUser.getEmail(), msgBody, "Thông báo tạo tài khoản thành công", "");
-        emailService.sendSimpleMail(details);
+        emailService.sendSimpleMail(details); */
 
         return savedUser.getId();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOpt = userRepository.findByUsernameOrEmail(username, username);
+        Optional<User> userOpt = userRepository.findByUsername1(username);
 
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -556,8 +575,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long updateUser(Long id, CreateUserRequest createUserRequest) {
-        Optional<User> userOpt = userRepository.findById(id);
+    public UUID updateUser(UUID id, CreateUserRequest createUserRequest) {
+        Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -586,8 +605,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public Long updatePassword(Long id, CreateChangePassowrdRequest createChangePassowrdRequest) {
-        Optional<User> userOpt = userRepository.findById(id);
+    public UUID updatePassword(UUID id, CreateChangePassowrdRequest createChangePassowrdRequest) {
+        Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -605,8 +624,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Long removeUser(Long id) {
-        Optional<User> userOpt = userRepository.findById(id);
+    public UUID removeUser(UUID id) {
+        Optional<User> userOpt = userRepository.findById1(id);
         userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

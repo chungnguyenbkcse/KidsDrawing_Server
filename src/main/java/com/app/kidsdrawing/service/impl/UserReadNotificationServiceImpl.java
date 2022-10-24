@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -54,11 +55,11 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserReadNotificationByUserId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserReadNotificationByUserId(UUID id) {
         List<GetUserReadNotificationResponse> allUserReadNotificationResponses = new ArrayList<>();
-        List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findByUserId(id);
+        List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findByUserId2(id);
         listUserReadNotification.forEach(content -> {
-            if (content.getUser().getId() == id){
+            if (content.getUser().getId().compareTo(id) == 0){
                 GetUserReadNotificationResponse uuserReadNotificationResponse = GetUserReadNotificationResponse.builder()
                     .user_id(content.getUser().getId())
                     .notification_id(content.getNotification().getId())
@@ -74,18 +75,16 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserReadNotificationBynNotificationId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserReadNotificationBynNotificationId(UUID id) {
         List<GetUserReadNotificationResponse> allUserReadNotificationResponses = new ArrayList<>();
-        List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findAll();
+        List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findByNotificationId2(id);
         listUserReadNotification.forEach(content -> {
-            if (content.getNotification().getId() == id){
                 GetUserReadNotificationResponse uuserReadNotificationResponse = GetUserReadNotificationResponse.builder()
                     .user_id(content.getUser().getId())
                     .notification_id(content.getNotification().getId())
                     .is_read(content.getIs_read())
                     .build();
                 allUserReadNotificationResponses.add(uuserReadNotificationResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -94,9 +93,9 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     }
 
     @Override
-    public Long createUserReadNotification(CreateUserReadNotificationRequest createUserReadNotificationRequest) {
+    public UUID createUserReadNotification(CreateUserReadNotificationRequest createUserReadNotificationRequest) {
 
-        Optional <User> userOpt = userRepository.findById(createUserReadNotificationRequest.getUser_id());
+        Optional <User> userOpt = userRepository.findById1(createUserReadNotificationRequest.getUser_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -120,8 +119,8 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     }
 
     @Override
-    public Long removeUserReadNotificationById(Long id) {
-        Optional<UserReadNotification> uuserReadNotificationOpt = uuserReadNotificationRepository.findById(id);
+    public UUID removeUserReadNotificationById(UUID id) {
+        Optional<UserReadNotification> uuserReadNotificationOpt = uuserReadNotificationRepository.findById1(id);
         uuserReadNotificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserReadNotification.not_found");
         });
@@ -131,9 +130,9 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     }
 
     @Override
-    public Long updateUserReadNotificationById(CreateUserReadNotificationRequest createUserReadNotificationRequest) {
+    public UUID updateUserReadNotificationById(CreateUserReadNotificationRequest createUserReadNotificationRequest) {
         //UserReadNotificationKey index = new UserReadNotificationKey(student_id, submission_id);
-        Optional <User> userOpt = userRepository.findById(createUserReadNotificationRequest.getUser_id());
+        Optional <User> userOpt = userRepository.findById1(createUserReadNotificationRequest.getUser_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -144,7 +143,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
         });
         List<UserReadNotification> listUserReadNotification = uuserReadNotificationRepository.findAll();
         listUserReadNotification.forEach(content-> {
-            if (content.getUser().getId() == createUserReadNotificationRequest.getUser_id() && content.getNotification().getId() == createUserReadNotificationRequest.getNotification_id()){
+            if (content.getUser().getId().compareTo(createUserReadNotificationRequest.getUser_id()) == 0 && content.getNotification().getId().compareTo(createUserReadNotificationRequest.getNotification_id()) == 0){
                 UserReadNotification updatedUserReadNotification = content;
                 UserReadNotificationKey idx = new UserReadNotificationKey(user.getId(), notification.getId());
             

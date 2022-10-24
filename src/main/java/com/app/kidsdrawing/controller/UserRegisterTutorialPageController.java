@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,14 +36,14 @@ public class UserRegisterTutorialPageController {
 
     @CrossOrigin
     @GetMapping(value = "/tutorial/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUserRegisterTutorialPageBySection(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUserRegisterTutorialPageBySection(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userRegisterTutorialService.getAllUserRegisterTutorialPageByUserRegiseterTutorial(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserRegisterTutorialPage(@RequestBody CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
-        Long userRegisterTutorialId = userRegisterTutorialService.createUserRegisterTutorialPage(createUserRegisterTutorialPageRequest);
+        UUID userRegisterTutorialId = userRegisterTutorialService.createUserRegisterTutorialPage(createUserRegisterTutorialPageRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userRegisterTutorialId}")
                 .buildAndExpand(userRegisterTutorialId).toUri();
         return ResponseEntity.created(location).build();
@@ -50,8 +51,8 @@ public class UserRegisterTutorialPageController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateUserRegisterTutorialPage(@PathVariable Long id, @RequestBody CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
-        Long userRegisterTutorialId = userRegisterTutorialService.updateUserRegisterTutorialPageById(id,createUserRegisterTutorialPageRequest);
+    public ResponseEntity<String> updateUserRegisterTutorialPage(@PathVariable UUID id, @RequestBody CreateUserRegisterTutorialPageRequest createUserRegisterTutorialPageRequest) {
+        UUID userRegisterTutorialId = userRegisterTutorialService.updateUserRegisterTutorialPageById(id,createUserRegisterTutorialPageRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userRegisterTutorialId).toUri();
         return ResponseEntity.created(location).build();
@@ -59,14 +60,14 @@ public class UserRegisterTutorialPageController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserRegisterTutorialPageResponse> getUserRegisterTutorialPageById(@PathVariable Long id) {
+    public ResponseEntity<GetUserRegisterTutorialPageResponse> getUserRegisterTutorialPageById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userRegisterTutorialService.getUserRegisterTutorialPageById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserRegisterTutorialPageById(@PathVariable Long id) {
-        Long userRegisterTutorialId = userRegisterTutorialService.removeUserRegisterTutorialPageById(id);
+    public ResponseEntity<String> deleteUserRegisterTutorialPageById(@PathVariable UUID id) {
+        UUID userRegisterTutorialId = userRegisterTutorialService.removeUserRegisterTutorialPageById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userRegisterTutorialId).toUri();
         return ResponseEntity.created(location).build();

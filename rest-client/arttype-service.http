@@ -34,8 +34,8 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "name": "Sơn dầu",
-    "description": "Thể loại sơn dầu"
+    "name": "Sáp màu",
+    "description": "Thể loại sáp màu"
 }
 
 ### UPDATE ART TYPE ACTION ###

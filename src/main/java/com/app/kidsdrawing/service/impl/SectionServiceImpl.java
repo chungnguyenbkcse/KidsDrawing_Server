@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -57,11 +58,11 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSectionByClassId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSectionByClassId(UUID id) {
         List<GetSectionResponse> allSectionResponses = new ArrayList<>();
-        List<Section> listSection = sectionRepository.findAll();
+        List<Section> listSection = sectionRepository.findByClassesId(id);
         listSection.forEach(content -> {
-            if (content.getClasses().getId() == id){
+            if (content.getClasses().getId().compareTo(id) == 0){
                 GetSectionResponse sectionResponse = GetSectionResponse.builder()
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
@@ -84,8 +85,8 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
-    public GetSectionResponse getSectionById(Long id) {
-        Optional<Section> sectionOpt = sectionRepository.findById(id);
+    public GetSectionResponse getSectionById(UUID id) {
+        Optional<Section> sectionOpt = sectionRepository.findById2(id);
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Section.not_found");
         });
@@ -105,9 +106,9 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
-    public Long createSection(CreateSectionRequest createSectionRequest) {
+    public UUID createSection(CreateSectionRequest createSectionRequest) {
 
-        Optional <Classes> classOpt = classRepository.findById(createSectionRequest.getClasses_id());
+        Optional <Classes> classOpt = classRepository.findById1(createSectionRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });
@@ -125,8 +126,8 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
-    public Long removeSectionById(Long id) {
-        Optional<Section> sectionOpt = sectionRepository.findById(id);
+    public UUID removeSectionById(UUID id) {
+        Optional<Section> sectionOpt = sectionRepository.findById1(id);
         sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Section.not_found");
         });
@@ -136,13 +137,13 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
-    public Long updateSectionById(Long id, CreateSectionRequest createSectionRequest) {
-        Optional<Section> sectionOpt = sectionRepository.findById(id);
+    public UUID updateSectionById(UUID id, CreateSectionRequest createSectionRequest) {
+        Optional<Section> sectionOpt = sectionRepository.findById1(id);
         Section updatedSection = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Section.not_found");
         });
 
-        Optional <Classes> classOpt = classRepository.findById(createSectionRequest.getClasses_id());
+        Optional <Classes> classOpt = classRepository.findById1(createSectionRequest.getClasses_id());
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });

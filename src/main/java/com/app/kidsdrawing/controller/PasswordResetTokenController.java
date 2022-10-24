@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import java.net.URI;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,7 +43,7 @@ public class PasswordResetTokenController {
     @CrossOrigin
     @PostMapping("/user/savePassword")
     public ResponseEntity<String> savePassword(@RequestBody CreateResetPasswordRequest createResetPasswordRequest) {
-        Long artTypeId = passwordResetTokentService.savePassword(createResetPasswordRequest);
+        UUID artTypeId = passwordResetTokentService.savePassword(createResetPasswordRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(artTypeId).toUri();
         return ResponseEntity.created(location).build();

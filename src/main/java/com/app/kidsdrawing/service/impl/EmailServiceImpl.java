@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -123,8 +124,8 @@ public class EmailServiceImpl implements EmailService {
         return "Mail Sent Successfully...";
     }
 
-    public String sendMailByClass(CreateEmailDetailRequest details, Long id) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+    public String sendMailByClass(CreateEmailDetailRequest details, UUID id) {
+        Optional<Classes> classOpt = classRepository.findById1(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
@@ -135,7 +136,7 @@ public class EmailServiceImpl implements EmailService {
             .build();
         notificationRepository.save(savedNotification);
 
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(classes.getId());
 
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             EmailDetails email = new EmailDetails();
@@ -171,13 +172,13 @@ public class EmailServiceImpl implements EmailService {
         return "Mail Sent Successfully...";
     }
 
-    public String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, Long id) {
-        Optional<Classes> classOpt = classRepository.findById(id);
+    public String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, UUID id) {
+        Optional<Classes> classOpt = classRepository.findById1(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(classes.getId());
 
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             EmailDetails email = new EmailDetails();

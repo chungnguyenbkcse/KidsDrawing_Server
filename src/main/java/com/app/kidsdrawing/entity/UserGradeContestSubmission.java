@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -31,12 +32,12 @@ public class UserGradeContestSubmission {
     @EmbeddedId
     UserGradeContestSubmissionKey id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("teacherId")
     @JoinColumn(name = "teacher_id")
     User teacher;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("submissionId")
     @JoinColumn(name = "submission_id")
     ContestSubmission contestSubmission;

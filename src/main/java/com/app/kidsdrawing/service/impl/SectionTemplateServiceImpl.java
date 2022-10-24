@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -30,14 +31,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SectionTemplateServiceImpl implements SectionTemplateService{
     
-    private final SectionTemplateRepository sectionRepository;
+    private final SectionTemplateRepository sectionTemplateRepository;
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSectionTemplate() {
         List<GetSectionTemplateResponse> allSectionTemplateResponses = new ArrayList<>();
-        List<SectionTemplate> listSectionTemplate = sectionRepository.findAll();
+        List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findAll();
         listSectionTemplate.forEach(content -> {
             GetSectionTemplateResponse sectionResponse = GetSectionTemplateResponse.builder()
                 .id(content.getId())
@@ -58,23 +59,21 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSectionTemplateByCourseId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSectionTemplateByCourseId(UUID id) {
         List<GetSectionTemplateResponse> allSectionTemplateResponses = new ArrayList<>();
-        List<SectionTemplate> listSectionTemplate = sectionRepository.findAll();
+        List<SectionTemplate> listSectionTemplate = sectionTemplateRepository.findByCourseId2(id);
         listSectionTemplate.forEach(content -> {
-            if (content.getCourse().getId() == id){
-                GetSectionTemplateResponse sectionResponse = GetSectionTemplateResponse.builder()
-                    .id(content.getId())
-                    .creator_id(content.getUser().getId())
-                    .course_id(id)
-                    .name(content.getName())   
-                    .number(content.getNumber())
-                    .teaching_form(content.getTeaching_form())
-                    .create_time(content.getCreate_time())
-                    .update_time(content.getUpdate_time())
-                    .build();
-                allSectionTemplateResponses.add(sectionResponse);
-            }
+            GetSectionTemplateResponse sectionResponse = GetSectionTemplateResponse.builder()
+                .id(content.getId())
+                .creator_id(content.getUser().getId())
+                .course_id(id)
+                .name(content.getName())   
+                .number(content.getNumber())
+                .teaching_form(content.getTeaching_form())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allSectionTemplateResponses.add(sectionResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -83,8 +82,8 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     }
 
     @Override
-    public GetSectionTemplateResponse getSectionTemplateById(Long id) {
-        Optional<SectionTemplate> sectionOpt = sectionRepository.findById(id);
+    public GetSectionTemplateResponse getSectionTemplateById(UUID id) {
+        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById2(id);
         SectionTemplate section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });
@@ -102,14 +101,14 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
     }
 
     @Override
-    public Long createSectionTemplate(CreateSectionTemplateRequest createSectionTemplateRequest) {
+    public UUID createSectionTemplate(CreateSectionTemplateRequest createSectionTemplateRequest) {
 
-        Optional <Course> courseOpt = courseRepository.findById(createSectionTemplateRequest.getCourse_id());
+        Optional <Course> courseOpt = courseRepository.findById1(createSectionTemplateRequest.getCourse_id());
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createSectionTemplateRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createSectionTemplateRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -121,35 +120,35 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
                 .number(createSectionTemplateRequest.getNumber())
                 .teaching_form(createSectionTemplateRequest.getTeaching_form())
                 .build();
-        sectionRepository.save(savedSectionTemplate);
+        sectionTemplateRepository.save(savedSectionTemplate);
 
         return savedSectionTemplate.getId();
     }
 
     @Override
-    public Long removeSectionTemplateById(Long id) {
-        Optional<SectionTemplate> sectionOpt = sectionRepository.findById(id);
+    public UUID removeSectionTemplateById(UUID id) {
+        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById1(id);
         sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });
 
-        sectionRepository.deleteById(id);
+        sectionTemplateRepository.deleteById(id);
         return id;
     }
 
     @Override
-    public Long updateSectionTemplateById(Long id, CreateSectionTemplateRequest createSectionTemplateRequest) {
-        Optional<SectionTemplate> sectionOpt = sectionRepository.findById(id);
+    public UUID updateSectionTemplateById(UUID id, CreateSectionTemplateRequest createSectionTemplateRequest) {
+        Optional<SectionTemplate> sectionOpt = sectionTemplateRepository.findById1(id);
         SectionTemplate updatedSectionTemplate = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });
 
-        Optional <Course> courseOpt = courseRepository.findById(createSectionTemplateRequest.getCourse_id());
+        Optional <Course> courseOpt = courseRepository.findById1(createSectionTemplateRequest.getCourse_id());
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createSectionTemplateRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createSectionTemplateRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });

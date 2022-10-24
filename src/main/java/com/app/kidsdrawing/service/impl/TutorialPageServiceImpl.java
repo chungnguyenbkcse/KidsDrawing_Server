@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -52,7 +53,7 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialPageByTutorialId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllTutorialPageByTutorialId(UUID id) {
         List<GetTutorialPageResponse> allTutorialPageResponses = new ArrayList<>();
         List<TutorialPage> listTutorialPage = tutorialPageRepository.findByTutorialId(id);
         listTutorialPage.forEach(content -> {
@@ -72,20 +73,18 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionId(UUID id) {
         List<GetTutorialPageResponse> allTutorialPageResponses = new ArrayList<>();
-        List<TutorialPage> listTutorialPage = tutorialPageRepository.findByTutorialId(id);
+        List<TutorialPage> listTutorialPage = tutorialPageRepository.findBySection(id);
         listTutorialPage.forEach(content -> {
-            if (content.getTutorial().getSection().getId() == id){
-                GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
-                    .id(content.getId())
-                    .tutorial_id(content.getTutorial().getId())
-                    .name(content.getName())
-                    .description(content.getDescription())
-                    .number(content.getNumber())
-                    .build();
-                allTutorialPageResponses.add(tutorialPageResponse);
-            }
+            GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
+                .id(content.getId())
+                .tutorial_id(content.getTutorial().getId())
+                .name(content.getName())
+                .description(content.getDescription())
+                .number(content.getNumber())
+                .build();
+            allTutorialPageResponses.add(tutorialPageResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -94,8 +93,8 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     }
 
     @Override
-    public GetTutorialPageResponse getTutorialPageById(Long id) {
-        Optional<TutorialPage> tutorialPageOpt = tutorialPageRepository.findById(id);
+    public GetTutorialPageResponse getTutorialPageById(UUID id) {
+        Optional<TutorialPage> tutorialPageOpt = tutorialPageRepository.findById2(id);
         TutorialPage tutorialPage = tutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialPage.not_found");
         });
@@ -110,9 +109,9 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     }
 
     @Override
-    public Long createTutorialPage(CreateTutorialPageRequest createTutorialPageRequest) {
+    public UUID createTutorialPage(CreateTutorialPageRequest createTutorialPageRequest) {
 
-        Optional <Tutorial> tutorialOpt = tutorialRepository.findById(createTutorialPageRequest.getTutorial_id());
+        Optional <Tutorial> tutorialOpt = tutorialRepository.findById1(createTutorialPageRequest.getTutorial_id());
         Tutorial tutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.tutorial.not_found");
         });
@@ -129,8 +128,8 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     }
 
     @Override
-    public Long removeTutorialPageById(Long id) {
-        Optional<TutorialPage> tutorialPageOpt = tutorialPageRepository.findById(id);
+    public UUID removeTutorialPageById(UUID id) {
+        Optional<TutorialPage> tutorialPageOpt = tutorialPageRepository.findById1(id);
         tutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialPage.not_found");
         });
@@ -140,13 +139,13 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     }
 
     @Override
-    public Long updateTutorialPageById(Long id, CreateTutorialPageRequest createTutorialPageRequest) {
-        Optional<TutorialPage> tutorialPageOpt = tutorialPageRepository.findById(id);
+    public UUID updateTutorialPageById(UUID id, CreateTutorialPageRequest createTutorialPageRequest) {
+        Optional<TutorialPage> tutorialPageOpt = tutorialPageRepository.findById1(id);
         TutorialPage updatedTutorialPage = tutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialPage.not_found");
         });
 
-        Optional <Tutorial> tutorialOpt = tutorialRepository.findById(createTutorialPageRequest.getTutorial_id());
+        Optional <Tutorial> tutorialOpt = tutorialRepository.findById1(createTutorialPageRequest.getTutorial_id());
         Tutorial tutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.tutorial.not_found");
         });

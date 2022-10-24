@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -48,7 +49,7 @@ public class ExerciseLevelServiceImpl implements ExerciseLevelService{
     }
 
     @Override
-    public GetExerciseLevelResponse getExerciseLevelById(Long id) {
+    public GetExerciseLevelResponse getExerciseLevelById(UUID id) {
         Optional<ExerciseLevel> exerciseLevelOpt = exerciseLevelRepository.findById(id);
         ExerciseLevel exerciseLevel = exerciseLevelOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseLevel.not_found");
@@ -63,7 +64,7 @@ public class ExerciseLevelServiceImpl implements ExerciseLevelService{
     }
 
     @Override
-    public Long createExerciseLevel(CreateExerciseLevelRequest createExerciseLevelRequest) {
+    public UUID createExerciseLevel(CreateExerciseLevelRequest createExerciseLevelRequest) {
         
         ExerciseLevel savedExerciseLevel = ExerciseLevel.builder()
                 .name(createExerciseLevelRequest.getName())
@@ -76,7 +77,7 @@ public class ExerciseLevelServiceImpl implements ExerciseLevelService{
     }
 
     @Override
-    public Long removeExerciseLevelById(Long id) {
+    public UUID removeExerciseLevelById(UUID id) {
         Optional<ExerciseLevel> exerciseLevelOpt = exerciseLevelRepository.findById(id);
         exerciseLevelOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseLevel.not_found");
@@ -87,7 +88,7 @@ public class ExerciseLevelServiceImpl implements ExerciseLevelService{
     }
 
     @Override
-    public Long updateExerciseLevelById(Long id, CreateExerciseLevelRequest createExerciseLevelRequest) {
+    public UUID updateExerciseLevelById(UUID id, CreateExerciseLevelRequest createExerciseLevelRequest) {
         Optional<ExerciseLevel> exerciseLevelOpt = exerciseLevelRepository.findById(id);
         ExerciseLevel updatedExerciseLevel = exerciseLevelOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseLevel.not_found");

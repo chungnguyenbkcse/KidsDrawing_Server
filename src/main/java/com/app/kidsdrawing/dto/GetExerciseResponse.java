@@ -6,16 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetExerciseResponse {
-    private Long id;
-    private Long section_id;
-    private Long level_id;
-    private Long exercise_submission_id;
+    private UUID id;
+    private UUID section_id;
+    private UUID level_id;
+    private UUID exercise_submission_id;
     private String level_name;
     private String teacher_name;
     private String section_name;

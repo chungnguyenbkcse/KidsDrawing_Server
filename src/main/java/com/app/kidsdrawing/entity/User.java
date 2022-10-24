@@ -3,13 +3,12 @@ package com.app.kidsdrawing.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -35,9 +34,9 @@ import lombok.Setter;
 @Table(name = "user")
 public class User{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id")
-    private Long id;
+    private UUID  id;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -82,17 +81,17 @@ public class User{
     @UpdateTimestamp
     private LocalDateTime updateTime = LocalDateTime.now();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_has_role",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private User parent;
      
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent")
     private Set<User> childrens;
 
     @OneToMany(mappedBy="user")
@@ -138,6 +137,9 @@ public class User{
     private Set<Tutorial> tutorials;
 
     @OneToMany(mappedBy="creator")
+    private Set<TutorialTemplate> tutorialTemplates;
+
+    @OneToMany(mappedBy="creator")
     private Set<UserRegisterTutorial> userRegisterTutorials;
 
     @OneToMany(mappedBy="student")
@@ -155,15 +157,13 @@ public class User{
     @OneToMany(mappedBy = "teacher")
     private Set<UserGradeContestSubmission> userGradeContestSubmissions;
 
-    @OneToOne(mappedBy = "user")
-    private SectionTemplate sectionTemplates;
+    @OneToMany(mappedBy="user")
+    private Set<UserReadNotification> userReadNotifications;
 
-    @OneToOne(mappedBy="user")
-    private UserReadNotification userReadNotification;
+    @OneToMany(mappedBy="user")
+    private Set<SectionTemplate> sectionTemplates;
 
-    @OneToOne(mappedBy="user")
-    private PasswordResetToken passwordResetToken;
+    @OneToMany(mappedBy="student")
+    private Set<UserAttendance> userAttendances;
 
-    @OneToOne(mappedBy="student")
-    private UserAttendance userAttendance;
 }

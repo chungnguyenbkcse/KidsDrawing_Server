@@ -6,13 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetAnonymousNotificationResponse {
-    private Long notification_id;
+    private UUID notification_id;
     private String notification_name;
     private String notification_body;
     private LocalDateTime time;

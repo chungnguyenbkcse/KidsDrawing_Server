@@ -4,20 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetInfoClassTeacherResponse {
-    private Long id;
-    private Long user_register_teach_semester;
+    private UUID id;
+    private UUID user_register_teach_semester;
     private String security_code;
     private String name;
     private String link_url;
-    private Long course_id;
+    private UUID course_id;
     private String course_name;
-    private Long semster_class_id;
+    private UUID semster_class_id;
     private int total_student;
     private int num_of_section;
     private String art_type_name;

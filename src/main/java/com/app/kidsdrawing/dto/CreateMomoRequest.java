@@ -2,8 +2,9 @@ package com.app.kidsdrawing.dto;
 
 
 import java.util.List;
+import java.util.UUID;
 
-import lombok.Data;
+import lombok.Data;                                   
 
 @Data
 public class CreateMomoRequest {
@@ -12,9 +13,9 @@ public class CreateMomoRequest {
     private String requestId;
     private int resultCode;
     private String message;
-    private Long responseTime;
+    private UUID responseTime;
     private String extraData;
     private String signature;
-    private Long parent_id;
-    private List<Long> student_ids;
+    private UUID parent_id;
+    private List<UUID> student_ids;
 }

@@ -57,7 +57,7 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/contest/teacher/2
+GET  {{rest}}/contest
 
 ### GET CONTEST ACTION ###
 # @name get_contest
@@ -68,3 +68,14 @@ GET  {{rest}}/contest/student/18
 # @name get_contest
 
 GET  {{rest}}/contest/parent/8
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/contest/student/817ea4e7-2a52-463b-a7bd-b2db1dd9e514
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/contest/parent-new/7ba06a10-ddec-4825-8032-26f79f94ffa9

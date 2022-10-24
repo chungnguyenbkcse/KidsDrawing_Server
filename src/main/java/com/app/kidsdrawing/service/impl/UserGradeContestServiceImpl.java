@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -34,20 +35,18 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByTeacherId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByTeacherId(UUID id) {
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
-        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
+        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findByTeacherId2(id);
         pageUserGradeContest.forEach(content -> {
-            if (content.getUser().getId() == id){
-                GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
-                    .id(content.getId())
-                    .teacher_id(id)
-                    .contest_id(content.getContest().getId())
-                    .teacher_name(content.getUser().getFirstName() + " " + content.getUser().getLastName())
-                    .contest_name(content.getContest().getName())
-                    .build();
-                    allUserGradeContestResponses.add(userGradeContestResponse);
-            }
+            GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
+                .id(content.getId())
+                .teacher_id(id)
+                .contest_id(content.getContest().getId())
+                .teacher_name(content.getUser().getFirstName() + " " + content.getUser().getLastName())
+                .contest_name(content.getContest().getName())
+                .build();
+            allUserGradeContestResponses.add(userGradeContestResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -56,20 +55,18 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByContestId(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestByContestId(UUID id) {
         List<GetUserGradeContestResponse> allUserGradeContestResponses = new ArrayList<>();
-        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
+        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findByContestId2(id);
         pageUserGradeContest.forEach(content -> {
-            if (content.getContest().getId() == id){
-                GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
-                    .id(content.getId())
-                    .teacher_id(content.getUser().getId())
-                    .contest_id(id)
-                    .teacher_name(content.getUser().getFirstName() + " " + content.getUser().getLastName())
-                    .contest_name(content.getContest().getName())
-                    .build();
-                    allUserGradeContestResponses.add(userGradeContestResponse);
-            }
+            GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
+                .id(content.getId())
+                .teacher_id(content.getUser().getId())
+                .contest_id(id)
+                .teacher_name(content.getUser().getFirstName() + " " + content.getUser().getLastName())
+                .contest_name(content.getContest().getName())
+                .build();
+                allUserGradeContestResponses.add(userGradeContestResponse);
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -78,8 +75,8 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public GetUserGradeContestResponse getUserGradeContestById(Long id) {
-        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
+    public GetUserGradeContestResponse getUserGradeContestById(UUID id) {
+        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById2(id);
         UserGradeContest userGradeContest = userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
         });
@@ -94,9 +91,17 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public Long createUserGradeContest(CreateUserGradeContestRequest createUserGradeContestRequest) {
-        Contest contest = contestRepository.getById(createUserGradeContestRequest.getContest_id());
-        User teacher = userRepository.getById(createUserGradeContestRequest.getTeacher_id());
+    public UUID createUserGradeContest(CreateUserGradeContestRequest createUserGradeContestRequest) {
+        Optional<Contest> contestOpt = contestRepository.findById1(createUserGradeContestRequest.getContest_id());
+        Contest contest = contestOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Contest.not_found");
+        });
+
+        Optional<User> teacherOpt = userRepository.findById1(createUserGradeContestRequest.getTeacher_id());
+        User teacher = teacherOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.teacher.not_found");
+        });
+
         UserGradeContest savedUserGradeContest = UserGradeContest.builder()
                 .user(teacher)
                 .contest(contest)
@@ -107,8 +112,8 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     }
 
     @Override
-    public Long removeUserGradeContestById(Long id) {
-        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
+    public UUID removeUserGradeContestById(UUID id) {
+        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById1(id);
         userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
         });
@@ -117,9 +122,19 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
         return id;
     }
 
+    @Override 
+    public UUID removeUserGradeContestByContest(UUID id) {
+        List<UserGradeContest> userGradeContests = userGradeContestRepository.findByContestId1(id);
+
+        userGradeContests.forEach(ele -> {
+            userGradeContestRepository.deleteById(ele.getId());
+        });
+        return id;
+    }
+
     @Override
-    public Long updateUserGradeContestById(Long id, CreateUserGradeContestRequest createUserGradeContestRequest) {
-        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById(id);
+    public UUID updateUserGradeContestById(UUID id, CreateUserGradeContestRequest createUserGradeContestRequest) {
+        Optional<UserGradeContest> userGradeContestOpt = userGradeContestRepository.findById1(id);
         UserGradeContest updatedUserGradeContest = userGradeContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
         });

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -54,7 +55,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorial() {
         List<GetUserRegisterTutorialResponse> allUserRegisterTutorialResponses = new ArrayList<>();
-        List<UserRegisterTutorial> listUserRegisterTutorial = userRegisterTutorialRepository.findAll();
+        List<UserRegisterTutorial> listUserRegisterTutorial = userRegisterTutorialRepository.findAll1();
         listUserRegisterTutorial.forEach(content -> {
             GetUserRegisterTutorialResponse UserRegisterTutorialResponse = GetUserRegisterTutorialResponse.builder()
                 .id(content.getId())
@@ -79,9 +80,9 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorialBySection(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterTutorialBySection(UUID id) {
         List<GetUserRegisterTutorialResponse> allUserRegisterTutorialResponses = new ArrayList<>();
-        List<UserRegisterTutorial> listUserRegisterTutorial = userRegisterTutorialRepository.findBySectionId(id);
+        List<UserRegisterTutorial> listUserRegisterTutorial = userRegisterTutorialRepository.findBySectionId2(id);
         listUserRegisterTutorial.forEach(content -> {
             GetUserRegisterTutorialResponse UserRegisterTutorialResponse = GetUserRegisterTutorialResponse.builder()
                 .id(content.getId())
@@ -106,8 +107,8 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     }
 
     @Override
-    public GetUserRegisterTutorialResponse getUserRegisterTutorialById(Long id) {
-        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById(id);
+    public GetUserRegisterTutorialResponse getUserRegisterTutorialById(UUID id) {
+        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById2(id);
         UserRegisterTutorial UserRegisterTutorial = UserRegisterTutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
@@ -130,12 +131,12 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
     @Override
     public GetUserRegisterTutorialResponse createUserRegisterTutorial(CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
-        Optional <Section> sectionOpt = sectionRepository.findById(createUserRegisterTutorialRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createUserRegisterTutorialRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createUserRegisterTutorialRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createUserRegisterTutorialRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -165,8 +166,8 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     }
 
     @Override
-    public Long removeUserRegisterTutorialById(Long id) {
-        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById(id);
+    public UUID removeUserRegisterTutorialById(UUID id) {
+        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById1(id);
         UserRegisterTutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
@@ -176,18 +177,18 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     }
 
     @Override
-    public Long updateUserRegisterTutorialById(Long id, CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
-        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById(id);
+    public UUID updateUserRegisterTutorialById(UUID id, CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
+        Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById1(id);
         UserRegisterTutorial updatedUserRegisterTutorial = UserRegisterTutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
 
-        Optional <Section> sectionOpt = sectionRepository.findById(createUserRegisterTutorialRequest.getSection_id());
+        Optional <Section> sectionOpt = sectionRepository.findById1(createUserRegisterTutorialRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById(createUserRegisterTutorialRequest.getCreator_id());
+        Optional <User> userOpt = userRepository.findById1(createUserRegisterTutorialRequest.getCreator_id());
         User creator = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
@@ -200,7 +201,10 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
             userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
 
-            Tutorial updatedTutorial = section.getTutorial();
+            Optional<Tutorial> updatedTutorialOpt = tutorialRepository.findBySectionId1(section.getId());
+            Tutorial updatedTutorial = updatedTutorialOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.Tutorial.not_found");
+            });
 
             updatedTutorial.setName(updatedUserRegisterTutorial.getName());
             updatedTutorial.setSection(section);
@@ -233,12 +237,15 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
 
             userRegisterTutorialRepository.save(updatedUserRegisterTutorial);
 
-            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber(section.getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId(), section.getNumber());
+            Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber1(section.getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId(), section.getNumber());
             SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
                 throw new EntityNotFoundException("exception.section.not_found");
             });
 
-            TutorialTemplate updatedTutorialTemplate = sectionTemplate.getTutorialTemplates();
+            Optional<TutorialTemplate> updatedTutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId1(sectionTemplate.getId());
+            TutorialTemplate updatedTutorialTemplate = updatedTutorialTemplateOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
+            });
 
             updatedTutorialTemplate.setName(updatedUserRegisterTutorial.getName());
             updatedTutorialTemplate.setSectionTemplate(sectionTemplate);

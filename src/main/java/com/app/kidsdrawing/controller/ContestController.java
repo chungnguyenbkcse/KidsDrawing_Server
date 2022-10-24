@@ -2,6 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -32,48 +33,63 @@ public class ContestController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<GetContestResponse> createContest(@RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) CreateContestRequest createContestRequest) {
-        Long contestId = contestService.createContest(createContestRequest);
-        ServletUriComponentsBuilder.fromCurrentRequest().path("/{contestId}")
-                .buildAndExpand(contestId).toUri();
-        return ResponseEntity.ok().body(contestService.getContestById(contestId));
+        return ResponseEntity.ok().body(contestService.createContest(createContestRequest));
     }
 
     @CrossOrigin
     @GetMapping(value = "/art-type/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByArtTypeid(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByArtTypeid(@PathVariable UUID id, @RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size) {
         return ResponseEntity.ok().body(contestService.getAllContestByArtTypeId(page, size, id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByTeacher(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByTeacher(@PathVariable UUID id) {
         return ResponseEntity.ok().body(contestService.getAllContestByTeacher(id));
     }
 
     @CrossOrigin
+    @GetMapping(value = "/parent-new/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getContestNewByParent(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(contestService.getContestNewByParent(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/total")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalContest() {
+        return ResponseEntity.ok().body(contestService.getTotalContest());
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/student/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestByStudent(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestByStudent(@PathVariable UUID id) {
         return ResponseEntity.ok().body(contestService.getAllContestByStudent(id));
     }
 
     @CrossOrigin
+    @GetMapping(value = "/student/total/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalContestForStudent(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(contestService.getTotalContestForStudent(id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/parent/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestByParent(@PathVariable Long id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestByParent(@PathVariable UUID id) {
         return ResponseEntity.ok().body(contestService.getAllContestByParent(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/art-age/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByArtAgeid(@PathVariable Long id, @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestsByArtAgeid(@PathVariable UUID id, @RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "3") int size) {
         return ResponseEntity.ok().body(contestService.getAllContestByArtAgeId(page, size, id));
     }
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateContest(@PathVariable Long id, @RequestBody CreateContestRequest createContestRequest) {
-        Long contestId = contestService.updateContestById(id,createContestRequest);
+    public ResponseEntity<String> updateContest(@PathVariable UUID id, @RequestBody CreateContestRequest createContestRequest) {
+        UUID contestId = contestService.updateContestById(id,createContestRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(contestId).toUri();
         return ResponseEntity.created(location).build();
@@ -88,7 +104,7 @@ public class ContestController {
 
     @CrossOrigin
     @GetMapping(value = "/id/{id}")
-    public ResponseEntity<GetContestResponse> getContestById(@PathVariable Long id) {
+    public ResponseEntity<GetContestResponse> getContestById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(contestService.getContestById(id));
     }
 
@@ -100,8 +116,8 @@ public class ContestController {
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteContestById(@PathVariable Long id) {
-        Long contestId = contestService.removeContestById(id);
+    public ResponseEntity<String> deleteContestById(@PathVariable UUID id) {
+        UUID contestId = contestService.removeContestById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(contestId).toUri();
         return ResponseEntity.created(location).build();

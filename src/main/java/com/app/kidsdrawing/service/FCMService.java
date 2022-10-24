@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -124,14 +125,14 @@ public class FCMService {
         return "Send successfull";
     }
 
-    public String pushNotificationForClass(Long id, PnsRequest pnsRequest) {
+    public String pushNotificationForClass(UUID id, PnsRequest pnsRequest) {
 
-        Optional<Classes> classOpt = classRepository.findById(id);
+        Optional<Classes> classOpt = classRepository.findById1(id);
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId(classes.getId());
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(classes.getId());
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             Message message = Message.builder()
                 .putData("title", pnsRequest.getTitle())

@@ -2,7 +2,7 @@ package com.app.kidsdrawing.dto;
 
 import java.time.LocalTime;
 
-import lombok.Data;
+import lombok.Data;                                   
 
 @Data
 public class CreateLessonTimeRequest {

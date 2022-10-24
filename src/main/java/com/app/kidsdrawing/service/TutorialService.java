@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.service;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
@@ -9,11 +10,11 @@ import com.app.kidsdrawing.dto.GetTutorialResponse;
 
 public interface TutorialService {
     ResponseEntity<Map<String, Object>> getAllTutorial();
-    ResponseEntity<Map<String, Object>> getAllTutorialBySection(Long id);
-    ResponseEntity<Map<String, Object>> getAllTutorialByCreator(Long id);
-    ResponseEntity<Map<String, Object>> getAllTutorialByCreatorSection(Long creator_id, Long section_id);
-    GetTutorialResponse getTutorialById(Long id);
+    GetTutorialResponse getTutorialBySection(UUID id);
+    ResponseEntity<Map<String, Object>> getAllTutorialByCreator(UUID id);
+    ResponseEntity<Map<String, Object>> getAllTutorialByCreatorSection(UUID creator_id, UUID section_id);
+    GetTutorialResponse getTutorialById(UUID id);
     GetTutorialResponse createTutorial(CreateTutorialRequest createTutorialRequest);
-    Long removeTutorialById(Long id);
-    Long updateTutorial(Long id, CreateTutorialRequest createTutorialRequest);
+    UUID removeTutorialById(UUID id);
+    UUID updateTutorial(UUID id, CreateTutorialRequest createTutorialRequest);
 }
