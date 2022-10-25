@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -36,9 +35,8 @@ public class Schedule {
     @Column(name = "date_of_week")
     private Integer date_of_week;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "lesson_time_id", referencedColumnName = "id")
     private LessonTime lessonTime;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)

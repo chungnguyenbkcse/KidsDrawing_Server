@@ -14,7 +14,7 @@ import com.app.kidsdrawing.entity.Schedule;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository <Schedule, UUID>{
-    @Query("SELECT e FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass ")
+    @Query("SELECT e FROM Schedule e JOIN FETCH e.lessonTime  JOIN FETCH e.semesterClass")
     List<Schedule> findAll();
 
     @Query(

@@ -21,7 +21,27 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "lesson_time": 3,
-    "semester_classes_id": 10,
+    "lesson_time": "4c25e843-7212-44fd-a892-ce3c6f3c7def",
+    "semester_classes_id": "940cb130-7c1e-4741-b0a2-08a1bdb6132a",
+    "date_of_week": 4
+}
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+GET {{rest}}/schedule
+
+
+
+### CREATE LESSON TIME ACTION ###
+# @name create_lesson_time
+
+PUT {{rest}}/schedule/
+Authorization: Bearer {{admin_access_token}}
+Content-Type: application/json
+
+{
+    "lesson_time": "afb03b67-0d71-4ade-848c-9fed8704d358",
+    "semester_classes_id": "a9863db4-5115-46eb-8f0e-d7ad342af67a",
     "date_of_week": 5
 }
