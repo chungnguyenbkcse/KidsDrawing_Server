@@ -95,7 +95,7 @@ public class UserReadNotificationServiceImpl implements UserReadNotificationServ
     @Override
     public UUID createUserReadNotification(CreateUserReadNotificationRequest createUserReadNotificationRequest) {
 
-        Optional <User> userOpt = userRepository.findById1(createUserReadNotificationRequest.getUser_id());
+        Optional <User> userOpt = userRepository.findByUsername1("admin");
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
