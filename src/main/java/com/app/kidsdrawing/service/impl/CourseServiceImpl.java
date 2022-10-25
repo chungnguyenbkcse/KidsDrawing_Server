@@ -224,6 +224,7 @@ public class CourseServiceImpl implements CourseService {
     public ResponseEntity<Map<String, Object>> getAllCourseNewByTeacherId(UUID id) {
         List<GetCourseTeacherNewResponse> courses = new ArrayList<>();
         List<Course> allCourses = courseRepository.findAllCourseNewForTeacher1(id);
+        System.out.print(allCourses.size());
         LocalDateTime time_now = LocalDateTime.now();
         allCourses.forEach(course -> {
             total = 0;

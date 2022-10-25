@@ -41,12 +41,13 @@ Authorization: Bearer {{admin_access_token}}
 ### UPDATE ART TYPE ACTION ###
 # @name update_art_type
 
-PUT {{rest}}/art-type/2
+POST {{rest}}/art-type
 Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
 
 {
-    "name": "Sáp màu",
-    "description": "Thể loại sáp màu"
+    "name": "Sơn dầu",
+    "description": "Thể loại sơn dầu"
 }
 
 ### REMOVE ART TYPE ACTION ###
