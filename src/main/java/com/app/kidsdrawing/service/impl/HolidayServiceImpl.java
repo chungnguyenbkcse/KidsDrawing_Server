@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -51,7 +51,7 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
-    public GetHolidayResponse getHolidayById(UUID id){
+    public GetHolidayResponse getHolidayById(Long id){
         Optional<Holiday> HolidayOpt = HolidayRepository.findById(id);
         Holiday Holiday = HolidayOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Holiday.not_found");
@@ -65,7 +65,7 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
-    public UUID createHoliday(CreateHolidayRequest createHolidayRequest) {
+    public Long createHoliday(CreateHolidayRequest createHolidayRequest) {
 
         Optional<Semester> semesterOpt = semesterRepository.findById1(createHolidayRequest.getSemester_id());
         Semester semester = semesterOpt.orElseThrow(() -> {
@@ -80,11 +80,11 @@ public class HolidayServiceImpl implements HolidayService {
             HolidayRepository.save(saveHoliday);
         });
 
-        return UUID.randomUUID();
+        return (long)1;
     }
 
     @Override
-    public UUID removeHolidayById(UUID id) {
+    public Long removeHolidayById(Long id) {
         Optional<Holiday> HolidayOpt = HolidayRepository.findById(id);
         HolidayOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Holiday.not_found");
@@ -95,7 +95,7 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
-    public UUID updateHolidayById(UUID id, CreateHolidayRequest createHolidayRequest) {
+    public Long updateHolidayById(Long id, CreateHolidayRequest createHolidayRequest) {
         Optional<Holiday> HolidayOpt = HolidayRepository.findById(id);
         Holiday updatedHoliday = HolidayOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Holiday.not_found");

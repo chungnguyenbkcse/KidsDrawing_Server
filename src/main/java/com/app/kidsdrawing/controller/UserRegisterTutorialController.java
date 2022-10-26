@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,7 +36,7 @@ public class UserRegisterTutorialController {
 
     @CrossOrigin
     @GetMapping(value = "/section/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUserRegisterTutorialBySection(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUserRegisterTutorialBySection(@PathVariable Long id) {
         return ResponseEntity.ok().body(userRegisterTutorialService.getAllUserRegisterTutorialBySection(id));
     }
 
@@ -48,8 +48,8 @@ public class UserRegisterTutorialController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateUserRegisterTutorial(@PathVariable UUID id, @RequestBody CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
-        UUID userRegisterTutorialId = userRegisterTutorialService.updateUserRegisterTutorialById(id,createUserRegisterTutorialRequest);
+    public ResponseEntity<String> updateUserRegisterTutorial(@PathVariable Long id, @RequestBody CreateUserRegisterTutorialRequest createUserRegisterTutorialRequest) {
+        Long userRegisterTutorialId = userRegisterTutorialService.updateUserRegisterTutorialById(id,createUserRegisterTutorialRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userRegisterTutorialId).toUri();
         return ResponseEntity.created(location).build();
@@ -57,14 +57,14 @@ public class UserRegisterTutorialController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserRegisterTutorialResponse> getUserRegisterTutorialById(@PathVariable UUID id) {
+    public ResponseEntity<GetUserRegisterTutorialResponse> getUserRegisterTutorialById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userRegisterTutorialService.getUserRegisterTutorialById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserRegisterTutorialById(@PathVariable UUID id) {
-        UUID userRegisterTutorialId = userRegisterTutorialService.removeUserRegisterTutorialById(id);
+    public ResponseEntity<String> deleteUserRegisterTutorialById(@PathVariable Long id) {
+        Long userRegisterTutorialId = userRegisterTutorialService.removeUserRegisterTutorialById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userRegisterTutorialId).toUri();
         return ResponseEntity.created(location).build();

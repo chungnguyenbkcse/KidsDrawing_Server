@@ -1,6 +1,6 @@
 package com.app.kidsdrawing.entity;
 
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,9 +27,9 @@ import lombok.Setter;
 @Table(name = "teacher_register_quatification")
 public class TeacherRegisterQualification {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "degree_photo_url", nullable = false)
     private String degree_photo_url;

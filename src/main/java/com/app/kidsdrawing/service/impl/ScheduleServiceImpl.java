@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -56,7 +56,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getAllScheduleBySemesterClassId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllScheduleBySemesterClassId(Long id) {
         List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
         List<Schedule> pageSchedule = scheduleRepository.findBySemesterClassId2(id);
         pageSchedule.forEach(schedule -> {
@@ -76,7 +76,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public GetScheduleResponse getScheduleById(UUID id){
+    public GetScheduleResponse getScheduleById(Long id){
         Optional<Schedule> scheduleOpt = scheduleRepository.findById2(id);
         Schedule schedule = scheduleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Schedule.not_found");
@@ -92,7 +92,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public UUID createSchedule(CreateScheduleRequest createScheduleRequest) {
+    public Long createSchedule(CreateScheduleRequest createScheduleRequest) {
         Optional<LessonTime> lessonTimeOpt =   lessonTimeRepository.findById(createScheduleRequest.getLesson_time());
         LessonTime lesson_time = lessonTimeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.lesson_time.not_found");
@@ -114,7 +114,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public UUID removeScheduleById(UUID id) {
+    public Long removeScheduleById(Long id) {
         Optional<Schedule> scheduleOpt = scheduleRepository.findById1(id);
         scheduleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Schedule.not_found");
@@ -125,7 +125,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public UUID updateScheduleById(UUID id, CreateScheduleRequest createScheduleRequest) {
+    public Long updateScheduleById(Long id, CreateScheduleRequest createScheduleRequest) {
         Optional<Schedule> scheduleOpt = scheduleRepository.findById1(id);
         Schedule updatedSchedule = scheduleOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Schedule.not_found");

@@ -86,4 +86,4 @@ GET {{rest}}/lesson-time/2
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/lesson-time?page=0&size=2
+GET {{rest}}/lesson-time?page=0&size=100

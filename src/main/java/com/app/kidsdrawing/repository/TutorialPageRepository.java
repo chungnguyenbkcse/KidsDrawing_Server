@@ -8,12 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.UUID;
 
 import com.app.kidsdrawing.entity.TutorialPage;
 
 @Repository
-public interface TutorialPageRepository extends JpaRepository <TutorialPage, UUID>{
+public interface TutorialPageRepository extends JpaRepository <TutorialPage, Long>{
     @Query("SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ")
     List<TutorialPage> findAll();
 
@@ -24,17 +23,17 @@ public interface TutorialPageRepository extends JpaRepository <TutorialPage, UUI
     Page<TutorialPage> findAll(Pageable pageable);
 
     @Query("FROM TutorialPage e WHERE e.id = :id")
-    Optional<TutorialPage> findById1(UUID id);
+    Optional<TutorialPage> findById1(Long id);
 
     @Query("FROM TutorialPage e JOIN FETCH e.tutorial WHERE e.id = :id")
-    Optional<TutorialPage> findById2(UUID id);
+    Optional<TutorialPage> findById2(Long id);
     
-    boolean existsById(UUID id);
-    void deleteById(UUID id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 
     @Query("FROM TutorialPage e JOIN FETCH e.tutorial t WHERE t.id = :id")
-    List<TutorialPage> findByTutorialId(UUID id);
+    List<TutorialPage> findByTutorialId(Long id);
 
     @Query("FROM TutorialPage e JOIN FETCH e.tutorial t JOIN FETCH t.section s WHERE s.id = :id")
-    List<TutorialPage> findBySection(UUID id);
+    List<TutorialPage> findBySection(Long id);
 }

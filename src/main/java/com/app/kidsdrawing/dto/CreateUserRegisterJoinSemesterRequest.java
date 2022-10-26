@@ -1,12 +1,12 @@
 package com.app.kidsdrawing.dto;
 
-import lombok.Data;                                   import java.util.UUID;
+import lombok.Data;                                   
 
 @Data
 public class CreateUserRegisterJoinSemesterRequest {
-    private UUID student_id;
-    private UUID semester_classes_id;
-    private UUID payer_id;
+    private Long student_id;
+    private Long semester_classes_id;
+    private Long payer_id;
     private Float price;
     private String status;
 }

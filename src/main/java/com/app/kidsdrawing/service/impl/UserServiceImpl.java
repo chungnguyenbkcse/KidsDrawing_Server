@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
+
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllChildForParentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id) {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findByParentId(id);
         pageUser.forEach(user -> {
@@ -247,7 +247,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UUID updateUserStatus(UUID id, CreateUserStatusRequest createUserStatusRequest) {
+    public Long updateUserStatus(Long id, CreateUserStatusRequest createUserStatusRequest) {
         Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -382,12 +382,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public GetUserInfoResponse getUserInfoById(UUID id) {
+    public GetUserInfoResponse getUserInfoById(Long id) {
         Optional<User> userOpt = userRepository.findById2(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
-        UUID a = UUID.randomUUID();
+        Long a = (long)1;
         if (user.getParent() != null) {
             a = user.getParent().getId();
         }
@@ -419,7 +419,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UUID createUser(CreateUserRequest createUserRequest) {
+    public Long createUser(CreateUserRequest createUserRequest) {
         String encodedPassword = passwordEncoder.encode(createUserRequest.getPassword());
 
         if (userRepository.existsByUsername(createUserRequest.getUsername())) {
@@ -464,7 +464,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public UUID createStudent(CreateStudentRequest createStudentOrParentRequest) {
+    public Long createStudent(CreateStudentRequest createStudentOrParentRequest) {
         String encodedPassword = passwordEncoder.encode(createStudentOrParentRequest.getPassword());
 
         if (userRepository.existsByUsername(createStudentOrParentRequest.getUsername())) {
@@ -518,7 +518,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UUID createTeacher(CreateTeacherRequest createTeacherRequest) {
+    public Long createTeacher(CreateTeacherRequest createTeacherRequest) {
         String password = getSaltString();
         String encodedPassword = passwordEncoder.encode(password);
 
@@ -575,7 +575,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UUID updateUser(UUID id, CreateUserRequest createUserRequest) {
+    public Long updateUser(Long id, CreateUserRequest createUserRequest) {
         Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -605,7 +605,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public UUID updatePassword(UUID id, CreateChangePassowrdRequest createChangePassowrdRequest) {
+    public Long updatePassword(Long id, CreateChangePassowrdRequest createChangePassowrdRequest) {
         Optional<User> userOpt = userRepository.findById1(id);
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -624,7 +624,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UUID removeUser(UUID id) {
+    public Long removeUser(Long id) {
         Optional<User> userOpt = userRepository.findById1(id);
         userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");

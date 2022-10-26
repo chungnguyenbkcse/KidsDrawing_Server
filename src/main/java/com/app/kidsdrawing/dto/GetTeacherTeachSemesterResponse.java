@@ -6,17 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetTeacherTeachSemesterResponse {
-    private UUID id;
-    private UUID teacher_id;
-    private UUID reviewer_id;
-    private UUID semester_classes_id;
+    private Long id;
+    private Long teacher_id;
+    private Long reviewer_id;
+    private Long semester_classes_id;
     private Boolean status;
     private LocalDateTime time;
 }

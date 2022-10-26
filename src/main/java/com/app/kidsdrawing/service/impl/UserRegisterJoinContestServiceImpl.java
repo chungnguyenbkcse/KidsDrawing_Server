@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -37,7 +37,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByStudentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByStudentId(Long id) {
         List<GetUserRegisterJoinContestResponse> allUserRegisterJoinContestResponses = new ArrayList<>();
         List<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findByStudentId2(id);
         pageUserRegisterJoinContest.forEach(content -> {
@@ -55,7 +55,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByContestId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByContestId(Long id) {
         List<GetUserRegisterJoinContestResponse> allUserRegisterJoinContestResponses = new ArrayList<>();
         List<UserRegisterJoinContest> pageUserRegisterJoinContest = userRegisterJoinContestRepository.findByContestId2(id);
         pageUserRegisterJoinContest.forEach(content -> {
@@ -73,7 +73,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     }
 
     @Override
-    public GetUserRegisterJoinContestResponse getUserRegisterJoinContestById(UUID id) {
+    public GetUserRegisterJoinContestResponse getUserRegisterJoinContestById(Long id) {
         Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById2(id);
         UserRegisterJoinContest userRegisterJoinContest = userRegisterJoinContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinContest.not_found");
@@ -87,7 +87,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     }
 
     @Override
-    public UUID createUserRegisterJoinContest(CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
+    public Long createUserRegisterJoinContest(CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
         Optional <Contest> contestOpt = contestRepository.findById1(createUserRegisterJoinContestRequest.getContest_id());
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.contest.not_found");
@@ -113,7 +113,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     }
 
     @Override
-    public UUID removeUserRegisterJoinContestById(UUID id) {
+    public Long removeUserRegisterJoinContestById(Long id) {
         Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById1(id);
         userRegisterJoinContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinContest.not_found");
@@ -124,7 +124,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     }
 
     @Override
-    public UUID updateUserRegisterJoinContestById(UUID id, CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
+    public Long updateUserRegisterJoinContestById(Long id, CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
         Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById1(id);
         UserRegisterJoinContest updatedUserRegisterJoinContest = userRegisterJoinContestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterJoinContest.not_found");

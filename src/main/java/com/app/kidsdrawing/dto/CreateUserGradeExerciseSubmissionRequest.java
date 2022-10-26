@@ -1,11 +1,11 @@
 package com.app.kidsdrawing.dto;
 
-import lombok.Data;                                   import java.util.UUID;
+import lombok.Data;                                   
 
 @Data
 public class CreateUserGradeExerciseSubmissionRequest {
-    private UUID teacher_id;
-    private UUID exercise_submission_id;
+    private Long teacher_id;
+    private Long exercise_submission_id;
     private String feedback;
     private Float score;
 }

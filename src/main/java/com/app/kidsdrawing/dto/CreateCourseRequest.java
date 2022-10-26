@@ -1,5 +1,4 @@
 package com.app.kidsdrawing.dto;
-import java.util.UUID;
 
 import lombok.Data;                                   
 
@@ -11,8 +10,8 @@ public class CreateCourseRequest {
     private Float price;
     private String image_url;
     private Boolean is_enabled;
-    private UUID creator_id;
-    private UUID art_type_id;
-    private UUID art_level_id;
-    private UUID art_age_id;
+    private Long creator_id;
+    private Long art_type_id;
+    private Long art_level_id;
+    private Long art_age_id;
 }

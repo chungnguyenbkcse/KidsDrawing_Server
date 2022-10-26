@@ -6,15 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetSemesterClassTeacherNewResponse {
-    private UUID id;
-    private UUID course_id;
+    private Long id;
+    private Long course_id;
     private String name;
     private String course_name;
     private String description;
@@ -31,6 +31,7 @@ public class GetSemesterClassTeacherNewResponse {
     private String art_age_id;
     private String semester_name;
     private LocalDateTime registration_deadline;
-    private UUID semester_id;
+    private LocalDateTime registration_expiration_time;
+    private Long semester_id;
     private String schedule;
 }

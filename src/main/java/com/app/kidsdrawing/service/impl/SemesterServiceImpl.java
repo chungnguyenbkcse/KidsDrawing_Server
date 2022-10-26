@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
+
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -284,7 +284,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public UUID setClassForSemester(UUID id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
+    public Long setClassForSemester(Long id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
         Optional<Semester> semesterOpt = semesterRepository.findById3(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
@@ -443,7 +443,7 @@ public class SemesterServiceImpl implements SemesterService {
             System.out.println("Loop: " + String.valueOf(check_count));
             //throw new EntityNotFoundException("exception.end.end"); 
         });
-        return UUID.randomUUID(); 
+        return (long)1; 
     }
 
     protected String getSaltString() {
@@ -460,7 +460,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public GetSemesterResponse getSemesterById(UUID id){
+    public GetSemesterResponse getSemesterById(Long id){
         Optional<Semester> semesterOpt = semesterRepository.findById2(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
@@ -481,7 +481,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public UUID createSemester(CreateSemesterRequest createSemesterRequest) {
+    public Long createSemester(CreateSemesterRequest createSemesterRequest) {
         Optional<User> userOpt = userRepository.findById1(createSemesterRequest.getCreator_id());
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
@@ -502,7 +502,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public UUID removeSemesterById(UUID id) {
+    public Long removeSemesterById(Long id) {
         Optional<Semester> semesterOpt = semesterRepository.findById1(id);
         semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
@@ -513,7 +513,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public UUID updateSemesterById(UUID id, CreateSemesterRequest createSemesterRequest) {
+    public Long updateSemesterById(Long id, CreateSemesterRequest createSemesterRequest) {
         Optional<Semester> semesterOpt = semesterRepository.findById1(id);
         Semester updatedSemester = semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");

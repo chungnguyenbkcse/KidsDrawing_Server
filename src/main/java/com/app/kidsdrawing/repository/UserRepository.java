@@ -10,10 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository <User, UUID>{
+public interface UserRepository extends JpaRepository <User, Long>{
     @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent ")
     List<User> findAll();
 
@@ -42,13 +41,13 @@ public interface UserRepository extends JpaRepository <User, UUID>{
     Page<User> findAll(Pageable pageable);
 
     @Query("SELECT e FROM User e WHERE e.id = :id")
-    Optional<User> findById1(UUID id);
+    Optional<User> findById1(Long id);
 
     @Query("SELECT DISTINCT e FROM User e JOIN FETCH e.userRegisterJoinSemesters2 WHERE e.id = :id")
-    Optional<User> findById3(UUID id);
+    Optional<User> findById3(Long id);
 
     @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent WHERE e.id = :id")
-    Optional<User> findById2(UUID id);
+    Optional<User> findById2(Long id);
     
     @Query("SELECT COUNT(e.id) = 1 FROM User e WHERE e.username = :username")
     Boolean existsByUsername(String username);
@@ -75,14 +74,14 @@ public interface UserRepository extends JpaRepository <User, UUID>{
     Optional<User> findByEmail2(String email);
 
     @Query("FROM User e JOIN FETCH e.parent p WHERE p.id = :id")
-    List<User> findByParentId(UUID id);
+    List<User> findByParentId(Long id);
 
     @Query("SELECT DISTINCT e FROM User e JOIN FETCH e.parent p JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH s.holidays JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime  WHERE p.id = :id")
-    List<User> findByParentId1(UUID id);
+    List<User> findByParentId1(Long id);
 
     @Query("SELECT DISTINCT x FROM User x JOIN FETCH x.parent p JOIN FETCH x.userRegisterJoinContests e JOIN FETCH e.student JOIN FETCH e.contest c JOIN FETCH c.userRegisterJoinContests JOIN FETCH c.contestSubmissions cs JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE p.id = :id")
-    List<User> findByParentId2(UUID id);
+    List<User> findByParentId2(Long id);
 
     @Query("SELECT DISTINCT e FROM User e JOIN FETCH e.parent p JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH sc.course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE p.id = :id")
-    List<User> findByParentId3(UUID id);
+    List<User> findByParentId3(Long id);
 }

@@ -3,7 +3,6 @@ package com.app.kidsdrawing.dto;
 import java.time.LocalDateTime;
 
 import lombok.Data;
-import java.util.UUID;
 
 @Data
 public class CreateSemesterRequest {
@@ -13,5 +12,5 @@ public class CreateSemesterRequest {
     private Integer year;
     private LocalDateTime start_time;
     private LocalDateTime end_time;
-    private UUID creator_id;    
+    private Long creator_id;    
 }

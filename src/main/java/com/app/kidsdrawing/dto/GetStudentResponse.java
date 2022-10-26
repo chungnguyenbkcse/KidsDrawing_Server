@@ -7,14 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetStudentResponse {
-    private UUID id;
+    private Long id;
     private String username;
     private String email;
     private String firstName;
@@ -26,6 +26,6 @@ public class GetStudentResponse {
     private String phone;
     private String address;
     private String parent;
-    private UUID parents;
+    private Long parents;
     private LocalDateTime createTime;
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -59,7 +59,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndStudent(UUID classes_id, UUID student_id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndStudent(Long classes_id, Long student_id) {
         List<GetExerciseResponse> exerciseResponses = new ArrayList<>();
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
 
@@ -108,7 +108,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionAndStudent(UUID section_id, UUID student_id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionAndStudent(Long section_id, Long student_id) {
         List<GetExerciseResponse> exerciseResponses = new ArrayList<>();
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
 
@@ -158,7 +158,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionId(Long id) {
         List<GetExerciseResponse> allExerciseResponses = new ArrayList<>();
         List<Exercise> listExerciseBySection = exerciseRepository.findBySectionId2(id);
         listExerciseBySection.forEach(content -> {
@@ -185,7 +185,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public GetExerciseResponse getExerciseById(UUID id) {
+    public GetExerciseResponse getExerciseById(Long id) {
         Optional<Exercise> exerciseOpt = exerciseRepository.findById2(id);
         Exercise exercise = exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");
@@ -206,7 +206,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public UUID createExercise(CreateExerciseRequest createExerciseRequest) {
+    public Long createExercise(CreateExerciseRequest createExerciseRequest) {
 
         Optional <Section> sectionOpt = sectionRepository.findById1(createExerciseRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
@@ -231,7 +231,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public UUID removeExerciseById(UUID id) {
+    public Long removeExerciseById(Long id) {
         Optional<Exercise> exerciseOpt = exerciseRepository.findById1(id);
         exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");
@@ -242,7 +242,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     }
 
     @Override
-    public UUID updateExerciseById(UUID id, CreateExerciseRequest createExerciseRequest) {
+    public Long updateExerciseById(Long id, CreateExerciseRequest createExerciseRequest) {
         Optional<Exercise> exerciseOpt = exerciseRepository.findById1(id);
         Exercise updatedExercise = exerciseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Exercise.not_found");

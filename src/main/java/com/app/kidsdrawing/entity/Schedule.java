@@ -1,6 +1,6 @@
 package com.app.kidsdrawing.entity;
 
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,16 +28,15 @@ import lombok.Setter;
 @Table(name = "Schedule")
 public class Schedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "date_of_week")
     private Integer date_of_week;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "lesson_time_id", referencedColumnName = "id")
     private LessonTime lessonTime;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)

@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.entity;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -21,10 +20,10 @@ import lombok.Setter;
 public class UserReadNotificationKey implements Serializable {
 
     @Column(name = "user_id")
-    UUID userId;
+    Long userId;
 
     @Column(name = "notification_id")
-    UUID notificationId;
+    Long notificationId;
 
     // standard constructors, getters, and setters
     // hashcode and equals implementation

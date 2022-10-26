@@ -3,7 +3,7 @@ package com.app.kidsdrawing.service;
 
 import com.app.kidsdrawing.dto.CreateEmailDetailRequest;
 import com.app.kidsdrawing.entity.EmailDetails;
-import java.util.UUID;
+
 
 // Interface
 public interface EmailService {
@@ -21,8 +21,8 @@ public interface EmailService {
     String sendMailAttachmentToStudent(CreateEmailDetailRequest details);
 
     // Teacher send mail for student
-    String sendMailByClass(CreateEmailDetailRequest details, UUID id);
-    String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, UUID id);
+    String sendMailByClass(CreateEmailDetailRequest details, Long id);
+    String sendMailWithAttachmentByClass(CreateEmailDetailRequest details, Long id);
 
     // Method
     // To send an email with attachment

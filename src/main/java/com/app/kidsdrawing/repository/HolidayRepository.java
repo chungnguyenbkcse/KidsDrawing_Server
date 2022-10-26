@@ -8,11 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import com.app.kidsdrawing.entity.Holiday;
 
 @Repository
-public interface HolidayRepository extends JpaRepository <Holiday, UUID>{
+public interface HolidayRepository extends JpaRepository <Holiday, Long>{
 
     @Query("SELECT e FROM Holiday e JOIN FETCH e.semester")
     List<Holiday> findAll();
@@ -24,16 +23,16 @@ public interface HolidayRepository extends JpaRepository <Holiday, UUID>{
     Page<Holiday> findAll(Pageable pageable);
 
     @Query("FROM Holiday e WHERE e.id = :id")
-    Optional<Holiday> findById1(UUID id);
+    Optional<Holiday> findById1(Long id);
 
     @Query("FROM Holiday e JOIN FETCH e.semester WHERE e.id = :id")
-    Optional<Holiday> findById2(UUID id);
+    Optional<Holiday> findById2(Long id);
 
     @Query("SELECT DISTINCT e FROM Holiday e JOIN FETCH e.semester s WHERE s.id = :id")
-    Optional<Holiday> findBySemesterId(UUID id);
+    Optional<Holiday> findBySemesterId(Long id);
 
     @Query("SELECT COUNT(e.id) = 1 FROM Holiday e WHERE e.id = :id")
-    boolean existsById(UUID id);
+    boolean existsById(Long id);
     
-    void deleteById(UUID id);
+    void deleteById(Long id);
 }

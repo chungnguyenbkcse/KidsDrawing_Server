@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.app.kidsdrawing.entity.LessonTime;
 
 @Repository
-public interface LessonTimeRepository extends JpaRepository <LessonTime, UUID>{
+public interface LessonTimeRepository extends JpaRepository <LessonTime, Long>{
 
     @Query("SELECT e FROM LessonTime e ")
     List<LessonTime> findAll();
@@ -25,8 +24,8 @@ public interface LessonTimeRepository extends JpaRepository <LessonTime, UUID>{
     Page<LessonTime> findAll(Pageable pageable);
 
     @Query("FROM LessonTime e WHERE e.id = :id")
-    Optional<LessonTime> findById(UUID id);
+    Optional<LessonTime> findById(Long id);
     
-    boolean existsById(UUID id);
-    void deleteById(UUID id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 }

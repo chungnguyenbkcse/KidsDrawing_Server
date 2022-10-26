@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import java.net.URI;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,7 +25,7 @@ public class HolidayController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createHoliday(@RequestBody CreateHolidayRequest createHolidayRequest) {
-        UUID HolidayId = HolidayService.createHoliday(createHolidayRequest);
+        Long HolidayId = HolidayService.createHoliday(createHolidayRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{HolidayId}")
                 .buildAndExpand(HolidayId).toUri();
         return ResponseEntity.created(location).build();

@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,20 +35,20 @@ public class UserReadNotificationController {
     
     @CrossOrigin
     @GetMapping(value = "/user/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserReadNotificationByStudentId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserReadNotificationByStudentId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userReadNotificationService.getAllUserReadNotificationByUserId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/notification/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserReadNotificationByNotificationId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserReadNotificationByNotificationId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userReadNotificationService.getAllUserReadNotificationBynNotificationId(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserReadNotification(@RequestBody CreateUserReadNotificationRequest createUserReadNotificationRequest) {
-        UUID userReadNotificationId = userReadNotificationService.createUserReadNotification(createUserReadNotificationRequest);
+        Long userReadNotificationId = userReadNotificationService.createUserReadNotification(createUserReadNotificationRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userReadNotificationId}")
                 .buildAndExpand(userReadNotificationId).toUri();
         return ResponseEntity.created(location).build();
@@ -57,7 +57,7 @@ public class UserReadNotificationController {
     @CrossOrigin
     @PutMapping
     public ResponseEntity<String> updateUserReadNotification(@RequestBody CreateUserReadNotificationRequest createUserReadNotificationRequest) {
-        UUID userReadNotificationId = userReadNotificationService.updateUserReadNotificationById(createUserReadNotificationRequest);
+        Long userReadNotificationId = userReadNotificationService.updateUserReadNotificationById(createUserReadNotificationRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userReadNotificationId).toUri();
         return ResponseEntity.created(location).build();
@@ -65,8 +65,8 @@ public class UserReadNotificationController {
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserReadNotificationById(@PathVariable UUID id) {
-        UUID userReadNotificationId = userReadNotificationService.removeUserReadNotificationById(id);
+    public ResponseEntity<String> deleteUserReadNotificationById(@PathVariable Long id) {
+        Long userReadNotificationId = userReadNotificationService.removeUserReadNotificationById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userReadNotificationId).toUri();
         return ResponseEntity.created(location).build();

@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.service;
 
 import java.util.Map;
-import java.util.UUID;
+
 
 import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
@@ -30,27 +30,27 @@ public interface UserService {
 
     ResponseEntity<Map<String, Object>> getTotalTeachers();
 
-    GetUserInfoResponse getUserInfoById(UUID id);
+    GetUserInfoResponse getUserInfoById(Long id);
 
     GetUserInfoResponse getUserInfoByUsername(String username);
 
     GetUserInfoResponse getUserInfo();
 
-    UUID createUser(CreateUserRequest createUserRequest);
+    Long createUser(CreateUserRequest createUserRequest);
 
-    UUID createTeacher(CreateTeacherRequest createTeacherRequest);
+    Long createTeacher(CreateTeacherRequest createTeacherRequest);
 
-    UUID createStudent(CreateStudentRequest createStudentRequest);
+    Long createStudent(CreateStudentRequest createStudentRequest);
 
-    UUID updateUser(UUID id, CreateUserRequest createUserRequest);
+    Long updateUser(Long id, CreateUserRequest createUserRequest);
 
-    UUID updateUserStatus(UUID id, CreateUserStatusRequest createUserStatusRequest);
+    Long updateUserStatus(Long id, CreateUserStatusRequest createUserStatusRequest);
     
-    UUID updatePassword(UUID id, CreateChangePassowrdRequest createChangePassowrdRequest);
+    Long updatePassword(Long id, CreateChangePassowrdRequest createChangePassowrdRequest);
 
-    UUID removeUser(UUID id);
+    Long removeUser(Long id);
 
     void changeUserPassword(User user, String password);
 
-    ResponseEntity<Map<String, Object>> getAllChildForParentId(UUID id);
+    ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id);
 }

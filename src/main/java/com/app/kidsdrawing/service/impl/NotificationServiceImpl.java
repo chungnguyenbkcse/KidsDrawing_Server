@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -49,7 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public GetNotificationResponse getNotificationById(UUID id){
+    public GetNotificationResponse getNotificationById(Long id){
         Optional<Notification> notificationOpt = notificationRepository.findById(id);
         Notification notification = notificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Notification.not_found");
@@ -80,7 +80,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public UUID removeNotificationById(UUID id) {
+    public Long removeNotificationById(Long id) {
         Optional<Notification> notificationOpt = notificationRepository.findById(id);
         notificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Notification.not_found");
@@ -91,7 +91,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public UUID updateNotificationById(UUID id, CreateNotificationRequest createNotificationRequest) {
+    public Long updateNotificationById(Long id, CreateNotificationRequest createNotificationRequest) {
         Optional<Notification> notificationOpt = notificationRepository.findById(id);
         Notification updatedNotification = notificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Notification.not_found");

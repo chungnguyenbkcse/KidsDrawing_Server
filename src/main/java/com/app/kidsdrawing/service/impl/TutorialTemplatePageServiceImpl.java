@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -53,7 +53,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageByTutorialTemplateId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageByTutorialTemplateId(Long id) {
         List<GetTutorialTemplatePageResponse> allTutorialTemplatePageResponses = new ArrayList<>();
         List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findByTutorialTemplateId(id);
         listTutorialTemplatePage.forEach(content -> {
@@ -73,7 +73,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionTemplateId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionTemplateId(Long id) {
         List<GetTutorialTemplatePageResponse> allTutorialTemplatePageResponses = new ArrayList<>();
         List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findBySectionTemplateId(id);
         listTutorialTemplatePage.forEach(content -> {
@@ -95,7 +95,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     }
 
     @Override
-    public GetTutorialTemplatePageResponse getTutorialTemplatePageById(UUID id) {
+    public GetTutorialTemplatePageResponse getTutorialTemplatePageById(Long id) {
         Optional<TutorialTemplatePage> tutorialPageOpt = tutorialTemplatePageRepository.findById2(id);
         TutorialTemplatePage tutorialPage = tutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplatePage.not_found");
@@ -111,7 +111,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     }
 
     @Override
-    public UUID createTutorialTemplatePage(CreateTutorialTemplatePageRequest createTutorialTemplatePageRequest) {
+    public Long createTutorialTemplatePage(CreateTutorialTemplatePageRequest createTutorialTemplatePageRequest) {
 
         Optional <TutorialTemplate> tutorialOpt = tutorialTemplateRepository.findById1(createTutorialTemplatePageRequest.getTutorial_template_id());
         TutorialTemplate tutorial = tutorialOpt.orElseThrow(() -> {
@@ -130,7 +130,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     }
 
     @Override
-    public UUID removeTutorialTemplatePageById(UUID id) {
+    public Long removeTutorialTemplatePageById(Long id) {
         Optional<TutorialTemplatePage> tutorialPageOpt = tutorialTemplatePageRepository.findById1(id);
         tutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplatePage.not_found");
@@ -141,7 +141,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     }
 
     @Override
-    public UUID updateTutorialTemplatePageById(UUID id, CreateTutorialTemplatePageRequest createTutorialTemplatePageRequest) {
+    public Long updateTutorialTemplatePageById(Long id, CreateTutorialTemplatePageRequest createTutorialTemplatePageRequest) {
         Optional<TutorialTemplatePage> tutorialPageOpt = tutorialTemplatePageRepository.findById1(id);
         TutorialTemplatePage updatedTutorialTemplatePage = tutorialPageOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplatePage.not_found");

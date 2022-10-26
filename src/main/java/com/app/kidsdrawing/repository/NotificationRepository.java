@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.app.kidsdrawing.entity.Notification;
 
 @Repository
-public interface NotificationRepository extends JpaRepository <Notification, UUID>{
+public interface NotificationRepository extends JpaRepository <Notification, Long>{
 
     @Query("SELECT e FROM Notification e ")
     List<Notification> findAll();
@@ -25,8 +24,8 @@ public interface NotificationRepository extends JpaRepository <Notification, UUI
     Page<Notification> findAll(Pageable pageable);
 
     @Query("FROM Notification e WHERE e.id = :id")
-    Optional<Notification> findById(UUID id);
+    Optional<Notification> findById(Long id);
     
-    boolean existsById(UUID id);
-    void deleteById(UUID id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 }

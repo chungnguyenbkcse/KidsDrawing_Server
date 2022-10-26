@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.util.Date;
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,9 +28,9 @@ import lombok.Setter;
 public class PasswordResetToken {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "token", nullable = false, unique = true)
     private String token;

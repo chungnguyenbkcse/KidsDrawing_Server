@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -58,7 +58,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByStudentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByStudentId(Long id) {
         List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findByStudentId2(id);
 
@@ -82,7 +82,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByExerciseId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByExerciseId(Long id) {
         List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
         List<ExerciseSubmission> exerciseSubmissionByExercise = exerciseSubmissionRepository.findByExerciseId2(id); 
         
@@ -106,7 +106,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassAndStudent(UUID class_id, UUID student_id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassAndStudent(Long class_id, Long student_id) {
         List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(class_id, student_id);
         
@@ -130,7 +130,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassId(Long id) {
         List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClass(id);
         
@@ -154,7 +154,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public GetExerciseSubmissionResponse getExerciseSubmissionById(UUID id) {
+    public GetExerciseSubmissionResponse getExerciseSubmissionById(Long id) {
         Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById2(id);
         ExerciseSubmission exerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
@@ -173,7 +173,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public UUID createExerciseSubmission(CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
+    public Long createExerciseSubmission(CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
 
         Optional <User> studentOpt = userRepository.findById1(createExerciseSubmissionRequest.getStudent_id());
         User student = studentOpt.orElseThrow(() -> {
@@ -196,7 +196,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public UUID removeExerciseSubmissionById(UUID id) {
+    public Long removeExerciseSubmissionById(Long id) {
         Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(id);
         exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
@@ -207,7 +207,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public UUID updateExerciseSubmissionById(UUID id, CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
+    public Long updateExerciseSubmissionById(Long id, CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
         Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(id);
         ExerciseSubmission updatedExerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");

@@ -8,12 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.UUID;
 
 import com.app.kidsdrawing.entity.SectionTemplate;
 
 @Repository
-public interface SectionTemplateRepository extends JpaRepository <SectionTemplate, UUID>{
+public interface SectionTemplateRepository extends JpaRepository <SectionTemplate, Long>{
     @Query("SELECT e FROM SectionTemplate e JOIN FETCH e.course JOIN FETCH e.user ")
     List<SectionTemplate> findAll();
 
@@ -24,29 +23,29 @@ public interface SectionTemplateRepository extends JpaRepository <SectionTemplat
     Page<SectionTemplate> findAll(Pageable pageable);
 
     @Query("FROM SectionTemplate e WHERE e.id = :id")
-    Optional<SectionTemplate> findById1(UUID id);
+    Optional<SectionTemplate> findById1(Long id);
 
     @Query("FROM SectionTemplate e JOIN FETCH e.course JOIN FETCH e.user  WHERE e.id = :id")
-    Optional<SectionTemplate> findById2(UUID id);
+    Optional<SectionTemplate> findById2(Long id);
     
     @Query("SELECT DISTINCT e FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = :id")
-    List<SectionTemplate> findByCourseId1(UUID id);
+    List<SectionTemplate> findByCourseId1(Long id);
 
     @Query("SELECT DISTINCT e FROM SectionTemplate e JOIN FETCH e.course co JOIN FETCH e.user WHERE co.id = :id")
-    List<SectionTemplate> findByCourseId2(UUID id);
+    List<SectionTemplate> findByCourseId2(Long id);
 
     @Query("SELECT DISTINCT e FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = ?1 AND e.number = ?2")
-    Optional<SectionTemplate> findByCourseIdAndNumber1(UUID course_id, int number);
+    Optional<SectionTemplate> findByCourseIdAndNumber1(Long course_id, int number);
 
     @Query("SELECT DISTINCT e FROM SectionTemplate e  JOIN FETCH e.course co JOIN FETCH e.user WHERE co.id = ?1 AND e.number = ?2")
-    Optional<SectionTemplate> findByCourseIdAndNumber2(UUID course_id, int number);
+    Optional<SectionTemplate> findByCourseIdAndNumber2(Long course_id, int number);
 
     @Query("FROM SectionTemplate e JOIN FETCH e.user u WHERE u.id = :id")
-    List<SectionTemplate> findByCreatorId1(UUID id);
+    List<SectionTemplate> findByCreatorId1(Long id);
 
     @Query("FROM SectionTemplate e JOIN FETCH e.user u JOIN FETCH e.course WHERE u.id = :id")
-    List<SectionTemplate> findByCreatorId2(UUID id);
+    List<SectionTemplate> findByCreatorId2(Long id);
 
-    boolean existsById(UUID id);
-    void deleteById(UUID id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 }

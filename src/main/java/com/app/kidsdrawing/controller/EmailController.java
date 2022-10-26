@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.kidsdrawing.dto.CreateEmailDetailRequest;
 import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.service.EmailService;
-import java.util.UUID;
+
  
 // Annotation
 @RestController
@@ -60,7 +60,7 @@ public class EmailController {
     @CrossOrigin
     @PostMapping(value = "/class/{id}")
     public String
-    sendMailByClass(@PathVariable UUID id, @RequestBody CreateEmailDetailRequest details)
+    sendMailByClass(@PathVariable Long id, @RequestBody CreateEmailDetailRequest details)
     {
         
         String status
@@ -121,7 +121,7 @@ public class EmailController {
     @CrossOrigin
     @PostMapping(value = "/class/attachment/{id}")
     public String
-    sendMailWithAttachmentByClass(@PathVariable UUID id, @RequestBody CreateEmailDetailRequest details)
+    sendMailWithAttachmentByClass(@PathVariable Long id, @RequestBody CreateEmailDetailRequest details)
     {
         
         String status

@@ -1,6 +1,6 @@
 package com.app.kidsdrawing.entity;
 
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,9 +27,9 @@ import lombok.Setter;
 @Table(name = "User_Register_Join_Contest")
 public class UserRegisterJoinContest {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id", referencedColumnName = "id")

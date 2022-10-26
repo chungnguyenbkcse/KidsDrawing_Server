@@ -2,7 +2,6 @@ package com.app.kidsdrawing.repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,9 +11,9 @@ import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
 
 @Repository
-public interface ClassHasRegisterJoinSemesterClassRepository extends JpaRepository <ClassHasRegisterJoinSemesterClass, UUID>{
+public interface ClassHasRegisterJoinSemesterClassRepository extends JpaRepository <ClassHasRegisterJoinSemesterClass, Long>{
     @Query("SELECT count(c.id) = 1 FROM ClassHasRegisterJoinSemesterClass c  WHERE c.id = :id")
-    boolean existsById(UUID id);
+    boolean existsById(Long id);
 
     void deleteById(ClassHasRegisterJoinSemesterClassKey id);
 
@@ -28,20 +27,20 @@ public interface ClassHasRegisterJoinSemesterClassRepository extends JpaReposito
     Optional<ClassHasRegisterJoinSemesterClass> findById(ClassHasRegisterJoinSemesterClassKey id);
 
     @Query("SELECT DISTINCT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester urj JOIN FETCH c.classes cl WHERE cl.id = ?1 AND urj = ?2")
-    Optional<ClassHasRegisterJoinSemesterClass> findByClassIdAndUserRegisterJoinSemester(UUID class_id, UUID user_register_join_semester_id);
+    Optional<ClassHasRegisterJoinSemesterClass> findByClassIdAndUserRegisterJoinSemester(Long class_id, Long user_register_join_semester_id);
 
     @Query("SELECT DISTINCT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester urj WHERE urj.id = :id")
-    List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterId1(UUID id);
+    List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterId1(Long id);
 
     @Query("SELECT DISTINCT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.userRegisterJoinSemester urj JOIN FETCH c.classes cl WHERE urj.id = :id")
-    List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterId2(UUID id);
+    List<ClassHasRegisterJoinSemesterClass> findByUserRegisterJoinSemesterId2(Long id);
 
     @Query("SELECT DISTINCT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl WHERE cl.id = :id")
-    List<ClassHasRegisterJoinSemesterClass> findByClassesId1(UUID id);
+    List<ClassHasRegisterJoinSemesterClass> findByClassesId1(Long id);
 
     @Query("SELECT DISTINCT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl JOIN FETCH c.userRegisterJoinSemester WHERE cl.id = :id")
-    List<ClassHasRegisterJoinSemesterClass> findByClassesId2(UUID id);
+    List<ClassHasRegisterJoinSemesterClass> findByClassesId2(Long id);
 
     @Query("SELECT DISTINCT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl JOIN FETCH c.userRegisterJoinSemester u JOIN FETCH u.student WHERE cl.id = :id")
-    List<ClassHasRegisterJoinSemesterClass> findByClassesId3(UUID id);
+    List<ClassHasRegisterJoinSemesterClass> findByClassesId3(Long id);
 }
