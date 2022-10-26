@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.entity;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -21,10 +20,10 @@ import lombok.Setter;
 public class ClassHasRegisterJoinSemesterClassKey implements Serializable {
 
     @Column(name = "classes_id")
-    UUID classesId;
+    Long classesId;
 
     @Column(name = "user_register_join_semester_id")
-    UUID userRegisterJoinSemesterId;
+    Long userRegisterJoinSemesterId;
 
     // standard constructors, getters, and setters
     // hashcode and equals implementation

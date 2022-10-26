@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,9 +31,9 @@ import lombok.Setter;
 @Table(name = "user_register_teach_semester")
 public class UserRegisterTeachSemester {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "status")
     private Boolean status;

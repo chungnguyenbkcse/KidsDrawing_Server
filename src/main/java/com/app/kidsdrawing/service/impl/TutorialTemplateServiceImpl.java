@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -56,7 +56,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
     }
 
     @Override
-    public GetTutorialTemplateResponse getTutorialTemplateBySectionTemplate(UUID id) {
+    public GetTutorialTemplateResponse getTutorialTemplateBySectionTemplate(Long id) {
         Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findBySectionTemplateId2(id);
         TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
@@ -71,7 +71,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
     }
 
     @Override
-    public GetTutorialTemplateResponse getTutorialTemplateById(UUID id) {
+    public GetTutorialTemplateResponse getTutorialTemplateById(Long id) {
         Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById2(id);
         TutorialTemplate tutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
@@ -87,7 +87,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
     }
 
     @Override
-    public UUID createTutorialTemplate(CreateTutorialTemplateRequest createTutorialTemplateRequest) {
+    public Long createTutorialTemplate(CreateTutorialTemplateRequest createTutorialTemplateRequest) {
 
         Optional <SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findById1(createTutorialTemplateRequest.getSection_template_id());
         SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
@@ -111,7 +111,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
 
     
     @Override
-    public UUID removeTutorialTemplateById(UUID id) {
+    public Long removeTutorialTemplateById(Long id) {
         Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById1(id);
         tutorialTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplate.not_found");
@@ -122,7 +122,7 @@ public class TutorialTemplateServiceImpl implements TutorialTemplateService{
     }
 
     @Override
-    public UUID updateTutorialTemplateById(UUID id, CreateTutorialTemplateRequest createTutorialTemplateRequest) {
+    public Long updateTutorialTemplateById(Long id, CreateTutorialTemplateRequest createTutorialTemplateRequest) {
         Optional<TutorialTemplate> tutorialTemplateOpt = tutorialTemplateRepository.findById1(id);
         TutorialTemplate updatedTutorialTemplate = tutorialTemplateOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TutorialTemplate.not_found");

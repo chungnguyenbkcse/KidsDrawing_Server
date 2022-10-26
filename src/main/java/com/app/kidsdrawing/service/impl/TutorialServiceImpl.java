@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -61,7 +61,7 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public GetTutorialResponse getTutorialBySection(UUID id) {
+    public GetTutorialResponse getTutorialBySection(Long id) {
         Optional<Tutorial> tutorialOpt = tutorialRepository.findBySectionId2(id);
         Tutorial tutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Tutorial.not_found");
@@ -81,7 +81,7 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialByCreator(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllTutorialByCreator(Long id) {
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
         List<Tutorial> listTutorial = tutorialRepository.findByCreatorId2(id);
         listTutorial.forEach(content -> {
@@ -106,7 +106,7 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialByCreatorSection(UUID creator_id, UUID section_id) {
+    public ResponseEntity<Map<String, Object>> getAllTutorialByCreatorSection(Long creator_id, Long section_id) {
         List<GetTutorialResponse> allTutorialResponses = new ArrayList<>();
         List<Tutorial> listTutorial = tutorialRepository.findByCreatorAndSection(creator_id, section_id);
         listTutorial.forEach(content -> {
@@ -131,7 +131,7 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public GetTutorialResponse getTutorialById(UUID id) {
+    public GetTutorialResponse getTutorialById(Long id) {
         Optional<Tutorial> tutorialOpt = tutorialRepository.findById2(id);
         Tutorial tutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Tutorial.not_found");
@@ -187,7 +187,7 @@ public class TutorialServiceImpl implements TutorialService{
 
     
     @Override
-    public UUID removeTutorialById(UUID id) {
+    public Long removeTutorialById(Long id) {
         Optional<Tutorial> tutorialOpt = tutorialRepository.findById1(id);
         tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Tutorial.not_found");
@@ -198,7 +198,7 @@ public class TutorialServiceImpl implements TutorialService{
     }
 
     @Override
-    public UUID updateTutorial(UUID id, CreateTutorialRequest createTutorialRequest) {
+    public Long updateTutorial(Long id, CreateTutorialRequest createTutorialRequest) {
         Optional<Tutorial> tutorialOpt = tutorialRepository.findById1(id);
         Tutorial updatedTutorial = tutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Tutorial.not_found");

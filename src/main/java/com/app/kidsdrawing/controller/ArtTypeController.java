@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +32,7 @@ public class ArtTypeController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createArtType(@RequestBody CreateArtTypeRequest createArtTypeRequest) {
-        UUID artTypeId = artTypeService.createArtType(createArtTypeRequest);
+        Long artTypeId = artTypeService.createArtType(createArtTypeRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{artTypeId}")
                 .buildAndExpand(artTypeId).toUri();
         return ResponseEntity.created(location).build();
@@ -40,8 +40,8 @@ public class ArtTypeController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateArtType(@PathVariable UUID id, @RequestBody CreateArtTypeRequest createArtTypeRequest) {
-        UUID artTypeId = artTypeService.updateArtTypeById(id,createArtTypeRequest);
+    public ResponseEntity<String> updateArtType(@PathVariable Long id, @RequestBody CreateArtTypeRequest createArtTypeRequest) {
+        Long artTypeId = artTypeService.updateArtTypeById(id,createArtTypeRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(artTypeId).toUri();
         return ResponseEntity.created(location).build();
@@ -56,14 +56,14 @@ public class ArtTypeController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetArtTypeResponse> getArtTypeById(@PathVariable UUID id) {
+    public ResponseEntity<GetArtTypeResponse> getArtTypeById(@PathVariable Long id) {
         return ResponseEntity.ok().body(artTypeService.getArtTypeById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteArtTypeById(@PathVariable UUID id) {
-        UUID artTypeId = artTypeService.removeArtTypeById(id);
+    public ResponseEntity<String> deleteArtTypeById(@PathVariable Long id) {
+        Long artTypeId = artTypeService.removeArtTypeById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(artTypeId).toUri();
         return ResponseEntity.created(location).build();

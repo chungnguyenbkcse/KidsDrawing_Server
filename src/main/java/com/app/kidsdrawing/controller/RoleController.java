@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import java.net.URI;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +26,7 @@ public class RoleController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createRole(@RequestBody CreateRoleRequest createRoleRequest) {
-        UUID roleId = roleService.createRole(createRoleRequest);
+        Long roleId = roleService.createRole(createRoleRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{roleId}")
                 .buildAndExpand(roleId).toUri();
         return ResponseEntity.created(location).build();

@@ -6,20 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetUserRegisterJoinSemesterResponse {
-    private UUID id;
-    private UUID student_id;
+    private Long id;
+    private Long student_id;
     private String student_name;
     private String semester_classes_name;
     private String link_url;
-    private UUID semester_classes_id;
-    private UUID payer_id;
+    private Long semester_classes_id;
+    private Long payer_id;
     private String payer_name;
     private String course_name;
     private Float price;

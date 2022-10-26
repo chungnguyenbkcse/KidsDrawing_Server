@@ -8,14 +8,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetContestParentResponse {
-    private UUID id;
+    private Long id;
     private String name;
     private String description;
     private Integer max_participant;
@@ -25,13 +25,13 @@ public class GetContestParentResponse {
     private LocalDateTime start_time;
     private LocalDateTime end_time;
     private Boolean is_enabled;
-    private UUID creator_id;
-    private UUID art_age_id;
-    private UUID art_type_id;
+    private Long creator_id;
+    private Long art_age_id;
+    private Long art_type_id;
     private String art_age_name;
     private String art_type_name;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
     private Set<String> student_registered_name;
-    private Set<UUID> student_registered_id;
+    private Set<Long> student_registered_id;
 }

@@ -1,6 +1,6 @@
 package com.app.kidsdrawing.entity;
 
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,9 +28,9 @@ import lombok.Setter;
 @Table(name = "Schedule")
 public class Schedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "date_of_week")
     private Integer date_of_week;

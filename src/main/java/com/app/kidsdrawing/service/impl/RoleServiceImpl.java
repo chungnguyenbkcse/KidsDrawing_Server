@@ -1,6 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class RoleServiceImpl implements RoleService{
     private final RoleRepository roleRepository;
     @Override
-    public UUID createRole(CreateRoleRequest createRoleRequest) {
+    public Long createRole(CreateRoleRequest createRoleRequest) {
         Role savedTutorial = Role.builder()
                 .name(createRoleRequest.getName())
                 .description(createRoleRequest.getDescription())

@@ -2,13 +2,12 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.UUID;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,9 +29,9 @@ import lombok.Setter;
 @Table(name = "semester_class")
 public class SemesterClass {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
@@ -59,4 +58,7 @@ public class SemesterClass {
 
     @Column(name = "registration_time")
     private LocalDateTime registration_time;
+
+    @Column(name = "registration_expiration_time")
+    private LocalDateTime registration_expiration_time;
 }

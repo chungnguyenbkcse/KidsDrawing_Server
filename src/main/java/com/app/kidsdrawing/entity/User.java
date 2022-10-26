@@ -3,7 +3,7 @@ package com.app.kidsdrawing.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,9 +34,9 @@ import lombok.Setter;
 @Table(name = "user")
 public class User{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;

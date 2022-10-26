@@ -1,10 +1,10 @@
 package com.app.kidsdrawing.dto;
 
-import lombok.Data;                                   import java.util.UUID;
+import lombok.Data;                                   
 
 @Data
 public class CreateUserAttendanceRequest {
-    private UUID section_id;
-    private UUID student_id;
+    private Long section_id;
+    private Long student_id;
     private Boolean status;
 }

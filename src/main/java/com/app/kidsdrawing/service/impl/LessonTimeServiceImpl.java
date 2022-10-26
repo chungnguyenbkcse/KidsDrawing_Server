@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -48,7 +48,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     }
 
     @Override
-    public GetLessonTimeResponse getLessonTimeById(UUID id){
+    public GetLessonTimeResponse getLessonTimeById(Long id){
         Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(id);
         LessonTime lessonTime = lessonTimeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.LessonTime.not_found");
@@ -62,7 +62,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     }
 
     @Override
-    public UUID createLessonTime(CreateLessonTimeRequest createLessonTimeRequest) {
+    public Long createLessonTime(CreateLessonTimeRequest createLessonTimeRequest) {
 
         LessonTime savedLessonTime = LessonTime.builder()
                 .start_time(createLessonTimeRequest.getStart_time())
@@ -74,7 +74,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     }
 
     @Override
-    public UUID removeLessonTimeById(UUID id) {
+    public Long removeLessonTimeById(Long id) {
         Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(id);
         lessonTimeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.LessonTime.not_found");
@@ -85,7 +85,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
     }
 
     @Override
-    public UUID updateLessonTimeById(UUID id, CreateLessonTimeRequest createLessonTimeRequest) {
+    public Long updateLessonTimeById(Long id, CreateLessonTimeRequest createLessonTimeRequest) {
         Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(id);
         LessonTime updatedLessonTime = lessonTimeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.LessonTime.not_found");

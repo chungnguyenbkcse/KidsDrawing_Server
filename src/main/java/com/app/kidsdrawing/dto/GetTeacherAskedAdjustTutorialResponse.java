@@ -6,17 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetTeacherAskedAdjustTutorialResponse {
-    private UUID id;
-    private UUID reviewer_id;
-    private UUID teacher_id;
-    private UUID tutorial_id;
+    private Long id;
+    private Long reviewer_id;
+    private Long teacher_id;
+    private Long tutorial_id;
     private String tutorial_name;
     private String teacher_name;
     private String status;

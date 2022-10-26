@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,7 +31,7 @@ public class LessonTimeController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createLessonTime(@RequestBody CreateLessonTimeRequest createLessonTimeRequest) {
-        UUID lessonTimeId = lessonTimeService.createLessonTime(createLessonTimeRequest);
+        Long lessonTimeId = lessonTimeService.createLessonTime(createLessonTimeRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{lessonTimeId}")
                 .buildAndExpand(lessonTimeId).toUri();
         return ResponseEntity.created(location).build();
@@ -39,8 +39,8 @@ public class LessonTimeController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateLessonTime(@PathVariable UUID id, @RequestBody CreateLessonTimeRequest createLessonTimeRequest) {
-        UUID lessonTimeId = lessonTimeService.updateLessonTimeById(id,createLessonTimeRequest);
+    public ResponseEntity<String> updateLessonTime(@PathVariable Long id, @RequestBody CreateLessonTimeRequest createLessonTimeRequest) {
+        Long lessonTimeId = lessonTimeService.updateLessonTimeById(id,createLessonTimeRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(lessonTimeId).toUri();
         return ResponseEntity.created(location).build();
@@ -54,14 +54,14 @@ public class LessonTimeController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetLessonTimeResponse> getLessonTimeById(@PathVariable UUID id) {
+    public ResponseEntity<GetLessonTimeResponse> getLessonTimeById(@PathVariable Long id) {
         return ResponseEntity.ok().body(lessonTimeService.getLessonTimeById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteLessonTimeById(@PathVariable UUID id) {
-        UUID lessonTimeId = lessonTimeService.removeLessonTimeById(id);
+    public ResponseEntity<String> deleteLessonTimeById(@PathVariable Long id) {
+        Long lessonTimeId = lessonTimeService.removeLessonTimeById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(lessonTimeId).toUri();
         return ResponseEntity.created(location).build();

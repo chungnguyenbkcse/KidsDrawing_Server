@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,50 +36,50 @@ public class UserGradeExerciseSubmissionController {
     
     @CrossOrigin
     @GetMapping(value = "/student/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByStudentId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByStudentId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByStudentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/class/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByClassId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByClassId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByClassId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/exercise/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByExerciseId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByExerciseId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByExerciseId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/exercise-submission/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByExerciseSubmissionId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByExerciseSubmissionId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByExerciseSubmissionId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/exercise-class/{exercise_id}/{classes_id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByExerciseAndClass(@PathVariable("exercise_id") UUID exercise_id, @PathVariable("classes_id") UUID classes_id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByExerciseAndClass(@PathVariable("exercise_id") Long exercise_id, @PathVariable("classes_id") Long classes_id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByExerciseAndClass(exercise_id, classes_id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/class-student/{classes_id}/{teacher_id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByStudentAndClass(@PathVariable("classes_id") UUID classes_id, @PathVariable("teacher_id") UUID teacher_id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByStudentAndClass(@PathVariable("classes_id") Long classes_id, @PathVariable("teacher_id") Long teacher_id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByStudentAndClass(classes_id, teacher_id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/exercise-student/{exercise_id}/{teacher_id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByStudentAndExercise(@PathVariable("exercise_id") UUID exercise_id, @PathVariable("teacher_id") UUID teacher_id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByStudentAndExercise(@PathVariable("exercise_id") Long exercise_id, @PathVariable("teacher_id") Long teacher_id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByStudentAndExercise(exercise_id, teacher_id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserGradeExerciseSubmission(@RequestBody CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
-        UUID userGradeExerciseSubmissionId = userGradeExerciseSubmissionService.createUserGradeExerciseSubmission(createUserGradeExerciseSubmissionRequest);
+        Long userGradeExerciseSubmissionId = userGradeExerciseSubmissionService.createUserGradeExerciseSubmission(createUserGradeExerciseSubmissionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userGradeExerciseSubmissionId}")
                 .buildAndExpand(userGradeExerciseSubmissionId).toUri();
         return ResponseEntity.created(location).build();
@@ -87,8 +87,8 @@ public class UserGradeExerciseSubmissionController {
 
     @CrossOrigin
     @PutMapping(value = "/{teacher_id}/{exercise_submission_id}")
-    public ResponseEntity<String> updateUserGradeExerciseSubmission(@PathVariable("teacher_id") UUID teacher_id, @PathVariable("exercise_submission_id") UUID exercise_submission_id, @RequestBody CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
-        UUID userGradeExerciseSubmissionId = userGradeExerciseSubmissionService.updateUserGradeExerciseSubmissionById(teacher_id, exercise_submission_id, createUserGradeExerciseSubmissionRequest);
+    public ResponseEntity<String> updateUserGradeExerciseSubmission(@PathVariable("teacher_id") Long teacher_id, @PathVariable("exercise_submission_id") Long exercise_submission_id, @RequestBody CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
+        Long userGradeExerciseSubmissionId = userGradeExerciseSubmissionService.updateUserGradeExerciseSubmissionById(teacher_id, exercise_submission_id, createUserGradeExerciseSubmissionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userGradeExerciseSubmissionId).toUri();
         return ResponseEntity.created(location).build();
@@ -96,14 +96,14 @@ public class UserGradeExerciseSubmissionController {
 
     @CrossOrigin
     @GetMapping(value = "/{teacher_id}/{exercise_submission_id}")
-    public ResponseEntity<GetUserGradeExerciseSubmissionResponse> getUserGradeExerciseSubmissionById(@PathVariable("teacher_id") UUID teacher_id, @PathVariable("exercise_submission_id") UUID exercise_submission_id) {
+    public ResponseEntity<GetUserGradeExerciseSubmissionResponse> getUserGradeExerciseSubmissionById(@PathVariable("teacher_id") Long teacher_id, @PathVariable("exercise_submission_id") Long exercise_submission_id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getUserGradeExerciseSubmissionById(teacher_id, exercise_submission_id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{teacher_id}/{exercise_submission_id}")
-    public ResponseEntity<String> deleteUserGradeExerciseSubmissionById(@PathVariable("teacher_id") UUID teacher_id, @PathVariable("exercise_submission_id") UUID exercise_submission_id) {
-        UUID userGradeExerciseSubmissionId = userGradeExerciseSubmissionService.removeUserGradeExerciseSubmissionById(teacher_id, exercise_submission_id);
+    public ResponseEntity<String> deleteUserGradeExerciseSubmissionById(@PathVariable("teacher_id") Long teacher_id, @PathVariable("exercise_submission_id") Long exercise_submission_id) {
+        Long userGradeExerciseSubmissionId = userGradeExerciseSubmissionService.removeUserGradeExerciseSubmissionById(teacher_id, exercise_submission_id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(userGradeExerciseSubmissionId).toUri();
         return ResponseEntity.created(location).build();

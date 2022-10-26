@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -56,7 +56,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     }
 
     @Override
-    public GetArtTypeResponse getArtTypeById(UUID id){
+    public GetArtTypeResponse getArtTypeById(Long id){
         Optional<ArtType> artTypeOpt = artTypeRepository.findById(id);
         ArtType artType = artTypeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtType.not_found");
@@ -70,7 +70,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     }
 
     @Override
-    public UUID createArtType(CreateArtTypeRequest createArtTypeRequest) {
+    public Long createArtType(CreateArtTypeRequest createArtTypeRequest) {
         if (artTypeRepository.existsByName(createArtTypeRequest.getName())) {
             throw new ArtTypeAlreadyCreateException("exception.art_type.art_type_taken");
         }
@@ -85,7 +85,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     }
 
     @Override
-    public UUID removeArtTypeById(UUID id) {
+    public Long removeArtTypeById(Long id) {
         Optional<ArtType> artTypeOpt = artTypeRepository.findById(id);
         artTypeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtType.not_found");
@@ -96,7 +96,7 @@ public class ArtTypeServiceImpl implements ArtTypeService {
     }
 
     @Override
-    public UUID updateArtTypeById(UUID id, CreateArtTypeRequest createArtTypeRequest) {
+    public Long updateArtTypeById(Long id, CreateArtTypeRequest createArtTypeRequest) {
         Optional<ArtType> artTypeOpt = artTypeRepository.findById(id);
         ArtType updatedArtType = artTypeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtType.not_found");

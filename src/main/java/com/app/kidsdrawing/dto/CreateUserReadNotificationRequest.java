@@ -1,11 +1,11 @@
 package com.app.kidsdrawing.dto;
 
 
-import lombok.Data;                                   import java.util.UUID;
+import lombok.Data;                                   
 
 @Data
 public class CreateUserReadNotificationRequest {
-    private UUID user_id;
-    private UUID notification_id;
+    private Long user_id;
+    private Long notification_id;
     private Boolean is_read;
 }

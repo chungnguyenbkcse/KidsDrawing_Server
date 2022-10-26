@@ -8,12 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.UUID;
 
 import com.app.kidsdrawing.entity.PasswordResetToken;
 
 @Repository
-public interface PasswordTokenRepository extends JpaRepository <PasswordResetToken, UUID>{
+public interface PasswordTokenRepository extends JpaRepository <PasswordResetToken, Long>{
 
     @Query("SELECT e FROM PasswordResetToken e JOIN FETCH e.user ")
     List<PasswordResetToken> findAll();
@@ -25,10 +24,10 @@ public interface PasswordTokenRepository extends JpaRepository <PasswordResetTok
     Page<PasswordResetToken> findAll(Pageable pageable);
 
     @Query("FROM PasswordResetToken e WHERE e.id = :id")
-    Optional<PasswordResetToken> findById1(UUID id);
+    Optional<PasswordResetToken> findById1(Long id);
 
     @Query("FROM PasswordResetToken e JOIN FETCH e.user WHERE e.id = :id")
-    Optional<PasswordResetToken> findById2(UUID id);
+    Optional<PasswordResetToken> findById2(Long id);
     
     @Query("FROM PasswordResetToken e WHERE e.token = :token")
     Optional<PasswordResetToken> findByToken1(String token);
@@ -37,5 +36,5 @@ public interface PasswordTokenRepository extends JpaRepository <PasswordResetTok
     Optional<PasswordResetToken> findByToken2(String token);
 
     @Query("SELECT DISTINCT e FROM PasswordResetToken e JOIN FETCH e.user u WHERE u.id = :id")
-    List<PasswordResetToken> findByUserId(UUID id);
+    List<PasswordResetToken> findByUserId(Long id);
 }

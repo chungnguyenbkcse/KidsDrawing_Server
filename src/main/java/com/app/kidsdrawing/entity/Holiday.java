@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,9 +28,9 @@ import lombok.Setter;
 @Table(name = "holiday")
 public class Holiday {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "day")
     private LocalDate day;

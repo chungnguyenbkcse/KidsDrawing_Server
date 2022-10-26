@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.service;
 
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 
@@ -11,11 +11,11 @@ import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 
 public interface TeacherRegisterQualificationService {
     ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualification();
-    ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationByTeacherId(UUID id);
-    ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationApprovedByTeacherId(UUID id);
-    GetTeacherRegisterQualificationResponse getTeacherRegisterQualificationById(UUID id);
-    UUID createTeacherRegisterQualification(CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest);
-    UUID removeTeacherRegisterQualificationById(UUID id);
-    UUID updateTeacherRegisterQualificationById(UUID id, CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest);
-    UUID updateTeacherRegisterQualificationByAdmin(UUID id, CreateTeacherRegisterQualificationAdminRequest createTeacherRegisterQualificationRequest);
+    ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationByTeacherId(Long id);
+    ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationApprovedByTeacherId(Long id);
+    GetTeacherRegisterQualificationResponse getTeacherRegisterQualificationById(Long id);
+    Long createTeacherRegisterQualification(CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest);
+    Long removeTeacherRegisterQualificationById(Long id);
+    Long updateTeacherRegisterQualificationById(Long id, CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest);
+    Long updateTeacherRegisterQualificationByAdmin(Long id, CreateTeacherRegisterQualificationAdminRequest createTeacherRegisterQualificationRequest);
 }

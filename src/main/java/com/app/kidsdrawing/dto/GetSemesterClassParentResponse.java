@@ -8,15 +8,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetSemesterClassParentResponse {
-    private UUID id;
-    private UUID course_id;
+    private Long id;
+    private Long course_id;
     private String name;
     private String course_name;
     private String description;
@@ -32,9 +32,10 @@ public class GetSemesterClassParentResponse {
     private String art_level_id;
     private String art_age_id;
     private String semester_name;
-    private LocalDateTime registration_deadline;
-    private UUID semester_id;
+    private LocalDateTime registration_time;
+    private LocalDateTime registration_expiration_time;
+    private Long semester_id;
     private String schedule;
     private Set<String> student_registered_name;
-    private Set<UUID> student_registered_id;
+    private Set<Long> student_registered_id;
 }

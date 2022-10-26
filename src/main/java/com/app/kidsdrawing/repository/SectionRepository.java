@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.app.kidsdrawing.entity.Section;
 
 @Repository
-public interface SectionRepository extends JpaRepository <Section, UUID>{
+public interface SectionRepository extends JpaRepository <Section, Long>{
     @Query("SELECT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher")
     List<Section> findAll();
 
@@ -24,14 +23,14 @@ public interface SectionRepository extends JpaRepository <Section, UUID>{
     Page<Section> findAll(Pageable pageable);
 
     @Query("FROM Section e WHERE e.id = :id")
-    Optional<Section> findById1(UUID id);
+    Optional<Section> findById1(Long id);
 
     @Query("FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher WHERE e.id = :id")
-    Optional<Section> findById2(UUID id);
+    Optional<Section> findById2(Long id);
 
     @Query("SELECT DISTINCT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher WHERE cl.id = :id ")
-    List<Section> findByClassesId(UUID id);
+    List<Section> findByClassesId(Long id);
 
-    boolean existsById(UUID id);
-    void deleteById(UUID id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 }

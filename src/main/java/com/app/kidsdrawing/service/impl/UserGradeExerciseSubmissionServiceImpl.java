@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -70,7 +70,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForStudentAndClasses(UUID student_id, UUID classes_id) {
+    public ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForStudentAndClasses(Long student_id, Long classes_id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByStudentAndClass(student_id, classes_id);
         exam = (float) 0;
@@ -113,7 +113,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByTeacherId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByTeacherId(Long id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByTeacherId2(id);
         listUserGradeExerciseSubmission.forEach(content -> {
@@ -141,7 +141,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentId(Long id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByStudent(id);
         listUserGradeExerciseSubmission.forEach(content -> {
@@ -169,7 +169,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByClassId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByClassId(Long id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByClass(id);
         listUserGradeExerciseSubmission.forEach(content -> {
@@ -197,7 +197,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseId(Long id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByExercise(id);
         listUserGradeExerciseSubmission.forEach(content -> {
@@ -225,7 +225,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseSubmissionId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseSubmissionId(Long id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByExerciseSubmissionId2(id);
         listUserGradeExerciseSubmission.forEach(content -> {
@@ -253,7 +253,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseAndClass(UUID exercise_id, UUID classes_id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByExerciseAndClass(Long exercise_id, Long classes_id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByExerciseAndClass(exercise_id, classes_id);
 
@@ -283,7 +283,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override  
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndExercise(UUID exercise_id, UUID student_id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndExercise(Long exercise_id, Long student_id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByExerciseAndStudent(exercise_id, student_id);
 
@@ -312,7 +312,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndClass(UUID classes_id, UUID student_id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentAndClass(Long classes_id, Long student_id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByClassAndStudent(classes_id, student_id);
         
@@ -341,7 +341,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public GetUserGradeExerciseSubmissionResponse getUserGradeExerciseSubmissionById(UUID teacher_id ,UUID exercise_submission_id) {
+    public GetUserGradeExerciseSubmissionResponse getUserGradeExerciseSubmissionById(Long teacher_id ,Long exercise_submission_id) {
         Optional<UserGradeExerciseSubmission> userGradeExerciseSubmissionOpt = userGradeExerciseSubmissionRepository.findByTeacherIdAndExerciseSubmissionId(teacher_id, exercise_submission_id);
         UserGradeExerciseSubmission userGradeExerciseSubmission = userGradeExerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeExerciseSubmission.not_found");
@@ -363,7 +363,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public UUID createUserGradeExerciseSubmission(CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
+    public Long createUserGradeExerciseSubmission(CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
 
         Optional <User> userOpt = userRepository.findById1(createUserGradeExerciseSubmissionRequest.getTeacher_id());
         User teacher = userOpt.orElseThrow(() -> {
@@ -390,7 +390,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public UUID removeUserGradeExerciseSubmissionById(UUID teacher_id, UUID exercise_submission_id) {
+    public Long removeUserGradeExerciseSubmissionById(Long teacher_id, Long exercise_submission_id) {
         Optional<UserGradeExerciseSubmission> userGradeExerciseSubmissionOpt = userGradeExerciseSubmissionRepository.findByTeacherIdAndExerciseSubmissionId(teacher_id, exercise_submission_id);
         userGradeExerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeExerciseSubmission.not_found");
@@ -401,7 +401,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     }
 
     @Override
-    public UUID updateUserGradeExerciseSubmissionById(UUID teacher_id, UUID submission_id, CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
+    public Long updateUserGradeExerciseSubmissionById(Long teacher_id, Long submission_id, CreateUserGradeExerciseSubmissionRequest createUserGradeExerciseSubmissionRequest) {
         //UserGradeExerciseSubmissionKey index = new UserGradeExerciseSubmissionKey(teacher_id, submission_id);
 
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findAll();

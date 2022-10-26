@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.util.Set;
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,9 +25,9 @@ import lombok.Setter;
 @Table(name = "exercise_level")
 public class ExerciseLevel {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "name", nullable = false)
     private String name;

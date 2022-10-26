@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,7 +31,7 @@ public class CourseController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createCourse(@RequestBody CreateCourseRequest createCourseRequest) {
-        UUID courseId = courseService.createCourse(createCourseRequest);
+        Long courseId = courseService.createCourse(createCourseRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{courseId}")
                 .buildAndExpand(courseId).toUri();
         return ResponseEntity.created(location).build();
@@ -39,8 +39,8 @@ public class CourseController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateCourse(@PathVariable UUID id, @RequestBody CreateCourseRequest createCourseRequest) {
-        UUID courseId = courseService.updateCourseById(id,createCourseRequest);
+    public ResponseEntity<String> updateCourse(@PathVariable Long id, @RequestBody CreateCourseRequest createCourseRequest) {
+        Long courseId = courseService.updateCourseById(id,createCourseRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(courseId).toUri();
         return ResponseEntity.created(location).build();
@@ -54,25 +54,25 @@ public class CourseController {
 
     @CrossOrigin
     @GetMapping(value = "/teacher-new/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourses(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourses(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseForTeacher(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/parent-new/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseNewByParentId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseNewByParentId(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseNewByParentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/student/total/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalCourseForStudent(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getTotalCourseForStudent(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getTotalCourseForStudent(id));
     }
     
     @CrossOrigin
     @GetMapping(value = "/art-type/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtTypeid(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtTypeid(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseByArtTypeId(id));
     }
 
@@ -84,26 +84,26 @@ public class CourseController {
 
     @CrossOrigin
     @GetMapping(value = "/parent/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseByParentId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseByParentId(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseByParentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/student/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseByStudentId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseByStudentId(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseByStudentId(id));
     }
 
 
     @CrossOrigin
     @GetMapping(value = "/student-new/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseNewByStudentId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseNewByStudentId(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseNewByStudentId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/teacher/new/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseNewByTeacherId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCourseNewByTeacherId(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseNewByTeacherId(id));
     }
 
@@ -115,25 +115,25 @@ public class CourseController {
 
     @CrossOrigin
     @GetMapping(value = "/teacher/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByTeacherid(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByTeacherid(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseByTeacherId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/art-level/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtLevelid(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtLevelid(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseByArtLevelId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/art-age/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtAgeid(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllCoursesByArtAgeid(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getAllCourseByArtAgeId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/id/{id}")
-    public ResponseEntity<GetCourseResponse> getCourseById(@PathVariable UUID id) {
+    public ResponseEntity<GetCourseResponse> getCourseById(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.getCourseById(id));
     }
 
@@ -145,8 +145,8 @@ public class CourseController {
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteCourseById(@PathVariable UUID id) {
-        UUID courseId = courseService.removeCourseById(id);
+    public ResponseEntity<String> deleteCourseById(@PathVariable Long id) {
+        Long courseId = courseService.removeCourseById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(courseId).toUri();
         return ResponseEntity.created(location).build();

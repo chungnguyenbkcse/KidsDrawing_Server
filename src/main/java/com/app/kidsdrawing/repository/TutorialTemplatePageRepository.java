@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.app.kidsdrawing.entity.TutorialTemplatePage;
 
 @Repository
-public interface TutorialTemplatePageRepository extends JpaRepository <TutorialTemplatePage, UUID>{
+public interface TutorialTemplatePageRepository extends JpaRepository <TutorialTemplatePage, Long>{
     
     @Query("SELECT e FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate ")
     List<TutorialTemplatePage> findAll();
@@ -25,17 +24,17 @@ public interface TutorialTemplatePageRepository extends JpaRepository <TutorialT
     Page<TutorialTemplatePage> findAll(Pageable pageable);
 
     @Query("FROM TutorialTemplatePage e WHERE e.id = :id")
-    Optional<TutorialTemplatePage> findById1(UUID id);
+    Optional<TutorialTemplatePage> findById1(Long id);
 
     @Query("FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate WHERE e.id = :id")
-    Optional<TutorialTemplatePage> findById2(UUID id);
+    Optional<TutorialTemplatePage> findById2(Long id);
 
     @Query("SELECT DISTINCT e FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate tp WHERE tp.id = :id")
-    List<TutorialTemplatePage> findByTutorialTemplateId(UUID id);
+    List<TutorialTemplatePage> findByTutorialTemplateId(Long id);
 
     @Query("SELECT DISTINCT e FROM TutorialTemplatePage e JOIN FETCH e.tutorialTemplate tp JOIN FETCH tp.sectionTemplate st WHERE st.id = :id")
-    List<TutorialTemplatePage> findBySectionTemplateId(UUID id);
+    List<TutorialTemplatePage> findBySectionTemplateId(Long id);
     
-    boolean existsById(UUID id);
-    void deleteById(UUID id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 }

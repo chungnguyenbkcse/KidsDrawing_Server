@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,14 +36,14 @@ public class SectionTemplateController {
     
     @CrossOrigin
     @GetMapping(value = "/course/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionTemplateByCourseId(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionTemplateByCourseId(@PathVariable Long id) {
         return ResponseEntity.ok().body(sectionTemplateService.getAllSectionTemplateByCourseId(id));
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<GetSectionTemplateResponse> createSectionTemplate(@RequestBody CreateSectionTemplateRequest createSectionTemplateRequest) {
-        UUID sectionTemplateId = sectionTemplateService.createSectionTemplate(createSectionTemplateRequest);
+        Long sectionTemplateId = sectionTemplateService.createSectionTemplate(createSectionTemplateRequest);
         ServletUriComponentsBuilder.fromCurrentRequest().path("/{sectionTemplateId}")
                 .buildAndExpand(sectionTemplateId).toUri();
         return ResponseEntity.ok().body(sectionTemplateService.getSectionTemplateById(sectionTemplateId));
@@ -51,8 +51,8 @@ public class SectionTemplateController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<GetSectionTemplateResponse> updateSectionTemplate(@PathVariable UUID id, @RequestBody CreateSectionTemplateRequest createSectionTemplateRequest) {
-        UUID sectionTemplateId = sectionTemplateService.updateSectionTemplateById(id,createSectionTemplateRequest);
+    public ResponseEntity<GetSectionTemplateResponse> updateSectionTemplate(@PathVariable Long id, @RequestBody CreateSectionTemplateRequest createSectionTemplateRequest) {
+        Long sectionTemplateId = sectionTemplateService.updateSectionTemplateById(id,createSectionTemplateRequest);
         ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(sectionTemplateId).toUri();
         return ResponseEntity.ok().body(sectionTemplateService.getSectionTemplateById(sectionTemplateId));
@@ -60,14 +60,14 @@ public class SectionTemplateController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetSectionTemplateResponse> getSectionTemplateById(@PathVariable UUID id) {
+    public ResponseEntity<GetSectionTemplateResponse> getSectionTemplateById(@PathVariable Long id) {
         return ResponseEntity.ok().body(sectionTemplateService.getSectionTemplateById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteSectionTemplateById(@PathVariable UUID id) {
-        UUID SectionTemplateId = sectionTemplateService.removeSectionTemplateById(id);
+    public ResponseEntity<String> deleteSectionTemplateById(@PathVariable Long id) {
+        Long SectionTemplateId = sectionTemplateService.removeSectionTemplateById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(SectionTemplateId).toUri();
         return ResponseEntity.created(location).build();

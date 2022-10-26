@@ -1,9 +1,9 @@
 package com.app.kidsdrawing.dto;
 
-import lombok.Data;                                   import java.util.UUID;
+import lombok.Data;                                   
 
 @Data
 public class CreateUserGradeContestRequest {
-    private UUID teacher_id;
-    private UUID contest_id;
+    private Long teacher_id;
+    private Long contest_id;
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -62,7 +62,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByTeacherId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByTeacherId(Long id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByTeacherId2(id);
         listUserGradeContestSubmission.forEach(content -> {
@@ -86,7 +86,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByStudentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByStudentId(Long id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByStudent(id);
         listUserGradeContestSubmission.forEach(content -> {
@@ -110,7 +110,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestId(Long id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByContest(id);
 
@@ -135,7 +135,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(UUID teacher_id, UUID contest_submission_id) {
+    public GetUserGradeContestSubmissionResponse getUserGradeContestSubmissionById(Long teacher_id, Long contest_submission_id) {
         Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findByTeacherIdAndContestSubmissionId(teacher_id, contest_submission_id);
         UserGradeContestSubmission userGradeContestSubmission = userGradeContestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContestSubmission.not_found");
@@ -155,7 +155,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public UUID createUserGradeContestSubmission(CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
+    public Long createUserGradeContestSubmission(CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
 
         Optional <User> userOpt = userRepository.findById1(createUserGradeContestSubmissionRequest.getTeacher_id());
         User teacher = userOpt.orElseThrow(() -> {
@@ -182,7 +182,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public UUID removeUserGradeContestSubmissionById(UUID teacher_id, UUID contest_submission_id) {
+    public Long removeUserGradeContestSubmissionById(Long teacher_id, Long contest_submission_id) {
         Optional<UserGradeContestSubmission> userGradeContestSubmissionOpt = userGradeContestSubmissionRepository.findByTeacherIdAndContestSubmissionId(teacher_id, contest_submission_id);
         userGradeContestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserGradeContestSubmission.not_found");
@@ -193,7 +193,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
-    public UUID updateUserGradeContestSubmissionById(UUID teacher_id, UUID submission_id, CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
+    public Long updateUserGradeContestSubmissionById(Long teacher_id, Long submission_id, CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
         //UserGradeContestSubmissionKey index = new UserGradeContestSubmissionKey(teacher_id, submission_id);
 
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findAll();

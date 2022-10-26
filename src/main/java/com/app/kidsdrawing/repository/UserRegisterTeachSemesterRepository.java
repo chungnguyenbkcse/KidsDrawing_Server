@@ -8,11 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.UUID;
 
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 @Repository
-public interface UserRegisterTeachSemesterRepository extends JpaRepository <UserRegisterTeachSemester, UUID> {
+public interface UserRegisterTeachSemesterRepository extends JpaRepository <UserRegisterTeachSemester, Long> {
     
     @Query("SELECT e FROM UserRegisterTeachSemester e JOIN FETCH e.teacher  JOIN FETCH e.semesterClass ")
     List<UserRegisterTeachSemester> findAll();
@@ -24,26 +23,26 @@ public interface UserRegisterTeachSemesterRepository extends JpaRepository <User
     Page<UserRegisterTeachSemester> findAll(Pageable pageable);
 
     @Query("FROM UserRegisterTeachSemester e WHERE e.id = :id")
-    Optional<UserRegisterTeachSemester> findById1(UUID id);
+    Optional<UserRegisterTeachSemester> findById1(Long id);
 
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.teacher  JOIN FETCH e.semesterClass WHERE e.id = :id")
-    Optional<UserRegisterTeachSemester> findById2(UUID id);
+    Optional<UserRegisterTeachSemester> findById2(Long id);
     
-    boolean existsById(UUID id);
-    void deleteById(UUID id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.semesterClass sc WHERE sc.id = :id")
-    List<UserRegisterTeachSemester> findBySemesterClassId1(UUID id);
+    List<UserRegisterTeachSemester> findBySemesterClassId1(Long id);
 
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.semesterClass sc JOIN FETCH e.teacher  WHERE sc.id = :id")
-    List<UserRegisterTeachSemester> findBySemesterClassId2(UUID id);
+    List<UserRegisterTeachSemester> findBySemesterClassId2(Long id);
 
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.teacher te WHERE te = :id")
-    List<UserRegisterTeachSemester> findByTeacherId1(UUID id);
+    List<UserRegisterTeachSemester> findByTeacherId1(Long id);
 
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.teacher te JOIN FETCH e.semesterClass WHERE te.id = :id")
-    List<UserRegisterTeachSemester> findByTeacherId2(UUID id);
+    List<UserRegisterTeachSemester> findByTeacherId2(Long id);
 
     @Query("SELECT DISTINCT e FROM UserRegisterTeachSemester e JOIN FETCH e.teacher te JOIN FETCH e.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE te.id = :id")
-    List<UserRegisterTeachSemester> findByTeacherId3(UUID id);
+    List<UserRegisterTeachSemester> findByTeacherId3(Long id);
 }

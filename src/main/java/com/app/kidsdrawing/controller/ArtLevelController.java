@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +32,7 @@ public class ArtLevelController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createArtLevel(@RequestBody CreateArtLevelRequest createArtLevelRequest) {
-        UUID artLevelId = artLevelService.createArtLevel(createArtLevelRequest);
+        Long artLevelId = artLevelService.createArtLevel(createArtLevelRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{artLevelId}")
                 .buildAndExpand(artLevelId).toUri();
         return ResponseEntity.created(location).build();
@@ -40,8 +40,8 @@ public class ArtLevelController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateArtLevel(@PathVariable UUID id, @RequestBody CreateArtLevelRequest createArtLevelRequest) {
-        UUID artLevelId = artLevelService.updateArtLevelById(id,createArtLevelRequest);
+    public ResponseEntity<String> updateArtLevel(@PathVariable Long id, @RequestBody CreateArtLevelRequest createArtLevelRequest) {
+        Long artLevelId = artLevelService.updateArtLevelById(id,createArtLevelRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(artLevelId).toUri();
         return ResponseEntity.created(location).build();
@@ -56,14 +56,14 @@ public class ArtLevelController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetArtLevelResponse> getArtLevelById(@PathVariable UUID id) {
+    public ResponseEntity<GetArtLevelResponse> getArtLevelById(@PathVariable Long id) {
         return ResponseEntity.ok().body(artLevelService.getArtLevelById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteArtLevelById(@PathVariable UUID id) {
-        UUID artLevelId = artLevelService.removeArtLevelById(id);
+    public ResponseEntity<String> deleteArtLevelById(@PathVariable Long id) {
+        Long artLevelId = artLevelService.removeArtLevelById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(artLevelId).toUri();
         return ResponseEntity.created(location).build();

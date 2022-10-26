@@ -2,7 +2,7 @@ package com.app.kidsdrawing.controller;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,14 +31,14 @@ public class ScheduleController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<GetScheduleResponse> createSchedule(@RequestBody CreateScheduleRequest createScheduleRequest) {
-        UUID scheduleId = scheduleService.createSchedule(createScheduleRequest);
+        Long scheduleId = scheduleService.createSchedule(createScheduleRequest);
         return ResponseEntity.ok().body(scheduleService.getScheduleById(scheduleId));
     }
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<GetScheduleResponse> updateSchedule(@PathVariable UUID id, @RequestBody CreateScheduleRequest createScheduleRequest) {
-        UUID scheduleId = scheduleService.updateScheduleById(id,createScheduleRequest);
+    public ResponseEntity<GetScheduleResponse> updateSchedule(@PathVariable Long id, @RequestBody CreateScheduleRequest createScheduleRequest) {
+        Long scheduleId = scheduleService.updateScheduleById(id,createScheduleRequest);
         ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(scheduleId).toUri();
         return ResponseEntity.ok().body(scheduleService.getScheduleById(scheduleId));
@@ -52,20 +52,20 @@ public class ScheduleController {
     
     @CrossOrigin
     @GetMapping(value = "/semester-class/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSchedulesBySemesterClass(@PathVariable UUID id) {
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSchedulesBySemesterClass(@PathVariable Long id) {
         return ResponseEntity.ok().body(scheduleService.getAllScheduleBySemesterClassId(id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetScheduleResponse> getScheduleById(@PathVariable UUID id) {
+    public ResponseEntity<GetScheduleResponse> getScheduleById(@PathVariable Long id) {
         return ResponseEntity.ok().body(scheduleService.getScheduleById(id));
     }
 
     @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteScheduleById(@PathVariable UUID id) {
-        UUID scheduleId = scheduleService.removeScheduleById(id);
+    public ResponseEntity<String> deleteScheduleById(@PathVariable Long id) {
+        Long scheduleId = scheduleService.removeScheduleById(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(scheduleId).toUri();
         return ResponseEntity.created(location).build();

@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalTime;
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,9 +26,9 @@ import lombok.Setter;
 @Table(name = "Lesson_Time")
 public class LessonTime {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @Column(name = "start_time")
     private LocalTime start_time;

@@ -1,6 +1,6 @@
 package com.app.kidsdrawing.entity;
 
-import java.util.UUID;
+import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,9 +30,9 @@ import lombok.Setter;
 @Table(name = "tutorial_template_page")
 public class TutorialTemplatePage {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID  id;
+    private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "toturial_template_id", referencedColumnName = "id")

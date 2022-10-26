@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -120,7 +120,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByParentAndCourse(UUID id, UUID course_id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByParentAndCourse(Long id, Long course_id) {
         List<GetSemesterClassParentResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
         List<SemesterClass> allSemesterClassByParentAndCourse = semesterClassRepository.findAllSemesterClassByParentAndCourse1(id, course_id);
@@ -131,7 +131,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
         allSemesterClassByParentAndCourse.forEach(semester_class -> {
             if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
-                Set<UUID> student_ids = new HashSet<>();
+                Set<Long> student_ids = new HashSet<>();
                 Set<String> student_name = new HashSet<>();
                 semester_class.getUserRegisterJoinSemesters().forEach(ele -> {
                     student_ids.add(ele.getStudent().getId());
@@ -161,7 +161,8 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         .art_level_name(semester_class.getCourse().getArtLevels().getName())
                         .art_type_name(semester_class.getCourse().getArtTypes().getName())
                         .price(semester_class.getCourse().getPrice())
-                        .registration_deadline(semester_class.getRegistration_time())
+                        .registration_time(semester_class.getRegistration_time())
+                        .registration_expiration_time(semester_class.getRegistration_expiration_time())
                         .num_of_section(semester_class.getCourse().getNum_of_section())
                         .schedule(schedule)
                         .max_participant(semester_class.getMax_participant())
@@ -177,7 +178,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
         allSemesterClassByParentAndCourse1.forEach(semester_class -> {
             if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
-                Set<UUID> student_ids = new HashSet<>();
+                Set<Long> student_ids = new HashSet<>();
                 Set<String> student_name = new HashSet<>();
                 semester_class.getUserRegisterJoinSemesters().forEach(ele -> {
                     student_ids.add(ele.getStudent().getId());
@@ -207,7 +208,8 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         .art_level_name(semester_class.getCourse().getArtLevels().getName())
                         .art_type_name(semester_class.getCourse().getArtTypes().getName())
                         .price(semester_class.getCourse().getPrice())
-                        .registration_deadline(semester_class.getRegistration_time())
+                        .registration_time(semester_class.getRegistration_time())
+                        .registration_expiration_time(semester_class.getRegistration_expiration_time())
                         .num_of_section(semester_class.getCourse().getNum_of_section())
                         .schedule(schedule)
                         .max_participant(semester_class.getMax_participant())
@@ -246,7 +248,8 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         .art_level_name(semester_class.getCourse().getArtLevels().getName())
                         .art_type_name(semester_class.getCourse().getArtTypes().getName())
                         .price(semester_class.getCourse().getPrice())
-                        .registration_deadline(semester_class.getRegistration_time())
+                        .registration_time(semester_class.getRegistration_time())
+                        .registration_expiration_time(semester_class.getRegistration_expiration_time())
                         .num_of_section(semester_class.getCourse().getNum_of_section())
                         .schedule(schedule)
                         .max_participant(semester_class.getMax_participant())
@@ -263,7 +266,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByStudentAndCourse(UUID id, UUID course_id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByStudentAndCourse(Long id, Long course_id) {
         List<GetSemesterClassStudentResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
         List<SemesterClass> allSemesterClassByStudentAndCourse = semesterClassRepository.findAllSemesterClassByStudentAndCourse(id, course_id);
@@ -298,7 +301,8 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     .art_level_name(semester_class.getCourse().getArtLevels().getName())
                     .art_type_name(semester_class.getCourse().getArtTypes().getName())
                     .price(semester_class.getCourse().getPrice())
-                    .registration_deadline(semester_class.getSemester().getStart_time())
+                    .registration_time(semester_class.getRegistration_time())
+                    .registration_expiration_time(semester_class.getRegistration_expiration_time())
                     .num_of_section(semester_class.getCourse().getNum_of_section())
                     .schedule(schedule)
                     .max_participant(semester_class.getMax_participant())
@@ -321,7 +325,8 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     .art_level_name(semester_class.getCourse().getArtLevels().getName())
                     .art_type_name(semester_class.getCourse().getArtTypes().getName())
                     .price(semester_class.getCourse().getPrice())
-                    .registration_deadline(semester_class.getSemester().getStart_time())
+                    .registration_time(semester_class.getRegistration_time())
+                    .registration_expiration_time(semester_class.getRegistration_expiration_time())
                     .num_of_section(semester_class.getCourse().getNum_of_section())
                     .schedule(schedule)
                     .max_participant(semester_class.getMax_participant())
@@ -340,7 +345,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByTeacherAndCourse(UUID id, UUID course_id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByTeacherAndCourse(Long id, Long course_id) {
         List<GetSemesterClassTeacherNewResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
         List<SemesterClass> allSemesterClassByTeacherAndCourse = semesterClassRepository.findAllSemesterClassByTeacherAndCourse(id, course_id);
@@ -414,7 +419,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassHistoryOfStudent(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassHistoryOfStudent(Long id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
                 .findByStudentId2(id);
@@ -441,7 +446,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassPresentOfStudent(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassPresentOfStudent(Long id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
                 .findByStudentId2(id);
@@ -468,7 +473,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public GetSemesterClassResponse getSemesterClassById(UUID id) {
+    public GetSemesterClassResponse getSemesterClassById(Long id) {
         Optional<SemesterClass> semesterClassOpt = semesterClassRepository.findById2(id);
         SemesterClass semesterClass = semesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
@@ -487,7 +492,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(Long id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
@@ -513,7 +518,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemesterScheduleClass(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemesterScheduleClass(Long id) {
         List<GetSemesterClassForScheduleClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findBySemesterId1(id);
         pageSemesterClass.forEach(semesterClass -> {
@@ -529,7 +534,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(Long id) {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findByCourseId2(id);
         pageSemesterClass.forEach(semesterClass -> {
@@ -590,7 +595,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public UUID removeSemesterClassById(UUID id) {
+    public Long removeSemesterClassById(Long id) {
         Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById1(id);
         SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
@@ -601,7 +606,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public UUID updateSemesterClassById(UUID id, CreateSemesterClassRequest createSemesterClassRequest) {
+    public Long updateSemesterClassById(Long id, CreateSemesterClassRequest createSemesterClassRequest) {
         Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById1(id);
         SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
@@ -633,7 +638,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     }
 
     @Override
-    public String updateSemesterClassMaxParticipantById(UUID id) {
+    public String updateSemesterClassMaxParticipantById(Long id) {
         Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById1(id);
         SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");

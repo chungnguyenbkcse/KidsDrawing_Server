@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.dto;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import lombok.Data;                                   
 
@@ -15,7 +14,7 @@ public class CreateContestRequest {
     private LocalDateTime start_time;
     private LocalDateTime end_time;
     private Boolean is_enabled;
-    private UUID creator_id;
-    private UUID art_age_id;
-    private UUID art_type_id;
+    private Long creator_id;
+    private Long art_age_id;
+    private Long art_type_id;
 }

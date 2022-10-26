@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -114,7 +114,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getTotalCourseForStudent(UUID student_id) {
+    public ResponseEntity<Map<String, Object>> getTotalCourseForStudent(Long student_id) {
         List<Course> listUserRegisterJoinSemester = courseRepository.findTotalCourseForStudent(student_id);
         Map<String, Object> response = new HashMap<>();
         response.put("course", listUserRegisterJoinSemester.size());
@@ -122,7 +122,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseForTeacher(UUID teacher_id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseForTeacher(Long teacher_id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<Course> pageCourse = courseRepository.findAllCourseNewForTeacher(teacher_id);
         pageCourse.forEach(course -> {
@@ -154,7 +154,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(Long id) {
         List<GetCourseNewResponse> courses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByStudentId2(id);
         List<Course> listCourseRegisted = new ArrayList<>();
@@ -221,7 +221,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getAllCourseNewByTeacherId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseNewByTeacherId(Long id) {
         List<GetCourseTeacherNewResponse> courses = new ArrayList<>();
         List<Course> allCourses = courseRepository.findAllCourseNewForTeacher1(id);
         System.out.print(allCourses.size());
@@ -272,7 +272,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseNewByParentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseNewByParentId(Long id) {
         List<GetCourseParentNewResponse> courses = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByPayerId2(id);
         System.out.println(userRegisterJoinSemesters.size());
@@ -350,7 +350,7 @@ public class CourseServiceImpl implements CourseService {
                 });
                 
                 Set<String> student_names = new HashSet<>();
-                Set<UUID> student_ids = new HashSet<>();
+                Set<Long> student_ids = new HashSet<>();
                 if (res.containsKey(course.getName())){
                     res.get(course.getName()).forEach(ele -> {
                         student_names.add(ele.getUsername());
@@ -419,7 +419,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtTypeId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtTypeId(Long id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<Course> pageCourse = courseRepository.findAll();
         pageCourse.forEach(course -> {
@@ -449,7 +449,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtAgeId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtAgeId(Long id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<Course> pageCourse = courseRepository.findAll();
         pageCourse.forEach(course -> {
@@ -479,7 +479,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByArtLevelId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByArtLevelId(Long id) {
         List<GetCourseResponse> allCourseResponses = new ArrayList<>();
         List<Course> pageCourse = courseRepository.findAll();
         pageCourse.forEach(course -> {
@@ -509,7 +509,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByParentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByParentId(Long id) {
         List<GetCourseParentResponse> allCourseRegistedResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findByParentId3(id);
         List<Course> listCourseRegistered = new ArrayList<>();
@@ -580,7 +580,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByStudentId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByStudentId(Long id) {
         List<GetCourseParentResponse> allCourseRegistedResponses = new ArrayList<>();
         List<GetCourseParentResponse> allCourseNotRegistedNowResponses = new ArrayList<>();
         List<Course> listCourseRegistered = new ArrayList<>();
@@ -640,7 +640,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllCourseByTeacherId(UUID id) {
+    public ResponseEntity<Map<String, Object>> getAllCourseByTeacherId(Long id) {
         List<UserRegisterTeachSemester> listTeacherTeachSemester = userRegisterTeachSemesterRepository.findByTeacherId3(id);
         
         // Danh sach dang ki day cua giao vien
@@ -814,7 +814,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public GetCourseResponse getCourseById(UUID id){
+    public GetCourseResponse getCourseById(Long id){
         Optional<Course> courseOpt = courseRepository.findById2(id);
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
@@ -838,7 +838,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public UUID createCourse(CreateCourseRequest createCourseRequest) {
+    public Long createCourse(CreateCourseRequest createCourseRequest) {
         if (courseRepository.existsByName(createCourseRequest.getName())) {
             throw new CourseAlreadyCreateException("exception.course.course_taken");
         }
@@ -908,7 +908,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public UUID removeCourseById(UUID id) {
+    public Long removeCourseById(Long id) {
         Optional<Course> courseOpt = courseRepository.findById1(id);
         courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
@@ -918,7 +918,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public UUID updateCourseById(UUID id, CreateCourseRequest createCourseRequest) {
+    public Long updateCourseById(Long id, CreateCourseRequest createCourseRequest) {
         Optional<Course> courseOpt = courseRepository.findById1(id);
         Course updatedCourse = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");

@@ -6,16 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetSectionTemplateResponse {
-    private UUID id;
-    private UUID creator_id;
-    private UUID course_id;
+    private Long id;
+    private Long creator_id;
+    private Long course_id;
     private String name;
     private Integer number;
     private Boolean teaching_form;
