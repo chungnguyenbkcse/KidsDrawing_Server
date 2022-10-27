@@ -1,13 +1,14 @@
 package com.app.kidsdrawing.entity;
 
 import java.util.Set;
-import javax.persistence.GenerationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,7 +24,8 @@ import lombok.Setter;
 @Entity
 public class Privilege {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.PrivilegeIdGenerator")
+    @GeneratedValue(generator = "id")
     @Column(name = "id")
     private Long  id;
 

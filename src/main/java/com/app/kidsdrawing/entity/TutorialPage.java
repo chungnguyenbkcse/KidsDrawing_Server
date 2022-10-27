@@ -1,7 +1,5 @@
 package com.app.kidsdrawing.entity;
 
-import javax.persistence.GenerationType;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +11,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +29,8 @@ import lombok.Setter;
 @Table(name = "tutorial_page")
 public class TutorialPage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.TutorialPageIdGenerator")
+    @GeneratedValue(generator = "id")
     @Column(name = "id")
     private Long  id;
 

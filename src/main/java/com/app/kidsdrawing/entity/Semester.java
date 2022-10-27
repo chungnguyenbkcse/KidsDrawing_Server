@@ -2,7 +2,6 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -33,7 +33,8 @@ import lombok.Setter;
 @Table(name = "semester")
 public class Semester {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.SemesterIdGenerator")
+    @GeneratedValue(generator = "id")
     @Column(name = "id")
     private Long  id;
 

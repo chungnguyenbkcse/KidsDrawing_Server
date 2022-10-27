@@ -3,7 +3,6 @@ package com.app.kidsdrawing.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.GenerationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +34,8 @@ import lombok.Setter;
 @Table(name = "user")
 public class User{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.UserIdGenerator")
+    @GeneratedValue(generator = "id")
     @Column(name = "id")
     private Long  id;
 
@@ -165,5 +166,8 @@ public class User{
 
     @OneToMany(mappedBy="student")
     private Set<UserAttendance> userAttendances;
+
+    @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
+    private PasswordResetToken passwordResetToken;
 
 }

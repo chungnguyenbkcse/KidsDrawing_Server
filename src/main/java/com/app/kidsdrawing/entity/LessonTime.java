@@ -1,15 +1,16 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalTime;
-import javax.persistence.GenerationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,8 @@ import lombok.Setter;
 @Table(name = "Lesson_Time")
 public class LessonTime {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.LessonTimeIdGenerator")
+    @GeneratedValue(generator = "id")
     @Column(name = "id")
     private Long  id;
 
@@ -36,7 +38,7 @@ public class LessonTime {
     @Column(name = "end_time")
     private LocalTime end_time;
 
-    @OneToOne(mappedBy="lessonTime")
+    @OneToOne(mappedBy="lessonTime", fetch = FetchType.LAZY)
     private Schedule schedule;
 
 }

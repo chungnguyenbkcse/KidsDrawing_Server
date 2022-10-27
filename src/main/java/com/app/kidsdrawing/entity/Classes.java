@@ -2,7 +2,6 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,12 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -36,7 +35,8 @@ import lombok.Setter;
 @Table(name = "classes")
 public class Classes {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.ClassesIdGenerator")
+    @GeneratedValue(generator = "id")
     @Column
     private Long  id;
 
@@ -44,9 +44,8 @@ public class Classes {
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User user;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "user_register_teach_semester_id", referencedColumnName = "id")
     private UserRegisterTeachSemester userRegisterTeachSemester;
 
     @Column(name = "security_code", nullable = false, unique = true)

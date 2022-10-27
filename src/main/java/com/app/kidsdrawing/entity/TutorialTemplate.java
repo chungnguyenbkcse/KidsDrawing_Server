@@ -2,7 +2,6 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,12 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -35,13 +34,13 @@ import lombok.Setter;
 @Table(name = "tutorial_template")
 public class TutorialTemplate {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.TutorialTemplateIdGenerator")
+    @GeneratedValue(generator = "id")
     @Column
     private Long  id;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "section_template_id", referencedColumnName = "id")
     private SectionTemplate sectionTemplate;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)

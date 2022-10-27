@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
-import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +31,8 @@ import lombok.Setter;
 @Table(name = "User_Register_Join_Semester")
 public class UserRegisterJoinSemester {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.UserRegisterJoinSemesterIdGenerator")
+    @GeneratedValue(generator = "id")
     @Column(name = "id")
     private Long  id;
 
@@ -58,6 +59,6 @@ public class UserRegisterJoinSemester {
     @CreationTimestamp
     private LocalDateTime time = LocalDateTime.now();
 
-    @OneToOne(mappedBy = "userRegisterJoinSemester")
+    @OneToOne(mappedBy = "userRegisterJoinSemester", fetch = FetchType.LAZY)
     private ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass;
 }
