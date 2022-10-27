@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: "jdbc:postgresql://ec2-44-209-24-62.compute-1.amazonaws.com:5432/dnltbrl88t21b"
-    username: iwszbcmeuuybja
-    password: 77b1cce0d9f4f0ecbb402ee67ddd7dbd956da1e5c7a5e865f312b299127b2503
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: postgres
+    password: 123
   http:
     multipart:
       max-file-size: 10MB
@@ -12,7 +12,7 @@ spring:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

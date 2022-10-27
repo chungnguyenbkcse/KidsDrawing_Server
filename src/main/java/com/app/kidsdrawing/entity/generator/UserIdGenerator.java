@@ -19,7 +19,7 @@ public class UserIdGenerator implements IdentifierGenerator {
         try {
             Statement statement=connection.createStatement();
         
-            ResultSet rs=statement.executeQuery("select count(id) as Id from user");
+            ResultSet rs=statement.executeQuery("select COUNT(id) from \"user\"");
         
             if(rs.next())
             {

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -88,7 +90,7 @@ public class User{
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private User parent;
      
@@ -169,5 +171,8 @@ public class User{
 
     @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
     private PasswordResetToken passwordResetToken;
+
+    @OneToMany(mappedBy="parent")
+    private Set<User> childs;
 
 }
