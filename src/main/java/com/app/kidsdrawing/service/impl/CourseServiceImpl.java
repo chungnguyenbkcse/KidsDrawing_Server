@@ -883,7 +883,7 @@ public class CourseServiceImpl implements CourseService {
                 .course(savedCourse)
                 .user(user)
                 .name("")
-                .number(1)
+                .number(index + 1)
                 .teaching_form(true)
                 .build();
             sectionTemplateRepository.save(savedSectionTemplate);

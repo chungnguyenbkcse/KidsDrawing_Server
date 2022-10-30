@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -23,8 +24,9 @@ public class ScheduleIdGenerator implements IdentifierGenerator {
         
             if(rs.next())
             {
-                int id=rs.getInt(1)+1;
-                Long generatedId = (long)id;
+                long millis = Instant.now().toEpochMilli();
+                //int id=rs.getInt(1)+1;
+                Long generatedId = (long)millis + (long)(rs.getInt(1)+1);
                 return generatedId;
             }
         } catch (SQLException e) {

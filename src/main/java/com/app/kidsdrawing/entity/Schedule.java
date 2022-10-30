@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -36,7 +35,7 @@ public class Schedule {
     @Column(name = "date_of_week")
     private Integer date_of_week;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "lesson_time_id", referencedColumnName = "id")
     private LessonTime lessonTime;
 

@@ -1,13 +1,13 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalTime;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -38,7 +38,7 @@ public class LessonTime {
     @Column(name = "end_time")
     private LocalTime end_time;
 
-    @OneToOne(mappedBy="lessonTime", fetch = FetchType.LAZY)
-    private Schedule schedule;
+    @OneToMany(mappedBy="lessonTime")
+    private Set<Schedule> schedules;
 
 }
