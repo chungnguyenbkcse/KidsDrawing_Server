@@ -3,6 +3,7 @@ package com.app.kidsdrawing.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -43,4 +44,8 @@ public interface ScheduleRepository extends JpaRepository <Schedule, Long>{
     boolean existsById(Long id);
 
     void deleteById(Long id);
+
+    @Modifying
+    @Query(value = "DELETE FROM schedule e WHERE e.semester_classes_id =:id", nativeQuery=true)
+    void deleteBySemesterClassesId(Long id);
 }
