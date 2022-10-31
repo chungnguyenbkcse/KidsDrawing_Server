@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -24,9 +23,8 @@ public class TutorialTemplatePageIdGenerator implements IdentifierGenerator {
         
             if(rs.next())
             {
-                long millis = Instant.now().toEpochMilli();
-                //int id=rs.getInt(1)+1;
-                Long generatedId = (long)millis + (long)(rs.getInt(1)+1);
+                int id=rs.getInt(1)+1;
+                Long generatedId = (long)id;
                 return generatedId;
             }
         } catch (SQLException e) {

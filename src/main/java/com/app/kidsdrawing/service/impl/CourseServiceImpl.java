@@ -30,11 +30,8 @@ import com.app.kidsdrawing.entity.ArtLevel;
 import com.app.kidsdrawing.entity.ArtType;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Course;
-import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.TutorialTemplate;
-import com.app.kidsdrawing.entity.TutorialTemplatePage;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
@@ -46,11 +43,8 @@ import com.app.kidsdrawing.repository.ArtTypeRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
-import com.app.kidsdrawing.repository.SectionTemplateRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
-import com.app.kidsdrawing.repository.TutorialTemplatePageRepository;
-import com.app.kidsdrawing.repository.TutorialTemplateRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -74,9 +68,6 @@ public class CourseServiceImpl implements CourseService {
     private final SemesterClassRepository semesterClassRepository;
     private final ScheduleRepository scheduleRepository;
     private final SemesterRepository semesterRepository;
-    private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
-    private final TutorialTemplateRepository tutorialTemplateRepository;
-    private final SectionTemplateRepository sectionTemplateRepository;
     private static String schedule = "";
     private static int total = 0;
     private static int teacher_register_total = 0;
@@ -877,32 +868,6 @@ public class CourseServiceImpl implements CourseService {
                 .artLevels(artLevel)
                 .build();
         courseRepository.save(savedCourse);
-
-        for (int index = 0; index < savedCourse.getNum_of_section(); index++) {
-            SectionTemplate savedSectionTemplate = SectionTemplate.builder()
-                .course(savedCourse)
-                .user(user)
-                .name("")
-                .number(index + 1)
-                .teaching_form(true)
-                .build();
-            sectionTemplateRepository.save(savedSectionTemplate);
-
-            TutorialTemplate savedTutorialTemplate = TutorialTemplate.builder()
-                .sectionTemplate(savedSectionTemplate)
-                .name("")
-                .creator(user)
-                .build();
-            tutorialTemplateRepository.save(savedTutorialTemplate);
-
-            TutorialTemplatePage savedTutorialTemplatePage = TutorialTemplatePage.builder()
-                .tutorialTemplate(savedTutorialTemplate)
-                .name("")
-                .description("")
-                .number(0)
-                .build();
-            tutorialTemplatePageRepository.save(savedTutorialTemplatePage);
-        }
 
         return savedCourse.getId();
     }

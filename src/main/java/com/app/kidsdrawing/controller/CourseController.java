@@ -30,11 +30,9 @@ public class CourseController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createCourse(@RequestBody CreateCourseRequest createCourseRequest) {
+    public ResponseEntity<GetCourseResponse> createCourse(@RequestBody CreateCourseRequest createCourseRequest) {
         Long courseId = courseService.createCourse(createCourseRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{courseId}")
-                .buildAndExpand(courseId).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().body(courseService.getCourseById(courseId));
     }
 
     @CrossOrigin
