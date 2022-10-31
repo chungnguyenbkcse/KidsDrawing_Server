@@ -5,12 +5,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,9 +28,7 @@ import lombok.Setter;
 @Table(name = "teacher_register_quatification")
 public class TeacherRegisterQualification {
     @Id
-    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.TeacherRegisterQuatificationIdGenerator")
-    @GeneratedValue(generator = "id")
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  id;
 
     @Column(name = "degree_photo_url", nullable = false)

@@ -36,6 +36,15 @@ public class CourseController {
     }
 
     @CrossOrigin
+    @PostMapping(value = "/v2")
+    public ResponseEntity<String> createCourseV2(@RequestBody CreateCourseRequest createCourseRequest) {
+        Long courseId = courseService.createMutipleCourse(createCourseRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{classId}")
+                .buildAndExpand(courseId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateCourse(@PathVariable Long id, @RequestBody CreateCourseRequest createCourseRequest) {
         Long courseId = courseService.updateCourseById(id,createCourseRequest);

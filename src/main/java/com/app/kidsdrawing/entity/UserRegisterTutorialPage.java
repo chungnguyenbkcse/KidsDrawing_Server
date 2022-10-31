@@ -6,13 +6,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
+
 import org.hibernate.annotations.Type;
 
 import lombok.AllArgsConstructor;
@@ -30,9 +31,7 @@ import lombok.Setter;
 @Table(name = "user_register_tutorial_page")
 public class UserRegisterTutorialPage {
     @Id
-    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.UserRegisterTutorialPageIdGenerator")
-    @GeneratedValue(generator = "id")
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)

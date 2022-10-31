@@ -25,6 +25,7 @@ public interface CourseService {
     GetCourseResponse getCourseByName(String name);
     GetCourseResponse getCourseById(Long id);
     Long createCourse(CreateCourseRequest createCourseRequest);
+    Long createMutipleCourse(CreateCourseRequest createCourseRequest);
     Long removeCourseById(Long id);
     Long updateCourseById(Long id, CreateCourseRequest createCourseRequest);
 }

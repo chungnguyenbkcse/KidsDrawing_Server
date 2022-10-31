@@ -30,8 +30,11 @@ import com.app.kidsdrawing.entity.ArtLevel;
 import com.app.kidsdrawing.entity.ArtType;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Course;
+import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
+import com.app.kidsdrawing.entity.TutorialTemplate;
+import com.app.kidsdrawing.entity.TutorialTemplatePage;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
@@ -43,8 +46,11 @@ import com.app.kidsdrawing.repository.ArtTypeRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
+import com.app.kidsdrawing.repository.SectionTemplateRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
+import com.app.kidsdrawing.repository.TutorialTemplatePageRepository;
+import com.app.kidsdrawing.repository.TutorialTemplateRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -68,6 +74,9 @@ public class CourseServiceImpl implements CourseService {
     private final SemesterClassRepository semesterClassRepository;
     private final ScheduleRepository scheduleRepository;
     private final SemesterRepository semesterRepository;
+    private final SectionTemplateRepository sectionTemplateRepository;
+    private final TutorialTemplateRepository tutorialTemplateRepository;
+    private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
     private static String schedule = "";
     private static int total = 0;
     private static int teacher_register_total = 0;
@@ -868,6 +877,90 @@ public class CourseServiceImpl implements CourseService {
                 .artLevels(artLevel)
                 .build();
         courseRepository.save(savedCourse);
+
+        return savedCourse.getId();
+    }
+
+    @Override 
+    public Long createMutipleCourse(CreateCourseRequest createCourseRequest) {
+        if (courseRepository.existsByName(createCourseRequest.getName())) {
+            throw new CourseAlreadyCreateException("exception.course.course_taken");
+        }
+
+        Optional<User> userOpt = userRepository.findById1(createCourseRequest.getCreator_id());
+        User user = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
+        });
+
+        Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createCourseRequest.getArt_age_id());
+        ArtAge artAge = artAgeOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.ArtAge.not_found");
+        });
+
+        Optional<ArtType> artTypeOpt = artTypeRepository.findById(createCourseRequest.getArt_type_id());
+        ArtType artType = artTypeOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.ArtType.not_found");
+        });
+
+        Optional<ArtLevel> artLevelOpt = artLevelRepository.findById(createCourseRequest.getArt_level_id());
+        ArtLevel artLevel = artLevelOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.ArtLevel.not_found");
+        });
+
+
+        Course savedCourse = Course.builder()
+                .name(createCourseRequest.getName())
+                .description(createCourseRequest.getDescription())
+                .num_of_section(createCourseRequest.getNum_of_section())
+                .image_url(createCourseRequest.getImage_url())
+                .price(createCourseRequest.getPrice())
+                .is_enabled(createCourseRequest.getIs_enabled())
+                .user(user)
+                .artAges(artAge)
+                .artTypes(artType)
+                .artLevels(artLevel)
+                .build();
+        courseRepository.save(savedCourse);
+
+        List<SectionTemplate> sectionTemplateList = new ArrayList<>();
+        List<TutorialTemplate> tutorialTemplateList = new ArrayList<>();
+        List<TutorialTemplatePage> tutorialTemplatePageList = new ArrayList<>();
+
+        for (int index = 0; index < savedCourse.getNum_of_section(); index++) {
+            SectionTemplate sectionTemplate = new SectionTemplate();
+            sectionTemplate.setName("");
+            sectionTemplate.setCourse(savedCourse);
+            sectionTemplate.setNumber(index + 1);
+            sectionTemplate.setUser(user);
+            sectionTemplate.setTeaching_form(true);
+            sectionTemplateList.add(sectionTemplate);
+        }
+
+        List<SectionTemplate> sectionTemplateList1 = sectionTemplateRepository.saveAll(sectionTemplateList);
+
+        if (sectionTemplateList1.size() > 0) {
+            sectionTemplateList1.forEach(ele -> {
+                TutorialTemplate tutorialTemplate = new TutorialTemplate();
+                tutorialTemplate.setName("");
+                tutorialTemplate.setCreator(user);
+                tutorialTemplate.setSectionTemplate(ele);
+                tutorialTemplateList.add(tutorialTemplate);
+            });
+
+            List<TutorialTemplate> tutorialTemplate1 = tutorialTemplateRepository.saveAll(tutorialTemplateList);
+
+            if (tutorialTemplate1.size() > 0) {
+                tutorialTemplate1.forEach(ele -> {
+                    TutorialTemplatePage tutorialTemplatePage = new TutorialTemplatePage();
+                    tutorialTemplatePage.setName("");
+                    tutorialTemplatePage.setNumber(0);
+                    tutorialTemplatePage.setDescription("");
+                    tutorialTemplatePage.setTutorialTemplate(ele);
+                    tutorialTemplatePageList.add(tutorialTemplatePage);
+                });
+                tutorialTemplatePageRepository.saveAll(tutorialTemplatePageList);
+            }
+        }
 
         return savedCourse.getId();
     }

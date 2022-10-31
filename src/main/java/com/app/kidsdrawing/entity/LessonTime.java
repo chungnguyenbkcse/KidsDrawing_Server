@@ -6,11 +6,12 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,9 +28,7 @@ import lombok.Setter;
 @Table(name = "Lesson_Time")
 public class LessonTime {
     @Id
-    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.LessonTimeIdGenerator")
-    @GeneratedValue(generator = "id")
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  id;
 
     @Column(name = "start_time")

@@ -16,20 +16,20 @@ Content-Type: application/json
 ### CREATE COURSE ACTION ###
 # @name create_course
 
-POST {{rest}}/course
+POST {{rest}}/course/v2
 Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "name": "Khóa học mầm chì màu cơ bản",
-    "description": "xxxx",
+    "name": "Khóa học sơn dầu cơ bản",
+    "description": "test",
     "num_of_section": 10,
     "price": 2000000,
     "image_url": "",
     "is_enabled": false,
     "creator_id": 1,
     "art_age_id": 1,
-    "art_type_id": 1,
+    "art_type_id": 2,
     "art_level_id": 1
 }
 

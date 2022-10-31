@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,9 +32,7 @@ import lombok.Setter;
 @Table(name = "User_Register_Join_Semester")
 public class UserRegisterJoinSemester {
     @Id
-    @GenericGenerator(name = "id", strategy = "com.app.kidsdrawing.entity.generator.UserRegisterJoinSemesterIdGenerator")
-    @GeneratedValue(generator = "id")
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  id;
 
     @Column(name = "price")
