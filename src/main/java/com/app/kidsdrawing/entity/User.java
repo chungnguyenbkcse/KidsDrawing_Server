@@ -3,21 +3,24 @@ package com.app.kidsdrawing.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.GenerationType;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+
 import org.hibernate.annotations.UpdateTimestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +38,6 @@ import lombok.Setter;
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long  id;
 
     @Column(name = "username", nullable = false, unique = true)
@@ -87,7 +89,7 @@ public class User{
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private User parent;
      
@@ -165,5 +167,11 @@ public class User{
 
     @OneToMany(mappedBy="student")
     private Set<UserAttendance> userAttendances;
+
+    @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
+    private PasswordResetToken passwordResetToken;
+
+    @OneToMany(mappedBy="parent")
+    private Set<User> childs;
 
 }

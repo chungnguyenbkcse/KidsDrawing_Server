@@ -15,4 +15,5 @@ public interface ScheduleService {
     Long createSchedule(CreateScheduleRequest createScheduleRequest);
     Long removeScheduleById(Long id);
     Long updateScheduleById(Long id, CreateScheduleRequest createScheduleRequest);
+    Long removeScheduleBySemesterClass(Long id);
 }

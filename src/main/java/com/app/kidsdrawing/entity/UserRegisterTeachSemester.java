@@ -1,13 +1,13 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
-import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +33,6 @@ import lombok.Setter;
 public class UserRegisterTeachSemester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long  id;
 
     @Column(name = "status")
@@ -51,6 +51,6 @@ public class UserRegisterTeachSemester {
     @CreationTimestamp
     private LocalDateTime time = LocalDateTime.now();
 
-    @OneToOne(mappedBy = "userRegisterTeachSemester")
+    @OneToOne(mappedBy = "userRegisterTeachSemester", fetch = FetchType.LAZY)
     private Classes classes;
 }

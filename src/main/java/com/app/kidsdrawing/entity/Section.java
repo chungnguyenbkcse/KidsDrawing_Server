@@ -2,20 +2,22 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.GenerationType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +36,6 @@ import lombok.Setter;
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
@@ -80,4 +81,7 @@ public class Section {
 
     @OneToMany(mappedBy="section")
     private Set<UserAttendance> userAttendances;
+
+    @OneToOne(mappedBy="section", fetch = FetchType.LAZY)
+    private Tutorial tutorial;
 }

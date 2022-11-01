@@ -125,6 +125,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public Long removeScheduleBySemesterClass(Long id) {
+        Optional<SemesterClass> semesterClassOpt = semesterClassRepository.findById1(id);
+        semesterClassOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.SemesterClass.not_found");
+        });
+        scheduleRepository.deleteBySemesterClassesId(id);
+        return id;
+    }
+
+    @Override
     public Long updateScheduleById(Long id, CreateScheduleRequest createScheduleRequest) {
         Optional<Schedule> scheduleOpt = scheduleRepository.findById1(id);
         Schedule updatedSchedule = scheduleOpt.orElseThrow(() -> {

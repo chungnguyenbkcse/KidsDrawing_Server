@@ -70,4 +70,13 @@ public class ScheduleController {
                 .buildAndExpand(scheduleId).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @CrossOrigin
+    @DeleteMapping(value = "/semester-class/{id}")
+    public ResponseEntity<String> deleteScheduleBySemesterClassId(@PathVariable Long id) {
+        Long scheduleId = scheduleService.removeScheduleBySemesterClass(id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(scheduleId).toUri();
+        return ResponseEntity.created(location).build();
+    }
 }
