@@ -13,27 +13,27 @@ import com.app.kidsdrawing.entity.TutorialPage;
 
 @Repository
 public interface TutorialPageRepository extends JpaRepository <TutorialPage, Long>{
-    @Query("SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ")
+    @Query("SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ORDER BY e.id")
     List<TutorialPage> findAll();
 
     @Query(
-		value = "SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ",
+		value = "SELECT e FROM TutorialPage e JOIN FETCH e.tutorial ORDER BY e.id",
 		countQuery = "SELECT e FROM TutorialPage e INNER JOIN e.tutorial "
 	)
     Page<TutorialPage> findAll(Pageable pageable);
 
-    @Query("FROM TutorialPage e WHERE e.id = :id")
+    @Query("FROM TutorialPage e WHERE e.id = ?1")
     Optional<TutorialPage> findById1(Long id);
 
-    @Query("FROM TutorialPage e JOIN FETCH e.tutorial WHERE e.id = :id")
+    @Query("FROM TutorialPage e JOIN FETCH e.tutorial WHERE e.id = ?1")
     Optional<TutorialPage> findById2(Long id);
     
     boolean existsById(Long id);
     void deleteById(Long id);
 
-    @Query("FROM TutorialPage e JOIN FETCH e.tutorial t WHERE t.id = :id")
+    @Query("FROM TutorialPage e JOIN FETCH e.tutorial t WHERE t.id = ?1 ORDER BY e.id")
     List<TutorialPage> findByTutorialId(Long id);
 
-    @Query("FROM TutorialPage e JOIN FETCH e.tutorial t JOIN FETCH t.section s WHERE s.id = :id")
+    @Query("FROM TutorialPage e JOIN FETCH e.tutorial t JOIN FETCH t.section s WHERE s.id = ?1 ORDER BY e.id")
     List<TutorialPage> findBySection(Long id);
 }

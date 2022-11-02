@@ -12,27 +12,27 @@ import com.app.kidsdrawing.entity.ContestSubmission;
 @Repository
 public interface ContestSubmissionRepository extends JpaRepository <ContestSubmission, Long>{
     
-    @Query("SELECT count(c.id) = 1 FROM ContestSubmission c WHERE c.id = :id")
+    @Query("SELECT count(c.id) = 1 FROM ContestSubmission c WHERE c.id = ?1")
     boolean existsById(Long id);
 
-    @Query("SELECT DISTINCT c  FROM ContestSubmission c  JOIN FETCH c.contest co WHERE co.id = :id")
+    @Query("SELECT DISTINCT c  FROM ContestSubmission c  JOIN FETCH c.contest co WHERE co.id = ?1 ORDER BY c.id")
     List<ContestSubmission> findByContestId1(Long id);
 
-    @Query("SELECT DISTINCT c FROM ContestSubmission c JOIN FETCH c.userGradeContestSubmissions JOIN FETCH c.contest  co JOIN FETCH c.student WHERE co.id = :id")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c JOIN FETCH c.userGradeContestSubmissions JOIN FETCH c.contest  co JOIN FETCH c.student WHERE co.id = ?1 ORDER BY c.id")
     List<ContestSubmission> findByContestId2(Long id);
 
-    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student s WHERE s.id = :id")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student s WHERE s.id = ?1 ORDER BY c.id")
     List<ContestSubmission> findByStudentId1(Long id);
 
-    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student  s JOIN FETCH c.userGradeContestSubmissions WHERE s.id = :id")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student  s JOIN FETCH c.userGradeContestSubmissions WHERE s.id = ?1 ORDER BY c.id")
     List<ContestSubmission> findByStudentId2(Long id);
 
-    @Query("FROM ContestSubmission c  JOIN FETCH c.student  JOIN FETCH c.contest ")
+    @Query("FROM ContestSubmission c  JOIN FETCH c.student  JOIN FETCH c.contest ORDER BY c.id")
     List<ContestSubmission> findAll(Long id);
 
-    @Query("FROM ContestSubmission c WHERE c.id = :id")
+    @Query("FROM ContestSubmission c WHERE c.id = ?1")
     Optional<ContestSubmission> findById1(Long id);
 
-    @Query("FROM ContestSubmission c JOIN FETCH c.student  JOIN FETCH c.contest WHERE c.id = :id")
+    @Query("FROM ContestSubmission c JOIN FETCH c.student  JOIN FETCH c.contest WHERE c.id = ?1")
     Optional<ContestSubmission> findById2(Long id);
 }

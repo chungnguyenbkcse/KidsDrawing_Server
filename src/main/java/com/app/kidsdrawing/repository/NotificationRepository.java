@@ -14,16 +14,16 @@ import com.app.kidsdrawing.entity.Notification;
 @Repository
 public interface NotificationRepository extends JpaRepository <Notification, Long>{
 
-    @Query("SELECT e FROM Notification e ")
+    @Query("SELECT e FROM Notification e ORDER BY e.id")
     List<Notification> findAll();
 
     @Query(
-		value = "SELECT e FROM Notification e ",
+		value = "SELECT e FROM Notification e ORDER BY e.id",
 		countQuery = "SELECT e FROM Notification e "
 	)
     Page<Notification> findAll(Pageable pageable);
 
-    @Query("FROM Notification e WHERE e.id = :id")
+    @Query("FROM Notification e WHERE e.id = ?1")
     Optional<Notification> findById(Long id);
     
     boolean existsById(Long id);

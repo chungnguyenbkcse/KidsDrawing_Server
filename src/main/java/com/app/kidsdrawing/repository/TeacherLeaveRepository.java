@@ -22,36 +22,36 @@ public interface TeacherLeaveRepository extends JpaRepository <TeacherLeave, Lon
 	)
     Page<TeacherLeave> findAll(Pageable pageable);
 
-    @Query("FROM TeacherLeave e WHERE e.id = :id")
+    @Query("FROM TeacherLeave e WHERE e.id = ?1")
     Optional<TeacherLeave> findById1(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE e.id = ?1")
     Optional<TeacherLeave> findById2(Long id);
     
     boolean existsById(Long id);
     void deleteById(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.teacher te WHERE te.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.teacher te WHERE te.id = ?1 ORDER BY e.id")
     List<TeacherLeave> findByTeacherId1(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.teacher te JOIN FETCH e.classes JOIN FETCH e.section  JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE te.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.teacher te JOIN FETCH e.classes JOIN FETCH e.section  JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE te.id = ?1 ORDER BY e.id")
     List<TeacherLeave> findByTeacherId2(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.classes cl WHERE cl.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.classes cl WHERE cl.id = ?1 ORDER BY e.id")
     List<TeacherLeave> findByClassesId1(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.classes cl JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE cl.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.classes cl JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE cl.id = ?1 ORDER BY e.id")
     List<TeacherLeave> findByClassesId2(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.section se WHERE se.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.section se WHERE se.id = ?1 ORDER BY e.id")
     List<TeacherLeave> findBySectionId1(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.section se JOIN FETCH e.classes JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE se.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.section se JOIN FETCH e.classes JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE se.id = ?1 ORDER BY e.id")
     List<TeacherLeave> findBySectionId2(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.substitute_teacher st WHERE st.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.substitute_teacher st WHERE st.id = ?1 ORDER BY e.id")
     List<TeacherLeave> findBySubstituteTeacherId1(Long id);
 
-    @Query("FROM TeacherLeave e JOIN FETCH e.substitute_teacher st JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer WHERE st.id = :id")
+    @Query("FROM TeacherLeave e JOIN FETCH e.substitute_teacher st JOIN FETCH e.classes JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer WHERE st.id = ?1 ORDER BY e.id")
     List<TeacherLeave> findBySubstituteTeacherId2(Long id);
 }

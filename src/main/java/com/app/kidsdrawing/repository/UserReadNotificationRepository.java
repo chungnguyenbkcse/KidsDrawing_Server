@@ -22,25 +22,25 @@ public interface UserReadNotificationRepository extends JpaRepository <UserReadN
 	)
     Page<UserReadNotification> findAll(Pageable pageable);
 
-    @Query("FROM UserReadNotification e WHERE e.id = :id")
+    @Query("FROM UserReadNotification e WHERE e.id = ?1")
     Optional<UserReadNotification> findById1(Long id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.user  JOIN FETCH e.notification WHERE e.id = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.user  JOIN FETCH e.notification WHERE e.id = ?1")
     Optional<UserReadNotification> findById2(Long id);
     
     boolean existsByUserId(Long id);
     boolean existsByNotificationId(Long id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.notification no WHERE no.id = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.notification no WHERE no.id = ?1")
     List<UserReadNotification> findByNotificationId1(Long id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.notification no JOIN FETCH e.user  WHERE no.id = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.notification no JOIN FETCH e.user  WHERE no.id = ?1")
     List<UserReadNotification> findByNotificationId2(Long id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.user u WHERE u.id = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.user u WHERE u.id = ?1")
     List<UserReadNotification> findByUserId1(Long id);
 
-    @Query("FROM UserReadNotification e JOIN FETCH e.user u JOIN FETCH e.notification WHERE u.id = :id")
+    @Query("FROM UserReadNotification e JOIN FETCH e.user u JOIN FETCH e.notification WHERE u.id = ?1")
     List<UserReadNotification> findByUserId2(Long id);
 
     void deleteById(Long id);
