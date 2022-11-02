@@ -21,7 +21,7 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "teacher_id": 3,
+    "teacher_id": 11,
     "course_id": 3,
     "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1667290145/nvabfnqz5n1q75auofga.jpg",
     "status": "Approved"
@@ -36,7 +36,7 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "teacher_id": 3,
+    "teacher_id": 11,
     "course_id": 4,
     "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1667290145/nvabfnqz5n1q75auofga.jpg",
     "status": "Approved"

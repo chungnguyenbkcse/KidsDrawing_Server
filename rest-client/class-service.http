@@ -56,7 +56,7 @@ GET  {{rest}}/classes
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/info/1
+GET  {{rest}}/classes/info/2
 
 ### GET classes ACTION ###
 # @name get_classes
