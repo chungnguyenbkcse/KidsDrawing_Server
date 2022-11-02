@@ -1341,67 +1341,122 @@ public class ClassesServiceImpl implements ClassesService {
         week_count = 0;
         while (total_section_count < total_section) {
             List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
-            for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
-                Integer dayOfWeek = dayOfWeeks.get(idx);
-                LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
-                LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
-                // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
-                System.out.printf("Day_of_week: %d\n", dayOfWeek);
-                List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                if (dayOfWeek == 2) {
-                    while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                        start_time = start_time.plusDays(1);
+            if (semesterCouse.getSchedules().size() > 1){
+                for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
+                    Integer dayOfWeek = dayOfWeeks.get(idx);
+                    LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                    LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                    // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                    System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                    List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                    if (dayOfWeek == 2) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    } else if (dayOfWeek == 3) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
                     }
-                } else if (dayOfWeek == 3) {
-                    while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                        start_time = start_time.plusDays(1);
+    
+                    else if (dayOfWeek == 4) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+    
+                            start_time = start_time.plusDays(1);
+                        }
                     }
+    
+                    else if (dayOfWeek == 5) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+    
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+    
+                    else if (dayOfWeek == 6) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+    
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+    
+                    else if (dayOfWeek == 7) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+    
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+    
+                    else {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+    
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+    
+                    if (total_section_count < total_section) {
+                        LocalDate start_date = start_time.toLocalDate();
+                        if (list_holiday.contains(start_date) == false) {
+                            lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                            lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                            total_section_count++;
+                        }
+                    }
+                    lesson_time_in_week.add(lesson_time_in_day);
                 }
-
-                else if (dayOfWeek == 4) {
-                    while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-
-                        start_time = start_time.plusDays(1);
+            }
+            else {
+                for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
+                    Integer dayOfWeek = dayOfWeeks.get(idx);
+                    LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                    LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                    // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                    System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                    List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                    if (total_section_count > 0) {
+                        if (dayOfWeek == 2) {
+                            start_time = start_time.plusDays(7);
+                        
+                    } else if (dayOfWeek == 3) {
+                            start_time = start_time.plusDays(7);
                     }
-                }
-
-                else if (dayOfWeek == 5) {
-                    while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-
-                        start_time = start_time.plusDays(1);
+    
+                    else if (dayOfWeek == 4) {
+    
+                            start_time = start_time.plusDays(7);
                     }
-                }
-
-                else if (dayOfWeek == 6) {
-                    while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-
-                        start_time = start_time.plusDays(1);
+    
+                    else if (dayOfWeek == 5) {
+    
+                            start_time = start_time.plusDays(7);
                     }
-                }
-
-                else if (dayOfWeek == 7) {
-                    while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-
-                        start_time = start_time.plusDays(1);
+    
+                    else if (dayOfWeek == 6) {
+    
+                            start_time = start_time.plusDays(7);
                     }
-                }
-
-                else {
-                    while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
-                        start_time = start_time.plusDays(1);
+    
+                    else if (dayOfWeek == 7) {
+    
+                            start_time = start_time.plusDays(7);
                     }
-                }
-
-                if (total_section_count < total_section) {
-                    LocalDate start_date = start_time.toLocalDate();
-                    if (list_holiday.contains(start_date) == false) {
-                        lesson_time_in_day.add(start_lessontime.atDate(start_date));
-                        lesson_time_in_day.add(end_lessontime.atDate(start_date));
-                        total_section_count++;
+    
+                    else {
+    
+                            start_time = start_time.plusDays(7);
                     }
+                    }
+    
+                    if (total_section_count < total_section) {
+                        LocalDate start_date = start_time.toLocalDate();
+                        if (list_holiday.contains(start_date) == false) {
+                            lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                            lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                            total_section_count++;
+                        }
+                    }
+                    lesson_time_in_week.add(lesson_time_in_day);
                 }
-                lesson_time_in_week.add(lesson_time_in_day);
             }
             Map<String, List<List<LocalDateTime>>> schedule_in_week = new HashMap<>();
             String name = "week_" + week_count;
