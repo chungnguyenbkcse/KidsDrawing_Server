@@ -56,7 +56,7 @@ GET  {{rest}}/classes
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/info/2
+GET  {{rest}}/classes/info/6
 
 ### GET classes ACTION ###
 # @name get_classes
@@ -87,7 +87,7 @@ GET  {{rest}}/classes/schedule-allchild/7ba06a10-ddec-4825-8032-26f79f94ffa9
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/parent/6
+GET  {{rest}}/classes/parent/12
 
 ### GET classes ACTION ###
 # @name get_classes

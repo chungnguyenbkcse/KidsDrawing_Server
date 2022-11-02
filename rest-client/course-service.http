@@ -73,7 +73,7 @@ GET  {{rest}}/course/report/2022
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/course/parent/8
+GET  {{rest}}/course/parent/12
 
 
 ### GET CONTEST ACTION ###

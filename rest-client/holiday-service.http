@@ -58,7 +58,7 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "semester_id": 4,
+    "semester_id": 1,
     "time": ["2022-10-01", "2022-11-02", "2022-10-03", "2022-10-04"]
 }
 
