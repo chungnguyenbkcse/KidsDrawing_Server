@@ -13,25 +13,25 @@ import com.app.kidsdrawing.entity.TutorialTemplate;
 
 @Repository
 public interface TutorialTemplateRepository extends JpaRepository <TutorialTemplate, Long>{
-    @Query("SELECT e FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  JOIN FETCH e.creator ")
+    @Query("SELECT e FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  JOIN FETCH e.creator ORDER BY e.id")
     List<TutorialTemplate> findAll();
 
     @Query(
-		value = "SELECT e FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  JOIN FETCH e.creator ",
+		value = "SELECT e FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  JOIN FETCH e.creator ORDER BY e.id",
 		countQuery = "SELECT e FROM TutorialTemplate e INNER JOIN e.sectionTemplate  INNER JOIN e.creator "
 	)
     Page<TutorialTemplate> findAll(Pageable pageable);
 
-    @Query("FROM TutorialTemplate e WHERE e.id = :id")
+    @Query("FROM TutorialTemplate e WHERE e.id = ?1")
     Optional<TutorialTemplate> findById1(Long id);
 
-    @Query("FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  JOIN FETCH e.creator WHERE e.id = :id")
+    @Query("FROM TutorialTemplate e JOIN FETCH e.sectionTemplate  JOIN FETCH e.creator WHERE e.id = ?1")
     Optional<TutorialTemplate> findById2(Long id);
 
-    @Query("SELECT DISTINCT e  FROM TutorialTemplate e JOIN FETCH e.sectionTemplate st  WHERE st.id = :id")
+    @Query("SELECT DISTINCT e  FROM TutorialTemplate e JOIN FETCH e.sectionTemplate st  WHERE st.id = ?1")
     Optional<TutorialTemplate> findBySectionTemplateId1(Long id);
 
-    @Query("SELECT DISTINCT e FROM TutorialTemplate e JOIN FETCH e.sectionTemplate st JOIN FETCH e.creator WHERE st.id = :id")
+    @Query("SELECT DISTINCT e FROM TutorialTemplate e JOIN FETCH e.sectionTemplate st JOIN FETCH e.creator WHERE st.id = ?1")
     Optional<TutorialTemplate> findBySectionTemplateId2(Long id);
     
     boolean existsById(Long id);

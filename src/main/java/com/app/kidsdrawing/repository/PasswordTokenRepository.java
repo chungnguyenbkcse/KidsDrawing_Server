@@ -14,19 +14,19 @@ import com.app.kidsdrawing.entity.PasswordResetToken;
 @Repository
 public interface PasswordTokenRepository extends JpaRepository <PasswordResetToken, Long>{
 
-    @Query("SELECT e FROM PasswordResetToken e JOIN FETCH e.user ")
+    @Query("SELECT e FROM PasswordResetToken e JOIN FETCH e.user ORDER BY e.id")
     List<PasswordResetToken> findAll();
 
     @Query(
-		value = "SELECT e FROM PasswordResetToken e JOIN FETCH e.user ",
+		value = "SELECT e FROM PasswordResetToken e JOIN FETCH e.user ORDER BY e.id",
 		countQuery = "SELECT e FROM PasswordResetToken e INNER JOIN e.user "
 	)
     Page<PasswordResetToken> findAll(Pageable pageable);
 
-    @Query("FROM PasswordResetToken e WHERE e.id = :id")
+    @Query("FROM PasswordResetToken e WHERE e.id = ?1")
     Optional<PasswordResetToken> findById1(Long id);
 
-    @Query("FROM PasswordResetToken e JOIN FETCH e.user WHERE e.id = :id")
+    @Query("FROM PasswordResetToken e JOIN FETCH e.user WHERE e.id = ?1")
     Optional<PasswordResetToken> findById2(Long id);
     
     @Query("FROM PasswordResetToken e WHERE e.token = :token")
@@ -35,6 +35,6 @@ public interface PasswordTokenRepository extends JpaRepository <PasswordResetTok
     @Query("FROM PasswordResetToken e JOIN FETCH e.user WHERE e.token = :token")
     Optional<PasswordResetToken> findByToken2(String token);
 
-    @Query("SELECT DISTINCT e FROM PasswordResetToken e JOIN FETCH e.user u WHERE u.id = :id")
+    @Query("SELECT DISTINCT e FROM PasswordResetToken e JOIN FETCH e.user u WHERE u.id = ?1 ORDER BY e.id")
     List<PasswordResetToken> findByUserId(Long id);
 }

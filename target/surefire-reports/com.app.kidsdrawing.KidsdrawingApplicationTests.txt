@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.app.kidsdrawing.KidsdrawingApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.224 s - in com.app.kidsdrawing.KidsdrawingApplicationTests

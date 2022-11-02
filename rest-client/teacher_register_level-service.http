@@ -21,9 +21,24 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "teacher_id": 2,
-    "course_id": 1,
-    "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1656344895/tranh-bao-ve-moi-truong-01_gpsyin.png",
+    "teacher_id": 3,
+    "course_id": 3,
+    "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1667290145/nvabfnqz5n1q75auofga.jpg",
+    "status": "Approved"
+}
+
+
+### CREATE ART TYPE ACTION ###
+# @name create_art_type
+
+POST {{rest}}/teacher-register-level
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+    "teacher_id": 3,
+    "course_id": 4,
+    "degree_photo_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1667290145/nvabfnqz5n1q75auofga.jpg",
     "status": "Approved"
 }
 

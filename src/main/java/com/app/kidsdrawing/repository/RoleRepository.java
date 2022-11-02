@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long>{
 
-    @Query("FROM Role e WHERE e.name = :name")
+    @Query("FROM Role e WHERE e.name = ?1")
     Optional<Role> findByName(String name);
 }
