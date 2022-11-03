@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -153,6 +154,12 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
+
+        LocalDateTime time_now = LocalDateTime.now();
+
+        if (time_now.isAfter((contest.getEnd_time()))) {
+            throw new EntityNotFoundException("exception.deadline.not_found");
+        }
         
         ContestSubmission savedContestSubmission = ContestSubmission.builder()
                 .student(student)

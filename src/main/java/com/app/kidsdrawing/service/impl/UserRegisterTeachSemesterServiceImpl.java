@@ -1,11 +1,12 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 
 import javax.transaction.Transactional;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateTeacherTeachSemesterRequest;
 import com.app.kidsdrawing.dto.GetTeacherTeachSemesterResponse;
 import com.app.kidsdrawing.dto.GetUserRegisterTeachSemesterScheduleClassResponse;
+import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.entity.User;
@@ -88,12 +90,52 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
             .build();
     }
 
+    @Override 
+    public Boolean checkScheduleForTeacher(Long teacher_id, Long semester_class_id) {
+        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById4(semester_class_id);
+        SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.semester_class.not_found");
+        });
+        List<LessonTime> lessonTimes = new ArrayList<>();
+        semesterCouse.getSchedules().forEach(ele -> {
+            lessonTimes.add(ele.getLessonTime());
+        });
+
+        System.out.print(lessonTimes.size());
+
+        List<LessonTime> lessonTimesAll = new ArrayList<>();
+        List<UserRegisterTeachSemester> userRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemester(semesterCouse.getSemester().getId(), teacher_id);
+        userRegisterTeachSemesters.forEach(ele -> {
+            ele.getSemesterClass().getSchedules().forEach(schedule -> {
+                lessonTimesAll.add(schedule.getLessonTime());
+            });
+        });
+
+        System.out.print(lessonTimesAll.size());
+
+        if (!Collections.disjoint(lessonTimes, lessonTimesAll)) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public Long createTeacherTeachSemester(CreateTeacherTeachSemesterRequest createTeacherTeachSemesterRequest) {
+        if (checkScheduleForTeacher(createTeacherTeachSemesterRequest.getTeacher_id(), createTeacherTeachSemesterRequest.getSemester_classes_id()) == false) {
+            throw new EntityNotFoundException("exception.schedule.duplicate");
+        }
+        
         Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById1(createTeacherTeachSemesterRequest.getSemester_classes_id());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
+
+
+        LocalDateTime time_now = LocalDateTime.now();
+
+        if (time_now.isAfter((semesterCouse.getRegistration_time()))) {
+            throw new EntityNotFoundException("exception.deadline.not_found");
+        }
 
         Optional <User> teacherOpt = userRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
         User teacher = teacherOpt.orElseThrow(() -> {

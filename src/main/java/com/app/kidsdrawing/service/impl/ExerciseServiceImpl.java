@@ -17,10 +17,12 @@ import com.app.kidsdrawing.dto.CreateExerciseRequest;
 import com.app.kidsdrawing.dto.GetExerciseResponse;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.entity.ExerciseLevel;
+import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ExerciseLevelRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
+import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.service.ExerciseService;
 
@@ -34,6 +36,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     private final ExerciseRepository exerciseRepository;
     private final SectionRepository sectionRepository;
     private final ExerciseLevelRepository exerciseLevelRepository;
+    private final ExerciseSubmissionRepository exerciseSubmissionRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExercise() {
@@ -64,9 +67,15 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
 
         List<Exercise> allExerciseByClassAndStudent = exerciseRepository.findAllExerciseByClassAndStudent(classes_id, student_id);
-        
+        List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(classes_id, student_id);
+
+        List<Exercise> allExerciseSubmiss = new ArrayList<>();
+        exerciseSubmissions.forEach(ele -> {
+            allExerciseSubmiss.add(ele.getExercise());
+        });
+
         allExerciseByClassAndStudent.forEach(ele -> {
-            if (ele.getExerciseSubmissions().size() == 0){
+            if (allExerciseSubmiss.contains(ele) == false){
                 GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
                     .id(ele.getId())
                     .section_id(ele.getSection().getId())
@@ -113,10 +122,15 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
 
         List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySectionAndStudent(section_id, student_id);
+        List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndStudent(section_id, student_id);
 
+        List<Exercise> allExerciseSubmiss = new ArrayList<>();
+        exerciseSubmissions.forEach(ele -> {
+            allExerciseSubmiss.add(ele.getExercise());
+        });
 
         listExerciseForSectionAndStuent.forEach(ele -> {
-            if (ele.getExerciseSubmissions().size() == 0){
+            if (allExerciseSubmiss.contains(ele) == false){
                 GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
                     .id(ele.getId())
                     .section_id(ele.getSection().getId())

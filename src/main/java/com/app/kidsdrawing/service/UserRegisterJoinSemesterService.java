@@ -18,6 +18,7 @@ public interface UserRegisterJoinSemesterService {
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByPayerId(Long id);
     GetUserRegisterJoinSemesterResponse getUserRegisterJoinSemesterById(Long id);
     ResponseEntity<Map<String, Object>> getReportUserRegisterJoinSemester(int year);
+    Boolean checkScheduleForStudent(Long student_id, Long semester_class_id);
     Long createUserRegisterJoinSemester(CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
     Long removeUserRegisterJoinSemesterById(Long id);
     Long updateUserRegisterJoinSemesterById(Long id, CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
