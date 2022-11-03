@@ -47,6 +47,9 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, L
     @Query("FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE e.id = ?1")
     Optional<SemesterClass> findById3(Long id);
 
+    @Query("FROM SemesterClass e JOIN FETCH e.semester JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime WHERE e.id = ?1")
+    Optional<SemesterClass> findById4(Long id);
+
     boolean existsById(Long id);
     boolean existsByName(String name);
     void deleteById(Long id);

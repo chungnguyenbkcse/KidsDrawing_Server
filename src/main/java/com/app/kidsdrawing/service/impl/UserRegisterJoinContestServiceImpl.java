@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +93,12 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
         Contest contest = contestOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.contest.not_found");
         });
+
+        LocalDateTime time_now = LocalDateTime.now();
+
+        if (time_now.isAfter((contest.getStart_time())) && time_now.isBefore(contest.getRegistration_time())) {
+            throw new EntityNotFoundException("exception.deadline.not_found");
+        }
 
         List<UserRegisterJoinContest> listUserRegisterJoinContest = userRegisterJoinContestRepository.findByContestId1(createUserRegisterJoinContestRequest.getContest_id());
         if (listUserRegisterJoinContest.size() >= contest.getMax_participant()) {

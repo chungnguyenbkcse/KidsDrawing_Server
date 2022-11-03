@@ -1,6 +1,8 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import com.app.kidsdrawing.dto.CreateMomoRequest;
 import com.app.kidsdrawing.dto.CreateUserRegisterJoinSemesterRequest;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterScheduleClassResponse;
+import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.User;
@@ -315,11 +318,49 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     }
 
     @Override
+    public Boolean checkScheduleForStudent(Long student_id, Long semester_class_id) {
+        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById4(semester_class_id);
+        SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.semester_class.not_found");
+        });
+
+        List<LessonTime> lessonTimes = new ArrayList<>();
+        semesterCouse.getSchedules().forEach(ele -> {
+            lessonTimes.add(ele.getLessonTime());
+        });
+
+        List<LessonTime> lessonTimesAll = new ArrayList<>();
+        List<UserRegisterJoinSemester> userRegisterTeachSemesters = userRegisterJoinSemesterRepository.findBySemester(semesterCouse.getSemester().getId(), student_id);
+        userRegisterTeachSemesters.forEach(ele -> {
+            ele.getSemesterClass().getSchedules().forEach(schedule -> {
+                lessonTimesAll.add(schedule.getLessonTime());
+            });
+        });
+
+        if (!Collections.disjoint(lessonTimes, lessonTimesAll)) {
+            return false;
+        }
+        return true;
+
+
+    }
+
+    @Override
     public Long createUserRegisterJoinSemester(CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest) {
+        if (!checkScheduleForStudent(createUserRegisterJoinSemesterRequest.getStudent_id(), createUserRegisterJoinSemesterRequest.getSemester_classes_id())) {
+            throw new EntityNotFoundException("exception.schedule.duplicate");
+        }
+
         Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById1(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
+
+        LocalDateTime time_now = LocalDateTime.now();
+
+        if (time_now.isAfter((semesterCouse.getRegistration_expiration_time())) && time_now.isBefore(semesterCouse.getRegistration_time())) {
+            throw new EntityNotFoundException("exception.deadline.not_found");
+        }
 
         List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId1(createUserRegisterJoinSemesterRequest.getSemester_classes_id());
 
