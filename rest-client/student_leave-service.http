@@ -46,7 +46,7 @@ GET {{rest}}/student-leave/class-student/23/8
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 
-GET {{rest}}/student-leave/teacher/2
+GET {{rest}}/student-leave/teacher/5
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester
