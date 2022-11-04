@@ -51,6 +51,6 @@ public class UserRegisterTeachSemester {
     @CreationTimestamp
     private LocalDateTime time = LocalDateTime.now();
 
-    @OneToOne(mappedBy = "userRegisterTeachSemester", fetch = FetchType.LAZY)
-    private Classes classes;
+    /* @OneToOne(mappedBy = "userRegisterTeachSemester", fetch = FetchType.LAZY)
+    private Classes classes; */
 }

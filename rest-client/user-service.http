@@ -911,6 +911,12 @@ GET {{rest}}/user/teacher
 Authorization: Bearer {{student_access_token}}
 
 ###
+
+# @name get_all_user_by_student
+GET {{rest}}/user/24
+Authorization: Bearer {{student_access_token}}
+
+###
 # @name get_all_user_by_student
 GET {{rest}}/user/parent
 Authorization: Bearer {{student_access_token}}

@@ -168,8 +168,8 @@ public class User{
     @OneToMany(mappedBy="student")
     private Set<UserAttendance> userAttendances;
 
-    @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
-    private PasswordResetToken passwordResetToken;
+    /* @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
+    private PasswordResetToken passwordResetToken; */
 
     @OneToMany(mappedBy="parent")
     private Set<User> childs;

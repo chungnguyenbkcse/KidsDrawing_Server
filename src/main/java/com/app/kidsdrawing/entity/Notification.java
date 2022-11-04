@@ -43,6 +43,6 @@ public class Notification {
     @CreationTimestamp
     private LocalDateTime time = LocalDateTime.now();
 
-    @OneToOne(mappedBy="notification", fetch = FetchType.LAZY)
-    private UserReadNotification userReadNotification;
+    /* @OneToOne(mappedBy="notification", fetch = FetchType.LAZY)
+    private UserReadNotification userReadNotification; */
 }

@@ -82,6 +82,6 @@ public class Section {
     @OneToMany(mappedBy="section")
     private Set<UserAttendance> userAttendances;
 
-    @OneToOne(mappedBy="section", fetch = FetchType.LAZY)
-    private Tutorial tutorial;
+    /* @OneToOne(mappedBy="section", fetch = FetchType.LAZY)
+    private Tutorial tutorial; */
 }

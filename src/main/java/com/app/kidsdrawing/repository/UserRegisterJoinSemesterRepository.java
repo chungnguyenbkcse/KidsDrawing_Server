@@ -56,12 +56,6 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.payer JOIN FETCH e.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE st.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinSemester> findByStudentId2(Long id);
 
-    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.classHasRegisterJoinSemesterClass chr JOIN FETCH chr.classes  c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE st.id = ?1 ORDER BY e.id")
-    List<UserRegisterJoinSemester> findByStudentId3(Long id);
-
-    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.classHasRegisterJoinSemesterClass chr JOIN FETCH chr.classes  c1 JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE st.id = ?1 ORDER BY e.id")
-    List<UserRegisterJoinSemester> findByStudentId4(Long id);
-
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.payer pa WHERE pa.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinSemester> findByPayerId1(Long id);
 

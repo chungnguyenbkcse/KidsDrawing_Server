@@ -576,7 +576,7 @@ public class CourseServiceImpl implements CourseService {
         List<GetCourseParentResponse> allCourseNotRegistedNowResponses = new ArrayList<>();
         List<Course> listCourseRegistered = new ArrayList<>();
         List<Course> allCourse = courseRepository.findAll1();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId3(id);
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId2(id);
         listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
             if (user_register_join_semester.getStatus().equals("Completed")) {
                     GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
