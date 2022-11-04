@@ -20,8 +20,11 @@ public interface ClassHasRegisterJoinSemesterClassRepository extends JpaReposito
     @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  JOIN FETCH c.userRegisterJoinSemester")
     List<ClassHasRegisterJoinSemesterClass> findAll();
 
-    @Query("SELECT DISTINCT chr FROM ClassHasRegisterJoinSemesterClass chr  JOIN FETCH chr.classes c1 JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges")
+    @Query("SELECT DISTINCT chr FROM ClassHasRegisterJoinSemesterClass chr  JOIN FETCH chr.classes c1 JOIN FETCH c1.sections JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH c1.user  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges")
     List<ClassHasRegisterJoinSemesterClass> findAll1();
+
+    @Query("SELECT DISTINCT chr FROM ClassHasRegisterJoinSemesterClass chr  JOIN FETCH chr.classes c1 JOIN FETCH c1.sections JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH u.teacher JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE st.id = ?1")
+    List<ClassHasRegisterJoinSemesterClass> findAllByStudent(Long id);
 
     @Query("SELECT c FROM ClassHasRegisterJoinSemesterClass c JOIN FETCH c.classes  WHERE c.id = ?1 ")
     Optional<ClassHasRegisterJoinSemesterClass> findById(ClassHasRegisterJoinSemesterClassKey id);
