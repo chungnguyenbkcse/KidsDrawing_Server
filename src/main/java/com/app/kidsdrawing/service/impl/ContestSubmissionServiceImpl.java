@@ -108,7 +108,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     .create_time(ele.getContestSubmission().getCreate_time())
                     .update_time(ele.getContestSubmission().getUpdate_time())
                     .build();
-                allContestSubmissionNotGradeResponses.add(contestSubmissionResponse);
+                    allContestSubmissionGradeResponses.add(contestSubmissionResponse);
             }
         });
 

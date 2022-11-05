@@ -41,7 +41,7 @@ public interface ContestRepository extends JpaRepository <Contest, Long>{
     @Query("SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.id")
     List<Contest> findAll();
 
-    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions ugc JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE ugc.score IS NULL ORDER BY c.id")
     List<Contest> findAll1();
 
     @Query("SELECT DISTINCT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user ORDER BY c.id")
