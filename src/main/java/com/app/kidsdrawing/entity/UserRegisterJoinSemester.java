@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -58,6 +57,6 @@ public class UserRegisterJoinSemester {
     @CreationTimestamp
     private LocalDateTime time = LocalDateTime.now();
 
-    @OneToOne(mappedBy = "userRegisterJoinSemester", fetch = FetchType.LAZY)
-    private ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass;
+    /* @OneToOne(mappedBy = "userRegisterJoinSemester", fetch = FetchType.LAZY)
+    private ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass; */
 }

@@ -16,9 +16,10 @@ public interface ClassesService {
     ResponseEntity<Map<String, Object>> getInforScheduleAllChild(Long parent_id);
     ResponseEntity<Map<String, Object>> getInforScheduleChild(Long child_id);
     ResponseEntity<Map<String, Object>> getInforDetailOfClassByTeacherId(Long id);
+    ResponseEntity<Map<String, Object>> getListClassByTeacherId(Long id);
     ResponseEntity<Map<String, Object>> getClassesForStudentId(Long id);
     ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(Long id);
-    ResponseEntity<Map<String, Object>> getClassesStudentForParentId(Long parent_id);
+    ResponseEntity<Map<String, Object>> getListForParentId(Long parent_id);
     GetClassResponse getClassById(Long id);
     Long createClass(CreateClassRequest createClassRequest);
     Long removeClassById(Long id);

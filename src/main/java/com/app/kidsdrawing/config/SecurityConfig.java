@@ -132,7 +132,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/api/v1/teacher-leave/**").hasAnyAuthority("ADMIN_USER", "TEACHER_USER")
                 .antMatchers(HttpMethod.GET, "/api/v1/student-leave/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/student-leave/**").hasAnyAuthority("STUDENT_USER", "PARENT_USER")
-                .antMatchers(HttpMethod.PUT, "/api/v1/student-leave/**").hasAnyAuthority("STUDENT_USER", "PARENT_USER", "ADMIN_USER")
+                .antMatchers(HttpMethod.PUT, "/api/v1/student-leave/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/v1/student-leave/**").hasAnyAuthority("STUDENT_USER", "PARENT_USER", "ADMIN_USER")
                 .antMatchers(HttpMethod.GET, "/api/v1/exercise-level/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/exercise-level/**").hasAnyAuthority("TEACHER_USER")

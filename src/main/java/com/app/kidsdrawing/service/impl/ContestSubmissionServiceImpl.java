@@ -18,10 +18,15 @@ import com.app.kidsdrawing.dto.CreateContestSubmissionRequest;
 import com.app.kidsdrawing.dto.GetContestSubmissionResponse;
 import com.app.kidsdrawing.entity.ContestSubmission;
 import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.UserGradeContest;
+import com.app.kidsdrawing.entity.UserGradeContestSubmission;
+import com.app.kidsdrawing.entity.UserGradeContestSubmissionKey;
 import com.app.kidsdrawing.entity.Contest;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.ContestSubmissionRepository;
+import com.app.kidsdrawing.repository.UserGradeContestRepository;
+import com.app.kidsdrawing.repository.UserGradeContestSubmissionRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ContestSubmissionService;
 
@@ -35,6 +40,9 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     private final ContestSubmissionRepository contestSubmissionRepository;
     private final ContestRepository contestRepository;
     private final UserRepository userRepository;
+    private final UserGradeContestRepository userGradeContestRepository;
+    private final UserGradeContestSubmissionRepository userGradeContestSubmissionRepository;
+    private static int count = 0;
 
 
     @Override
@@ -56,6 +64,90 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         Map<String, Object> response = new HashMap<>();
         response.put("ContestSubmission", allContestSubmissionResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public Long createUserGradeContestSubmission(User teacher, ContestSubmission contest_submission) {
+
+
+        UserGradeContestSubmissionKey id = new UserGradeContestSubmissionKey(teacher.getId(),contest_submission.getId());
+        
+        UserGradeContestSubmission savedUserGradeContestSubmission = UserGradeContestSubmission.builder()
+                .id(id)
+                .teacher(teacher)
+                .contestSubmission(contest_submission)
+                .build();
+        userGradeContestSubmissionRepository.save(savedUserGradeContestSubmission);
+
+        return savedUserGradeContestSubmission.getTeacher().getId();
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllContestSubmissionByTeacherAndContest(Long teacher_id, Long contest_id) {
+        List<GetContestSubmissionResponse> allContestSubmissionNotGradeResponses = new ArrayList<>();
+        List<GetContestSubmissionResponse> allContestSubmissionGradeResponses = new ArrayList<>();
+        
+        List<UserGradeContestSubmission> userGradeContestSubmissions = userGradeContestSubmissionRepository.findByContestAndTeacher(contest_id, teacher_id);
+        userGradeContestSubmissions.forEach(ele -> {
+            if (ele.getScore() == null) {
+                GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                    .id(ele.getContestSubmission().getId())
+                    .contest_id(ele.getContestSubmission().getContest().getId())
+                    .student_id(ele.getContestSubmission().getStudent().getId())
+                    .image_url(ele.getContestSubmission().getImage_url())
+                    .create_time(ele.getContestSubmission().getCreate_time())
+                    .update_time(ele.getContestSubmission().getUpdate_time())
+                    .build();
+                allContestSubmissionNotGradeResponses.add(contestSubmissionResponse);
+            }
+            else {
+                GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                    .id(ele.getContestSubmission().getId())
+                    .contest_id(ele.getContestSubmission().getContest().getId())
+                    .student_id(ele.getContestSubmission().getStudent().getId())
+                    .image_url(ele.getContestSubmission().getImage_url())
+                    .create_time(ele.getContestSubmission().getCreate_time())
+                    .update_time(ele.getContestSubmission().getUpdate_time())
+                    .build();
+                allContestSubmissionNotGradeResponses.add(contestSubmissionResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("contest_submission_not_grade", allContestSubmissionNotGradeResponses);
+        response.put("contest_submission_grade", allContestSubmissionGradeResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+    @Override 
+    public Long generationContestSubmissionForTeacher(Long contest_id){
+        List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findByContestId1(contest_id);
+
+        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findByContestId2(contest_id);
+        
+        int total_teacher = pageUserGradeContest.size();
+        int total_contest_submission = listContestSubmission.size();
+
+        int total = total_contest_submission / total_teacher;
+
+        count = 0;
+        for (count = 0; count < total_teacher; count++) {
+            if (count == total_teacher - 1) {
+                List<ContestSubmission> contestSubmissions = listContestSubmission.subList(count*total, total_contest_submission);
+                contestSubmissions.forEach(ele -> {
+                    createUserGradeContestSubmission(pageUserGradeContest.get(count).getUser(), ele);
+                });
+            }
+            else {
+                List<ContestSubmission> contestSubmissions = listContestSubmission.subList(count*total, (count+1)*total);
+                contestSubmissions.forEach(ele -> {
+                    createUserGradeContestSubmission(pageUserGradeContest.get(count).getUser(), ele);
+                });
+            } 
+        }
+
+        return contest_id;
+
     }
 
     @Override

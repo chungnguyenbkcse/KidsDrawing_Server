@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -168,8 +167,8 @@ public class User{
     @OneToMany(mappedBy="student")
     private Set<UserAttendance> userAttendances;
 
-    @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
-    private PasswordResetToken passwordResetToken;
+    /* @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
+    private PasswordResetToken passwordResetToken; */
 
     @OneToMany(mappedBy="parent")
     private Set<User> childs;

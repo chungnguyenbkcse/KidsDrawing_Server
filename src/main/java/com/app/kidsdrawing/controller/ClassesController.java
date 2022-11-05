@@ -61,7 +61,7 @@ public class ClassesController {
     @CrossOrigin
     @GetMapping(value="/parent/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getClassesStudentForParentId(@PathVariable Long id) {
-        return ResponseEntity.ok().body(classService.getClassesStudentForParentId(id));
+        return ResponseEntity.ok().body(classService.getListForParentId(id));
     }
 
     @CrossOrigin
@@ -111,6 +111,12 @@ public class ClassesController {
     @GetMapping(value = "/teacher/{id}")
     public  ResponseEntity<ResponseEntity<Map<String, Object>>>  getInforDetailOfClassByTeacherId(@PathVariable Long id) {
         return ResponseEntity.ok().body(classService.getInforDetailOfClassByTeacherId(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/teacher-list/{id}")
+    public  ResponseEntity<ResponseEntity<Map<String, Object>>>  getListClassByTeacherId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(classService.getListClassByTeacherId(id));
     }
 
     @CrossOrigin

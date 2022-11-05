@@ -4,11 +4,9 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -43,6 +41,6 @@ public class Notification {
     @CreationTimestamp
     private LocalDateTime time = LocalDateTime.now();
 
-    @OneToOne(mappedBy="notification", fetch = FetchType.LAZY)
-    private UserReadNotification userReadNotification;
+    /* @OneToOne(mappedBy="notification", fetch = FetchType.LAZY)
+    private UserReadNotification userReadNotification; */
 }

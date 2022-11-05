@@ -40,6 +40,6 @@ public class PasswordResetToken {
     private Date expiryDate;
 
     @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 }
