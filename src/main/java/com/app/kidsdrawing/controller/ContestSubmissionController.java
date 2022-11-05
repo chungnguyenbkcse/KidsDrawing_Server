@@ -53,6 +53,15 @@ public class ContestSubmissionController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/check-generation/{id}")
+    public ResponseEntity<String> checkGenerationContestSubmissionForTeacher(@PathVariable Long id) {
+        Long contestSubmissionId = contestSubmissionService.checkGenerationContestSubmissionForTeacher(id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{contestSubmissionId}")
+                .buildAndExpand(contestSubmissionId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createContestSubmission(@RequestBody CreateContestSubmissionRequest createContestSubmissionRequest) {
         Long contestSubmissionId = contestSubmissionService.createContestSubmission(createContestSubmissionRequest);
