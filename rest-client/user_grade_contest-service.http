@@ -40,3 +40,8 @@ Content-Type: application/json
 # @name get_contest
 
 GET  {{rest}}/user-grade-contest/contest/a2433efc-ca37-457b-9b8a-c84a5067b053
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-grade-contest/contest/1

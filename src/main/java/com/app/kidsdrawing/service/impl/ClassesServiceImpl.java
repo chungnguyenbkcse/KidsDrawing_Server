@@ -45,7 +45,6 @@ import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
-import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -63,7 +62,6 @@ public class ClassesServiceImpl implements ClassesService {
     private final UserRepository userRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
-    private final ScheduleRepository scheduleRepository;
     private final SemesterRepository semesterRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 

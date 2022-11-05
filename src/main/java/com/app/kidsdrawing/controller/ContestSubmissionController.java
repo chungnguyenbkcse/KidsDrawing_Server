@@ -47,9 +47,25 @@ public class ContestSubmissionController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/contest-teacher/{contest_id}/{teacher_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllContestSubmissionByContestId(@PathVariable("contest_id") Long contest_id, @PathVariable("teacher_id") Long teacher_id) {
+        return ResponseEntity.ok().body(contestSubmissionService.getAllContestSubmissionByTeacherAndContest(teacher_id, contest_id));
+    }
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createContestSubmission(@RequestBody CreateContestSubmissionRequest createContestSubmissionRequest) {
         Long contestSubmissionId = contestSubmissionService.createContestSubmission(createContestSubmissionRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{contestSubmissionId}")
+                .buildAndExpand(contestSubmissionId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+
+    @CrossOrigin
+    @PostMapping(value = "/contest/{id}")
+    public ResponseEntity<String> createContestSubmission(@PathVariable Long id) {
+        Long contestSubmissionId = contestSubmissionService.generationContestSubmissionForTeacher(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{contestSubmissionId}")
                 .buildAndExpand(contestSubmissionId).toUri();
         return ResponseEntity.created(location).build();
