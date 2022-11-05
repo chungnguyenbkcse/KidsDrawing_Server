@@ -175,6 +175,19 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override 
+    public Long checkGenerationContestSubmissionForTeacher(Long contest_id)  {
+        List<UserGradeContestSubmission> userGradeContestSubmissions = userGradeContestSubmissionRepository.findTotalByContest(contest_id);
+
+        if (userGradeContestSubmissions.size() > 0 ) {
+            return (long) 1;
+        }
+        else {
+            throw new EntityNotFoundException("exception.check_generation.not_found");
+        }
+
+    }
+
     @Override
     public ResponseEntity<Map<String, Object>> getAllContestSubmissionByContestId(Long id) {
         List<GetContestSubmissionResponse> allContestSubmissionGradedResponses = new ArrayList<>();
