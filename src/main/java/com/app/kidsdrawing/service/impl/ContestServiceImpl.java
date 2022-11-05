@@ -67,7 +67,7 @@ public class ContestServiceImpl implements ContestService {
         List<GetContestTeacherResponse> allContestEndResponses = new ArrayList<>();
         List<GetContestTeacherResponse> allContestNotOpenNowNotTeacherResponses = new ArrayList<>();
         List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findAll();
-        List<Contest> pageContest = contestRepository.findAll();
+        List<Contest> pageContest = contestRepository.findAll1();
         LocalDateTime time_now = LocalDateTime.now();
 
         pageContest.forEach(contest -> {
@@ -82,7 +82,7 @@ public class ContestServiceImpl implements ContestService {
             Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
             Set<ContestSubmission> listContestSubmissionByContest = contest.getContestSubmissions();
             listContestSubmissionByContest.forEach(contest_submission -> {
-                if (contest_submission.getUserGradeContestSubmissions().size() > 0) {
+                if (contest_submission.getUserGradeContestSubmissions().size() > 0 && new ArrayList<>(contest_submission.getUserGradeContestSubmissions()).get(0).getScore() != null) {
                     total = total + 1;
                 }
             });
@@ -199,7 +199,7 @@ public class ContestServiceImpl implements ContestService {
             Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
             Set<ContestSubmission> listContestSubmissionByContest = contest.getContestSubmissions();
             listContestSubmissionByContest.forEach(contest_submission -> {
-                if (contest_submission.getUserGradeContestSubmissions().size() > 0) {
+                if (contest_submission.getUserGradeContestSubmissions().size() > 0 && new ArrayList<>(contest_submission.getUserGradeContestSubmissions()).get(0).getScore() != null) {
                     total = total + 1;
                 }
             });
@@ -244,7 +244,7 @@ public class ContestServiceImpl implements ContestService {
                 Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
                 Set<ContestSubmission> listContestSubmissionByContest = contest.getContestSubmissions();
                 listContestSubmissionByContest.forEach(contest_submission -> {
-                    if (contest_submission.getUserGradeContestSubmissions().size() > 0) {
+                    if (contest_submission.getUserGradeContestSubmissions().size() > 0 && new ArrayList<>(contest_submission.getUserGradeContestSubmissions()).get(0).getScore() != null) {
                         total = total + 1;
                     }
                 });
@@ -298,7 +298,7 @@ public class ContestServiceImpl implements ContestService {
             Set<UserRegisterJoinContest> listUserRegisterContestByContest = ele.getContest().getUserRegisterJoinContests();
             Set<ContestSubmission> listContestSubmissionByContest = ele.getContest().getContestSubmissions();
             listContestSubmissionByContest.forEach(contest_submission -> {
-                if (contest_submission.getUserGradeContestSubmissions().size() > 0) {
+                if (contest_submission.getUserGradeContestSubmissions().size() > 0 && new ArrayList<>(contest_submission.getUserGradeContestSubmissions()).get(0).getScore() != null) {
                     total = total + 1;
                 }
             });
@@ -474,7 +474,7 @@ public class ContestServiceImpl implements ContestService {
                 Set<UserRegisterJoinContest> listUserRegisterContestByContest = ele.getContest().getUserRegisterJoinContests();
                 Set<ContestSubmission> listContestSubmissionByContest = ele.getContest().getContestSubmissions();
                 listContestSubmissionByContest.forEach(contest_submission -> {
-                    if (contest_submission.getUserGradeContestSubmissions().size() > 0) {
+                    if (contest_submission.getUserGradeContestSubmissions().size() > 0 && new ArrayList<>(contest_submission.getUserGradeContestSubmissions()).get(0).getScore() != null) {
                         total = total + 1;
                     }
                 });
@@ -641,7 +641,7 @@ public class ContestServiceImpl implements ContestService {
         Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
         Set<ContestSubmission> listContestSubmissionByContest = contest.getContestSubmissions();
         listContestSubmissionByContest.forEach(contest_submission -> {
-            if (contest_submission.getUserGradeContestSubmissions().size() > 0) {
+            if (contest_submission.getUserGradeContestSubmissions().size() > 0 && new ArrayList<>(contest_submission.getUserGradeContestSubmissions()).get(0).getScore() != null) {
                 total = total + 1;
             }
         });
