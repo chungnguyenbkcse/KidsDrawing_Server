@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateSectionRequest;
+import com.app.kidsdrawing.dto.CreateSectionTeacherRequest;
 import com.app.kidsdrawing.dto.GetSectionResponse;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.Classes;
@@ -153,6 +154,18 @@ public class SectionServiceImpl implements SectionService{
         updatedSection.setRecording(createSectionRequest.getRecording());
         updatedSection.setMessage(createSectionRequest.getMessage());
         updatedSection.setNumber(createSectionRequest.getNumber());
+
+        return updatedSection.getId();
+    }
+
+    @Override
+    public Long updateSectionByTeacher(Long id, CreateSectionTeacherRequest createSectionTeacherRequest) {
+        Optional<Section> sectionOpt = sectionRepository.findById1(id);
+        Section updatedSection = sectionOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Section.not_found");
+        });
+
+        updatedSection.setRecording(createSectionTeacherRequest.getRecording());
 
         return updatedSection.getId();
     }
