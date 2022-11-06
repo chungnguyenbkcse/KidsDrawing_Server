@@ -67,7 +67,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     @Override
     public File convertMultiPartToFile(MultipartFile file) {
         String name = file.getName();
-        File convFile = new File("/home/ubuntu/KidsDrawing/image/" + name);
+        File convFile = new File("/home/ubuntu/KidsDrawing/" + name);
         try {
             FileOutputStream fos = new FileOutputStream(convFile);
             fos.write(file.getBytes());
