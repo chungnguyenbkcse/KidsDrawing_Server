@@ -34,12 +34,12 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             } else
                 System.out.println("File doesn't exist"); */
             String res = cloudinaryConfig.uploader().upload(uploadedFile, ObjectUtils.emptyMap()).get("url").toString();
-            boolean isDeleted = uploadedFile.delete();
+            /* boolean isDeleted = uploadedFile.delete();
 
             if (isDeleted) {
                 System.out.println("File successfully deleted");
             } else
-                System.out.println("File doesn't exist"); 
+                System.out.println("File doesn't exist"); */ 
             return res;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -52,12 +52,12 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             File uploadedFile = convertMultiPartToFile(gif);
             String uploadResult = cloudinaryConfig.uploader().uploadLarge(uploadedFile, ObjectUtils.asMap("resource_type", "video")).get("url").toString();
     
-            boolean isDeleted = uploadedFile.delete();
+            /* boolean isDeleted = uploadedFile.delete();
     
             if (isDeleted){
                System.out.println("File successfully deleted");
             }else
-                System.out.println("File doesn't exist");
+                System.out.println("File doesn't exist"); */
             return  uploadResult;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -67,7 +67,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     @Override
     public File convertMultiPartToFile(MultipartFile file) {
         String name = file.getName();
-        File convFile = new File("/home/ubuntu/KidsDrawing/image/" + name);
+        File convFile = new File("/home/ubuntu/KidsDrawing/" + name);
         try {
             FileOutputStream fos = new FileOutputStream(convFile);
             fos.write(file.getBytes());
