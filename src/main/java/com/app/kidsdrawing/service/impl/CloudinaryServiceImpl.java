@@ -47,8 +47,27 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     }
 
     @Override
+    public String uploadFileLarge(MultipartFile gif) {
+        try {
+            File uploadedFile = convertMultiPartToFile(gif);
+            String uploadResult = cloudinaryConfig.uploader().uploadLarge(uploadedFile, ObjectUtils.asMap("resource_type", "video")).get("url").toString();
+    
+            boolean isDeleted = uploadedFile.delete();
+    
+            if (isDeleted){
+               System.out.println("File successfully deleted");
+            }else
+                System.out.println("File doesn't exist");
+            return  uploadResult;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public File convertMultiPartToFile(MultipartFile file) {
-        File convFile = new File(file.getOriginalFilename());
+        String name = file.getName();
+        File convFile = new File("/home/ubuntu/KidsDrawing/image/" + name);
         try {
             FileOutputStream fos = new FileOutputStream(convFile);
             fos.write(file.getBytes());

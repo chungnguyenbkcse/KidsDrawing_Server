@@ -32,4 +32,14 @@ public class CloudinaryController {
         return ResponseEntity.ok().body(response);
     }
 
+    @PostMapping("/video/gifs")
+    @CrossOrigin
+    public ResponseEntity<Map<String, Object>> uploadFileLarge(@RequestParam("gifFile") MultipartFile gifFile)
+            throws IOException {
+        String url = cloudinaryGifService.uploadFileLarge(gifFile);
+        Map<String, Object> response = new HashMap<>();
+        response.put("url_video", url);
+        return ResponseEntity.ok().body(response);
+    }
+
 }
