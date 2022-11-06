@@ -3,10 +3,10 @@ spring:
     url: "jdbc:postgresql://database-1v1.c6kx3f5lr5gn.ap-southeast-1.rds.amazonaws.com:5432/kidsdrawing"
     username: postgres
     password: 12345678
-  http:
+  servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 100MB
+      max-request-size: 100MB
   sql:
     init:
       mode: always
