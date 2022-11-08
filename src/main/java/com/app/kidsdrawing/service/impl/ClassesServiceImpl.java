@@ -1480,6 +1480,51 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getInforDetailOfClassForTeacher(Long id) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<Classes> classOpt = classRepository.findById6(id);
+        Classes classes = classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Class.not_found");
+        });
+        response.put("classes", GetClassResponse.builder()
+                .id(classes.getId())
+                .user_register_teach_semester(classes.getUserRegisterTeachSemester().getId())
+                .security_code(classes.getSecurity_code())
+                .name(classes.getName())
+                .create_time(classes.getCreate_time())
+                .update_time(classes.getUpdate_time())
+                .build());
+        
+        List<GetStudentResponse> listStudents = new ArrayList<>();
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId3(id);
+        listClassHasRegisterJoinSemesterClass.forEach(content -> {
+            Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
+            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
+                    + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
+            GetStudentResponse student = GetStudentResponse.builder()
+                    .id(content.getUserRegisterJoinSemester().getStudent().getId())
+                    .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
+                    .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
+                    .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
+                    .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
+                    .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
+                    .profile_image_url(content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
+                    .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
+                    .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
+                    .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
+                    .parent(parent_namex)
+                    .parents(parent_idx)
+                    .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
+                    .build();
+            listStudents.add(student);
+        });
+
+        response.put("students", listStudents);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getInforDetailOfClass(Long id) {
         Map<String, Object> response = new HashMap<>();
         Optional<Classes> classOpt = classRepository.findById5(id);

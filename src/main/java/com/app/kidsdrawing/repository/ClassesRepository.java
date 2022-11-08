@@ -59,6 +59,9 @@ public interface ClassesRepository extends JpaRepository <Classes, Long>{
     @Query("SELECT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses  chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s LEFT JOIN FETCH s.holidays JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE c1.id = ?1 ")
     Optional<Classes> findById5(Long id);
 
+    @Query("SELECT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses  chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student WHERE c1.id = ?1 ")
+    Optional<Classes> findById6(Long id);
+
     @Query("FROM Classes c JOIN FETCH c.user u WHERE u.id = ?1")
     List<Classes> findByCreatorId1(Long id);
 
