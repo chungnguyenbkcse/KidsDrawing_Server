@@ -45,8 +45,8 @@ public class ClassHasRegisterJoinSemesterController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/{classes_id}/{user_register_join_semester_id}")
-    public ResponseEntity<GetClassHasRegisterJoinSemesterClassResponse> getClassHasRegisterJoinSemesterClassByClassesAndUserRegisterJoinSemester(@PathVariable("classes_id") Long classes_id, @PathVariable("user_register_join_semester_id") Long user_register_join_semester_id) {
-        return ResponseEntity.ok().body(classHasRegisterJoinSemesterClassService.getClassHasRegisterJoinSemesterClassByClassesAndUserRegisterJoinSemester(classes_id, user_register_join_semester_id));
+    @GetMapping(value = "/{classes_id}/{student_id}")
+    public ResponseEntity<GetClassHasRegisterJoinSemesterClassResponse> getClassHasRegisterJoinSemesterClassByClassesAndStudent(@PathVariable("classes_id") Long classes_id, @PathVariable("student_id") Long student_id) {
+        return ResponseEntity.ok().body(classHasRegisterJoinSemesterClassService.getClassHasRegisterJoinSemesterClassByClassesAndStudent(classes_id, student_id));
     }
 }

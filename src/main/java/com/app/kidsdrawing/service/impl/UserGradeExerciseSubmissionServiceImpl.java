@@ -17,9 +17,11 @@ import com.app.kidsdrawing.dto.CreateUserGradeExerciseSubmissionRequest;
 import com.app.kidsdrawing.dto.GetUserGradeExerciseSubmissionResponse;
 import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
 import com.app.kidsdrawing.entity.UserGradeExerciseSubmissionKey;
+import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.UserGradeExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -35,6 +37,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
     private final UserRepository userRepository;
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
+    private final ExerciseRepository exerciseRepository;
     private static Float exam = (float) 0;
     private static Float middle = (float) 0;
     private static Float final_exam = (float) 0;
@@ -73,14 +76,14 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
     public ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForStudentAndClasses(Long student_id, Long classes_id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
         List<UserGradeExerciseSubmission> listUserGradeExerciseSubmission = userGradeExerciseSubmissionRepository.findByStudentAndClass(student_id, classes_id);
+        List<Exercise> allExerciseByClass = exerciseRepository.findAllExerciseByClass(classes_id);
         exam = (float) 0;
         middle = (float) 0;
         final_exam = (float) 0;
-        count_exam = 0;
+        count_exam = allExerciseByClass.size();
         listUserGradeExerciseSubmission.forEach(content -> {
                 if (content.getExerciseSubmission().getExercise().getExerciseLevel().getName().equals("exam")) {
                     exam = exam + content.getScore() ;
-                    count_exam ++;
                 }
                 else if (content.getExerciseSubmission().getExercise().getExerciseLevel().getName().equals("middle")) {
                     middle = middle + content.getScore() ;
