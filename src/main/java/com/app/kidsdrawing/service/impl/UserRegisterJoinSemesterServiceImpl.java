@@ -154,6 +154,31 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByStudentId(Long id) {
+        List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId2(id);
+        listUserRegisterJoinSemester.forEach(content -> {
+            GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .semester_classes_id(content.getSemesterClass().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .semester_classes_name(content.getSemesterClass().getName())
+                .link_url(content.getSemesterClass().getCourse().getImage_url())
+                .payer_id(content.getPayer().getId())
+                .price(content.getPrice())
+                .time(content.getTime())
+                .status(content.getStatus())
+                .build();
+            allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user_register_semester", allUserRegisterJoinSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public GetUserRegisterJoinSemesterResponse getUserRegisterJoinSemesterById(Long id) {
         Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById2(id);
         UserRegisterJoinSemester userRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
@@ -324,17 +349,23 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        List<LessonTime> lessonTimes = new ArrayList<>();
+        List<Map<Integer, LessonTime>> lessonTimes = new ArrayList<>();
         semesterCouse.getSchedules().forEach(ele -> {
-            lessonTimes.add(ele.getLessonTime());
+            Map<Integer, LessonTime> item = new HashMap<>();
+            item.put(ele.getDate_of_week(), ele.getLessonTime());
+            lessonTimes.add(item);
         });
 
-        List<LessonTime> lessonTimesAll = new ArrayList<>();
+        List<Map<Integer, LessonTime>> lessonTimesAll = new ArrayList<>();
         List<UserRegisterJoinSemester> userRegisterTeachSemesters = userRegisterJoinSemesterRepository.findBySemester(semesterCouse.getSemester().getId(), student_id);
         userRegisterTeachSemesters.forEach(ele -> {
-            ele.getSemesterClass().getSchedules().forEach(schedule -> {
-                lessonTimesAll.add(schedule.getLessonTime());
-            });
+            if (ele.getSemesterClass().getSemester().getId() == semesterCouse.getSemester().getId()) {
+                ele.getSemesterClass().getSchedules().forEach(schedule -> {
+                    Map<Integer, LessonTime> item = new HashMap<>();
+                    item.put(schedule.getDate_of_week(), schedule.getLessonTime());
+                    lessonTimesAll.add(item);
+                });
+            }
         });
 
         if (!Collections.disjoint(lessonTimes, lessonTimesAll)) {

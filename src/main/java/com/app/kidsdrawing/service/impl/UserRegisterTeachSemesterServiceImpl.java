@@ -96,22 +96,28 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
         SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
-        List<LessonTime> lessonTimes = new ArrayList<>();
+        List<Map<Integer, LessonTime>> lessonTimes = new ArrayList<>();
         semesterCouse.getSchedules().forEach(ele -> {
-            lessonTimes.add(ele.getLessonTime());
+            Map<Integer, LessonTime> item = new HashMap<>();
+            item.put(ele.getDate_of_week(), ele.getLessonTime());
+            lessonTimes.add(item);
         });
 
-        System.out.print(lessonTimes.size());
+        System.out.println(lessonTimes);
+        System.out.println("\n");
 
-        List<LessonTime> lessonTimesAll = new ArrayList<>();
+        List<Map<Integer, LessonTime>> lessonTimesAll = new ArrayList<>();
         List<UserRegisterTeachSemester> userRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemester(semesterCouse.getSemester().getId(), teacher_id);
         userRegisterTeachSemesters.forEach(ele -> {
             ele.getSemesterClass().getSchedules().forEach(schedule -> {
-                lessonTimesAll.add(schedule.getLessonTime());
+                Map<Integer, LessonTime> item = new HashMap<>();
+                item.put(schedule.getDate_of_week(), schedule.getLessonTime());
+                lessonTimesAll.add(item);
             });
         });
 
-        System.out.print(lessonTimesAll.size());
+        System.out.println(lessonTimesAll);
+        System.out.println("\n");
 
         if (!Collections.disjoint(lessonTimes, lessonTimesAll)) {
             return false;
