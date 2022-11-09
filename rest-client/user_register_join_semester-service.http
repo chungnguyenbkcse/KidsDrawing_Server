@@ -32,6 +32,11 @@ Content-Type: application/json
 
 GET {{rest}}/user-register-join-semester/16
 
+### GET TEACHER GRADE semester ACTION ###
+# @name get_teacher_grade_semester
+
+GET {{rest}}/user-register-join-semester/student/22
+
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 

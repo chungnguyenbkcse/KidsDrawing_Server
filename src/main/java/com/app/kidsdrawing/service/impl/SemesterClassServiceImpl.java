@@ -130,7 +130,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
 
         allSemesterClassByParentAndCourse.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isBefore(time_now) && semester_class.getRegistration_expiration_time().isAfter(time_now)) {
                 Set<Long> student_ids = new HashSet<>();
                 Set<String> student_name = new HashSet<>();
                 semester_class.getUserRegisterJoinSemesters().forEach(ele -> {
@@ -177,7 +177,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
 
         allSemesterClassByParentAndCourse1.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isBefore(time_now) && semester_class.getRegistration_expiration_time().isAfter(time_now)) {
                 Set<Long> student_ids = new HashSet<>();
                 Set<String> student_name = new HashSet<>();
                 semester_class.getUserRegisterJoinSemesters().forEach(ele -> {
@@ -223,7 +223,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         });
 
         allSemesterClass.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now) && allSemesterClassByParentAndCourse.contains(semester_class) == false) {
+            if (semester_class.getRegistration_time().isBefore(time_now) && semester_class.getRegistration_expiration_time().isAfter(time_now) && allSemesterClassByParentAndCourse.contains(semester_class) == false) {
                 schedule = "";
                 semester_class.getSchedules().forEach(schedule_item -> {            
                     if (schedule.equals("")) {
@@ -273,8 +273,10 @@ public class SemesterClassServiceImpl implements SemesterClassService {
 
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
 
+        System.out.print(allSemesterClass.size());
+
         allSemesterClass.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isBefore(time_now) && semester_class.getRegistration_expiration_time().isAfter(time_now)) {
                 schedule = "";
                 semester_class.getSchedules().forEach(schedule_item -> {            
                     if (schedule.equals("")) {
