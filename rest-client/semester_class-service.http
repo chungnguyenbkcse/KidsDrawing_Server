@@ -56,7 +56,7 @@ DELETE  {{rest}}/lesson-time/2
 ### GET ART TYPE ACTION ###
 # @name get_art_type
 
-GET {{rest}}/semester-class/1
+GET {{rest}}/semester-class
 
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
@@ -83,7 +83,7 @@ GET {{rest}}/semester-class/teacher-course/8d751edb-7e9c-466d-a0e3-69fec1593194/
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/semester-class
+GET {{rest}}/semester-class/parent-course/12/1
 
 
 ### GET ART TYPE ACTION ###
