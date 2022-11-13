@@ -378,30 +378,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getReportCourse(int year) {
+    public ResponseEntity<Map<String, Object>> getReportCourse() {
         List<GetReportCourseResponse> allReportCourseResponses = new ArrayList<>();
 
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findAll1();
-            listUserRegisterJoinSemester.forEach(ele -> {
-                if (ele.getSemesterClass().getSemester().getStart_time().getYear() == year && ele.getStatus().equals("Completed")) {
-                    GetReportCourseResponse courseResponse = GetReportCourseResponse.builder()
-                        .id(ele.getSemesterClass().getCourse().getId())
-                        .name(ele.getSemesterClass().getCourse().getName())
-                        .description(ele.getSemesterClass().getCourse().getDescription())
-                        .num_of_section(ele.getSemesterClass().getCourse().getNum_of_section())
-                        .image_url(ele.getSemesterClass().getCourse().getImage_url())
-                        .price(ele.getSemesterClass().getCourse().getPrice())
-                        .is_enabled(ele.getSemesterClass().getCourse().getIs_enabled())
-                        .art_age_id(ele.getSemesterClass().getCourse().getArtAges().getId())
-                        .art_type_id(ele.getSemesterClass().getCourse().getArtTypes().getId())
-                        .art_level_id(ele.getSemesterClass().getCourse().getArtLevels().getId())
-                        .creator_id(ele.getSemesterClass().getCourse().getUser().getId())
-                        .create_time(ele.getSemesterClass().getCourse().getCreate_time())
-                        .update_time(ele.getSemesterClass().getCourse().getUpdate_time())
-                        .build();
-                    allReportCourseResponses.add(courseResponse);
-                }
+        List<Course> listCourse = courseRepository.findAll4();
+        listCourse.forEach(ele -> {
+            total = 0;
+            ele.getSemesterClasses().forEach(semester_class -> {
+                total = total + semester_class.getUserRegisterJoinSemesters().size();
             });
+            GetReportCourseResponse courseResponse = GetReportCourseResponse.builder()
+                .id(ele.getId())
+                .name(ele.getName())
+                .total_register(total)
+                .build();
+            allReportCourseResponses.add(courseResponse);
+        });
 
         Map<String, Object> response = new HashMap<>();
         response.put("report_course", allReportCourseResponses);
