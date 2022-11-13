@@ -29,6 +29,9 @@ public interface CourseRepository extends JpaRepository <Course, Long>{
     @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes ORDER BY c.id")
     List<Course> findAll3();
 
+    @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.semesterClasses sc JOIN FETCH sc.userRegisterJoinSemesters ur WHERE ur.status = 'Completed' ORDER BY c.id")
+    List<Course> findAll4();
+
     @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.teacherRegisterQualifications tr JOIN FETCH tr.teacher te WHERE te.id != ?1 ORDER BY c.id")
     List<Course> findAllCourseNewForTeacher(Long teacher_id);
 

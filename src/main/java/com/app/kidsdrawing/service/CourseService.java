@@ -21,7 +21,7 @@ public interface CourseService {
     ResponseEntity<Map<String, Object>> getAllCourseNewByStudentId(Long id);
     ResponseEntity<Map<String, Object>> getAllCourseNewByParentId(Long id);
     ResponseEntity<Map<String, Object>> getAllCourseNewByTeacherId(Long id);
-    ResponseEntity<Map<String, Object>> getReportCourse(int year);
+    ResponseEntity<Map<String, Object>> getReportCourse();
     GetCourseResponse getCourseByName(String name);
     GetCourseResponse getCourseById(Long id);
     Long createCourse(CreateCourseRequest createCourseRequest);
