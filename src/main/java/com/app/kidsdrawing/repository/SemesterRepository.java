@@ -31,7 +31,7 @@ public interface SemesterRepository extends JpaRepository <Semester, Long>{
     @Query("FROM Semester e WHERE e.id = ?1")
     Optional<Semester> findById1(Long id);
 
-    @Query("SELECT DISTINCT se FROM Semester se JOIN FETCH se.semesterClass sc JOIN FETCH sc.userRegisterJoinSemesters urj JOIN FETCH sc.userRegisterTeachSemesters urt JOIN FETCH urt.teacher WHERE se.id = ?1 AND urj.status = 'Completed'")
+    @Query("SELECT DISTINCT se FROM Semester se JOIN FETCH se.semesterClass sc JOIN FETCH sc.userRegisterJoinSemesters urj JOIN FETCH sc.userRegisterTeachSemesters urt JOIN FETCH urt.teacher WHERE se.id = ?1 AND urj.status = 'Completed' ORDER BY urj.id")
     Optional<Semester> findById3(Long id);
 
     @Query("FROM Semester e JOIN FETCH e.user WHERE e.user = ?1 ORDER BY e.id")

@@ -3,12 +3,13 @@ package com.app.kidsdrawing.service.impl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
-
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -246,6 +247,18 @@ public class SemesterServiceImpl implements SemesterService {
         return res;
     }
 
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        List<Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Entry.comparingByValue());
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
+    }
+
     @Override
     public Long setClassForSemester(Long id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
         // Lấy học kì
@@ -282,35 +295,15 @@ public class SemesterServiceImpl implements SemesterService {
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
             Set<UserRegisterTeachSemester> allUserRegisterTeachSemesters = semester_class.getUserRegisterTeachSemesters();
 
-            /* List<Integer> list_total_register_of_teacher = new ArrayList<>();
+            Map<UserRegisterTeachSemester, Integer> list_total_register_of_teacher = new HashMap<>();
 
-            if (check_count == 0){
-                allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
-                    list_total_register_of_teacher.add(0);
-                });
-            }
-            else {
-                allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
-                    counter = 0;
-                    listClassOfSemesterClass.forEach(class_x -> {
-                        if (teacher_register_teach_semester.getTeacher().getId().compareTo(class_x.getUserRegisterTeachSemester().getTeacher().getId()) == 0){
-                            counter += 1;
-                        }
-                    });
-                    list_total_register_of_teacher.add(counter);
-                });
+            allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
+                List<Classes> allClassForTeacherAndSemester = classRepository.findAllByTeacherAndSemester(teacher_register_teach_semester.getTeacher().getId(), id);
+                list_total_register_of_teacher.put(teacher_register_teach_semester, allClassForTeacherAndSemester.size());
+            });
 
-                for (int i = 0; i < list_total_register_of_teacher.size(); i++) {
-                    // Inner nested loop pointing 1 index ahead
-                    for (int j = i + 1; j < list_total_register_of_teacher.size(); j++) {
-                        // Checking elements
-                        if (list_total_register_of_teacher.get(j) < list_total_register_of_teacher.get(i)) {
-                            Collections.swap(list_total_register_of_teacher, i, j);
-                            Collections.swap(new ArrayList<>(allUserRegisterTeachSemesters), i, j);
-                        }
-                    }
-                }
-            } */
+            sortByValue(list_total_register_of_teacher);
+            
 
             System.out.println("class_id: " + String.valueOf(semester_class.getId()));
             System.out.println("Total user_register_teach_semester: " + String.valueOf(allUserRegisterTeachSemesters.size()));
@@ -344,7 +337,7 @@ public class SemesterServiceImpl implements SemesterService {
                         System.out.println("Lop thu: " + String.valueOf(i));
                         Classes savedClass = Classes.builder()
                             .user(creator)
-                            .userRegisterTeachSemester(new ArrayList<>(allUserRegisterTeachSemesters).get(i))
+                            .userRegisterTeachSemester(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i))
                             .security_code(key)
                             .link_meeting("https://meet.jit.si/" + String.valueOf(key))
                             .name(semester_class.getName() + "-" +  String.valueOf(number) + " thuộc học kì " + String.valueOf(semester.getNumber()) + " năm học " + String.valueOf(semester.getYear()))
