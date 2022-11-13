@@ -84,4 +84,7 @@ public interface UserRepository extends JpaRepository <User, Long>{
 
     @Query("SELECT DISTINCT e FROM User e JOIN FETCH e.parent p JOIN FETCH e.userRegisterJoinSemesters2 urj JOIN FETCH urj.semesterClass sc JOIN FETCH sc.semester  s JOIN FETCH sc.course c JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.user WHERE p.id = ?1 ORDER BY e.id")
     List<User> findByParentId3(Long id);
+
+    @Query("SELECT DISTINCT e FROM User e JOIN FETCH e.parent p WHERE p.id = ?1 ORDER BY e.id")
+    List<User> findByParentId4(Long id);
 }

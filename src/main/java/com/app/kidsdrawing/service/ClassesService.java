@@ -12,6 +12,7 @@ public interface ClassesService {
     ResponseEntity<Map<String, Object>> getAllClass();
     ResponseEntity<Map<String, Object>> getInforDetailAllClass();
     ResponseEntity<Map<String, Object>> getInforDetailOfClass(Long id);
+    ResponseEntity<Map<String, Object>> getInforDetailOfClassForTeacher(Long id);
     ResponseEntity<Map<String, Object>> getInforScheduleAllClass();
     ResponseEntity<Map<String, Object>> getInforScheduleAllChild(Long parent_id);
     ResponseEntity<Map<String, Object>> getInforScheduleChild(Long child_id);

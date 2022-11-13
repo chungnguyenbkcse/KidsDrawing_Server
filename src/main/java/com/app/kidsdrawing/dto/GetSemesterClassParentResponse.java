@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class GetSemesterClassParentResponse {
     private String semester_name;
     private LocalDateTime registration_time;
     private LocalDateTime registration_expiration_time;
+    private LocalDate start_date;
     private Long semester_id;
     private String schedule;
     private Set<String> student_registered_name;

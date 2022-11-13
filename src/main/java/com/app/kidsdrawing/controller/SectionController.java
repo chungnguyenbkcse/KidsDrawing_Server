@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.app.kidsdrawing.dto.CreateSectionRequest;
+import com.app.kidsdrawing.dto.CreateSectionTeacherRequest;
 import com.app.kidsdrawing.dto.GetSectionResponse;
 import com.app.kidsdrawing.service.SectionService;
 
@@ -53,6 +54,15 @@ public class SectionController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateSection(@PathVariable Long id, @RequestBody CreateSectionRequest createSectionRequest) {
         Long sectionId = sectionService.updateSectionById(id,createSectionRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(sectionId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @PutMapping(value = "/teacher/{id}")
+    public ResponseEntity<String> updateSectionByTeacher(@PathVariable Long id, @RequestBody CreateSectionTeacherRequest createSectionRequest) {
+        Long sectionId = sectionService.updateSectionByTeacher(id,createSectionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(sectionId).toUri();
         return ResponseEntity.created(location).build();

@@ -1,5 +1,7 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 
 import javax.transaction.Transactional;
 
@@ -56,7 +57,6 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
-            System.out.print(semesterClass.getSchedules().size());
             GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                     .id(semesterClass.getId())
                     .name(semesterClass.getName())
@@ -66,6 +66,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     .course_name(semesterClass.getCourse().getName())
                     .max_participant(semesterClass.getMax_participant())
                     .registration_time(semesterClass.getRegistration_time())
+                    .registration_expiration_time(semesterClass.getRegistration_expiration_time())
                     .build();
             allSemesterClassResponses.add(semesterClassResponse);
         });
@@ -81,7 +82,8 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         LocalDateTime time_now = LocalDateTime.now();
         List<SemesterClass> allSemesterClass = semesterClassRepository.findAll1();
         allSemesterClass.forEach(semesterClass -> {
-            if (semesterClass.getRegistration_time().isAfter(time_now) == false && semesterClass.getSemester().getStart_time().isAfter(time_now)) {
+            if (semesterClass.getRegistration_time().isAfter(time_now) == false
+                    && semesterClass.getSemester().getStart_time().isAfter(time_now)) {
                 schedule = "";
                 semesterClass.getSchedules().forEach(schedule_item -> {
                     if (schedule.equals("")) {
@@ -107,7 +109,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         .art_level_name(semesterClass.getCourse().getArtLevels().getName())
                         .art_type_name(semesterClass.getCourse().getArtTypes().getName())
                         .price(semesterClass.getCourse().getPrice())
-                        .registration_deadline(semesterClass.getSemester().getStart_time())
+                        .registration_deadline(semesterClass.getRegistration_expiration_time())
                         .num_of_section(semesterClass.getCourse().getNum_of_section())
                         .schedule(schedule)
                         .build();
@@ -119,18 +121,103 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Override 
+    @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByParentAndCourse(Long id, Long course_id) {
         List<GetSemesterClassParentResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<SemesterClass> allSemesterClassByParentAndCourse = semesterClassRepository.findAllSemesterClassByParentAndCourse1(id, course_id);
+        List<SemesterClass> allSemesterClassByParentAndCourse = semesterClassRepository
+                .findAllSemesterClassByParentAndCourse1(id, course_id);
 
-        List<SemesterClass> allSemesterClassByParentAndCourse1 = semesterClassRepository.findAllSemesterClassByParentAndCourse2(id, course_id);
+        List<SemesterClass> allSemesterClassByParentAndCourse1 = semesterClassRepository
+                .findAllSemesterClassByParentAndCourse2(id, course_id);
 
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
 
         allSemesterClassByParentAndCourse.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isBefore(time_now)
+                    && semester_class.getRegistration_expiration_time().isAfter(time_now)) {
+                LocalDateTime start_time = semester_class.getSemester().getStart_time();
+                Integer dayOfWeek = new ArrayList<>(semester_class.getSchedules()).get(0).getDate_of_week();
+                if (semester_class.getSchedules().size() > 1) {
+                    if (dayOfWeek == 2) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    } else if (dayOfWeek == 3) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 4) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 5) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 6) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 7) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+                } else {
+                    if (dayOfWeek == 2) {
+                        start_time = start_time.plusDays(7);
+
+                    } else if (dayOfWeek == 3) {
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 4) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 5) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 6) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 7) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else {
+
+                        start_time = start_time.plusDays(7);
+                    }
+                }
+                LocalDate start_date = start_time.toLocalDate();
+
                 Set<Long> student_ids = new HashSet<>();
                 Set<String> student_name = new HashSet<>();
                 semester_class.getUserRegisterJoinSemesters().forEach(ele -> {
@@ -138,7 +225,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     student_name.add(ele.getStudent().getUsername());
                 });
                 schedule = "";
-                semester_class.getSchedules().forEach(schedule_item -> {            
+                semester_class.getSchedules().forEach(schedule_item -> {
                     if (schedule.equals("")) {
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
                                 + schedule_item.getLessonTime().getStart_time().toString() + " - "
@@ -168,6 +255,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         .max_participant(semester_class.getMax_participant())
                         .semester_id(semester_class.getSemester().getId())
                         .student_registered_id(student_ids)
+                        .start_date(start_date)
                         .student_registered_name(student_name)
                         .status("Payed")
                         .build();
@@ -175,9 +263,90 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             }
         });
 
-
         allSemesterClassByParentAndCourse1.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isBefore(time_now)
+                    && semester_class.getRegistration_expiration_time().isAfter(time_now)) {
+                        LocalDateTime start_time = semester_class.getSemester().getStart_time();
+                Integer dayOfWeek = new ArrayList<>(semester_class.getSchedules()).get(0).getDate_of_week();
+                if (semester_class.getSchedules().size() > 1) {
+                    if (dayOfWeek == 2) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    } else if (dayOfWeek == 3) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 4) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 5) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 6) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 7) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+                } else {
+                    if (dayOfWeek == 2) {
+                        start_time = start_time.plusDays(7);
+
+                    } else if (dayOfWeek == 3) {
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 4) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 5) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 6) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 7) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else {
+
+                        start_time = start_time.plusDays(7);
+                    }
+                }
+                LocalDate start_date = start_time.toLocalDate();
                 Set<Long> student_ids = new HashSet<>();
                 Set<String> student_name = new HashSet<>();
                 semester_class.getUserRegisterJoinSemesters().forEach(ele -> {
@@ -185,7 +354,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     student_name.add(ele.getStudent().getUsername());
                 });
                 schedule = "";
-                semester_class.getSchedules().forEach(schedule_item -> {            
+                semester_class.getSchedules().forEach(schedule_item -> {
                     if (schedule.equals("")) {
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
                                 + schedule_item.getLessonTime().getStart_time().toString() + " - "
@@ -212,6 +381,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         .registration_expiration_time(semester_class.getRegistration_expiration_time())
                         .num_of_section(semester_class.getCourse().getNum_of_section())
                         .schedule(schedule)
+                        .start_date(start_date)
                         .max_participant(semester_class.getMax_participant())
                         .semester_id(semester_class.getSemester().getId())
                         .student_registered_id(student_ids)
@@ -223,9 +393,92 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         });
 
         allSemesterClass.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now) && allSemesterClassByParentAndCourse.contains(semester_class) == false) {
+            if (semester_class.getRegistration_time().isBefore(time_now)
+                    && semester_class.getRegistration_expiration_time().isAfter(time_now)
+                    && allSemesterClassByParentAndCourse.contains(semester_class) == false) {
+                        LocalDateTime start_time = semester_class.getSemester().getStart_time();
+                Integer dayOfWeek = new ArrayList<>(semester_class.getSchedules()).get(0).getDate_of_week();
+                if (semester_class.getSchedules().size() > 1) {
+                    if (dayOfWeek == 2) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    } else if (dayOfWeek == 3) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 4) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 5) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 6) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 7) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+                } else {
+                    if (dayOfWeek == 2) {
+                        start_time = start_time.plusDays(7);
+
+                    } else if (dayOfWeek == 3) {
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 4) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 5) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 6) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else if (dayOfWeek == 7) {
+
+                        start_time = start_time.plusDays(7);
+                    }
+
+                    else {
+
+                        start_time = start_time.plusDays(7);
+                    }
+                }
+                LocalDate start_date = start_time.toLocalDate();
                 schedule = "";
-                semester_class.getSchedules().forEach(schedule_item -> {            
+                semester_class.getSchedules().forEach(schedule_item -> {
                     if (schedule.equals("")) {
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
                                 + schedule_item.getLessonTime().getStart_time().toString() + " - "
@@ -252,6 +505,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                         .registration_expiration_time(semester_class.getRegistration_expiration_time())
                         .num_of_section(semester_class.getCourse().getNum_of_section())
                         .schedule(schedule)
+                        .start_date(start_date)
                         .max_participant(semester_class.getMax_participant())
                         .semester_id(semester_class.getSemester().getId())
                         .status("Not Payed")
@@ -269,14 +523,18 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByStudentAndCourse(Long id, Long course_id) {
         List<GetSemesterClassStudentResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<SemesterClass> allSemesterClassByStudentAndCourse = semesterClassRepository.findAllSemesterClassByStudentAndCourse(id, course_id);
+        List<SemesterClass> allSemesterClassByStudentAndCourse = semesterClassRepository
+                .findAllSemesterClassByStudentAndCourse(id, course_id);
 
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
 
+        System.out.print(allSemesterClass.size());
+
         allSemesterClass.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isBefore(time_now)
+                    && semester_class.getRegistration_expiration_time().isAfter(time_now)) {
                 schedule = "";
-                semester_class.getSchedules().forEach(schedule_item -> {            
+                semester_class.getSchedules().forEach(schedule_item -> {
                     if (schedule.equals("")) {
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
                                 + schedule_item.getLessonTime().getStart_time().toString() + " - "
@@ -289,53 +547,52 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 });
                 if (allSemesterClassByStudentAndCourse.contains(semester_class) == false) {
                     GetSemesterClassStudentResponse semesterClassResponse = GetSemesterClassStudentResponse.builder()
-                    .course_id(semester_class.getCourse().getId())
-                    .semster_class_id(semester_class.getId())
-                    .id(semester_class.getId())
-                    .semester_name(semester_class.getSemester().getName())
-                    .description(semester_class.getCourse().getDescription())
-                    .image_url(semester_class.getCourse().getImage_url())
-                    .name(semester_class.getName())
-                    .course_name(semester_class.getCourse().getName())
-                    .art_age_name(semester_class.getCourse().getArtAges().getName())
-                    .art_level_name(semester_class.getCourse().getArtLevels().getName())
-                    .art_type_name(semester_class.getCourse().getArtTypes().getName())
-                    .price(semester_class.getCourse().getPrice())
-                    .registration_time(semester_class.getRegistration_time())
-                    .registration_expiration_time(semester_class.getRegistration_expiration_time())
-                    .num_of_section(semester_class.getCourse().getNum_of_section())
-                    .schedule(schedule)
-                    .max_participant(semester_class.getMax_participant())
-                    .semester_id(semester_class.getSemester().getId())
-                    .status("Not register")
-                    .build();
-            allSemesterClassResponses.add(semesterClassResponse);
-                }
-                else {
+                            .course_id(semester_class.getCourse().getId())
+                            .semster_class_id(semester_class.getId())
+                            .id(semester_class.getId())
+                            .semester_name(semester_class.getSemester().getName())
+                            .description(semester_class.getCourse().getDescription())
+                            .image_url(semester_class.getCourse().getImage_url())
+                            .name(semester_class.getName())
+                            .course_name(semester_class.getCourse().getName())
+                            .art_age_name(semester_class.getCourse().getArtAges().getName())
+                            .art_level_name(semester_class.getCourse().getArtLevels().getName())
+                            .art_type_name(semester_class.getCourse().getArtTypes().getName())
+                            .price(semester_class.getCourse().getPrice())
+                            .registration_time(semester_class.getRegistration_time())
+                            .registration_expiration_time(semester_class.getRegistration_expiration_time())
+                            .num_of_section(semester_class.getCourse().getNum_of_section())
+                            .schedule(schedule)
+                            .max_participant(semester_class.getMax_participant())
+                            .semester_id(semester_class.getSemester().getId())
+                            .status("Not register")
+                            .build();
+                    allSemesterClassResponses.add(semesterClassResponse);
+                } else {
                     GetSemesterClassStudentResponse semesterClassResponse = GetSemesterClassStudentResponse.builder()
-                    .course_id(semester_class.getCourse().getId())
-                    .semster_class_id(semester_class.getId())
-                    .id(semester_class.getId())
-                    .semester_name(semester_class.getSemester().getName())
-                    .description(semester_class.getCourse().getDescription())
-                    .image_url(semester_class.getCourse().getImage_url())
-                    .name(semester_class.getName())
-                    .course_name(semester_class.getCourse().getName())
-                    .art_age_name(semester_class.getCourse().getArtAges().getName())
-                    .art_level_name(semester_class.getCourse().getArtLevels().getName())
-                    .art_type_name(semester_class.getCourse().getArtTypes().getName())
-                    .price(semester_class.getCourse().getPrice())
-                    .registration_time(semester_class.getRegistration_time())
-                    .registration_expiration_time(semester_class.getRegistration_expiration_time())
-                    .num_of_section(semester_class.getCourse().getNum_of_section())
-                    .schedule(schedule)
-                    .max_participant(semester_class.getMax_participant())
-                    .semester_id(semester_class.getSemester().getId())
-                    .status("Registed")
-                    .build();
-            allSemesterClassResponses.add(semesterClassResponse);
+                            .course_id(semester_class.getCourse().getId())
+                            .semster_class_id(semester_class.getId())
+                            .id(semester_class.getId())
+                            .semester_name(semester_class.getSemester().getName())
+                            .description(semester_class.getCourse().getDescription())
+                            .image_url(semester_class.getCourse().getImage_url())
+                            .name(semester_class.getName())
+                            .course_name(semester_class.getCourse().getName())
+                            .art_age_name(semester_class.getCourse().getArtAges().getName())
+                            .art_level_name(semester_class.getCourse().getArtLevels().getName())
+                            .art_type_name(semester_class.getCourse().getArtTypes().getName())
+                            .price(semester_class.getCourse().getPrice())
+                            .registration_time(semester_class.getRegistration_time())
+                            .registration_expiration_time(semester_class.getRegistration_expiration_time())
+                            .num_of_section(semester_class.getCourse().getNum_of_section())
+                            .schedule(schedule)
+                            .max_participant(semester_class.getMax_participant())
+                            .semester_id(semester_class.getSemester().getId())
+                            .status("Registed")
+                            .build();
+                    allSemesterClassResponses.add(semesterClassResponse);
                 }
-                
+
             }
         });
 
@@ -348,14 +605,16 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByTeacherAndCourse(Long id, Long course_id) {
         List<GetSemesterClassTeacherNewResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<SemesterClass> allSemesterClassByTeacherAndCourse = semesterClassRepository.findAllSemesterClassByTeacherAndCourse(id, course_id);
+        List<SemesterClass> allSemesterClassByTeacherAndCourse = semesterClassRepository
+                .findAllSemesterClassByTeacherAndCourse(id, course_id);
 
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
 
         allSemesterClass.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now) && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isAfter(time_now)
+                    && semester_class.getSemester().getStart_time().isAfter(time_now)) {
                 schedule = "";
-                semester_class.getSchedules().forEach(schedule_item -> {            
+                semester_class.getSchedules().forEach(schedule_item -> {
                     if (schedule.equals("")) {
                         schedule = schedule + "Thứ " + schedule_item.getDate_of_week() + " ("
                                 + schedule_item.getLessonTime().getStart_time().toString() + " - "
@@ -367,47 +626,48 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     }
                 });
                 if (allSemesterClassByTeacherAndCourse.contains(semester_class) == false) {
-                    GetSemesterClassTeacherNewResponse semesterClassResponse = GetSemesterClassTeacherNewResponse.builder()
-                        .course_id(semester_class.getCourse().getId())
-                        .id(semester_class.getId())
-                        .semester_name(semester_class.getSemester().getName())
-                        .description(semester_class.getCourse().getDescription())
-                        .image_url(semester_class.getCourse().getImage_url())
-                        .name(semester_class.getName())
-                        .course_name(semester_class.getCourse().getName())
-                        .art_age_name(semester_class.getCourse().getArtAges().getName())
-                        .art_level_name(semester_class.getCourse().getArtLevels().getName())
-                        .art_type_name(semester_class.getCourse().getArtTypes().getName())
-                        .price(semester_class.getCourse().getPrice())
-                        .registration_deadline(semester_class.getSemester().getStart_time())
-                        .num_of_section(semester_class.getCourse().getNum_of_section())
-                        .schedule(schedule)
-                        .max_participant(semester_class.getMax_participant())
-                        .semester_id(semester_class.getSemester().getId())
-                        .status("Not register")
-                        .build();
+                    GetSemesterClassTeacherNewResponse semesterClassResponse = GetSemesterClassTeacherNewResponse
+                            .builder()
+                            .course_id(semester_class.getCourse().getId())
+                            .id(semester_class.getId())
+                            .semester_name(semester_class.getSemester().getName())
+                            .description(semester_class.getCourse().getDescription())
+                            .image_url(semester_class.getCourse().getImage_url())
+                            .name(semester_class.getName())
+                            .course_name(semester_class.getCourse().getName())
+                            .art_age_name(semester_class.getCourse().getArtAges().getName())
+                            .art_level_name(semester_class.getCourse().getArtLevels().getName())
+                            .art_type_name(semester_class.getCourse().getArtTypes().getName())
+                            .price(semester_class.getCourse().getPrice())
+                            .registration_deadline(semester_class.getRegistration_expiration_time())
+                            .num_of_section(semester_class.getCourse().getNum_of_section())
+                            .schedule(schedule)
+                            .max_participant(semester_class.getMax_participant())
+                            .semester_id(semester_class.getSemester().getId())
+                            .status("Not register")
+                            .build();
                     allSemesterClassResponses.add(semesterClassResponse);
-                }
-                else {
-                    GetSemesterClassTeacherNewResponse semesterClassResponse = GetSemesterClassTeacherNewResponse.builder()
-                        .course_id(semester_class.getCourse().getId())
-                        .id(semester_class.getId())
-                        .semester_name(semester_class.getSemester().getName())
-                        .description(semester_class.getCourse().getDescription())
-                        .image_url(semester_class.getCourse().getImage_url())
-                        .name(semester_class.getName())
-                        .course_name(semester_class.getCourse().getName())
-                        .art_age_name(semester_class.getCourse().getArtAges().getName())
-                        .art_level_name(semester_class.getCourse().getArtLevels().getName())
-                        .art_type_name(semester_class.getCourse().getArtTypes().getName())
-                        .price(semester_class.getCourse().getPrice())
-                        .registration_deadline(semester_class.getSemester().getStart_time())
-                        .num_of_section(semester_class.getCourse().getNum_of_section())
-                        .schedule(schedule)
-                        .max_participant(semester_class.getMax_participant())
-                        .semester_id(semester_class.getSemester().getId())
-                        .status("Registed")
-                        .build();
+                } else {
+                    GetSemesterClassTeacherNewResponse semesterClassResponse = GetSemesterClassTeacherNewResponse
+                            .builder()
+                            .course_id(semester_class.getCourse().getId())
+                            .id(semester_class.getId())
+                            .semester_name(semester_class.getSemester().getName())
+                            .description(semester_class.getCourse().getDescription())
+                            .image_url(semester_class.getCourse().getImage_url())
+                            .name(semester_class.getName())
+                            .course_name(semester_class.getCourse().getName())
+                            .art_age_name(semester_class.getCourse().getArtAges().getName())
+                            .art_level_name(semester_class.getCourse().getArtLevels().getName())
+                            .art_type_name(semester_class.getCourse().getArtTypes().getName())
+                            .price(semester_class.getCourse().getPrice())
+                            .registration_deadline(semester_class.getRegistration_expiration_time())
+                            .num_of_section(semester_class.getCourse().getNum_of_section())
+                            .schedule(schedule)
+                            .max_participant(semester_class.getMax_participant())
+                            .semester_id(semester_class.getSemester().getId())
+                            .status("Registed")
+                            .build();
                     allSemesterClassResponses.add(semesterClassResponse);
                 }
             }
@@ -516,13 +776,13 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClassBySemesterScheduleClass(Long id) {
         List<GetSemesterClassForScheduleClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findBySemesterId1(id);
         pageSemesterClass.forEach(semesterClass -> {
-            GetSemesterClassForScheduleClassResponse semesterClassResponse = GetSemesterClassForScheduleClassResponse.builder()
+            GetSemesterClassForScheduleClassResponse semesterClassResponse = GetSemesterClassForScheduleClassResponse
+                    .builder()
                     .id(semesterClass.getId())
                     .build();
             allSemesterClassResponses.add(semesterClassResponse);
@@ -572,11 +832,16 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             throw new SemesterClassAlreadyCreateException("exception.semester_name.semester_class_taken");
         }
 
+        if (semester.getStart_time().isBefore(createSemesterClassRequest.getRegistration_time())) {
+            throw new SemesterClassAlreadyCreateException("exception.semester_name.time_error");
+        }
+
         SemesterClass savedSemesterClass = SemesterClass.builder()
                 .semester(semester)
                 .course(course)
                 .name(createSemesterClassRequest.getName())
                 .registration_time(createSemesterClassRequest.getRegistration_time())
+                .registration_expiration_time(createSemesterClassRequest.getRegistration_expiration_time())
                 .build();
         semesterClassRepository.save(savedSemesterClass);
 
@@ -622,6 +887,10 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
+        if (semester.getStart_time().isBefore(createSemesterClassRequest.getRegistration_time())) {
+            throw new SemesterClassAlreadyCreateException("exception.semester_name.time_error");
+        }
+
         if (createSemesterClassRequest.getName().equals(updatedSemesterClass.getName()) == false) {
             if (semesterClassRepository.existsByName(createSemesterClassRequest.getName())) {
                 throw new SemesterClassAlreadyCreateException("exception.semester_name.semester_class_taken");
@@ -632,6 +901,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         updatedSemesterClass.setCourse(course);
         updatedSemesterClass.setName(createSemesterClassRequest.getName());
         updatedSemesterClass.setRegistration_time(createSemesterClassRequest.getRegistration_time());
+        updatedSemesterClass.setRegistration_expiration_time(createSemesterClassRequest.getRegistration_expiration_time());
         semesterClassRepository.save(updatedSemesterClass);
 
         return updatedSemesterClass.getId();

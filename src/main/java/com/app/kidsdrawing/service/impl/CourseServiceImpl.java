@@ -91,7 +91,6 @@ public class CourseServiceImpl implements CourseService {
                     .art_age_name(course.getArtAges().getName())
                     .art_type_name(course.getArtTypes().getName())
                     .art_level_name(course.getArtLevels().getName())
-                    .creator_id(course.getArtTypes().getId())
                     .checked_tutoral(true)
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
@@ -106,7 +105,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getTotalCourseForStudent(Long student_id) {
-        List<Course> listUserRegisterJoinSemester = courseRepository.findTotalCourseForStudent(student_id);
+        List<Classes> listUserRegisterJoinSemester = classRepository.findAllByStudent1(student_id);
         Map<String, Object> response = new HashMap<>();
         response.put("course", listUserRegisterJoinSemester.size());
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -124,7 +123,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .creator_id(course.getUser().getId())
+
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .build();
@@ -189,7 +188,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_age_name(course.getArtAges().getName())
                     .art_level_name(course.getArtLevels().getName())
                     .art_type_name(course.getArtTypes().getName())
-                    .creator_id(course.getUser().getId())
+
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .total(total)
@@ -321,7 +320,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_age_name(course.getArtAges().getName())
                     .art_level_name(course.getArtLevels().getName())
                     .art_type_name(course.getArtTypes().getName())
-                    .creator_id(course.getUser().getId())
+
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .student_registered_name(new HashSet<>())
@@ -363,7 +362,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_age_name(course.getArtAges().getName())
                     .art_level_name(course.getArtLevels().getName())
                     .art_type_name(course.getArtTypes().getName())
-                    .creator_id(course.getUser().getId())
+
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .student_registered_name(student_names)
@@ -426,7 +425,6 @@ public class CourseServiceImpl implements CourseService {
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
-                .creator_id(course.getUser().getId())
                 .create_time(course.getCreate_time())
                 .update_time(course.getUpdate_time())
                 .build();
@@ -456,7 +454,7 @@ public class CourseServiceImpl implements CourseService {
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
-                .creator_id(course.getUser().getId())
+                
                 .create_time(course.getCreate_time())
                 .update_time(course.getUpdate_time())
                 .build();
@@ -486,7 +484,7 @@ public class CourseServiceImpl implements CourseService {
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
-                .creator_id(course.getUser().getId())
+                
                 .create_time(course.getCreate_time())
                 .update_time(course.getUpdate_time())
                 .build();
@@ -525,7 +523,7 @@ public class CourseServiceImpl implements CourseService {
                         .art_type_name(course.getSemesterClass().getCourse().getArtTypes().getName())
                         .art_level_id(course.getSemesterClass().getCourse().getArtLevels().getId())
                         .art_level_name(course.getSemesterClass().getCourse().getArtLevels().getName())
-                        .creator_id(course.getSemesterClass().getCourse().getUser().getId())
+                        
                         .create_time(course.getSemesterClass().getCourse().getCreate_time())
                         .update_time(course.getSemesterClass().getCourse().getUpdate_time())
                         .student_id(student.getId())
@@ -553,7 +551,7 @@ public class CourseServiceImpl implements CourseService {
                         .art_type_name(course.getArtTypes().getName())
                         .art_level_id(course.getArtLevels().getId())
                         .art_level_name(course.getArtLevels().getName())
-                        .creator_id(course.getUser().getId())
+    
                         .create_time(course.getCreate_time())
                         .update_time(course.getUpdate_time())
                         .student_id(student.getId())
@@ -593,7 +591,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_type_name(user_register_join_semester.getSemesterClass().getCourse().getArtTypes().getName())
                     .art_level_id(user_register_join_semester.getSemesterClass().getCourse().getArtLevels().getId())
                     .art_level_name(user_register_join_semester.getSemesterClass().getCourse().getArtLevels().getName())
-                    .creator_id(user_register_join_semester.getSemesterClass().getCourse().getUser().getId())
+                    
                     .create_time(user_register_join_semester.getSemesterClass().getCourse().getCreate_time())
                     .update_time(user_register_join_semester.getSemesterClass().getCourse().getUpdate_time())
                     .build();
@@ -616,7 +614,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_type_name(course.getArtTypes().getName())
                     .art_level_id(course.getArtLevels().getId())
                     .art_level_name(course.getArtLevels().getName())
-                    .creator_id(course.getUser().getId())
+
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .build();
@@ -798,7 +796,7 @@ public class CourseServiceImpl implements CourseService {
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
-                .creator_id(course.getUser().getId())
+                
                 .create_time(course.getCreate_time())
                 .update_time(course.getUpdate_time())
                 .build();
@@ -822,7 +820,7 @@ public class CourseServiceImpl implements CourseService {
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
-                .creator_id(course.getUser().getId())
+                
                 .create_time(course.getCreate_time())
                 .update_time(course.getUpdate_time())
                 .build();

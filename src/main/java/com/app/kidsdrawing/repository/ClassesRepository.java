@@ -29,8 +29,14 @@ public interface ClassesRepository extends JpaRepository <Classes, Long>{
     @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s LEFT JOIN FETCH s.holidays JOIN FETCH u.teacher te JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE te.id = ?1")
     List<Classes> findAllByTeacher(Long id);
 
+    @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH u.teacher te WHERE te.id = ?1 AND s.id = ?2")
+    List<Classes> findAllByTeacherAndSemester(Long teacher_id, Long semester_id);
+
     @Query("SELECT DISTINCT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses crj JOIN FETCH crj.userRegisterJoinSemester urj JOIN FETCH urj.student st  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s LEFT JOIN FETCH s.holidays JOIN FETCH u.teacher te JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE st.id = ?1")
     List<Classes> findAllByStudent(Long id);
+
+    @Query("SELECT DISTINCT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses crj JOIN FETCH crj.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE st.id = ?1")
+    List<Classes> findAllByStudent1(Long id);
 
     @Query("SELECT DISTINCT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses crj JOIN FETCH crj.userRegisterJoinSemester urj JOIN FETCH urj.student st JOIN FETCH urj.payer pa  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s LEFT JOIN FETCH s.holidays JOIN FETCH u.teacher te JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE pa.id = ?1")
     List<Classes> findAllByParent(Long id);
@@ -58,6 +64,9 @@ public interface ClassesRepository extends JpaRepository <Classes, Long>{
 
     @Query("SELECT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses  chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.course c JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s LEFT JOIN FETCH s.holidays JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE c1.id = ?1 ")
     Optional<Classes> findById5(Long id);
+
+    @Query("SELECT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses  chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student WHERE c1.id = ?1 ")
+    Optional<Classes> findById6(Long id);
 
     @Query("FROM Classes c JOIN FETCH c.user u WHERE u.id = ?1")
     List<Classes> findByCreatorId1(Long id);
