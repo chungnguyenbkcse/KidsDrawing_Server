@@ -112,7 +112,6 @@ public class SemesterServiceImpl implements SemesterService {
                     .year(semester.getYear())
                     .create_time(semester.getCreate_time())
                     .update_time(semester.getUpdate_time())
-                    .creator_id(semester.getUser().getId())
                     .build();
                 allSemesterResponses.add(semesterResponse);
             }

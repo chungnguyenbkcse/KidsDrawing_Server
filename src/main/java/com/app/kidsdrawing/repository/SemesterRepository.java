@@ -13,7 +13,7 @@ import com.app.kidsdrawing.entity.Semester;
 
 @Repository
 public interface SemesterRepository extends JpaRepository <Semester, Long>{
-    @Query("SELECT e FROM Semester e JOIN FETCH e.user ORDER BY e.id")
+    @Query("SELECT e FROM Semester e ORDER BY e.id")
     List<Semester> findAll();
 
     @Query("SELECT DISTINCT e FROM Semester e JOIN FETCH e.user JOIN FETCH e.semesterClass sc ORDER BY e.id")
