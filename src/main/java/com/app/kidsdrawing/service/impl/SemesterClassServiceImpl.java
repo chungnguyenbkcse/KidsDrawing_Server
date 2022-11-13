@@ -832,6 +832,10 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             throw new SemesterClassAlreadyCreateException("exception.semester_name.semester_class_taken");
         }
 
+        if (semester.getStart_time().isBefore(createSemesterClassRequest.getRegistration_time())) {
+            throw new SemesterClassAlreadyCreateException("exception.semester_name.time_error");
+        }
+
         SemesterClass savedSemesterClass = SemesterClass.builder()
                 .semester(semester)
                 .course(course)
@@ -882,6 +886,10 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         Course course = courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.course.not_found");
         });
+
+        if (semester.getStart_time().isBefore(createSemesterClassRequest.getRegistration_time())) {
+            throw new SemesterClassAlreadyCreateException("exception.semester_name.time_error");
+        }
 
         if (createSemesterClassRequest.getName().equals(updatedSemesterClass.getName()) == false) {
             if (semesterClassRepository.existsByName(createSemesterClassRequest.getName())) {
