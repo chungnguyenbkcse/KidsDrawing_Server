@@ -339,9 +339,11 @@ public class SemesterServiceImpl implements SemesterService {
                             .user(creator)
                             .userRegisterTeachSemester(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i))
                             .security_code(key)
-                            .link_meeting("https://meet.jit.si/" + String.valueOf(key))
                             .name(semester_class.getName() + "-" +  String.valueOf(number) + " thuộc học kì " + String.valueOf(semester.getNumber()) + " năm học " + String.valueOf(semester.getYear()))
                             .build();
+                        classRepository.save(savedClass);
+
+                        savedClass.setLink_meeting("https://jitsi.kidsdrawing.site/" + savedClass.getId().toString());
                         classRepository.save(savedClass);
     
                         validUserRegisterSemesters.forEach(user_register_semester -> {
