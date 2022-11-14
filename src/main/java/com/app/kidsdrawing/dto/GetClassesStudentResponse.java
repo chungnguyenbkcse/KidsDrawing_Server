@@ -18,6 +18,10 @@ public class GetClassesStudentResponse {
     private Long teacher_id;
     private int total_student;
     private int total_section;
+    private Integer total_section_studied;
+    private Long section_next_id;
+    private String section_next;
+    private String schedule_section_next;
     private Long art_type_id;
     private Long art_level_id;
     private Long art_age_id;
