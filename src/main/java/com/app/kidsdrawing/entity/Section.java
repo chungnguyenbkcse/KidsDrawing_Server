@@ -50,12 +50,6 @@ public class Section {
     @Column(name = "teaching_form")
     private Boolean teaching_form;
 
-    @Column(name = "recording")
-    private String recording;
-
-    @Column(name = "message")
-    private String message;
-
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp

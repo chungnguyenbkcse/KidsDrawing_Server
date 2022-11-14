@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 
 import com.app.kidsdrawing.dto.CreateSectionRequest;
-import com.app.kidsdrawing.dto.CreateSectionTeacherRequest;
 import com.app.kidsdrawing.dto.GetSectionResponse;
 
 public interface SectionService {
@@ -16,5 +15,4 @@ public interface SectionService {
     Long createSection(CreateSectionRequest createSectionRequest);
     Long removeSectionById(Long id);
     Long updateSectionById(Long id, CreateSectionRequest createSectionRequest);
-    Long updateSectionByTeacher(Long id, CreateSectionTeacherRequest createSectionTeacherRequest);
 }
