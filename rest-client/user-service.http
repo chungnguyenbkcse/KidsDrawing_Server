@@ -923,6 +923,11 @@ Authorization: Bearer {{student_access_token}}
 
 ###
 # @name get_all_user_by_student
+GET {{rest}}/user/childs/12
+Authorization: Bearer {{student_access_token}}
+
+###
+# @name get_all_user_by_student
 GET {{rest}}/user/student/total
 Authorization: Bearer {{student_access_token}}
 
