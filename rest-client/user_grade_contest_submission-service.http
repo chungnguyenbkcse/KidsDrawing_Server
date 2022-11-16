@@ -66,3 +66,8 @@ GET  {{rest}}/user-grade-contest-submission/contest/2
 
 GET  {{rest}}/user-grade-contest-submission/teacher/2
 
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-grade-contest-submission/student/22
+

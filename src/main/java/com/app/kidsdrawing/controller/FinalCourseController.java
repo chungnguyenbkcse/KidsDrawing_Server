@@ -25,4 +25,10 @@ public class FinalCourseController {
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getFinalGradeAndReviewForStudentAndClasses(@PathVariable("student_id") Long student_id, @PathVariable("classes_id") Long classes_id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getFinalGradeAndReviewForStudentAndClasses(student_id, classes_id));
     }
+
+    @CrossOrigin
+    @GetMapping(value = "/student/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllFinalGradeAForStudent(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllFinalGradeAForStudent(id));
+    }
 }
