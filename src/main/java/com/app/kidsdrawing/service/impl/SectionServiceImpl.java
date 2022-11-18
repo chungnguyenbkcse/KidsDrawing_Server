@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateSectionRequest;
-import com.app.kidsdrawing.dto.CreateSectionTeacherRequest;
 import com.app.kidsdrawing.dto.GetSectionResponse;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.Classes;
@@ -45,8 +44,6 @@ public class SectionServiceImpl implements SectionService{
                 .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                 .number(content.getNumber())
                 .teach_form(content.getTeaching_form())
-                .recording(content.getRecording())
-                .message(content.getMessage())
                 .create_time(content.getCreate_time())
                 .update_time(content.getUpdate_time())
                 .build();
@@ -70,8 +67,6 @@ public class SectionServiceImpl implements SectionService{
                     .name(content.getName())
                     .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                     .number(content.getNumber())
-                    .recording(content.getRecording())
-                    .message(content.getMessage())
                     .teach_form(content.getTeaching_form())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -98,8 +93,6 @@ public class SectionServiceImpl implements SectionService{
             .name(section.getName())
             .teacher_name(section.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + section.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
             .number(section.getNumber())
-            .recording(section.getRecording())
-            .message(section.getMessage())
             .teach_form(section.getTeaching_form())
             .create_time(section.getCreate_time())
             .update_time(section.getUpdate_time())
@@ -118,8 +111,6 @@ public class SectionServiceImpl implements SectionService{
                 .classes(classes)
                 .name(createSectionRequest.getName())
                 .number(createSectionRequest.getNumber())
-                .recording(createSectionRequest.getRecording())
-                .message(createSectionRequest.getMessage())
                 .build();
         sectionRepository.save(savedSection);
 
@@ -151,21 +142,7 @@ public class SectionServiceImpl implements SectionService{
 
         updatedSection.setName(createSectionRequest.getName());
         updatedSection.setClasses(classes);
-        updatedSection.setRecording(createSectionRequest.getRecording());
-        updatedSection.setMessage(createSectionRequest.getMessage());
         updatedSection.setNumber(createSectionRequest.getNumber());
-
-        return updatedSection.getId();
-    }
-
-    @Override
-    public Long updateSectionByTeacher(Long id, CreateSectionTeacherRequest createSectionTeacherRequest) {
-        Optional<Section> sectionOpt = sectionRepository.findById1(id);
-        Section updatedSection = sectionOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.Section.not_found");
-        });
-
-        updatedSection.setRecording(createSectionTeacherRequest.getRecording());
 
         return updatedSection.getId();
     }

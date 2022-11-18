@@ -11,6 +11,7 @@ import com.app.kidsdrawing.dto.GetUserGradeExerciseSubmissionResponse;
 public interface UserGradeExerciseSubmissionService {
     ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmission();
     ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForStudentAndClasses(Long student_id, Long classes_id);
+    ResponseEntity<Map<String, Object>> getAllFinalGradeAForStudent(Long student_id);
     ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByTeacherId(Long id);
     ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByStudentId(Long id);
     ResponseEntity<Map<String, Object>> getAllUserGradeExerciseSubmissionByClassId(Long id);

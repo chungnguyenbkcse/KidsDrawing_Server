@@ -16,6 +16,10 @@ public class GetClassesParentResponse {
     private String link_url;
     private String course_name;
     private Long course_id;
+    private Integer total_section_studied;
+    private Long section_next_id;
+    private String section_next;
+    private String schedule_section_next;
     private Long semester_id;
     private Long user_register_join_semester_id;
     private Long semester_class_id;

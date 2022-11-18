@@ -17,3 +17,8 @@ Content-Type: application/json
 # @name get_all_art_type
 
 GET {{rest}}/final-course/16/5
+
+### GET ART TYPE ACTION ###
+# @name get_all_art_type
+
+GET {{rest}}/final-course/student/22

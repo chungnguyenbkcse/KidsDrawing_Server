@@ -79,7 +79,7 @@ GET  {{rest}}/course/parent/12
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/course/student-new/18
+GET  {{rest}}/course/student-new/22
 
 
 ### GET CONTEST ACTION ###

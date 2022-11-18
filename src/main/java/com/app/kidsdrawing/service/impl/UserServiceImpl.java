@@ -18,6 +18,7 @@ import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
 import com.app.kidsdrawing.dto.CreateUserStatusRequest;
+import com.app.kidsdrawing.dto.GetStudentForParentResponse;
 import com.app.kidsdrawing.dto.GetStudentResponse;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetTeacherResponse;
@@ -27,8 +28,10 @@ import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.UserAlreadyRegisteredException;
+import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.RoleRepository;
 import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
+import com.app.kidsdrawing.repository.UserRegisterJoinContestRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.UserService;
 import com.app.kidsdrawing.util.AuthUtil;
@@ -54,6 +57,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRegisterJoinContestRepository userRegisterJoinContestRepository;
+    private final CourseRepository courseRepository;
     //private final EmailService emailService;
     private final AuthUtil authUtil;
     private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
@@ -139,13 +144,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id) {
-        List<GetStudentResponse> allUserResponses = new ArrayList<>();
+        List<GetStudentForParentResponse> allUserResponses = new ArrayList<>();
         List<User> pageUser = userRepository.findByParentId(id);
         pageUser.forEach(user -> {
-                GetStudentResponse userResponse = GetStudentResponse.builder()
+                Integer total_course = courseRepository.findTotalCourseForStudent(user.getId()).size();
+                Integer total_contest = userRegisterJoinContestRepository.findByStudentId1(user.getId()).size();
+                GetStudentForParentResponse userResponse = GetStudentForParentResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
                     .email(user.getEmail())
+                    .total_course(total_course)
+                    .total_contest(total_contest)
                     .status(user.getStatus())
                     .firstName(user.getFirstName())
                     .lastName(user.getLastName())

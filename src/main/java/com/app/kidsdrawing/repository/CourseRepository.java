@@ -41,7 +41,7 @@ public interface CourseRepository extends JpaRepository <Course, Long>{
     @Query("SELECT COUNT(c.id) FROM Course c")
     int findAll2();
 
-    @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.semesterClasses sc JOIN FETCH sc.userRegisterJoinSemesters ur JOIN FETCH ur.student st WHERE st.id = ?1 ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.semesterClasses sc JOIN FETCH sc.userRegisterJoinSemesters ur JOIN FETCH ur.student st WHERE st.id = ?1 AND ur.status = 'Completed' ORDER BY c.id")
     List<Course> findTotalCourseForStudent(Long student_id);
 
     @Query("FROM Course c WHERE c.name = ?1")
