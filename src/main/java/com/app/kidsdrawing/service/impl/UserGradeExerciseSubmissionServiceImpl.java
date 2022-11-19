@@ -311,6 +311,7 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     .exercise_submission_id(content.getExerciseSubmission().getId())
                     .exercise_name(content.getExerciseSubmission().getExercise().getName())
                     .description(content.getExerciseSubmission().getExercise().getDescription())
+                    .image_url(content.getExerciseSubmission().getImage_url())
                     .time_submit(content.getExerciseSubmission().getUpdate_time())
                     .deadline(content.getExerciseSubmission().getExercise().getDeadline())
                     .feedback(content.getFeedback())
