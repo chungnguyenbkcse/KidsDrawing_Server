@@ -71,6 +71,7 @@ public class CourseServiceImpl implements CourseService {
     private static String schedule = "";
     private static int total = 0;
     private static int teacher_register_total = 0;
+    private static int total_register = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourse() {
@@ -167,6 +168,7 @@ public class CourseServiceImpl implements CourseService {
         allCourses.forEach(course -> {
             if (listCourseRegisted.contains(course) == false) {
                 total = 0;
+                total_register = userRegisterJoinSemesterRepository.findByCourse(course.getId()).size();
                 Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
 
                 allSemesterClass.forEach(semester_course -> {
@@ -188,7 +190,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_age_name(course.getArtAges().getName())
                     .art_level_name(course.getArtLevels().getName())
                     .art_type_name(course.getArtTypes().getName())
-
+                    .total_register(total_register)
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .total(total)
@@ -299,6 +301,8 @@ public class CourseServiceImpl implements CourseService {
         allCourses.forEach(course -> {
             if (listCourseRegisted.contains(course) == false) {
                 total = 0;
+                total_register = userRegisterJoinSemesterRepository.findByCourse(course.getId()).size();
+
                 Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
 
                 allSemesterClass.forEach(semester_course -> {
@@ -320,7 +324,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_age_name(course.getArtAges().getName())
                     .art_level_name(course.getArtLevels().getName())
                     .art_type_name(course.getArtTypes().getName())
-
+                    .total_register(total_register)
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .student_registered_name(new HashSet<>())
@@ -338,7 +342,9 @@ public class CourseServiceImpl implements CourseService {
                         total ++;
                     }
                 });
+
                 
+                total_register = userRegisterJoinSemesterRepository.findByCourse(course.getId()).size();
                 Set<String> student_names = new HashSet<>();
                 Set<Long> student_ids = new HashSet<>();
                 if (res.containsKey(course.getName())){
@@ -362,7 +368,7 @@ public class CourseServiceImpl implements CourseService {
                     .art_age_name(course.getArtAges().getName())
                     .art_level_name(course.getArtLevels().getName())
                     .art_type_name(course.getArtTypes().getName())
-
+                    .total_register(total_register)
                     .create_time(course.getCreate_time())
                     .update_time(course.getUpdate_time())
                     .student_registered_name(student_names)

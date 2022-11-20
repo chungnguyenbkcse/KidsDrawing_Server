@@ -28,6 +28,7 @@ public class GetCourseNewResponse {
     private String art_level_name;
     private String art_age_name;
     private int total;
+    private int total_register;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }
