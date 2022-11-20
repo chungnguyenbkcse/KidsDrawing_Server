@@ -220,22 +220,17 @@ public class CourseServiceImpl implements CourseService {
         LocalDateTime time_now = LocalDateTime.now();
         allCourses.forEach(course -> {
             total = 0;
-            teacher_register_total = 0;
+            teacher_register_total = userRegisterTeachSemesterRepository.findByCourseId(course.getId()).size();
             if (course.getSemesterClasses().size() > 0){
                 Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
                 allSemesterClass.forEach(semester_course -> {
                     if (time_now.isBefore(semester_course.getRegistration_time())){
                         total ++;
-                        if (semester_course.getUserRegisterTeachSemesters().size() > 0) {
-                            semester_course.getUserRegisterTeachSemesters().forEach(ele -> {
-                                if (ele.getTeacher().getId().compareTo(id) == 0){
-                                    teacher_register_total ++;
-                                }
-                            });
-                        }
                     }
                 });
             }
+
+        
             
             GetCourseTeacherNewResponse courseResponse = GetCourseTeacherNewResponse.builder()
                 .id(course.getId())
