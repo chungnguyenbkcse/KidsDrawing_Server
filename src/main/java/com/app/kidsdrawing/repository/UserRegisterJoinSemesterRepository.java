@@ -47,8 +47,11 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass sc JOIN FETCH e.student  JOIN FETCH e.payer WHERE sc.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinSemester> findBySemesterClassId2(Long id);
 
-    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass sc JOIN FETCH e.student  JOIN FETCH e.payer WHERE e.status = 'Completed' ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass sc JOIN FETCH e.student  JOIN FETCH e.payer  WHERE sc.id = ?1 AND e.status = 'Completed' ORDER BY e.id")
     List<UserRegisterJoinSemester> findBySemesterClassId3(Long id);
+
+    @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass sc WHERE sc.id = ?1 AND e.status = 'Completed' ORDER BY e.id")
+    List<UserRegisterJoinSemester> findBySemesterClassId4(Long id);
 
     @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.semesterClass sc JOIN FETCH sc.course co WHERE e.status = 'Completed' AND co.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinSemester> findByCourse(Long id);

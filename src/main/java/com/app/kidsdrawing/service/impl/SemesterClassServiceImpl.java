@@ -51,6 +51,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private static String schedule = "";
+    private static int total_register = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClass() {
@@ -545,6 +546,8 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 + schedule_item.getLessonTime().getEnd_time().toString() + ")";
                     }
                 });
+
+                total_register = userRegisterJoinSemesterRepository.findBySemesterClassId4(semester_class.getId()).size();
                 if (allSemesterClassByStudentAndCourse.contains(semester_class) == false) {
                     GetSemesterClassStudentResponse semesterClassResponse = GetSemesterClassStudentResponse.builder()
                             .course_id(semester_class.getCourse().getId())
@@ -563,6 +566,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .registration_expiration_time(semester_class.getRegistration_expiration_time())
                             .num_of_section(semester_class.getCourse().getNum_of_section())
                             .schedule(schedule)
+                            .total_register(total_register)
                             .max_participant(semester_class.getMax_participant())
                             .semester_id(semester_class.getSemester().getId())
                             .status("Not register")
@@ -586,6 +590,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .registration_expiration_time(semester_class.getRegistration_expiration_time())
                             .num_of_section(semester_class.getCourse().getNum_of_section())
                             .schedule(schedule)
+                            .total_register(total_register)
                             .max_participant(semester_class.getMax_participant())
                             .semester_id(semester_class.getSemester().getId())
                             .status("Registed")
@@ -625,6 +630,9 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 + schedule_item.getLessonTime().getEnd_time().toString() + ")";
                     }
                 });
+
+                total_register = userRegisterJoinSemesterRepository.findBySemesterClassId4(semester_class.getId()).size();
+
                 if (allSemesterClassByTeacherAndCourse.contains(semester_class) == false) {
                     GetSemesterClassTeacherNewResponse semesterClassResponse = GetSemesterClassTeacherNewResponse
                             .builder()
@@ -642,6 +650,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .registration_deadline(semester_class.getRegistration_expiration_time())
                             .num_of_section(semester_class.getCourse().getNum_of_section())
                             .schedule(schedule)
+                            .total_register(total_register)
                             .max_participant(semester_class.getMax_participant())
                             .semester_id(semester_class.getSemester().getId())
                             .status("Not register")
@@ -664,6 +673,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .registration_deadline(semester_class.getRegistration_expiration_time())
                             .num_of_section(semester_class.getCourse().getNum_of_section())
                             .schedule(schedule)
+                            .total_register(total_register)
                             .max_participant(semester_class.getMax_participant())
                             .semester_id(semester_class.getSemester().getId())
                             .status("Registed")
