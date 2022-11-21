@@ -131,6 +131,16 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     }
 
     @Override
+    public Long removeUserRegisterJoinContestByContestAndStudent(Long contest_id, Long student_id) {
+        List<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findByContestAndStudent(contest_id, student_id);
+        
+        userRegisterJoinContestOpt.forEach(ele -> {
+            userRegisterJoinContestRepository.deleteById(ele.getId());
+        });
+        return student_id;
+    }
+
+    @Override
     public Long updateUserRegisterJoinContestById(Long id, CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest) {
         Optional<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findById1(id);
         UserRegisterJoinContest updatedUserRegisterJoinContest = userRegisterJoinContestOpt.orElseThrow(() -> {

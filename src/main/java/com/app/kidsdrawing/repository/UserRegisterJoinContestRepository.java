@@ -37,6 +37,9 @@ public interface UserRegisterJoinContestRepository extends JpaRepository <UserRe
     @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student st WHERE st.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinContest> findByStudentId1(Long id);
 
+    @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student st JOIN FETCH e.contest c WHERE c.id = ?1 AND st.id = ?2 ORDER BY e.id")
+    List<UserRegisterJoinContest> findByContestAndStudent(Long contest_id, Long student_id);
+
     @Query("FROM UserRegisterJoinContest e JOIN FETCH e.student st JOIN FETCH e.contest WHERE st.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinContest> findByStudentId2(Long id);
 

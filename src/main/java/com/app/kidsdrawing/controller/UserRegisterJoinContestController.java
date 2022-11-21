@@ -72,4 +72,13 @@ public class UserRegisterJoinContestController {
                 .buildAndExpand(userRegisterJoinContestId).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @CrossOrigin
+    @DeleteMapping(value = "/contest-student/{contest_id}/{student_id}")
+    public ResponseEntity<String> deleteUserRegisterJoinContestById(@PathVariable("contest_id") Long contest_id, @PathVariable("student_id") Long student_id) {
+        Long userRegisterJoinContestId = userRegisterJoinContestService.removeUserRegisterJoinContestByContestAndStudent(contest_id, student_id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(userRegisterJoinContestId).toUri();
+        return ResponseEntity.created(location).build();
+    }
 }
