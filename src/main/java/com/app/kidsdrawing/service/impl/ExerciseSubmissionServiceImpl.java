@@ -61,6 +61,27 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByExerciseAndStudent(Long exercise_id, Long student_id) {
+        List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
+        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findByExerciseIdAndStudentId(exercise_id, student_id);
+        listExerciseSubmission.forEach(content -> {
+            GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                .id(content.getId())
+                .exercise_id(content.getExercise().getId())
+                .student_id(content.getStudent().getId())
+                .image_url(content.getImage_url())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            exerciseResponses.add(exerciseSubmissionResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("ExerciseSubmission", exerciseResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Override
     public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByStudentId(Long id) {
         List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
@@ -175,6 +196,9 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_name(content.getExercise().getName())
                     .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                     .image_url(content.getImage_url())
+                    .exercise_description(content.getExercise().getDescription())
+                    .exercise_level_name(content.getExercise().getExerciseLevel().getWeight().toString())
+                    .exercise_deadline(content.getExercise().getDeadline())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
                     .build();
@@ -186,6 +210,9 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
+                    .exercise_description(content.getExercise().getDescription())
+                    .exercise_level_name(content.getExercise().getExerciseLevel().getWeight().toString())
+                    .exercise_deadline(content.getExercise().getDeadline())
                     .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
@@ -316,18 +343,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById1(createExerciseSubmissionRequest.getStudent_id());
-        User student = studentOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_student.not_found");
-        });
-
-        Optional <Exercise> exerciseOpt = exerciseRepository.findById1(createExerciseSubmissionRequest.getExercise_id());
-        Exercise exercise = exerciseOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.exercise.not_found");
-        });
-
-        updatedExerciseSubmission.setExercise(exercise);
-        updatedExerciseSubmission.setStudent(student);
         updatedExerciseSubmission.setImage_url(createExerciseSubmissionRequest.getImage_url());
 
         return updatedExerciseSubmission.getId();

@@ -53,6 +53,12 @@ public class ExerciseSubmissionController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/exercise-student/{exercise_id}/{student_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseSubmissionByExerciseAndStudent(@PathVariable("exercise_id") Long exercise_id, @PathVariable("student_id") Long student_id) {
+        return ResponseEntity.ok().body(exerciseSubmissionService.getAllExerciseSubmissionByExerciseAndStudent(exercise_id, student_id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/classes-student/{classes_id}/{student_id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseSubmissionByClass(@PathVariable("classes_id") Long classes_id, @PathVariable("student_id") Long student_id) {
         return ResponseEntity.ok().body(exerciseSubmissionService.getAllExerciseSubmissionByClassAndStudent(classes_id, student_id));
