@@ -631,7 +631,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     }
                 });
 
-                total_register = userRegisterJoinSemesterRepository.findBySemesterClassId4(semester_class.getId()).size();
+                total_register = userRegisterTeachSemesterRepository.findBySemesterClassId1(semester_class.getId()).size();
 
                 if (allSemesterClassByTeacherAndCourse.contains(semester_class) == false) {
                     GetSemesterClassTeacherNewResponse semesterClassResponse = GetSemesterClassTeacherNewResponse

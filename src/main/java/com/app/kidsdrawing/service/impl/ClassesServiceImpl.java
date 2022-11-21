@@ -424,6 +424,9 @@ public class ClassesServiceImpl implements ClassesService {
                             class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getSemesterClass()
                                     .getSemester().getId())
+                    .url_image_course(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .getSemesterClass()
+                        .getCourse().getImage_url())
                     .semester_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                             .getSemesterClass().getSemester().getName())
                     .user_register_join_semester_id(
@@ -494,6 +497,9 @@ public class ClassesServiceImpl implements ClassesService {
                                 .getSemesterClass().getId())
                         .semester_class_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                 .getSemesterClass().getName())
+                        .url_image_course(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                .getSemesterClass()
+                                .getCourse().getImage_url())
                         .student_name(
                                 class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getFirstName()
                                         + " "
