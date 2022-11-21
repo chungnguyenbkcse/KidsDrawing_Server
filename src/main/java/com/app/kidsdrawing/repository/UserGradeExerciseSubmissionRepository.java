@@ -40,6 +40,9 @@ public interface UserGradeExerciseSubmissionRepository extends JpaRepository <Us
     @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE st.id = ?1 AND cl.id = ?2 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByStudentAndClass(Long student_id, Long class_id);
 
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN  FETCH es.student st WHERE st.id = ?1 AND se.id = ?2 ORDER BY e.time")
+    List<UserGradeExerciseSubmission> findByStudentAndSection(Long student_id, Long section_id);
+
     @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE st.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByStudent1(Long student_id);
 
