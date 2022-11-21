@@ -69,6 +69,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<Exercise> allExerciseByClassAndStudent = exerciseRepository.findAllExerciseByClassAndStudent(classes_id, student_id);
         List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(classes_id, student_id);
 
+        System.out.print(allExerciseByClassAndStudent.size());
         List<Exercise> allExerciseSubmiss = new ArrayList<>();
         exerciseSubmissions.forEach(ele -> {
             allExerciseSubmiss.add(ele.getExercise());
@@ -91,24 +92,23 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .build();
                 exerciseResponses.add(exerciseResponse);
             }
-        });
-
-        exerciseSubmissions.forEach(ele -> {
-            GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
-                .id(ele.getExercise().getId())
-                .section_id(ele.getExercise().getSection().getId())
-                .level_id(ele.getExercise().getExerciseLevel().getId())
-                .level_name(ele.getExercise().getExerciseLevel().getWeight().toString())
-                .section_name(ele.getExercise().getSection().getName())
-                .name(ele.getExercise().getName())
-                .time_submit(ele.getUpdate_time())
-                .exercise_submission_id(ele.getId())
-                .description(ele.getExercise().getDescription())
-                .deadline(ele.getExercise().getDeadline())
-                .create_time(ele.getExercise().getCreate_time())
-                .update_time(ele.getExercise().getUpdate_time())
-                .build();
-            exerciseSubmittedResponses.add(exerciseResponse);
+            else {
+                GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                    .id(ele.getId())
+                    .section_id(ele.getSection().getId())
+                    .level_id(ele.getExerciseLevel().getId())
+                    .level_name(ele.getExerciseLevel().getWeight().toString())
+                    .section_name(ele.getSection().getName())
+                    .name(ele.getName())
+                    .time_submit(ele.getUpdate_time())
+                    .exercise_submission_id(ele.getId())
+                    .description(ele.getDescription())
+                    .deadline(ele.getDeadline())
+                    .create_time(ele.getCreate_time())
+                    .update_time(ele.getUpdate_time())
+                    .build();
+                exerciseSubmittedResponses.add(exerciseResponse);
+            }
         });
 
         
