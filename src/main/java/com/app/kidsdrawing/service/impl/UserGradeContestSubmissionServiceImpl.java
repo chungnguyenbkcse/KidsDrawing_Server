@@ -67,6 +67,35 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByContestIdAndTeacherId(Long contest_id, Long teacher_id) {
+        List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
+        List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByContestAndTeacher(contest_id, teacher_id);
+        listUserGradeContestSubmission.forEach(content -> {
+            GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                .teacher_id(content.getTeacher().getId())
+                .student_id(content.getContestSubmission().getStudent().getId())
+                .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                .contest_id(content.getContestSubmission().getContest().getId())
+                .contest_name(content.getContestSubmission().getContest().getName())
+                .contest_submission_id(content.getContestSubmission().getId())
+                .feedback(content.getFeedback())
+                .url_conest_submission(content.getContestSubmission().getImage_url())
+                .art_age_name(content.getContestSubmission().getContest().getArtAges().getName())
+                .art_type_name(content.getContestSubmission().getContest().getArtTypes().getName())
+                .start_time(content.getContestSubmission().getContest().getStart_time())
+                .end_time(content.getContestSubmission().getContest().getEnd_time())
+                .score(content.getScore())
+                .time(content.getTime())
+                .build();
+            allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("UserGradeContestSubmission", allUserGradeContestSubmissionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllUserGradeContestSubmissionByTeacherId(Long id) {
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByTeacherId2(id);

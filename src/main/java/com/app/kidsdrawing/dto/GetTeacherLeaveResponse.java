@@ -18,6 +18,8 @@ public class GetTeacherLeaveResponse {
     private int section_number;
     private String section_name;
     private Long classes_id;
+    private LocalDateTime start_time;
+    private LocalDateTime end_time;
     private String class_name;
     private Long teacher_id;
     private String teacher_name;
