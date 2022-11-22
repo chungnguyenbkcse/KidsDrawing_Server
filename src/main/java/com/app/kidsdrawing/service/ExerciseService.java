@@ -11,6 +11,7 @@ import com.app.kidsdrawing.dto.GetExerciseResponse;
 public interface ExerciseService {
     ResponseEntity<Map<String, Object>> getAllExercise();
     ResponseEntity<Map<String, Object>> getAllExerciseBySectionId(Long id);
+    ResponseEntity<Map<String, Object>> getAllExerciseForTeacherBySectionId(Long id);
     ResponseEntity<Map<String, Object>> getAllExerciseByClassAndStudent(Long classes_id, Long student_id);
     ResponseEntity<Map<String, Object>> getAllExerciseBySectionAndStudent(Long section_id, Long student_id);
     GetExerciseResponse getExerciseById(Long id);
