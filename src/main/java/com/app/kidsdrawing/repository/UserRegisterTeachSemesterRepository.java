@@ -34,6 +34,9 @@ public interface UserRegisterTeachSemesterRepository extends JpaRepository <User
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.semesterClass sc WHERE sc.id = ?1 ORDER BY e.id")
     List<UserRegisterTeachSemester> findBySemesterClassId1(Long id);
 
+    @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.semesterClass sc JOIN FETCH e.teacher te WHERE sc.id = ?1 AND te.id = ?2 ORDER BY e.id")
+    List<UserRegisterTeachSemester> findBySemesterClassAndTeacher(Long semester_class_id, Long teacher_id);
+
     @Query("FROM UserRegisterTeachSemester e JOIN FETCH e.semesterClass sc JOIN FETCH sc.course co WHERE co.id = ?1 ORDER BY e.id")
     List<UserRegisterTeachSemester> findByCourseId(Long id);
 

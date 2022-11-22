@@ -162,12 +162,36 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     @Override
     public Long removeTeacherTeachSemesterById(Long id) {
         Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findById1(id);
-        teacherTeachSemesterOpt.orElseThrow(() -> {
+        UserRegisterTeachSemester teacherTeachSemester =  teacherTeachSemesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
         });
 
+        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById1(teacherTeachSemester.getSemesterClass().getId());
+        SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.SemesterClass.not_found");
+        });
+
+        updatedSemesterClass.setMax_participant(updatedSemesterClass.getMax_participant() - 8);
+        semesterClassRepository.save(updatedSemesterClass);
+
         userRegisterTeachSemesterRepository.deleteById(id);
         return id;
+    }
+
+    @Override
+    public Long removeTeacherTeachSemesterBySemesterClassAndTeacher(Long semester_class_id, Long teacher_id) {
+        List<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository.findBySemesterClassAndTeacher(semester_class_id, teacher_id);
+        Optional<SemesterClass> SemesterClassOpt = semesterClassRepository.findById1(semester_class_id);
+        SemesterClass updatedSemesterClass = SemesterClassOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.SemesterClass.not_found");
+        });
+        teacherTeachSemesterOpt.forEach(ele -> {
+            userRegisterTeachSemesterRepository.deleteById(ele.getId());
+            updatedSemesterClass.setMax_participant(updatedSemesterClass.getMax_participant() - 8);
+            semesterClassRepository.save(updatedSemesterClass);
+        });
+
+        return semester_class_id;
     }
 
     @Override
