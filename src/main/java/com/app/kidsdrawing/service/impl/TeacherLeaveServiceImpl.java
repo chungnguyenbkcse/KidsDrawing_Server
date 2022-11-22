@@ -231,11 +231,6 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById1(createTeacherLeaveRequest.getTeacher_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_teacher.not_found");
-        });
-
         Optional <User> substitute_teacherOpt = userRepository.findById1(createTeacherLeaveRequest.getTeacher_id());
         User substitute_teacher = substitute_teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_substitute_teacher.not_found");
@@ -246,14 +241,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <Classes> classOpt = classRepository.findById1(createTeacherLeaveRequest.getClasses_id());
-        Classes classes = classOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.class.not_found");
-        });
-
-        updatedTeacherLeave.setClasses(classes);
         updatedTeacherLeave.setSection(section);
-        updatedTeacherLeave.setTeacher(teacher);
         updatedTeacherLeave.setSubstitute_teacher(substitute_teacher);
         updatedTeacherLeave.setDescription(createTeacherLeaveRequest.getDescription());
         teacherLeaveRepository.save(updatedTeacherLeave);
