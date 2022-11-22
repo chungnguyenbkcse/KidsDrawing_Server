@@ -162,6 +162,9 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     @Override
     public GetUserAttendanceResponse getAllUserAttendanceBySectionAndStudent(Long section_id, Long student_id) {
         List<UserAttendance> userAttendance = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
+        if (userAttendance.get(0).getStatus() == false ) {
+            throw new EntityNotFoundException("exception.UserAttendance.not_found");
+        }
         return GetUserAttendanceResponse.builder()
             .id(userAttendance.get(0).getId())
             .section_number(userAttendance.get(0).getSection().getNumber())
