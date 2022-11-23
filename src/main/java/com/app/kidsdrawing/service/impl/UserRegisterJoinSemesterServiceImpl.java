@@ -423,6 +423,17 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
     @Override
     public Long removeUserRegisterJoinSemesterBySemesterClassAndStudent(Long semester_class_id, Long student_id) {
+        Optional <SemesterClass> semester_classOpt = semesterClassRepository.findById1(semester_class_id);
+        SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.semester_class.not_found");
+        });
+
+        LocalDateTime time_now = LocalDateTime.now();
+
+        if (time_now.isAfter((semesterCouse.getRegistration_expiration_time())) && time_now.isBefore(semesterCouse.getRegistration_time())) {
+            throw new EntityNotFoundException("exception.deadline.not_found");
+        }
+
         List<UserRegisterJoinSemester> allUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassIdAndStudent(semester_class_id, student_id);
         allUserRegisterJoinSemester.forEach(ele -> {
             if (ele.getStatus().equals("Waiting")) {
