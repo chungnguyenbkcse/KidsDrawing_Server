@@ -108,9 +108,9 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
     public String showChangePasswordPage(@RequestParam("token") String token) {
         String result = validatePasswordResetToken(token);
         if(result != null) {
-            return "http://localhost:3000/auth";
+            return "https://kids-drawing-type-script.vercel.app/auth";
         } else {
-            return "http://localhost:3000/update-password";
+            return "https://kids-drawing-type-script.vercel.app/update-password";
         }
     } 
 
