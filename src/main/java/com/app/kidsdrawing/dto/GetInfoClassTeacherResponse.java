@@ -15,6 +15,7 @@ public class GetInfoClassTeacherResponse {
     private Long user_register_teach_semester;
     private String security_code;
     private String name;
+    private float review_star;
     private String link_url;
     private Long course_id;
     private String course_name;

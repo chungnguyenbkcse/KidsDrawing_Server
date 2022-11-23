@@ -93,6 +93,12 @@ public class ClassesController {
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforDetailOfClass(@PathVariable Long id) {
         return ResponseEntity.ok().body(classService.getInforDetailOfClass(id));
     }
+
+    @CrossOrigin
+    @GetMapping(value = "/info-1/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getInforDetailOfClass1(@PathVariable Long id) {
+        return ResponseEntity.ok().body(classService.getInforDetailOfClass1(id));
+    }
     
     @CrossOrigin
     @GetMapping(value = "/info/teacher/{id}")
@@ -117,6 +123,12 @@ public class ClassesController {
     @GetMapping(value = "/teacher/{id}")
     public  ResponseEntity<ResponseEntity<Map<String, Object>>>  getInforDetailOfClassByTeacherId(@PathVariable Long id) {
         return ResponseEntity.ok().body(classService.getInforDetailOfClassByTeacherId(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/teacher-1/{id}")
+    public  ResponseEntity<ResponseEntity<Map<String, Object>>>  getInforDetailOfClassByTeacherId1(@PathVariable Long id) {
+        return ResponseEntity.ok().body(classService.getClassesForStudentId1(id));
     }
 
     @CrossOrigin

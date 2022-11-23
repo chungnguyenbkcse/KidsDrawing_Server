@@ -353,7 +353,7 @@ public class SemesterServiceImpl implements SemesterService {
                                 .id(idx)
                                 .classes(savedClass)
                                 .userRegisterJoinSemester(user_register_semester)
-                                .review_star(0)
+                                .review_star(-1)
                                 .build();
                             classHasRegisterJoinSemesterClassRepository.save(savedClassHasRegisterJoinSemesterClass);
                         });
