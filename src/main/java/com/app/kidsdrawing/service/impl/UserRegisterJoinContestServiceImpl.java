@@ -133,7 +133,15 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     @Override
     public Long removeUserRegisterJoinContestByContestAndStudent(Long contest_id, Long student_id) {
         List<UserRegisterJoinContest> userRegisterJoinContestOpt = userRegisterJoinContestRepository.findByContestAndStudent(contest_id, student_id);
+        Optional <Contest> contestOpt = contestRepository.findById1(contest_id);
+        Contest contest = contestOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.contest.not_found");
+        });
         
+        LocalDateTime time_now = LocalDateTime.now();
+        if (time_now.isAfter(contest.getRegistration_time())) {
+            throw new EntityNotFoundException("exception.UserRegisterJoinContest.deadline");
+        }
         userRegisterJoinContestOpt.forEach(ele -> {
             userRegisterJoinContestRepository.deleteById(ele.getId());
         });
