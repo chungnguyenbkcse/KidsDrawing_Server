@@ -62,7 +62,7 @@ GET  {{rest}}/contest/id/3
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/contest/student/18
+GET  {{rest}}/contest/student/22
 
 ### GET CONTEST ACTION ###
 # @name get_contest
