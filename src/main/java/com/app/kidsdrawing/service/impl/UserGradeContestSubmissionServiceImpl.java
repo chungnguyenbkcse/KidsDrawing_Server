@@ -73,6 +73,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         listUserGradeContestSubmission.forEach(content -> {
             GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
                 .teacher_id(content.getTeacher().getId())
+                .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
                 .student_id(content.getContestSubmission().getStudent().getId())
                 .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
                 .contest_id(content.getContestSubmission().getContest().getId())
@@ -131,6 +132,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         listUserGradeContestSubmission.forEach(content -> {
             GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
                 .teacher_id(content.getTeacher().getId())
+                .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
                 .student_id(content.getContestSubmission().getStudent().getId())
                 .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
                 .contest_id(content.getContestSubmission().getContest().getId())
@@ -161,6 +163,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         listUserGradeContestSubmission.forEach(content -> {
             GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
                 .teacher_id(content.getTeacher().getId())
+                .teacher_name(content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
                 .student_id(content.getContestSubmission().getStudent().getId())
                 .student_name(content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
                 .contest_id(content.getContestSubmission().getContest().getId())
@@ -192,6 +195,7 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
 
         return GetUserGradeContestSubmissionResponse.builder()
             .teacher_id(userGradeContestSubmission.getTeacher().getId())
+            .teacher_name(userGradeContestSubmission.getTeacher().getFirstName() + " " + userGradeContestSubmission.getTeacher().getLastName())
             .student_id(userGradeContestSubmission.getContestSubmission().getStudent().getId())
             .student_name(userGradeContestSubmission.getContestSubmission().getStudent().getFirstName() + " " + userGradeContestSubmission.getContestSubmission().getStudent().getLastName())
             .contest_id(userGradeContestSubmission.getContestSubmission().getContest().getId())
