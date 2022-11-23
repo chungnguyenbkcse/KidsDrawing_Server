@@ -22,6 +22,7 @@ public interface UserRegisterJoinSemesterService {
     Boolean checkScheduleForStudent(Long student_id, Long semester_class_id);
     Long createUserRegisterJoinSemester(CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
     Long removeUserRegisterJoinSemesterById(Long id);
+    Long removeUserRegisterJoinSemesterBySemesterClassAndStudent(Long semester_class_id, Long student_id);
     Long updateUserRegisterJoinSemesterById(Long id, CreateUserRegisterJoinSemesterRequest createUserRegisterJoinSemesterRequest);
     Long updateStatusUserRegisterJoinSemester(List<Long> ids, CreateMomoRequest createMomoRequest);
     Long updateStatusUserRegisterJoinSemester(List<Long> ids);

@@ -449,7 +449,7 @@ public class ContestServiceImpl implements ContestService {
         });
 
         allContest.forEach(contest -> {
-            if (time_now.isBefore(contest.getStart_time()) && time_now.isAfter(contest.getRegistration_time())) {
+            if (time_now.isBefore(contest.getRegistration_time())) {
                 if (allContestForStudent.contains(contest)) {
                     List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId1(contest.getId());

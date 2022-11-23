@@ -116,6 +116,15 @@ public class UserRegisterJoinSemesterController {
     }
 
     @CrossOrigin
+    @DeleteMapping(value = "/semester_class-student/{semester_class_id}/{student_id}")
+    public ResponseEntity<String> deleteUserRegisterJoinSemesterById(@PathVariable("semester_class_id") Long semester_class_id, @PathVariable("student_id") Long student_id) {
+        Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.removeUserRegisterJoinSemesterBySemesterClassAndStudent(semester_class_id, student_id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(userRegisterJoinSemesterId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteUserRegisterJoinSemesterById(@PathVariable Long id) {
         Long userRegisterJoinSemesterId = userRegisterJoinSemesterService.removeUserRegisterJoinSemesterById(id);

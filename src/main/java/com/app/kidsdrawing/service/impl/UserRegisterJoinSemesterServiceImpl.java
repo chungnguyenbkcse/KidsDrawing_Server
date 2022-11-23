@@ -422,6 +422,17 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     }
 
     @Override
+    public Long removeUserRegisterJoinSemesterBySemesterClassAndStudent(Long semester_class_id, Long student_id) {
+        List<UserRegisterJoinSemester> allUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassIdAndStudent(semester_class_id, student_id);
+        allUserRegisterJoinSemester.forEach(ele -> {
+            if (ele.getStatus().equals("Waiting")) {
+                userRegisterJoinSemesterRepository.deleteById(ele.getId());
+            }
+        });
+        return semester_class_id;
+    }
+
+    @Override
     public Long removeUserRegisterJoinSemesterById(Long id) {
         Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(id);
         userRegisterJoinSemesterOpt.orElseThrow(() -> {

@@ -524,8 +524,10 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     public ResponseEntity<Map<String, Object>> getAllSemesterClassNewByStudentAndCourse(Long id, Long course_id) {
         List<GetSemesterClassStudentResponse> allSemesterClassResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<SemesterClass> allSemesterClassByStudentAndCourse = semesterClassRepository
-                .findAllSemesterClassByStudentAndCourse(id, course_id);
+        List<SemesterClass> allSemesterClassByStudentAndCourseWaiting = semesterClassRepository
+                .findAllSemesterClassByStudentAndCourseWaiting(id, course_id);
+        List<SemesterClass> allSemesterClassByStudentAndCourseCompleted = semesterClassRepository
+                .findAllSemesterClassByStudentAndCourseCompleted(id, course_id);
 
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
 
@@ -548,7 +550,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 });
 
                 total_register = userRegisterJoinSemesterRepository.findBySemesterClassId4(semester_class.getId()).size();
-                if (allSemesterClassByStudentAndCourse.contains(semester_class) == false) {
+                if (allSemesterClassByStudentAndCourseCompleted.contains(semester_class) == false && allSemesterClassByStudentAndCourseWaiting.contains(semester_class) == false) {
                     GetSemesterClassStudentResponse semesterClassResponse = GetSemesterClassStudentResponse.builder()
                             .course_id(semester_class.getCourse().getId())
                             .semster_class_id(semester_class.getId())
@@ -572,7 +574,34 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .status("Not register")
                             .build();
                     allSemesterClassResponses.add(semesterClassResponse);
-                } else {
+                }
+
+                else if (allSemesterClassByStudentAndCourseWaiting.contains(semester_class)) {
+                    GetSemesterClassStudentResponse semesterClassResponse = GetSemesterClassStudentResponse.builder()
+                            .course_id(semester_class.getCourse().getId())
+                            .semster_class_id(semester_class.getId())
+                            .id(semester_class.getId())
+                            .semester_name(semester_class.getSemester().getName())
+                            .description(semester_class.getCourse().getDescription())
+                            .image_url(semester_class.getCourse().getImage_url())
+                            .name(semester_class.getName())
+                            .course_name(semester_class.getCourse().getName())
+                            .art_age_name(semester_class.getCourse().getArtAges().getName())
+                            .art_level_name(semester_class.getCourse().getArtLevels().getName())
+                            .art_type_name(semester_class.getCourse().getArtTypes().getName())
+                            .price(semester_class.getCourse().getPrice())
+                            .registration_time(semester_class.getRegistration_time())
+                            .registration_expiration_time(semester_class.getRegistration_expiration_time())
+                            .num_of_section(semester_class.getCourse().getNum_of_section())
+                            .schedule(schedule)
+                            .total_register(total_register)
+                            .max_participant(semester_class.getMax_participant())
+                            .semester_id(semester_class.getSemester().getId())
+                            .status("Unpaid")
+                            .build();
+                    allSemesterClassResponses.add(semesterClassResponse);
+                }
+                 else {
                     GetSemesterClassStudentResponse semesterClassResponse = GetSemesterClassStudentResponse.builder()
                             .course_id(semester_class.getCourse().getId())
                             .semster_class_id(semester_class.getId())

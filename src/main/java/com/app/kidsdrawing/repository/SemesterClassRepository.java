@@ -23,8 +23,11 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, L
     @Query("SELECT  DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime ORDER BY e.id")
     List<SemesterClass> findAll2();
 
-    @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes  WHERE st.id = ?1 AND c.id =?2 ORDER BY e.id")
-    List<SemesterClass> findAllSemesterClassByStudentAndCourse(Long student_id, Long course_id);
+    @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes  WHERE st.id = ?1 AND c.id =?2 AND urj.status = 'Waiting' ORDER BY e.id")
+    List<SemesterClass> findAllSemesterClassByStudentAndCourseWaiting(Long student_id, Long course_id);
+
+    @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes  WHERE st.id = ?1 AND c.id =?2 AND urj.status = 'Completed' ORDER BY e.id")
+    List<SemesterClass> findAllSemesterClassByStudentAndCourseCompleted(Long student_id, Long course_id);
 
     @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester LEFT JOIN FETCH e.userRegisterTeachSemesters urt LEFT JOIN FETCH urt.teacher te  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes WHERE te.id = ?1 AND c.id =?2 ORDER BY e.id")
     List<SemesterClass> findAllSemesterClassByTeacherAndCourse(Long teacher_id, Long course_id);
