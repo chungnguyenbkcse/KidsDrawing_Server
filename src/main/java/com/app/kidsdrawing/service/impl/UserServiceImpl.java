@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
+import com.app.kidsdrawing.dto.CreateTeacherUserRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
 import com.app.kidsdrawing.dto.CreateUserStatusRequest;
 import com.app.kidsdrawing.dto.GetStudentForParentResponse;
@@ -24,6 +25,7 @@ import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetTeacherResponse;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
+import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
@@ -33,6 +35,7 @@ import com.app.kidsdrawing.repository.RoleRepository;
 import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinContestRepository;
 import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.service.EmailService;
 import com.app.kidsdrawing.service.UserService;
 import com.app.kidsdrawing.util.AuthUtil;
 
@@ -59,7 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserRegisterJoinContestRepository userRegisterJoinContestRepository;
     private final CourseRepository courseRepository;
-    //private final EmailService emailService;
+    private final EmailService emailService;
     private final AuthUtil authUtil;
     private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
     private static int total_user_of_jan = 0;
@@ -563,9 +566,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .build();
         userRepository.save(savedUser);
 
-        /* String msgBody = "Chúc mưng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + password + "\n";
+        String msgBody = "Chúc mưng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + password + "\n";
         EmailDetails details = new EmailDetails(savedUser.getEmail(), msgBody, "Thông báo tạo tài khoản thành công", "");
-        emailService.sendSimpleMail(details); */
+        emailService.sendSimpleMail(details);
 
         return savedUser.getId();
     }
@@ -609,6 +612,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
             userRepository.save(user);
         }
+        return user.getId();
+    }
+
+    @Override
+    public Long updateTeacher(Long id, CreateTeacherUserRequest createTeacherUserRequest) {
+        Optional<User> userOpt = userRepository.findById1(id);
+        User user = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
+        });
+
+        user.setUsername(createTeacherUserRequest.getUsername());
+        user.setEmail(createTeacherUserRequest.getEmail());
+        userRepository.save(user);
         return user.getId();
     }
 

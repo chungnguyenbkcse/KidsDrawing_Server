@@ -6,6 +6,7 @@ import java.util.Map;
 import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
 import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
+import com.app.kidsdrawing.dto.CreateTeacherUserRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
 import com.app.kidsdrawing.dto.CreateUserStatusRequest;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
@@ -43,6 +44,8 @@ public interface UserService {
     Long createStudent(CreateStudentRequest createStudentRequest);
 
     Long updateUser(Long id, CreateUserRequest createUserRequest);
+
+    Long updateTeacher(Long id, CreateTeacherUserRequest createTeacherUserRequest);
 
     Long updateUserStatus(Long id, CreateUserStatusRequest createUserStatusRequest);
     

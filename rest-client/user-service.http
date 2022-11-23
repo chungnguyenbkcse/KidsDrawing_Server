@@ -951,6 +951,17 @@ Content-Type: application/json
 }
 
 
+### REGISTER ACTION ###
+# @name teacher_register
+
+PUT {{rest}}/user/teacher/4
+Content-Type: application/json
+
+{
+    "username": "teacher-3x",
+    "email": "teacher-3@gmail.com"
+}
+
 
 
 
