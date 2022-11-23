@@ -22,6 +22,7 @@ public class GetContestResponse {
     private Integer total_contest_submission_graded;
     private LocalDateTime registration_time;
     private String image_url;
+    private Boolean check_gen;
     private LocalDateTime start_time;
     private LocalDateTime end_time;
     private Boolean is_enabled;

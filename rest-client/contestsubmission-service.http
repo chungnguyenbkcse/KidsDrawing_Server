@@ -21,8 +21,8 @@ Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-    "student_id": 30,
-    "contest_id": 1,
+    "student_id": 33,
+    "contest_id": 3,
     "image_url": "https://res.cloudinary.com/djtmwajiu/image/upload/v1667405735/kdwc6lcetj5uwws09ibf.webp"
 }
 
