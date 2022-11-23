@@ -58,13 +58,18 @@ Authorization: Bearer {{admin_access_token}}
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/user-grade-contest-submission/contest/2
+GET  {{rest}}/user-grade-contest-submission/contest/3
 
 
 ### GET CONTEST ACTION ###
 # @name get_contest
 
 GET  {{rest}}/user-grade-contest-submission/teacher/2
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-grade-contest-submission/contest-teacher/1/2
 
 ### GET CONTEST ACTION ###
 # @name get_contest

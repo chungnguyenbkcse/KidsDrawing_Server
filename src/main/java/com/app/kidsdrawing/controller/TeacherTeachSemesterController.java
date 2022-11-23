@@ -73,5 +73,14 @@ public class TeacherTeachSemesterController {
                 .buildAndExpand(teacherTeachSemesterId).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @CrossOrigin
+    @DeleteMapping(value = "/semester-class/teacher/{semester_class_id}/{teacher_id}")
+    public ResponseEntity<String> removeTeacherTeachSemesterBySemesterClassAndTeacher(@PathVariable("semester_class_id") Long semester_class_id, @PathVariable("teacher_id") Long teacher_id) {
+        Long teacherTeachSemesterId = teacherTeachSemesterService.removeTeacherTeachSemesterBySemesterClassAndTeacher(semester_class_id, teacher_id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(teacherTeachSemesterId).toUri();
+        return ResponseEntity.created(location).build();
+    }
     
 }

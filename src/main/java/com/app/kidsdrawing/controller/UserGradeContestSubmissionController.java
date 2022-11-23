@@ -53,6 +53,12 @@ public class UserGradeContestSubmissionController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/contest-teacher/{contest_id}/{teacher_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeContestSubmissionByContestIdAndTeacherId(@PathVariable("contest_id") Long contest_id, @PathVariable("teacher_id") Long teacher_id) {
+        return ResponseEntity.ok().body(userGradeContestSubmissionService.getAllUserGradeContestSubmissionByContestIdAndTeacherId(contest_id, teacher_id));
+    }
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createUserGradeContestSubmission(@RequestBody CreateUserGradeContestSubmissionRequest createUserGradeContestSubmissionRequest) {
         Long userGradeContestSubmissionId = userGradeContestSubmissionService.createUserGradeContestSubmission(createUserGradeContestSubmissionRequest);

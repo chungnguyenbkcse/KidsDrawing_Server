@@ -27,4 +27,6 @@ public class GetContestTeacherResponse {
     private Boolean is_enabled;
     private String art_age_name;
     private String art_type_name;
+    private Long art_type_id;
+    private Long art_age_id;
 }

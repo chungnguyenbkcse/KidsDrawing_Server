@@ -67,3 +67,8 @@ GET  {{rest}}/user-attendance
 
 GET  {{rest}}/user-attendance/section/336eb357-0118-498f-842b-130bea371e24
 Authorization: Bearer {{admin_access_token}}
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-attendance/section-student/71/22

@@ -66,7 +66,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
 
         LessonTime savedLessonTime = LessonTime.builder()
                 .start_time(createLessonTimeRequest.getStart_time())
-                .end_time(createLessonTimeRequest.getEnd_time())
+                .end_time(createLessonTimeRequest.getStart_time().plusMinutes(45))
                 .build();
         lessonTimeRepository.save(savedLessonTime);
 
@@ -91,7 +91,7 @@ public class LessonTimeServiceImpl implements LessonTimeService {
             throw new EntityNotFoundException("exception.LessonTime.not_found");
         });
         updatedLessonTime.setStart_time(createLessonTimeRequest.getStart_time());
-        updatedLessonTime.setEnd_time(createLessonTimeRequest.getEnd_time());
+        updatedLessonTime.setEnd_time(createLessonTimeRequest.getStart_time().plusMinutes(45));
         lessonTimeRepository.save(updatedLessonTime);
 
         return updatedLessonTime.getId();

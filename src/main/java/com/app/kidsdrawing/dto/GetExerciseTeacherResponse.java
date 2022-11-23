@@ -12,22 +12,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetTeacherLeaveResponse {
+public class GetExerciseTeacherResponse {
     private Long id;
     private Long section_id;
-    private int section_number;
-    private String section_name;
-    private Long classes_id;
-    private LocalDateTime start_time;
-    private LocalDateTime end_time;
-    private String class_name;
-    private Long teacher_id;
-    private String teacher_name;
-    private Long reviewer_id;
-    private Long substitute_teacher_id;
-    private String substitute_teacher_name;
-    private String description;
+    private Long level_id;
     private String status;
+    private String level_name;
+    private String teacher_name;
+    private String section_name;
+    private String name;
+    private String description;
+    private LocalDateTime deadline;
+    private LocalDateTime time_submit;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

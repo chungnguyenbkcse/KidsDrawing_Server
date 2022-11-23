@@ -14,5 +14,6 @@ public interface UserRegisterJoinContestService {
     GetUserRegisterJoinContestResponse getUserRegisterJoinContestById(Long id);
     Long createUserRegisterJoinContest(CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest);
     Long removeUserRegisterJoinContestById(Long id);
+    Long removeUserRegisterJoinContestByContestAndStudent(Long contest_id, Long student_id);
     Long updateUserRegisterJoinContestById(Long id, CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest);
 }

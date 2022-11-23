@@ -76,7 +76,17 @@ GET  {{rest}}/exercise-submission/student/28
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/exercise-submission/classes-student/1/28
+GET  {{rest}}/exercise-submission/classes-student/7/22
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercise-submission/section-student/62/22
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercise-submission/exercise-student/7/22
 
 ### GET CONTEST ACTION ###
 # @name get_contest

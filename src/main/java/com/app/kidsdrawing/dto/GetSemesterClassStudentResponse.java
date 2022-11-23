@@ -22,6 +22,7 @@ public class GetSemesterClassStudentResponse {
     private Integer max_participant;
     private Integer num_of_section;
     private Float price;
+    private int total_register;
     private String status;
     private String image_url;
     private String art_type_name;

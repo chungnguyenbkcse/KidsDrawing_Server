@@ -371,24 +371,11 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById1(createStudentLeaveRequest.getStudent_id());
-        User student = studentOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_student.not_found");
-        });
-
         Optional <Section> sectionOpt = sectionRepository.findById1(createStudentLeaveRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
-
-        Optional <Classes> classOpt = classRepository.findById1(createStudentLeaveRequest.getClasses_id());
-        Classes classes = classOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.class.not_found");
-        });
-
-        updatedStudentLeave.setClasses(classes);
         updatedStudentLeave.setSection(section);
-        updatedStudentLeave.setStudent(student);
         updatedStudentLeave.setDescription(createStudentLeaveRequest.getDescription());
 
         return updatedStudentLeave.getId();

@@ -34,4 +34,5 @@ public class GetContestStudentResponse {
     private String art_type_name;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
+    private String status;
 }

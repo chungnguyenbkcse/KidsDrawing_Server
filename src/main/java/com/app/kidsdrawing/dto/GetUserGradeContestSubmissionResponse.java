@@ -18,6 +18,11 @@ public class GetUserGradeContestSubmissionResponse {
     private String student_name;
     private Long student_id;
     private Long contest_id;
+    private String url_conest_submission;
+    private String art_type_name;
+    private String art_age_name;
+    private LocalDateTime start_time;
+    private LocalDateTime end_time;
     private String contest_name;
     private Long contest_submission_id;
     private String feedback;
