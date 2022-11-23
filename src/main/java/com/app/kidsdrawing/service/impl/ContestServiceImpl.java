@@ -449,12 +449,14 @@ public class ContestServiceImpl implements ContestService {
         });
 
         allContest.forEach(contest -> {
-            if (!allContestForStudent.contains(contest) && time_now.isBefore(contest.getStart_time()) && time_now.isAfter(contest.getRegistration_time())) {
-                List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
+            if (time_now.isBefore(contest.getStart_time()) && time_now.isAfter(contest.getRegistration_time())) {
+                if (allContestForStudent.contains(contest)) {
+                    List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId1(contest.getId());
                 GetContestStudentResponse contestOpeningResponse = GetContestStudentResponse.builder()
                         .id(contest.getId())
                         .name(contest.getName())
+                        .status("Registed")
                         .description(contest.getDescription())
                         .max_participant(contest.getMax_participant())
                         .total_register_contest(listUserRegisterContestByContest.size())
@@ -470,6 +472,30 @@ public class ContestServiceImpl implements ContestService {
                         .art_type_name(contest.getArtTypes().getName())
                         .build();
                 allContestNewResponses.add(contestOpeningResponse);
+                }
+                else {
+                    List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
+                    .findByContestId1(contest.getId());
+                    GetContestStudentResponse contestOpeningResponse = GetContestStudentResponse.builder()
+                    .id(contest.getId())
+                    .name(contest.getName())
+                    .status("Not register")
+                    .description(contest.getDescription())
+                    .max_participant(contest.getMax_participant())
+                    .total_register_contest(listUserRegisterContestByContest.size())
+                    .total_contest_submission_graded(total)
+                    .registration_time(contest.getRegistration_time())
+                    .image_url(contest.getImage_url())
+                    .start_time(contest.getStart_time())
+                    .end_time(contest.getEnd_time())
+                    .is_enabled(contest.getIs_enabled())
+                    .art_age_id(contest.getArtAges().getId())
+                    .art_type_id(contest.getArtTypes().getId())
+                    .art_age_name(contest.getArtAges().getName())
+                    .art_type_name(contest.getArtTypes().getName())
+                    .build();
+            allContestNewResponses.add(contestOpeningResponse);
+                }
             }
         });
 
