@@ -42,7 +42,7 @@ Authorization: Bearer {{admin_access_token}}
 ### CREATE CONTEST ACTION ###
 # @name create_contest
 
-POST {{rest}}/contest-submission/contest/1
+GET {{rest}}/contest-submission/contest/3
 Authorization: Bearer {{admin_access_token}}
 
 

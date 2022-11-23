@@ -194,20 +194,6 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         List<GetContestSubmissionResponse> allContestSubmissionNotGradedResponses = new ArrayList<>();
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId2(id);
         listContestSubmissionByContest.forEach(contest_submission -> {
-            if (contest_submission.getUserGradeContestSubmissions().size() > 0){
-                GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
-                    .id(contest_submission.getId())
-                    .contest_id(contest_submission.getContest().getId())
-                    .student_id(contest_submission.getStudent().getId())
-                    .contest_name(contest_submission.getContest().getName())
-                    .student_name(contest_submission.getStudent().getFirstName() + " " + contest_submission.getStudent().getLastName())
-                    .image_url(contest_submission.getImage_url())
-                    .create_time(contest_submission.getCreate_time())
-                    .update_time(contest_submission.getUpdate_time())
-                    .build();
-                allContestSubmissionGradedResponses.add(contestSubmissionResponse);
-            }
-            else {
                 GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
                     .id(contest_submission.getId())
                     .contest_id(contest_submission.getContest().getId())
@@ -219,7 +205,6 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     .update_time(contest_submission.getUpdate_time())
                     .build();
                 allContestSubmissionNotGradedResponses.add(contestSubmissionResponse);
-            }
         });
 
         Map<String, Object> response = new HashMap<>();
