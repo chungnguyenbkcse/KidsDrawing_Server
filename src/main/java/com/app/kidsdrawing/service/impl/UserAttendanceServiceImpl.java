@@ -53,6 +53,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
                 .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
+                .status(content.getStatus())
                 .build();
             allUserAttendanceResponses.add(userAttendanceResponse);
         });
@@ -77,6 +78,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
                 .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
+                .status(content.getStatus())
                 .build();
             allUserAttendanceResponses.add(userAttendanceResponse);
         });
@@ -113,6 +115,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
                 .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
+                .status(content.getStatus())
                 .build();
             allUserAttendanceResponses.add(userAttendanceResponse);
         });
@@ -138,6 +141,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
                 .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
+                .status(content.getStatus())
                 .build();
             allUserAttendanceResponses.add(userAttendanceResponse);
         });
@@ -162,6 +166,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
                 .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
+                .status(content.getStatus())
                 .build();
             allUserAttendanceResponses.add(userAttendanceResponse);
         });
@@ -191,6 +196,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             .student_name(userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
             .create_time(userAttendance.getCreateTime())
             .update_time(userAttendance.getUpdateTime())
+            .status(userAttendance.getStatus())
             .build();
     }
 
@@ -213,6 +219,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             .student_name(userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
             .create_time(userAttendance.getCreateTime())
             .update_time(userAttendance.getUpdateTime())
+            .status(userAttendance.getStatus())
             .build();
     }
 
