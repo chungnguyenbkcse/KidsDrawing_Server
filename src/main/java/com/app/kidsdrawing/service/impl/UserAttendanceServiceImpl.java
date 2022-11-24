@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateUserAttendanceRequest;
+import com.app.kidsdrawing.dto.GetCheckUserAttendanceResponse;
 import com.app.kidsdrawing.dto.GetUserAttendanceResponse;
 import com.app.kidsdrawing.entity.UserAttendance;
 import com.app.kidsdrawing.entity.User;
@@ -83,6 +84,18 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         Map<String, Object> response = new HashMap<>();
         response.put("UserAttendance", allUserAttendanceResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public GetCheckUserAttendanceResponse checkUserAttendanceBySectionAndStudent(Long section_id, Long student_id) {
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
+        UserAttendance userAttendance = userAttendanceOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.UserAttendance.not_found");
+        });
+
+        return GetCheckUserAttendanceResponse.builder()
+                .status(userAttendance.getStatus())
+                .build();
     }
 
     @Override
@@ -161,20 +174,23 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
 
     @Override
     public GetUserAttendanceResponse getAllUserAttendanceBySectionAndStudent(Long section_id, Long student_id) {
-        List<UserAttendance> userAttendance = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
-        if (userAttendance.get(0).getStatus() == false ) {
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
+        UserAttendance userAttendance = userAttendanceOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.UserAttendance.not_found");
+        });
+        if (userAttendance.getStatus() == false ) {
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         }
         return GetUserAttendanceResponse.builder()
-            .id(userAttendance.get(0).getId())
-            .section_number(userAttendance.get(0).getSection().getNumber())
-            .email(userAttendance.get(0).getStudent().getEmail())
-            .section_id(userAttendance.get(0).getSection().getId())
-            .student_id(userAttendance.get(0).getStudent().getId())
-            .section_name(userAttendance.get(0).getSection().getName())
-            .student_name(userAttendance.get(0).getStudent().getFirstName() + " " + userAttendance.get(0).getStudent().getLastName())
-            .create_time(userAttendance.get(0).getCreateTime())
-            .update_time(userAttendance.get(0).getUpdateTime())
+            .id(userAttendance.getId())
+            .section_number(userAttendance.getSection().getNumber())
+            .email(userAttendance.getStudent().getEmail())
+            .section_id(userAttendance.getSection().getId())
+            .student_id(userAttendance.getStudent().getId())
+            .section_name(userAttendance.getSection().getName())
+            .student_name(userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
+            .create_time(userAttendance.getCreateTime())
+            .update_time(userAttendance.getUpdateTime())
             .build();
     }
 

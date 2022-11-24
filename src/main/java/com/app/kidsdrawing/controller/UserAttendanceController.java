@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.app.kidsdrawing.dto.CreateUserAttendanceRequest;
+import com.app.kidsdrawing.dto.GetCheckUserAttendanceResponse;
 import com.app.kidsdrawing.dto.GetUserAttendanceResponse;
 import com.app.kidsdrawing.service.UserAttendanceService;
 
@@ -56,6 +57,12 @@ public class UserAttendanceController {
     @GetMapping(value = "/section-student/{section_id}/{student_id}")
     public ResponseEntity<GetUserAttendanceResponse> getAllUserAttendanceBySectionAndStudent(@PathVariable("section_id") Long section_id, @PathVariable("student_id") Long student_id) {
         return ResponseEntity.ok().body(tutorialTemplate.getAllUserAttendanceBySectionAndStudent(section_id, student_id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/section-student-check/{section_id}/{student_id}")
+    public ResponseEntity<GetCheckUserAttendanceResponse> checkUserAttendanceBySectionAndStudent(@PathVariable("section_id") Long section_id, @PathVariable("student_id") Long student_id) {
+        return ResponseEntity.ok().body(tutorialTemplate.checkUserAttendanceBySectionAndStudent(section_id, student_id));
     }
 
     @CrossOrigin
