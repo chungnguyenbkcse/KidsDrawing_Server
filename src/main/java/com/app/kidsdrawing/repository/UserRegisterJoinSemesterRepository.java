@@ -65,11 +65,17 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.payer JOIN FETCH e.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE st.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinSemester> findByStudentId2(Long id);
 
+    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.student st JOIN FETCH e.payer JOIN FETCH e.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE st.id = ?1 AND e.status = 'Completed' ORDER BY e.id")
+    List<UserRegisterJoinSemester> findByStudentId3(Long id);
+
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.payer pa WHERE pa.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinSemester> findByPayerId1(Long id);
 
     @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.payer pa JOIN FETCH e.semesterClass sc JOIN FETCH e.student  JOIN FETCH sc.course c WHERE pa.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinSemester> findByPayerId2(Long id);
+
+    @Query("FROM UserRegisterJoinSemester e JOIN FETCH e.payer pa JOIN FETCH e.semesterClass sc JOIN FETCH e.student  JOIN FETCH sc.course c JOIN FETCH sc.semester WHERE pa.id = ?1 AND e.status = 'Completed' ORDER BY e.id")
+    List<UserRegisterJoinSemester> findByPayerId3(Long id);
 
     @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.student te JOIN FETCH e.semesterClass sc JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime lt JOIN FETCH sc.semester se WHERE se.id = ?1 AND te.id  = ?2 ORDER BY e.id")
     List<UserRegisterJoinSemester> findBySemester(Long semester_id, Long student_id);

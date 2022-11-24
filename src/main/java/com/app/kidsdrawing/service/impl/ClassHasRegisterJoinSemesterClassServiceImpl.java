@@ -17,6 +17,7 @@ import com.app.kidsdrawing.dto.CreateClassHasRegisterJoinSemesterClassRequest;
 import com.app.kidsdrawing.dto.CreateClassHasRegisterJoinSemesterClassStudentRequest;
 import com.app.kidsdrawing.dto.CreateClassHasRegisterJoinSemesterClassTeacherRequest;
 import com.app.kidsdrawing.dto.GetClassHasRegisterJoinSemesterClassResponse;
+import com.app.kidsdrawing.dto.GetReviewStarForClassResponse;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
@@ -37,6 +38,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
     private final ClassesRepository classRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
+    private static int total = 0;
     
     @Override
     public ResponseEntity<Map<String, Object>> getAllClassHasRegisterJoinSemesterClass() {
@@ -54,6 +56,21 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
         Map<String, Object> response = new HashMap<>();
         response.put("class_has_register_join_semester_classs", allClassHasRegisterJoinSemesterClassResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public GetReviewStarForClassResponse getReviewStarForClass(Long class_id) {
+        List<ClassHasRegisterJoinSemesterClass> pageClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(class_id);
+        total = 0;
+        pageClassHasRegisterJoinSemesterClass.forEach(ele -> {
+            if (ele.getReview_star() != -1) {
+                total = total + ele.getReview_star();
+            }
+        });
+        return GetReviewStarForClassResponse.builder()
+        .review_star((float) (total/pageClassHasRegisterJoinSemesterClass.size()))
+        .build();
+
     }
 
     @Override

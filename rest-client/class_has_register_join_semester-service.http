@@ -48,3 +48,8 @@ Authorization: Bearer {{admin_access_token}}
 
 GET  {{rest}}/class-has-register-join-semester/1/11
 
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/class-has-register-join-semester/review-star/1
+

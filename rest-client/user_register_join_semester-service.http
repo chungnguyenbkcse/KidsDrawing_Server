@@ -35,7 +35,7 @@ GET {{rest}}/user-register-join-semester/16
 ### GET TEACHER GRADE semester ACTION ###
 # @name get_teacher_grade_semester
 
-GET {{rest}}/user-register-join-semester/student/22
+GET {{rest}}/user-register-join-semester/payer-report/12
 
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.app.kidsdrawing.dto.CreateClassHasRegisterJoinSemesterClassStudentRequest;
 import com.app.kidsdrawing.dto.CreateClassHasRegisterJoinSemesterClassTeacherRequest;
 import com.app.kidsdrawing.dto.GetClassHasRegisterJoinSemesterClassResponse;
+import com.app.kidsdrawing.dto.GetReviewStarForClassResponse;
 import com.app.kidsdrawing.service.ClassHasRegisterJoinSemesterClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -48,5 +49,11 @@ public class ClassHasRegisterJoinSemesterController {
     @GetMapping(value = "/{classes_id}/{student_id}")
     public ResponseEntity<GetClassHasRegisterJoinSemesterClassResponse> getClassHasRegisterJoinSemesterClassByClassesAndStudent(@PathVariable("classes_id") Long classes_id, @PathVariable("student_id") Long student_id) {
         return ResponseEntity.ok().body(classHasRegisterJoinSemesterClassService.getClassHasRegisterJoinSemesterClassByClassesAndStudent(classes_id, student_id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/review-star/{classes_id}")
+    public ResponseEntity<GetReviewStarForClassResponse> getClassHasRegisterJoinSemesterClassByClassesAndStudent(@PathVariable("classes_id") Long classes_id) {
+        return ResponseEntity.ok().body(classHasRegisterJoinSemesterClassService.getReviewStarForClass(classes_id));
     }
 }

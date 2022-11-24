@@ -12,6 +12,7 @@ public interface ClassesService {
     ResponseEntity<Map<String, Object>> getAllClass();
     ResponseEntity<Map<String, Object>> getInforDetailAllClass();
     ResponseEntity<Map<String, Object>> getInforDetailOfClass(Long id);
+    ResponseEntity<Map<String, Object>> getInforDetailOfClass1(Long id);
     ResponseEntity<Map<String, Object>> getInforDetailOfClassForTeacher(Long id);
     ResponseEntity<Map<String, Object>> getInforScheduleAllClass();
     ResponseEntity<Map<String, Object>> getInforScheduleAllChild(Long parent_id);
@@ -19,6 +20,7 @@ public interface ClassesService {
     ResponseEntity<Map<String, Object>> getInforDetailOfClassByTeacherId(Long id);
     ResponseEntity<Map<String, Object>> getListClassByTeacherId(Long id);
     ResponseEntity<Map<String, Object>> getClassesForStudentId(Long id);
+    ResponseEntity<Map<String, Object>> getClassesForStudentId1(Long id);
     ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(Long id);
     ResponseEntity<Map<String, Object>> getListForParentId(Long parent_id);
     GetClassResponse getClassById(Long id);

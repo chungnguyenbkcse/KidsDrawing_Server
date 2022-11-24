@@ -99,6 +99,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
                 .semester_classes_name(content.getSemesterClass().getName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
                 .semester_classes_id(content.getSemesterClass().getId())
+                .course_name(content.getSemesterClass().getCourse().getName())
                 .payer_id(content.getPayer().getId())
                 .price(content.getPrice())
                 .time(content.getTime())
@@ -129,6 +130,34 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getReportUserRegisterJoinSemesterByPayerId(Long id) {
+        List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByPayerId3(id);
+        listUserRegisterJoinSemester.forEach(content -> {
+            GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .semester_classes_id(content.getSemesterClass().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .semester_classes_name(content.getSemesterClass().getName())
+                .payer_name(content.getPayer().getFirstName() + " " + content.getPayer().getLastName())
+                .link_url(content.getSemesterClass().getCourse().getImage_url())
+                .payer_id(content.getPayer().getId())
+                .semester_name(content.getSemesterClass().getSemester().getName())
+                .price(content.getPrice())
+                .course_name(content.getSemesterClass().getCourse().getName())
+                .time(content.getTime())
+                .status(content.getStatus())
+                .build();
+            allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user_register_semester", allUserRegisterJoinSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinSemesterByPayerId(Long id) {
         List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
         List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByPayerId2(id);
@@ -139,8 +168,39 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
                 .semester_classes_id(content.getSemesterClass().getId())
                 .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                 .semester_classes_name(content.getSemesterClass().getName())
+                .payer_name(content.getPayer().getFirstName() + " " + content.getPayer().getLastName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
                 .payer_id(content.getPayer().getId())
+                .price(content.getPrice())
+                .course_name(content.getSemesterClass().getCourse().getName())
+                .time(content.getTime())
+                .status(content.getStatus())
+                .build();
+            allUserRegisterJoinSemesterResponses.add(userRegisterJoinSemesterResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user_register_semester", allUserRegisterJoinSemesterResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getReportUserRegisterJoinSemesterByStudentId(Long id) {
+        List<GetUserRegisterJoinSemesterResponse> allUserRegisterJoinSemesterResponses = new ArrayList<>();
+        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findByStudentId3(id);
+        listUserRegisterJoinSemester.forEach(content -> {
+            GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
+                .id(content.getId())
+                .student_id(content.getStudent().getId())
+                .semester_classes_id(content.getSemesterClass().getId())
+                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .semester_classes_name(content.getSemesterClass().getName())
+                .link_url(content.getSemesterClass().getCourse().getImage_url())
+                .course_name(content.getSemesterClass().getCourse().getName())
+                .payer_id(content.getPayer().getId())
+                .semester_name(content.getSemesterClass().getSemester().getName())
+                .course_name(content.getSemesterClass().getCourse().getName())
+                .payer_name(content.getPayer().getFirstName() + " " + content.getPayer().getLastName())
                 .price(content.getPrice())
                 .time(content.getTime())
                 .status(content.getStatus())
@@ -165,7 +225,9 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
                 .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                 .semester_classes_name(content.getSemesterClass().getName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
+                .payer_name(content.getPayer().getFirstName() + " " + content.getPayer().getLastName())
                 .payer_id(content.getPayer().getId())
+                .course_name(content.getSemesterClass().getCourse().getName())
                 .price(content.getPrice())
                 .time(content.getTime())
                 .status(content.getStatus())
