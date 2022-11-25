@@ -265,6 +265,37 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndParent(Long classes_id, Long parent_id) {
+        List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
+        List<User> pageUser = userRepository.findByParentId(parent_id);
+        pageUser.forEach(student -> {
+            List<StudentLeave> listStudentLeave = studentLeaveRepository.findByClassesAndStudent(classes_id,
+                    student.getId());
+            listStudentLeave.forEach(content -> {
+                GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
+                        .id(content.getId())
+                        .student_id(content.getStudent().getId())
+                        .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .reviewer_id(content.getReviewer().getId())
+                        .section_id(content.getSection().getId())
+                        .section_number(content.getSection().getNumber())
+                        .section_name(content.getSection().getName())
+                        .classes_id(content.getClasses().getId())
+                        .class_name(content.getClasses().getName())
+                        .status(content.getStatus())
+                        .description(content.getDescription())
+                        .create_time(content.getCreate_time())
+                        .update_time(content.getUpdate_time())
+                        .build();
+                allStudentLeaveResponses.add(StudentLeaveResponse);
+            });
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("student_leave", allStudentLeaveResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Override 
     public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(Long classes_id, Long student_id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
