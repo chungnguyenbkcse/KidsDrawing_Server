@@ -83,6 +83,8 @@ public class ClassesServiceImpl implements ClassesService {
                 GetChildInClassResponse classResponse = GetChildInClassResponse.builder()
                     .student_id(ele.getId())
                     .student_name(ele.getUsername())
+                    .dateOfBirth(ele.getDateOfBirth())
+                    .sex(ele.getSex())
                     .build();
                 allChildInClassResponse.add(classResponse);
             }
