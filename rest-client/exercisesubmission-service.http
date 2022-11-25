@@ -91,4 +91,9 @@ GET  {{rest}}/exercise-submission/exercise-student/7/22
 ### GET CONTEST ACTION ###
 # @name get_contest
 
+GET  {{rest}}/exercise-submission/classes-parent/7/12
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
 GET  {{rest}}/exercise-submission/exercise/1

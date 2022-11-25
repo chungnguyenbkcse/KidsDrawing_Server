@@ -24,6 +24,7 @@ public interface ClassesService {
     ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(Long id);
     ResponseEntity<Map<String, Object>> getListForParentId(Long parent_id);
     GetClassResponse getClassById(Long id);
+    ResponseEntity<Map<String, Object>> getChildInClassByClassAndParent(Long class_id, Long parent_id);
     Long createClass(CreateClassRequest createClassRequest);
     Long removeClassById(Long id);
     Long updateClassById(Long id, CreateClassRequest createClassRequest);

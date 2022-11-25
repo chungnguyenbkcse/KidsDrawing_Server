@@ -22,6 +22,7 @@ import com.app.kidsdrawing.dto.CreateClassRequest;
 import com.app.kidsdrawing.dto.GetArtAgeResponse;
 import com.app.kidsdrawing.dto.GetArtLevelResponse;
 import com.app.kidsdrawing.dto.GetArtTypeResponse;
+import com.app.kidsdrawing.dto.GetChildInClassResponse;
 import com.app.kidsdrawing.dto.GetClassResponse;
 import com.app.kidsdrawing.dto.GetClassesParentResponse;
 import com.app.kidsdrawing.dto.GetClassesStudentResponse;
@@ -70,6 +71,26 @@ public class ClassesServiceImpl implements ClassesService {
     private static String schedule_section_next = "";
     private static int week_count = 0;
     private static String schedule = "";
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getChildInClassByClassAndParent(Long class_id, Long parent_id) {
+        List<GetChildInClassResponse> allChildInClassResponse = new ArrayList<>();
+        List<User> allChildForParent = userRepository
+                .findByParentId(parent_id);
+        allChildForParent.forEach(ele -> {
+            Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassesIdAndStudentId(class_id, ele.getId());
+            if (classHasRegisterJoinSemesterClassOpt.isPresent()) {
+                GetChildInClassResponse classResponse = GetChildInClassResponse.builder()
+                    .student_id(ele.getId())
+                    .student_name(ele.getUsername())
+                    .build();
+                allChildInClassResponse.add(classResponse);
+            }
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("students", allChildInClassResponse);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllClass() {
