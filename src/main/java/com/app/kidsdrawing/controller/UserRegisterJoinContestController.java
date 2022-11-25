@@ -35,6 +35,12 @@ public class UserRegisterJoinContestController {
     } 
 
     @CrossOrigin
+    @GetMapping(value = "/contest-parent/{contest_id}/{parent_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByContestIdAndParentId(@PathVariable("contest_id") Long contest_id, @PathVariable("parent_id") Long parent_id) {
+        return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByContestIdAndParentId(contest_id, parent_id));
+    } 
+
+    @CrossOrigin
     @GetMapping(value = "/contest/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserRegisterJoinContestByContestId(@PathVariable Long id) {
         return ResponseEntity.ok().body(userRegisterJoinContestService.getAllUserRegisterJoinContestByContestId(id));

@@ -34,3 +34,8 @@ GET {{rest}}/user-register-join-contest/3
 # @name get_all_user_grade_contest
 
 GET {{rest}}/user-register-join-contest/student/1?page=0&size=10
+
+### GET USER GRADE CONTEST ACTION ###
+# @name get_all_user_grade_contest
+
+GET {{rest}}/user-register-join-contest/contest-parent/1/12
