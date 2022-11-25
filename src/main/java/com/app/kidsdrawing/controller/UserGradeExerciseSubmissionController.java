@@ -71,6 +71,12 @@ public class UserGradeExerciseSubmissionController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/class-parent/{classes_id}/{parent_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getFinalGradeAndReviewForParentAndClasses(@PathVariable("classes_id") Long classes_id, @PathVariable("parent_id") Long parent_id) {
+        return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getFinalGradeAndReviewForParentAndClasses(parent_id, classes_id));
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/exercise-student/{exercise_id}/{teacher_id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllUserGradeExerciseSubmissionByStudentAndExercise(@PathVariable("exercise_id") Long exercise_id, @PathVariable("teacher_id") Long teacher_id) {
         return ResponseEntity.ok().body(userGradeExerciseSubmissionService.getAllUserGradeExerciseSubmissionByStudentAndExercise(exercise_id, teacher_id));
