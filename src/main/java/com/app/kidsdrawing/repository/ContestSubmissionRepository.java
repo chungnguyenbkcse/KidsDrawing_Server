@@ -21,6 +21,9 @@ public interface ContestSubmissionRepository extends JpaRepository <ContestSubmi
     @Query("SELECT DISTINCT c FROM ContestSubmission c JOIN FETCH c.userGradeContestSubmissions JOIN FETCH c.contest  co JOIN FETCH c.student WHERE co.id = ?1 ORDER BY c.id")
     List<ContestSubmission> findByContestId2(Long id);
 
+    @Query("SELECT DISTINCT c FROM ContestSubmission c JOIN FETCH c.contest  co JOIN FETCH c.student st WHERE co.id = ?1 AND st.id = ?2 ORDER BY c.id")
+    List<ContestSubmission> findByContestAndStudent(Long contest_id, Long student_id);
+
     @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student s WHERE s.id = ?1 ORDER BY c.id")
     List<ContestSubmission> findByStudentId1(Long id);
 

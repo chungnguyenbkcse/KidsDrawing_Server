@@ -214,6 +214,25 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     }
 
     @Override
+    public GetContestSubmissionResponse getContestSubmissionByConetestAndStudent(Long contest_id, Long student_id) {
+        List<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findByContestAndStudent(contest_id, student_id);
+        if (contestSubmissionOpt.size() <= 0) {
+            throw new EntityNotFoundException("exception.ContestSubmission.not_found");
+        }
+
+        return GetContestSubmissionResponse.builder()
+            .id(contestSubmissionOpt.get(0).getId())
+            .contest_id(contestSubmissionOpt.get(0).getContest().getId())
+            .student_id(contestSubmissionOpt.get(0).getStudent().getId())
+            .contest_name(contestSubmissionOpt.get(0).getContest().getName())
+            .student_name(contestSubmissionOpt.get(0).getStudent().getFirstName() + " " + contestSubmissionOpt.get(0).getStudent().getLastName())
+            .image_url(contestSubmissionOpt.get(0).getImage_url())
+            .create_time(contestSubmissionOpt.get(0).getCreate_time())
+            .update_time(contestSubmissionOpt.get(0).getUpdate_time())
+            .build();
+    }
+
+    @Override
     public GetContestSubmissionResponse getContestSubmissionById(Long id) {
         Optional<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById2(id);
         ContestSubmission contestSubmission = contestSubmissionOpt.orElseThrow(() -> {

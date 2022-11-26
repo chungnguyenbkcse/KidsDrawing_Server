@@ -138,6 +138,12 @@ public class ClassesController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/class-parent/childs/{classes_id}/{parent_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getChildInClassByClassAndParent(@PathVariable("classes_id") Long classes_id, @PathVariable("parent_id") Long parent_id) {
+        return ResponseEntity.ok().body(classService.getChildInClassByClassAndParent(classes_id, parent_id));
+    }
+
+    @CrossOrigin
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteClassById(@PathVariable Long id) {
         Long classId = classService.removeClassById(id);

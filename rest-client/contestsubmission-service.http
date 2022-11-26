@@ -89,4 +89,9 @@ GET  {{rest}}/contest-submission/contest-teacher/1/2
 ### GET CONTEST ACTION ###
 # @name get_contest
 
+GET  {{rest}}/contest-submission/contest-student/2/22
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
 GET  {{rest}}/contest-submission/check-generation/1

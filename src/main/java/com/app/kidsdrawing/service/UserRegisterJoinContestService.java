@@ -11,6 +11,7 @@ import com.app.kidsdrawing.dto.GetUserRegisterJoinContestResponse;
 public interface UserRegisterJoinContestService {
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByStudentId(Long id);
     ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByContestId(Long id);
+    ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByContestIdAndParentId(Long contest_id, Long parent_id);
     GetUserRegisterJoinContestResponse getUserRegisterJoinContestById(Long id);
     Long createUserRegisterJoinContest(CreateUserRegisterJoinContestRequest createUserRegisterJoinContestRequest);
     Long removeUserRegisterJoinContestById(Long id);

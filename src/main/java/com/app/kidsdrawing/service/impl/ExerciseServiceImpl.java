@@ -14,18 +14,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateExerciseRequest;
+import com.app.kidsdrawing.dto.GetExerciseParentResponse;
 import com.app.kidsdrawing.dto.GetExerciseResponse;
 import com.app.kidsdrawing.dto.GetExerciseTeacherResponse;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.entity.ExerciseLevel;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ExerciseLevelRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.UserGradeExerciseSubmissionRepository;
+import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ExerciseService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     
     private final ExerciseRepository exerciseRepository;
     private final SectionRepository sectionRepository;
+    private final UserRepository userRepository;
     private final ExerciseLevelRepository exerciseLevelRepository;
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
     private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
@@ -61,6 +65,69 @@ public class ExerciseServiceImpl implements ExerciseService{
 
         Map<String, Object> response = new HashMap<>();
         response.put("Exercise", allExerciseResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndParent(Long classes_id, Long parent_id) {
+        List<GetExerciseParentResponse> exerciseResponses = new ArrayList<>();
+        List<GetExerciseParentResponse> exerciseSubmittedResponses = new ArrayList<>();
+        List<User> listChilds = userRepository.findByParentId(parent_id);
+        listChilds.forEach(student -> {
+            List<Exercise> allExerciseByClassAndStudent = exerciseRepository
+                    .findAllExerciseByClassAndStudent(classes_id, student.getId());
+            List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository
+                    .findAllExerciseSubmissionByClassAndStudent(classes_id, student.getId());
+
+            System.out.print(allExerciseByClassAndStudent.size());
+            List<Exercise> allExerciseSubmiss = new ArrayList<>();
+            exerciseSubmissions.forEach(ele -> {
+                allExerciseSubmiss.add(ele.getExercise());
+            });
+
+            allExerciseByClassAndStudent.forEach(ele -> {
+                if (allExerciseSubmiss.contains(ele) == false) {
+                    GetExerciseParentResponse exerciseResponse = GetExerciseParentResponse.builder()
+                            .id(ele.getId())
+                            .section_id(ele.getSection().getId())
+                            .level_id(ele.getExerciseLevel().getId())
+                            .level_name(ele.getExerciseLevel().getWeight().toString())
+                            .section_name(ele.getSection().getName())
+                            .name(ele.getName())
+                            .student_id(student.getId())
+                            .student_name(student.getFirstName() + " " + student.getLastName())
+                            .exercise_submission_id(ele.getId())
+                            .description(ele.getDescription())
+                            .deadline(ele.getDeadline())
+                            .create_time(ele.getCreate_time())
+                            .update_time(ele.getUpdate_time())
+                            .build();
+                    exerciseResponses.add(exerciseResponse);
+                } else {
+                    GetExerciseParentResponse exerciseResponse = GetExerciseParentResponse.builder()
+                            .id(ele.getId())
+                            .section_id(ele.getSection().getId())
+                            .level_id(ele.getExerciseLevel().getId())
+                            .level_name(ele.getExerciseLevel().getWeight().toString())
+                            .section_name(ele.getSection().getName())
+                            .name(ele.getName())
+                            .student_id(student.getId())
+                            .student_name(student.getFirstName() + " " + student.getLastName())
+                            .time_submit(ele.getUpdate_time())
+                            .exercise_submission_id(ele.getId())
+                            .description(ele.getDescription())
+                            .deadline(ele.getDeadline())
+                            .create_time(ele.getCreate_time())
+                            .update_time(ele.getUpdate_time())
+                            .build();
+                    exerciseSubmittedResponses.add(exerciseResponse);
+                }
+            });
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("exercise_not_submit", exerciseResponses);
+        response.put("exercise_submitted", exerciseSubmittedResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

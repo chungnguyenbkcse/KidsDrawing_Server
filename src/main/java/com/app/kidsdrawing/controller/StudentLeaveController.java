@@ -40,6 +40,12 @@ public class StudentLeaveController {
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudentLeaveByClassAndStudent(@PathVariable("classes_id") Long classes_id, @PathVariable("student_id") Long student_id) {
         return ResponseEntity.ok().body(studentLeaveService.getAllStudentLeaveByClassAndStudent(classes_id, student_id));
     }
+
+    @CrossOrigin
+    @GetMapping(value = "/class-parent/{classes_id}/{parent_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudentLeaveByClassAndParent(@PathVariable("classes_id") Long classes_id, @PathVariable("parent_id") Long parent_id) {
+        return ResponseEntity.ok().body(studentLeaveService.getAllStudentLeaveByClassAndParent(classes_id, parent_id));
+    }
     
     @CrossOrigin
     @GetMapping(value = "/class/{id}")

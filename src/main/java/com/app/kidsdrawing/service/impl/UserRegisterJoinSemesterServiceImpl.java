@@ -496,12 +496,12 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.deadline.not_found");
         }
 
-        List<UserRegisterJoinSemester> allUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassIdAndStudent(semester_class_id, student_id);
-        allUserRegisterJoinSemester.forEach(ele -> {
-            if (ele.getStatus().equals("Waiting")) {
-                userRegisterJoinSemesterRepository.deleteById(ele.getId());
+        Optional<UserRegisterJoinSemester> allUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassIdAndStudent(semester_class_id, student_id);
+        if (allUserRegisterJoinSemester.isPresent()) {
+            if (allUserRegisterJoinSemester.get().getStatus().equals("Waiting")) {
+                userRegisterJoinSemesterRepository.deleteById(allUserRegisterJoinSemester.get().getId());
             }
-        });
+        }
         return semester_class_id;
     }
 

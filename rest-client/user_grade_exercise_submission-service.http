@@ -86,6 +86,11 @@ GET  {{rest}}/user-grade-exercise-submission/exercise-class/5/7
 
 GET  {{rest}}/user-grade-exercise-submission/class-student/2/20
 
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/user-grade-exercise-submission/class-parent/7/12
+
 
 ### GET CONTEST ACTION ###
 # @name get_contest

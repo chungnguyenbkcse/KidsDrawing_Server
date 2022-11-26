@@ -67,7 +67,7 @@ GET  {{rest}}/contest/student/22
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/contest/parent/8
+GET  {{rest}}/contest/parent/12
 
 ### GET CONTEST ACTION ###
 # @name get_contest
@@ -83,4 +83,4 @@ GET  {{rest}}/contest/student/817ea4e7-2a52-463b-a7bd-b2db1dd9e514
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/contest/parent-new/7ba06a10-ddec-4825-8032-26f79f94ffa9
+GET  {{rest}}/contest/parent-new/12

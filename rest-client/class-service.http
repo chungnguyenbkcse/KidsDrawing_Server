@@ -82,7 +82,7 @@ GET  {{rest}}/classes/schedule-child/18
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/schedule-allchild/7ba06a10-ddec-4825-8032-26f79f94ffa9
+GET  {{rest}}/classes/schedule-allchild/12
 
 ### GET classes ACTION ###
 # @name get_classes
@@ -98,6 +98,11 @@ GET  {{rest}}/classes/student/22
 # @name get_classes
 
 GET  {{rest}}/classes/teacher-list/5
+
+### GET classes ACTION ###
+# @name get_classes
+
+GET  {{rest}}/classes/class-parent/childs/7/12
 
 ### GET classes ACTION ###
 # @name get_classes

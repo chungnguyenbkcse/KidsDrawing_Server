@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateUserRegisterJoinContestRequest;
+import com.app.kidsdrawing.dto.GetChildInClassResponse;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinContestResponse;
 import com.app.kidsdrawing.entity.Contest;
 import com.app.kidsdrawing.entity.UserRegisterJoinContest;
@@ -52,6 +53,27 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
 
         Map<String, Object> response = new HashMap<>();
         response.put("teacher_grade_contest", allUserRegisterJoinContestResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByContestIdAndParentId(Long contest_id, Long parent_id) {
+        List<GetChildInClassResponse> allChildInClassResponse = new ArrayList<>();
+        List<User> listChilds = userRepository.findByParentId(parent_id);
+        listChilds.forEach(student -> {
+            List<UserRegisterJoinContest> classHasRegisterJoinSemesterClassOpt = userRegisterJoinContestRepository.findByContestAndStudent(contest_id, student.getId());
+            if (classHasRegisterJoinSemesterClassOpt.size() > 0) {
+                GetChildInClassResponse classResponse = GetChildInClassResponse.builder()
+                    .student_id(student.getId())
+                    .student_name(student.getUsername())
+                    .dateOfBirth(student.getDateOfBirth())
+                    .sex(student.getSex())
+                    .build();
+                allChildInClassResponse.add(classResponse);
+            }
+        });
+        Map<String, Object> response = new HashMap<>();
+        response.put("students", allChildInClassResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

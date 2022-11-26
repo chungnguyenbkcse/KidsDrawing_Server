@@ -14,6 +14,7 @@ public interface ContestSubmissionService {
     ResponseEntity<Map<String, Object>> getAllContestSubmissionByContestId(Long id);
     ResponseEntity<Map<String, Object>> getAllContestSubmissionByTeacherAndContest(Long teacher_id, Long contest_id);
     GetContestSubmissionResponse getContestSubmissionById(Long id);
+    GetContestSubmissionResponse getContestSubmissionByConetestAndStudent(Long contest_id, Long student_id);
     Long generationContestSubmissionForTeacher(Long contest_id);
     Long checkGenerationContestSubmissionForTeacher(Long contest_id);
     Long createContestSubmission(CreateContestSubmissionRequest createContestSubmissionRequest);
