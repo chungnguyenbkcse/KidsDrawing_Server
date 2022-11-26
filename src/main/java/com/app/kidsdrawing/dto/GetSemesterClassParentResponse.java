@@ -37,6 +37,7 @@ public class GetSemesterClassParentResponse {
     private LocalDate start_date;
     private Long semester_id;
     private String schedule;
+    private int total_register;
     private String student_name;
     private Long student_id;
 }

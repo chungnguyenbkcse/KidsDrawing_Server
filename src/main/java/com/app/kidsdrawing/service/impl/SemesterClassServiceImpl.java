@@ -224,7 +224,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 + schedule_item.getLessonTime().getEnd_time().toString() + ")";
                     }
                 });
-
+                total_register = userRegisterJoinSemesterRepository.findBySemesterClassId4(semester_class.getId()).size();
                 List<User> allChildForParent = userRepository.findByParentId(parent_id);
                 allChildForParent.forEach(ele -> {
                     Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findBySemesterClassIdAndStudent(semester_class.getId(), ele.getId());
@@ -246,6 +246,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 .registration_expiration_time(semester_class.getRegistration_expiration_time())
                                 .num_of_section(semester_class.getCourse().getNum_of_section())
                                 .schedule(schedule)
+                                .total_register(total_register)
                                 .max_participant(semester_class.getMax_participant())
                                 .semester_id(semester_class.getSemester().getId())
                                 .student_id(ele.getId())
@@ -272,6 +273,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 .registration_expiration_time(semester_class.getRegistration_expiration_time())
                                 .num_of_section(semester_class.getCourse().getNum_of_section())
                                 .schedule(schedule)
+                                .total_register(total_register)
                                 .max_participant(semester_class.getMax_participant())
                                 .semester_id(semester_class.getSemester().getId())
                                 .student_id(ele.getId())
@@ -299,6 +301,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .registration_expiration_time(semester_class.getRegistration_expiration_time())
                             .num_of_section(semester_class.getCourse().getNum_of_section())
                             .schedule(schedule)
+                            .total_register(total_register)
                             .max_participant(semester_class.getMax_participant())
                             .semester_id(semester_class.getSemester().getId())
                             .student_id(ele.getId())
