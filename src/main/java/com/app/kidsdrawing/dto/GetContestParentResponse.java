@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 
 
 @Data
@@ -32,6 +31,6 @@ public class GetContestParentResponse {
     private String art_type_name;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
-    private Set<String> student_registered_name;
-    private Set<Long> student_registered_id;
+    private String student_name;
+    private Long student_id;
 }
