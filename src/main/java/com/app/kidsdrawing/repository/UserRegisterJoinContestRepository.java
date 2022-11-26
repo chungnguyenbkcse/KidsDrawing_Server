@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -31,10 +30,6 @@ public interface UserRegisterJoinContestRepository extends JpaRepository <UserRe
     
     @Query("FROM UserRegisterJoinContest e JOIN FETCH e.contest co WHERE co.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinContest> findByContestId1(Long id);
-
-    @Modifying
-    @Query(value = "SELECT DISTINCT e FROM user_register_join_contest e INNER JOIN contest co ON e.contest_id = co.id WHERE co.id = ?1", nativeQuery=true)
-    List<UserRegisterJoinContest> findTotalByContestId1(Long id);
 
     @Query("FROM UserRegisterJoinContest e JOIN FETCH e.contest co JOIN FETCH e.student  WHERE co.id = ?1 ORDER BY e.id")
     List<UserRegisterJoinContest> findByContestId2(Long id);
