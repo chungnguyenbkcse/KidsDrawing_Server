@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 
 
 @Data
@@ -38,6 +37,6 @@ public class GetSemesterClassParentResponse {
     private LocalDate start_date;
     private Long semester_id;
     private String schedule;
-    private Set<String> student_registered_name;
-    private Set<Long> student_registered_id;
+    private String student_name;
+    private Long student_id;
 }
