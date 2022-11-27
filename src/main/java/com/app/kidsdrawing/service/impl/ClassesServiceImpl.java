@@ -268,6 +268,7 @@ public class ClassesServiceImpl implements ClassesService {
                         .art_level_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
                                 .getArtLevels().getName())
                         .schedule(schedule)
+                        .review_star(getReviewStarForClass(ele.getId()))
                         .build();
                 allInfoClassTeacherDoneResponses.add(infoClassTeacherResponse);
 
