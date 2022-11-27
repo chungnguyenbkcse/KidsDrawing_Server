@@ -45,7 +45,7 @@ GET {{rest}}/teacher-register-tutorial/17
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 
-GET {{rest}}/teacher-register-tutorial
+GET {{rest}}/user-register-tutorial-page/tutorial/4
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester

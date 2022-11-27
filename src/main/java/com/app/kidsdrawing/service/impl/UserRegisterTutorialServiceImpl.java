@@ -32,6 +32,7 @@ import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
 import com.app.kidsdrawing.repository.TutorialTemplatePageRepository;
 import com.app.kidsdrawing.repository.TutorialTemplateRepository;
+import com.app.kidsdrawing.repository.UserRegisterTutorialPageRepository;
 import com.app.kidsdrawing.repository.UserRegisterTutorialRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.UserRegisterTutorialService;
@@ -44,6 +45,7 @@ import lombok.RequiredArgsConstructor;
 public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialService{
     
     private final UserRegisterTutorialRepository userRegisterTutorialRepository;
+    private final UserRegisterTutorialPageRepository userRegisterTutorialPageRepository;
     private final UserRepository userRepository;
     private final SectionRepository sectionRepository;
     private final TutorialRepository tutorialRepository;
@@ -168,11 +170,15 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
     @Override
     public Long removeUserRegisterTutorialById(Long id) {
         Optional<UserRegisterTutorial> UserRegisterTutorialOpt = userRegisterTutorialRepository.findById1(id);
-        UserRegisterTutorialOpt.orElseThrow(() -> {
+        UserRegisterTutorial userRegisterTutorial = UserRegisterTutorialOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
 
-        userRegisterTutorialRepository.deleteById(id);
+        if (userRegisterTutorial.getStatus().equals("Not approved now")) {
+            List<UserRegisterTutorialPage> userRegisterTutorialPages = userRegisterTutorialPageRepository.findByUserRegisterTutorialId(id);
+            userRegisterTutorialPageRepository.deleteAll(userRegisterTutorialPages);
+            userRegisterTutorialRepository.deleteById(id);
+        }
         return id;
     }
 
