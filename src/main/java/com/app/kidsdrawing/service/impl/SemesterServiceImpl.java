@@ -103,18 +103,37 @@ public class SemesterServiceImpl implements SemesterService {
         LocalDateTime now = LocalDateTime.now();
         pageSemester.forEach(semester -> {
             if (now.isBefore(semester.getStart_time())) {
-                GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
-                    .id(semester.getId())
-                    .name(semester.getName())
-                    .description(semester.getDescription())
-                    .start_time(semester.getStart_time())
-                    .end_time(semester.getEnd_time())
-                    .number(semester.getNumber())
-                    .year(semester.getYear())
-                    .create_time(semester.getCreate_time())
-                    .update_time(semester.getUpdate_time())
-                    .build();
-                allSemesterResponses.add(semesterResponse);
+                int total_class = classRepository.findAllBySemester(semester.getId()).size();
+                if (total_class > 0) {
+                    GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
+                        .id(semester.getId())
+                        .name(semester.getName())
+                        .checked_genaration(true)
+                        .description(semester.getDescription())
+                        .start_time(semester.getStart_time())
+                        .end_time(semester.getEnd_time())
+                        .number(semester.getNumber())
+                        .year(semester.getYear())
+                        .create_time(semester.getCreate_time())
+                        .update_time(semester.getUpdate_time())
+                        .build();
+                    allSemesterResponses.add(semesterResponse);
+                }
+                else {
+                    GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
+                        .id(semester.getId())
+                        .name(semester.getName())
+                        .checked_genaration(false)
+                        .description(semester.getDescription())
+                        .start_time(semester.getStart_time())
+                        .end_time(semester.getEnd_time())
+                        .number(semester.getNumber())
+                        .year(semester.getYear())
+                        .create_time(semester.getCreate_time())
+                        .update_time(semester.getUpdate_time())
+                        .build();
+                    allSemesterResponses.add(semesterResponse);
+                }
             }
         });
 

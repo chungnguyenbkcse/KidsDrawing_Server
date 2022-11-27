@@ -35,6 +35,9 @@ public interface ClassesRepository extends JpaRepository <Classes, Long>{
     @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH u.teacher te WHERE te.id = ?1 AND s.id = ?2")
     List<Classes> findAllByTeacherAndSemester(Long teacher_id, Long semester_id);
 
+    @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s WHERE s.id = ?1")
+    List<Classes> findAllBySemester(Long semester_id);
+
     @Query("SELECT DISTINCT c1 FROM Classes c1 JOIN FETCH c1.classHasRegisterJoinSemesterClasses crj JOIN FETCH crj.userRegisterJoinSemester urj JOIN FETCH urj.student st  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s LEFT JOIN FETCH s.holidays JOIN FETCH u.teacher te JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE st.id = ?1")
     List<Classes> findAllByStudent(Long id);
 

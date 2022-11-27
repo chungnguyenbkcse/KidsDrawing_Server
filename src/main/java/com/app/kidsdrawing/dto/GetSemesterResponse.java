@@ -18,6 +18,7 @@ public class GetSemesterResponse {
     private String name;
     private String description;
     private Integer number;
+    private Boolean checked_genaration;
     private Integer year;
     private LocalDateTime start_time;
     private LocalDateTime end_time;

@@ -18,6 +18,7 @@ public class GetUserGradeExerciseSubmissionResponse {
     private Long teacher_id;
     private String teacher_name;
     private String exercise_name;
+    private Long exercise_id;
     private LocalDateTime time_submit;
     private LocalDateTime deadline;
     private String image_url;
