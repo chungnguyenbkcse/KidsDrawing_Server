@@ -23,9 +23,11 @@ import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
+import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ClassHasRegisterJoinSemesterClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
     private final ClassesRepository classRepository;
+    private final UserRepository userRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private static int total = 0;
     
@@ -95,17 +98,18 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
     @Override
     public Long updateClassHasRegisterJoinSemesterClassForStudent(CreateClassHasRegisterJoinSemesterClassStudentRequest createClassHasRegisterJoinSemesterClassStudentRequest) {
-        
-        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassesIdAndStudentId(createClassHasRegisterJoinSemesterClassStudentRequest.getClasses_id(),createClassHasRegisterJoinSemesterClassStudentRequest.getStudent_id());
-        ClassHasRegisterJoinSemesterClass updatedClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
+        List<User> allChildForParent = userRepository
+                .findByParentId(createClassHasRegisterJoinSemesterClassStudentRequest.getParent_id());
+        allChildForParent.forEach(ele -> {
+            Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassesIdAndStudentId(createClassHasRegisterJoinSemesterClassStudentRequest.getClasses_id(),ele.getId());
+            if (classHasRegisterJoinSemesterClassOpt.isPresent()) {
+                classHasRegisterJoinSemesterClassOpt.get().setStudent_feedback(createClassHasRegisterJoinSemesterClassStudentRequest.getStudent_feedback());
+                classHasRegisterJoinSemesterClassOpt.get().setReview_star(createClassHasRegisterJoinSemesterClassStudentRequest.getReview_star());
+                classHasRegisterJoinSemesterClassRepository.save(classHasRegisterJoinSemesterClassOpt.get());
+            }
         });
 
-        updatedClassHasRegisterJoinSemesterClass.setStudent_feedback(createClassHasRegisterJoinSemesterClassStudentRequest.getStudent_feedback());
-        updatedClassHasRegisterJoinSemesterClass.setReview_star(createClassHasRegisterJoinSemesterClassStudentRequest.getReview_star());
-        classHasRegisterJoinSemesterClassRepository.save(updatedClassHasRegisterJoinSemesterClass);
-
-        return updatedClassHasRegisterJoinSemesterClass.getClasses().getId();
+        return createClassHasRegisterJoinSemesterClassStudentRequest.getParent_id();
     }
 
     @Override

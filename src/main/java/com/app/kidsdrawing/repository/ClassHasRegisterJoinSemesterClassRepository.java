@@ -47,6 +47,6 @@ public interface ClassHasRegisterJoinSemesterClassRepository extends JpaReposito
     @Query("SELECT DISTINCT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl JOIN FETCH c.userRegisterJoinSemester u JOIN FETCH u.student st JOIN FETCH st.parent WHERE cl.id = ?1")
     List<ClassHasRegisterJoinSemesterClass> findByClassesId3(Long id);
 
-    @Query("SELECT DISTINCT c FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl JOIN FETCH c.userRegisterJoinSemester u JOIN FETCH u.student st WHERE cl.id = ?1 AND st.id =?2")
+    @Query("FROM ClassHasRegisterJoinSemesterClass c  JOIN FETCH c.classes  cl JOIN FETCH c.userRegisterJoinSemester u JOIN FETCH u.student st WHERE cl.id = ?1 AND st.id =?2")
     Optional<ClassHasRegisterJoinSemesterClass> findByClassesIdAndStudentId(Long classes_id, Long student_id);
 }

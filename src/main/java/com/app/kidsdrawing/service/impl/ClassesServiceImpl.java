@@ -154,6 +154,7 @@ public class ClassesServiceImpl implements ClassesService {
                         .total_student(ele.getClassHasRegisterJoinSemesterClasses().size())
                         .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
                                 .getNum_of_section())
+                        .review_star(getReviewStarForClass(ele.getId()))
                         .build();
                 allInfoClassTeacherDoneResponses.add(infoClassTeacherResponse);
             }

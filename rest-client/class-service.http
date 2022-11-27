@@ -97,7 +97,7 @@ GET  {{rest}}/classes/student/22
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/teacher-list/5
+GET  {{rest}}/classes/teacher-list/2
 
 ### GET classes ACTION ###
 # @name get_classes
