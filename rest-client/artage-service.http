@@ -51,7 +51,8 @@ Content-Type: application/json
 ### REMOVE ART TYPE ACTION ###
 # @name update_art_type
 
-DELETE  {{rest}}/art-age/2
+DELETE  {{rest}}/art-age/1
+Authorization: Bearer {{admin_access_token}}
 
 ### GET ART TYPE ACTION ###
 # @name get_art_type

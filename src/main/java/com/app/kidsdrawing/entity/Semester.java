@@ -49,6 +49,9 @@ public class Semester {
     @Column(name =  "year")
     private Integer year;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @Column(name =  "start_time")
     private LocalDateTime start_time;
 

@@ -75,6 +75,9 @@ public class Contest {
     @Column(name = "is_enabled")
     private Boolean is_enabled;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User user;

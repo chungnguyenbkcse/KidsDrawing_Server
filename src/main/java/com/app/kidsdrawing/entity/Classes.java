@@ -31,7 +31,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "classes")
 public class Classes {
@@ -55,6 +55,9 @@ public class Classes {
 
     @Column(name = "link_meeting")
     private String link_meeting;
+
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @Builder.Default()
     @Column(name = "create_time")

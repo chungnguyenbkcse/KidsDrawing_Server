@@ -48,6 +48,9 @@ public class SemesterClass {
     @OneToMany(mappedBy="semesterClass")
     private Set<Schedule> schedules;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @OneToMany(mappedBy="semesterClass")
     private Set<UserRegisterTeachSemester> userRegisterTeachSemesters;
 

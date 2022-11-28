@@ -40,4 +40,7 @@ public class ArtAge {
 
     @OneToMany(mappedBy="artAges")
     private Set<Course> courses;
+
+    @Column(name = "deleted")
+    private Boolean deleted;
 }

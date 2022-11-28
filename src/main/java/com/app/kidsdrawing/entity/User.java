@@ -72,6 +72,9 @@ public class User{
     @Column(name = "status")
     private String status;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp

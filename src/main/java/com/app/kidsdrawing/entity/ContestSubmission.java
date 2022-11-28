@@ -53,6 +53,9 @@ public class ContestSubmission {
     @CreationTimestamp
     private LocalDateTime create_time = LocalDateTime.now();
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @Builder.Default()
     @Column(name = "update_time")
     @UpdateTimestamp

@@ -48,6 +48,9 @@ public class ExerciseSubmission {
     @Column(name = "image_url")
     private String image_url;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp

@@ -53,6 +53,9 @@ public class StudentLeave {
     @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
     private User reviewer;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @Column(name = "description")
     @Lob
     @Type(type = "org.hibernate.type.TextType")

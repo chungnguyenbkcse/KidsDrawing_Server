@@ -53,6 +53,9 @@ public class Course {
     @Column(name = "price")
     private Float price;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @Column(name = "image_url")
     private String image_url;
 

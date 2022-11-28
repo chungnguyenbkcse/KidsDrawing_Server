@@ -68,6 +68,9 @@ public class Exercise {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @OneToMany(mappedBy="exercise")
     private Set<ExerciseSubmission> exerciseSubmissions;
 }

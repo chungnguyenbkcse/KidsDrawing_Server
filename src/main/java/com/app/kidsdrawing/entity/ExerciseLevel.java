@@ -39,6 +39,9 @@ public class ExerciseLevel {
     @Column(name = "weight")
     private Float weight;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @OneToMany(mappedBy="exerciseLevel")
     private Set<Exercise> exercise;
 }

@@ -37,6 +37,9 @@ public class LessonTime {
     @Column(name = "end_time")
     private LocalTime end_time;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @OneToMany(mappedBy="lessonTime")
     private Set<Schedule> schedules;
 

@@ -37,6 +37,9 @@ public class TeacherRegisterQualification {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
     private User reviewer;
