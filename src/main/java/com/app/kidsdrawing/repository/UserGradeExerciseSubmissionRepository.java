@@ -13,7 +13,7 @@ import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
 
 @Repository
 public interface UserGradeExerciseSubmissionRepository extends JpaRepository <UserGradeExerciseSubmission, Long>{
-    @Query("SELECT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission es JOIN FETCH es.exercise JOIN  FETCH es.student ORDER BY e.time")
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission es JOIN FETCH es.exercise JOIN  FETCH es.student ORDER BY e.time")
     List<UserGradeExerciseSubmission> findAll();
 
     @Query(
@@ -25,16 +25,16 @@ public interface UserGradeExerciseSubmissionRepository extends JpaRepository <Us
     @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher  JOIN FETCH e.exerciseSubmission es JOIN FETCH es.exercise JOIN  FETCH es.student WHERE e.teacher = ?1 AND e.exerciseSubmission = ?2")
     Optional<UserGradeExerciseSubmission> findByTeacherIdAndExerciseSubmissionId(Long teacher_id, Long exercise_submission_id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher te WHERE te.id = ?1 ORDER BY e.time")
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher te WHERE te.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByTeacherId1(Long id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher te JOIN FETCH e.exerciseSubmission es JOIN FETCH es.exercise JOIN  FETCH es.student WHERE te.id = ?1 ORDER BY e.time")
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.teacher te JOIN FETCH e.exerciseSubmission es JOIN FETCH es.exercise JOIN  FETCH es.student WHERE te.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByTeacherId2(Long id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH es.exercise JOIN  FETCH es.student WHERE es.id = ?1 ORDER BY e.time")
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH es.exercise JOIN  FETCH es.student WHERE es.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByExerciseSubmissionId1(Long id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise JOIN  FETCH es.student WHERE es.id = ?1 ORDER BY e.time")
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise JOIN  FETCH es.student WHERE es.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByExerciseSubmissionId2(Long id);
 
     @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE st.id = ?1 AND cl.id = ?2 ORDER BY e.time")
@@ -43,17 +43,20 @@ public interface UserGradeExerciseSubmissionRepository extends JpaRepository <Us
     @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN  FETCH es.student st WHERE st.id = ?1 AND se.id = ?2 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByStudentAndSection(Long student_id, Long section_id);
 
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH es.exercise ex JOIN FETCH ex.section se  WHERE se.id = ?1 ORDER BY e.time")
+    List<UserGradeExerciseSubmission> findBySection(Long section_id);
+
     @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE st.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByStudent1(Long student_id);
 
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN  FETCH es.student st WHERE st.id = ?1 ORDER BY e.time")
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN  FETCH es.student st WHERE st.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByStudent(Long student_id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE cl.id = ?1 ORDER BY e.time")
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE cl.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByClass(Long class_id);
 
-    @Query("FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN  FETCH es.student st WHERE ex.id = ?1 ORDER BY e.time")
+    @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN  FETCH es.student st WHERE ex.id = ?1 ORDER BY e.time")
     List<UserGradeExerciseSubmission> findByExercise(Long exercise_id);
 
     @Query("SELECT DISTINCT e FROM UserGradeExerciseSubmission e JOIN FETCH e.exerciseSubmission es JOIN FETCH e.teacher JOIN FETCH es.exercise ex JOIN FETCH ex.section se JOIN FETCH se.classes cl JOIN  FETCH es.student st WHERE ex.id = ?1 AND cl.id = ?2 ORDER BY e.time")

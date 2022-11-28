@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.app.kidsdrawing.dto.CreateSectionRequest;
-import com.app.kidsdrawing.dto.GetSectionResponse;
+import com.app.kidsdrawing.dto.GetSectionStudentResponse;
 import com.app.kidsdrawing.service.SectionService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,9 +35,15 @@ public class SectionController {
     }
     
     @CrossOrigin
-    @GetMapping(value = "/class/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionByClassId(@PathVariable Long id) {
-        return ResponseEntity.ok().body(sectionService.getAllSectionByClassId(id));
+    @GetMapping(value = "/class-teacher/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionTeacherByClassId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(sectionService.getAllSectionTeacherByClassId(id));
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/class-student/{classes_id}/{student_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionStudentByClassId(@PathVariable("classes_id") Long classes_id, @PathVariable("student_id") Long student_id) {
+        return ResponseEntity.ok().body(sectionService.getAllSectionStudentByClassId(classes_id, student_id));
     }
 
     @CrossOrigin
@@ -60,7 +66,7 @@ public class SectionController {
 
     @CrossOrigin
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GetSectionResponse> getSectionById(@PathVariable Long id) {
+    public ResponseEntity<GetSectionStudentResponse> getSectionById(@PathVariable Long id) {
         return ResponseEntity.ok().body(sectionService.getSectionById(id));
     }
 

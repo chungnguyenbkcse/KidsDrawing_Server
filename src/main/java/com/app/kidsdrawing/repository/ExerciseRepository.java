@@ -20,11 +20,17 @@ public interface ExerciseRepository extends JpaRepository <Exercise, Long>{
     @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.exerciseLevel JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.classHasRegisterJoinSemesterClasses chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE cl.id = ?1 AND st.id = ?2 ORDER BY e.id")
     List<Exercise> findAllExerciseByClassAndStudent(Long class_id, Long student_id);
 
+    @Query("SELECT DISTINCT e FROM Exercise e LEFT JOIN FETCH e.exerciseSubmissions es JOIN FETCH e.exerciseLevel JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.classHasRegisterJoinSemesterClasses chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE cl.id = ?1 AND st.id = ?2 AND es.exercise IS NULL ORDER BY e.id")
+    List<Exercise> findAllExerciseByClassAndStudent1(Long class_id, Long student_id);
+
     @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.exerciseLevel el JOIN FETCH e.section se JOIN FETCH se.classes cl WHERE cl.id = ?1 AND el.name = 'exam' ORDER BY e.id")
     List<Exercise> findAllExerciseByClass(Long class_id);
 
     @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.exerciseLevel JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.classHasRegisterJoinSemesterClasses chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE se.id = ?1 AND st.id = ?2 ORDER BY e.id")
     List<Exercise> findAllExerciseBySectionAndStudent(Long section_id, Long student_id);
+
+    @Query("SELECT DISTINCT e FROM Exercise e LEFT JOIN FETCH e.exerciseSubmissions es JOIN FETCH e.exerciseLevel JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.classHasRegisterJoinSemesterClasses chr JOIN FETCH chr.userRegisterJoinSemester urj JOIN FETCH urj.student st WHERE se.id = ?1 AND st.id = ?2 AND es.exercise IS NULL ORDER BY e.id")
+    List<Exercise> findAllExerciseBySectionAndStudent1(Long section_id, Long student_id);
 
     @Query(
 		value = "SELECT e FROM Exercise e JOIN FETCH e.section JOIN FETCH e.exerciseLevel ORDER BY e.id",

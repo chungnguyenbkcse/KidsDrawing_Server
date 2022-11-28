@@ -14,12 +14,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateSectionRequest;
-import com.app.kidsdrawing.dto.GetSectionResponse;
+import com.app.kidsdrawing.dto.GetSectionStudentResponse;
+import com.app.kidsdrawing.dto.GetSectionTeacherResponse;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
 import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.entity.Exercise;
+import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassesRepository;
+import com.app.kidsdrawing.repository.ExerciseRepository;
+import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
+import com.app.kidsdrawing.repository.UserGradeExerciseSubmissionRepository;
 import com.app.kidsdrawing.service.SectionService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,13 +38,16 @@ public class SectionServiceImpl implements SectionService{
     
     private final SectionRepository sectionRepository;
     private final ClassesRepository classRepository;
+    private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
+    private final ExerciseSubmissionRepository exerciseSubmissionRepository;
+    private final ExerciseRepository exerciseRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSection() {
-        List<GetSectionResponse> allSectionResponses = new ArrayList<>();
+        List<GetSectionStudentResponse> allSectionResponses = new ArrayList<>();
         List<Section> listSection = sectionRepository.findAll();
         listSection.forEach(content -> {
-            GetSectionResponse sectionResponse = GetSectionResponse.builder()
+            GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                 .id(content.getId())
                 .classes_id(content.getClasses().getId())
                 .name(content.getName())
@@ -56,15 +66,19 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllSectionByClassId(Long id) {
-        List<GetSectionResponse> allSectionResponses = new ArrayList<>();
+    public ResponseEntity<Map<String, Object>> getAllSectionTeacherByClassId(Long id) {
+        List<GetSectionTeacherResponse> allSectionResponses = new ArrayList<>();
         List<Section> listSection = sectionRepository.findByClassesId(id);
         listSection.forEach(content -> {
+            List<ExerciseSubmission> allExerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySection(content.getId());
+            List<UserGradeExerciseSubmission> allUserGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findBySection(content.getId());
             if (content.getClasses().getId().compareTo(id) == 0){
-                GetSectionResponse sectionResponse = GetSectionResponse.builder()
+                GetSectionTeacherResponse sectionResponse = GetSectionTeacherResponse.builder()
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
+                    .total_exercise_submission(allExerciseSubmissions.size())
+                    .total_user_grade_exercise_submission(allUserGradeExerciseSubmissions.size())
                     .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                     .number(content.getNumber())
                     .teach_form(content.getTeaching_form())
@@ -81,13 +95,41 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
-    public GetSectionResponse getSectionById(Long id) {
+    public ResponseEntity<Map<String, Object>> getAllSectionStudentByClassId(Long class_id, Long student_id) {
+        List<GetSectionStudentResponse> allSectionResponses = new ArrayList<>();
+        List<Section> listSection = sectionRepository.findByClassesId(class_id);
+        listSection.forEach(content -> {
+            if (content.getClasses().getId().compareTo(class_id) == 0){
+                List<Exercise> allExercises = exerciseRepository.findAllExerciseBySectionAndStudent1(content.getId(), student_id);
+
+                GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
+                    .id(content.getId())
+                    .classes_id(content.getClasses().getId())
+                    .name(content.getName())
+                    .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                    .number(content.getNumber())
+                    .total_exercise_not_submit(allExercises.size())
+                    .teach_form(content.getTeaching_form())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allSectionResponses.add(sectionResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("Section", allSectionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public GetSectionStudentResponse getSectionById(Long id) {
         Optional<Section> sectionOpt = sectionRepository.findById2(id);
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Section.not_found");
         });
 
-        return GetSectionResponse.builder()
+        return GetSectionStudentResponse.builder()
             .id(section.getId())
             .classes_id(section.getClasses().getId())
             .name(section.getName())
