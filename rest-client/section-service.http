@@ -67,7 +67,7 @@ GET  {{rest}}/section
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/section/class/24
+GET  {{rest}}/section/class/7
 
 
 ### GET CONTEST ACTION ###

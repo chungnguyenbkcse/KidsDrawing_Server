@@ -395,6 +395,15 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         Classes classes = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.class.not_found");
         });
+
+        List<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findByClassesAndStudent(createStudentLeaveRequest.getClasses_id(), createStudentLeaveRequest.getStudent_id());
+        StudentLeaveOpt.forEach(ele -> {
+            if (ele.getSection().getId() == createStudentLeaveRequest.getSection_id() && ele.getStatus().equals("Not approved") == false) {
+                throw new EntityNotFoundException("exception.StudentLeave.not_create");
+            }
+        });
+
+
         
         StudentLeave savedStudentLeave = StudentLeave.builder()
                 .classes(classes)
@@ -416,7 +425,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
 
-        if (studentLeave.getStatus().equals("Approved") || studentLeave.getStatus().equals("Not approve")) {
+        if (studentLeave.getStatus().equals("Approved") || studentLeave.getStatus().equals("Not approved")) {
             throw new ArtAgeNotDeleteException("exception.StudentLeave.not_delete");
         }
 

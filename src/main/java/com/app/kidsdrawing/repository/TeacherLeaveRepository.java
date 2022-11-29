@@ -47,6 +47,9 @@ public interface TeacherLeaveRepository extends JpaRepository <TeacherLeave, Lon
     @Query("FROM TeacherLeave e JOIN FETCH e.classes cl JOIN FETCH e.section JOIN FETCH e.teacher JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE cl.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<TeacherLeave> findByClassesId2(Long id);
 
+    @Query("FROM TeacherLeave e JOIN FETCH e.classes cl JOIN FETCH e.section JOIN FETCH e.teacher te JOIN FETCH e.reviewer JOIN FETCH e.substitute_teacher WHERE cl.id = ?1 AND te.id = ?2 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
+    List<TeacherLeave> findByClassesAndTeacher(Long class_id, Long teacher_id);
+
     @Query("FROM TeacherLeave e JOIN FETCH e.section se WHERE se.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<TeacherLeave> findBySectionId1(Long id);
 
