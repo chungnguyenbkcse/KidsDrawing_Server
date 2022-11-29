@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +16,11 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateLessonTimeRequest;
 import com.app.kidsdrawing.dto.GetLessonTimeResponse;
+import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.LessonTime;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.LessonTimeRepository;
 import com.app.kidsdrawing.service.LessonTimeService;
 
@@ -28,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class LessonTimeServiceImpl implements LessonTimeService {
 
     private final LessonTimeRepository lessonTimeRepository;
+    private final ClassesRepository classRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllLessonTime() {
@@ -79,6 +84,15 @@ public class LessonTimeServiceImpl implements LessonTimeService {
         lessonTimeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.LessonTime.not_found");
         });
+
+        List<Classes> listClass = classRepository.findAllByLessonTime(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.LessonTime_Classes.not_delete");
+            }
+        }
 
         lessonTimeRepository.deleteById(id);
         return id;

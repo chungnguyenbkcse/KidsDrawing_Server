@@ -40,6 +40,7 @@ import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
@@ -2270,9 +2271,14 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public Long removeClassById(Long id) {
         Optional<Classes> classOpt = classRepository.findById1(id);
-        classOpt.orElseThrow(() -> {
+        Classes classx = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
+
+        LocalDateTime time_now = LocalDateTime.now();
+        if (time_now.isBefore(classx.getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+            throw new ArtAgeNotDeleteException("exception.Classes.not_delete");
+        }
 
         classRepository.deleteById(id);
         return id;

@@ -20,6 +20,7 @@ import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
 import com.app.kidsdrawing.entity.Exercise;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
@@ -438,9 +439,14 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     @Override
     public Long removeExerciseSubmissionById(Long id) {
         Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(id);
-        exerciseSubmissionOpt.orElseThrow(() -> {
+        ExerciseSubmission exerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
+
+        LocalDateTime time_now = LocalDateTime.now();
+        if (time_now.isAfter(exerciseSubmission.getExercise().getDeadline())) {
+            throw new ArtAgeNotDeleteException("exception.Exercise_Deadline.not_delete");
+        }
 
         exerciseSubmissionRepository.deleteById(id);
         return id;

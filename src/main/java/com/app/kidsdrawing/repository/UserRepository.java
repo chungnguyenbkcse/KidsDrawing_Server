@@ -95,4 +95,12 @@ public interface UserRepository extends JpaRepository <User, Long>{
     @Modifying
     @Query("UPDATE User e SET e.deleted = TRUE WHERE e.id = ?1")
     void deleteById(Long id);
+
+    @Modifying
+    @Query("UPDATE User e SET e.deleted = FALSE WHERE e.id = ?1")
+    void restoreById(Long id);
+
+    @Modifying
+    @Query("UPDATE User e SET e.deleted = FALSE WHERE e.username = ?1")
+    void restoreByUsername(String username);
 }

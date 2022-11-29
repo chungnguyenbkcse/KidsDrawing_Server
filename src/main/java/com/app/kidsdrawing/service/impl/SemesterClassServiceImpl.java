@@ -24,11 +24,14 @@ import com.app.kidsdrawing.dto.GetSemesterClassStudentResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassTeacherNewResponse;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Semester;
+import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.exception.SemesterClassAlreadyCreateException;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
@@ -51,6 +54,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private final UserRepository userRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
+    private final ClassesRepository classRepository;
     private static String schedule = "";
     private static int total_register = 0;
 
@@ -704,6 +708,15 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
+
+        List<Classes> listClass = classRepository.findAllBySemesterClass(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.SemesterClass_Classes.not_delete");
+            }
+        }
 
         semesterClassRepository.deleteById(id);
         return id;

@@ -22,6 +22,7 @@ import com.app.kidsdrawing.entity.UserGradeContest;
 import com.app.kidsdrawing.entity.UserGradeContestSubmission;
 import com.app.kidsdrawing.entity.UserGradeContestSubmissionKey;
 import com.app.kidsdrawing.entity.Contest;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.ContestSubmissionRepository;
@@ -283,9 +284,14 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     @Override
     public Long removeContestSubmissionById(Long id) {
         Optional<ContestSubmission> contestSubmissionOpt = contestSubmissionRepository.findById1(id);
-        contestSubmissionOpt.orElseThrow(() -> {
+        ContestSubmission contestSubmission = contestSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
+
+        LocalDateTime time_now = LocalDateTime.now();
+        if (time_now.isAfter((contestSubmission.getContest().getEnd_time()))) {
+            throw new ArtAgeNotDeleteException("exception.contest.deadline");
+        }
 
         contestSubmissionRepository.deleteById(id);
         return id;

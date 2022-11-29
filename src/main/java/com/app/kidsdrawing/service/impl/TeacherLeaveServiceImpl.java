@@ -28,6 +28,7 @@ import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.TeacherLeave;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
@@ -415,9 +416,13 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     @Override
     public Long removeTeacherLeaveById(Long id) {
         Optional<TeacherLeave> teacherLeaveOpt = teacherLeaveRepository.findById1(id);
-        teacherLeaveOpt.orElseThrow(() -> {
+        TeacherLeave teacherLEeave = teacherLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
+
+        if (teacherLEeave.getStatus().equals("Approved") || teacherLEeave.getStatus().equals("Not approve")) {
+            throw new ArtAgeNotDeleteException("exception.TeacherLeave.not_delete");
+        }
 
         teacherLeaveRepository.deleteById(id);
         return id;

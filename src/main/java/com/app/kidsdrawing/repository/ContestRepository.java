@@ -39,14 +39,14 @@ public interface ContestRepository extends JpaRepository <Contest, Long>{
 	)
     Page<Contest> findAll2(Pageable pageable);
 
-    @Query("SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
-    List<Contest> findAll();
-
     @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions ugc JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE ugc.score IS NULL AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findAll1();
 
     @Query("SELECT DISTINCT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findAll3();
+
+    @Query("SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    List<Contest> findAll();
 
     @Query("SELECT COUNT(c.id) FROM Contest c WHERE (c.deleted = FALSE OR c.deleted IS NULL)")
     int findAll2();

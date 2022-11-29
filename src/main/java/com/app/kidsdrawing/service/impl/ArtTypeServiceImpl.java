@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +20,14 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateArtTypeRequest;
 import com.app.kidsdrawing.dto.GetArtTypeResponse;
 import com.app.kidsdrawing.entity.ArtType;
+import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.entity.Contest;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.ArtTypeAlreadyCreateException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtTypeRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
+import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.service.ArtTypeService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +38,8 @@ import lombok.RequiredArgsConstructor;
 public class ArtTypeServiceImpl implements ArtTypeService {
 
     private final ArtTypeRepository artTypeRepository;
+    private final ClassesRepository classRepository;
+    private final ContestRepository contestRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllArtType(int page, int size) {
@@ -90,6 +98,23 @@ public class ArtTypeServiceImpl implements ArtTypeService {
         artTypeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtType.not_found");
         });
+
+        List<Classes> listClass = classRepository.findAllByArtType(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.ArtType_Classes.not_delete");
+            }
+        }
+
+        List<Contest> listContest = contestRepository.findByArtTypeId1(id);
+        for (int index = 0; index < listContest.size(); index++) {
+            if (time_now.isAfter(listContest.get(index).getStart_time()) && time_now.isBefore(listContest.get(index).getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.ArtType_Contest.not_delete");
+            }
+        }
+
 
         artTypeRepository.deleteById(id);
         return id;

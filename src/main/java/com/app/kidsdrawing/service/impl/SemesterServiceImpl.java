@@ -37,6 +37,7 @@ import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
@@ -491,6 +492,15 @@ public class SemesterServiceImpl implements SemesterService {
         semesterOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
+
+        List<Classes> listClass = classRepository.findAllBySemester(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.Course_Classes.not_delete");
+            }
+        }
 
         semesterRepository.deleteById(id);
         return id;

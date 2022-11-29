@@ -38,6 +38,24 @@ public interface ClassesRepository extends JpaRepository <Classes, Long>{
     @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH u.teacher te WHERE (te.id = ?1 AND s.id = ?2) AND (c1.deleted = FALSE OR c1.deleted IS NULL)")
     List<Classes> findAllByTeacherAndSemester(Long teacher_id, Long semester_id);
 
+    @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artTypes at WHERE at.id = ?1 AND (c1.deleted = FALSE OR c1.deleted IS NULL)")
+    List<Classes> findAllByArtType(Long art_type_id);
+
+    @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artLevels at WHERE at.id = ?1 AND (c1.deleted = FALSE OR c1.deleted IS NULL)")
+    List<Classes> findAllByArtLevel(Long art_level_id);
+
+    @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c JOIN FETCH c.artAges at WHERE at.id = ?1 AND (c1.deleted = FALSE OR c1.deleted IS NULL)")
+    List<Classes> findAllByArtAge(Long art_age_id);
+
+    @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s JOIN FETCH sc.course c WHERE c.id = ?1 AND (c1.deleted = FALSE OR c1.deleted IS NULL)")
+    List<Classes> findAllByCourse(Long course_id);
+
+    @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime lt WHERE lt.id = ?1 AND (c1.deleted = FALSE OR c1.deleted IS NULL)")
+    List<Classes> findAllByLessonTime(Long lesson_time_id);
+
+    @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester WHERE sc.id = ?1 AND (c1.deleted = FALSE OR c1.deleted IS NULL)")
+    List<Classes> findAllBySemesterClass(Long semester_class_id);
+
     @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.userRegisterTeachSemester u JOIN FETCH u.semesterClass sc JOIN FETCH sc.semester s WHERE s.id = ?1 AND (c1.deleted = FALSE OR c1.deleted IS NULL)")
     List<Classes> findAllBySemester(Long semester_id);
 

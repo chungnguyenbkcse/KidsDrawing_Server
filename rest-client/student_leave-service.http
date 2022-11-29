@@ -37,6 +37,11 @@ GET {{rest}}/student-leave/1
 
 GET {{rest}}/student-leave
 
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/student-leave/section-student/10/26
+
 
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester

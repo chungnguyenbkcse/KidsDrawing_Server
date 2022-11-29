@@ -58,4 +58,7 @@ public interface StudentLeaveRepository extends JpaRepository <StudentLeave, Lon
 
     @Query("SELECT DISTINCT e FROM StudentLeave e JOIN FETCH e.classes cl JOIN FETCH e.section JOIN FETCH e.student st JOIN FETCH e.reviewer WHERE cl.id = ?1 AND st.id = ?2 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<StudentLeave> findByClassesAndStudent(Long class_id ,Long student_id);
+
+    @Query("SELECT DISTINCT e FROM StudentLeave e JOIN FETCH e.section se JOIN FETCH e.student st WHERE se.id = ?1 AND st.id = ?2 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.update_time  desc")
+    List<StudentLeave> findBySectionAndStudent(Long section_id ,Long student_id);
 }

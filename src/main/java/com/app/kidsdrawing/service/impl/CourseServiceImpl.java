@@ -35,6 +35,7 @@ import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.CourseAlreadyCreateException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtAgeRepository;
@@ -869,6 +870,16 @@ public class CourseServiceImpl implements CourseService {
         courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
+
+        List<Classes> listClass = classRepository.findAllByCourse(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.Course_Classes.not_delete");
+            }
+        }
+
         courseRepository.deleteById(id);
         return id;
     }

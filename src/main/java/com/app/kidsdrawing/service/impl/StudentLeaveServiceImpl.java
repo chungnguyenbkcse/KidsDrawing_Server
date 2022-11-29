@@ -20,6 +20,7 @@ import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.StudentLeave;
 import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
@@ -349,6 +350,30 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
+    public GetStudentLeaveResponse getStudentLeaveBySectionAndStudent(Long section_id, Long student_id) {
+        List<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findBySectionAndStudent(section_id, student_id);
+        if (StudentLeaveOpt.size() == 0) {
+            throw new EntityNotFoundException("exception.StudentLeave.not_found");
+        }
+
+        return GetStudentLeaveResponse.builder()
+            .id(StudentLeaveOpt.get(0).getId())
+            .student_id(StudentLeaveOpt.get(0).getStudent().getId())
+            .student_name(StudentLeaveOpt.get(0).getStudent().getFirstName() + " " + StudentLeaveOpt.get(0).getStudent().getLastName())
+            .reviewer_id(StudentLeaveOpt.get(0).getReviewer().getId())
+            .section_id(StudentLeaveOpt.get(0).getSection().getId())
+            .section_number(StudentLeaveOpt.get(0).getSection().getNumber())
+            .section_name(StudentLeaveOpt.get(0).getSection().getName())
+            .classes_id(StudentLeaveOpt.get(0).getClasses().getId())
+            .class_name(StudentLeaveOpt.get(0).getClasses().getName())
+            .status(StudentLeaveOpt.get(0).getStatus())
+            .description(StudentLeaveOpt.get(0).getDescription())
+            .create_time(StudentLeaveOpt.get(0).getCreate_time())
+            .update_time(StudentLeaveOpt.get(0).getUpdate_time())
+            .build();
+    }
+
+    @Override
     public Long createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest) {
 
         Optional <User> studentOpt = userRepository.findById1(createStudentLeaveRequest.getStudent_id());
@@ -387,9 +412,13 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     @Override
     public Long removeStudentLeaveById(Long id) {
         Optional<StudentLeave> studentLeaveOpt = studentLeaveRepository.findById1(id);
-        studentLeaveOpt.orElseThrow(() -> {
+        StudentLeave studentLeave = studentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
+
+        if (studentLeave.getStatus().equals("Approved") || studentLeave.getStatus().equals("Not approve")) {
+            throw new ArtAgeNotDeleteException("exception.StudentLeave.not_delete");
+        }
 
         studentLeaveRepository.deleteById(id);
         return id;
