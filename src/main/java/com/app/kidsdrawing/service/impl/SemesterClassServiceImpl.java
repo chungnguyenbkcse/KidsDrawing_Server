@@ -59,6 +59,50 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private static int total_register = 0;
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterClass1() {
+        List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
+        List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
+        LocalDateTime time_now = LocalDateTime.now();
+        pageSemesterClass.forEach(semesterClass -> {
+            if (time_now.isBefore(semesterClass.getRegistration_time())) {
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(semesterClass.getId())
+                    .name(semesterClass.getName())
+                    .is_new(true)
+                    .semester_id(semesterClass.getSemester().getId())
+                    .semester_name(semesterClass.getSemester().getName())
+                    .course_id(semesterClass.getCourse().getId())
+                    .course_name(semesterClass.getCourse().getName())
+                    .max_participant(semesterClass.getMax_participant())
+                    .registration_time(semesterClass.getRegistration_time())
+                    .registration_expiration_time(semesterClass.getRegistration_expiration_time())
+                    .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+            else {
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(semesterClass.getId())
+                    .name(semesterClass.getName())
+                    .is_new(false)
+                    .semester_id(semesterClass.getSemester().getId())
+                    .semester_name(semesterClass.getSemester().getName())
+                    .course_id(semesterClass.getCourse().getId())
+                    .course_name(semesterClass.getCourse().getName())
+                    .max_participant(semesterClass.getMax_participant())
+                    .registration_time(semesterClass.getRegistration_time())
+                    .registration_expiration_time(semesterClass.getRegistration_expiration_time())
+                    .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+            
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_classes", allSemesterClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClass() {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
