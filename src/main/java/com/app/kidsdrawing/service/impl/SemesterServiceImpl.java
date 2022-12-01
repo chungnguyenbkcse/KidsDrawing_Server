@@ -29,10 +29,13 @@ import com.app.kidsdrawing.entity.TutorialPage;
 import com.app.kidsdrawing.entity.TutorialTemplate;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserAttendance;
+import com.app.kidsdrawing.entity.UserReadNotification;
+import com.app.kidsdrawing.entity.UserReadNotificationKey;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
 import com.app.kidsdrawing.entity.Holiday;
+import com.app.kidsdrawing.entity.Notification;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
@@ -42,11 +45,13 @@ import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.HolidayRepository;
+import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.TutorialRepository;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
+import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.SemesterService;
 
@@ -63,8 +68,8 @@ public class SemesterServiceImpl implements SemesterService {
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
     private final UserAttendanceRepository userAttendanceRepository;
-    //private final EmailService emailService;
-    //private final FCMService fcmService;
+    private final UserReadNotificationRepository uuserReadNotificationRepository;
+    private final NotificationRepository notificationRepository;
     private final TutorialRepository tutorialRepository;
     private final TutorialPageRepository tutorialPageRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
@@ -365,8 +370,58 @@ public class SemesterServiceImpl implements SemesterService {
 
                         savedClass.setLink_meeting("https://jitsi.kidsdrawing.site/" + savedClass.getId().toString());
                         classRepository.save(savedClass);
+
+                        Notification savedNotification3 = Notification.builder()
+                            .name("Xếp lớp thành công!")
+                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí dạy lớp mở theo kì " + new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getSemesterClass().getName() +   " của bạn được xếp lớp thành công!\n Chân thành cảm ơn!")
+                            .build();
+                        notificationRepository.save(savedNotification3);
+
+                        UserReadNotificationKey idxz = new UserReadNotificationKey(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getTeacher().getId(), savedNotification3.getId());
+            
+                        UserReadNotification savedUserReadNotification3 = UserReadNotification.builder()
+                                .id(idxz)
+                                .notification(savedNotification3)
+                                .user(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getTeacher())
+                                .is_read(false)
+                                .build();
+                        uuserReadNotificationRepository.save(savedUserReadNotification3);
     
                         validUserRegisterSemesters.forEach(user_register_semester -> {
+                            
+
+                            Notification savedNotification1 = Notification.builder()
+                                .name("Xếp lớp thành công!")
+                                .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + user_register_semester.getSemesterClass().getCourse().getName() +   " của tài khoản con của bạn " + user_register_semester.getStudent().getUsername() + " được xếp lớp thành công!\n Chân thành cảm ơn!")
+                                .build();
+                            notificationRepository.save(savedNotification1);
+
+                            Notification savedNotification = Notification.builder()
+                                .name("Xếp lớp không thành công!")
+                                .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + new ArrayList<UserRegisterJoinSemester>(listUserRegisterJoinSemesters).get(0).getSemesterClass().getCourse().getName() +   " của bạn không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                                .build();
+                            notificationRepository.save(savedNotification);
+
+                            UserReadNotificationKey idxy = new UserReadNotificationKey(user_register_semester.getStudent().getId(), savedNotification.getId());
+            
+                            UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                                    .id(idxy)
+                                    .notification(savedNotification)
+                                    .user(user_register_semester.getStudent())
+                                    .is_read(false)
+                                    .build();
+                            uuserReadNotificationRepository.save(savedUserReadNotification);
+
+                            UserReadNotificationKey idxx = new UserReadNotificationKey(user_register_semester.getPayer().getId(), savedNotification1.getId());
+                            
+                            UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
+                                    .id(idxx)
+                                    .notification(savedNotification1)
+                                    .user(user_register_semester.getPayer())
+                                    .is_read(false)
+                                    .build();
+                            uuserReadNotificationRepository.save(savedUserReadNotification1);
+
                             ClassHasRegisterJoinSemesterClassKey idx = new ClassHasRegisterJoinSemesterClassKey(savedClass.getId(),user_register_semester.getId());
                             
                             ClassHasRegisterJoinSemesterClass savedClassHasRegisterJoinSemesterClass = ClassHasRegisterJoinSemesterClass.builder()
@@ -423,6 +478,60 @@ public class SemesterServiceImpl implements SemesterService {
                         
                     }
                 } 
+            } else {
+                if (allUserRegisterTeachSemesters.size() > 0) {
+                    allUserRegisterTeachSemesters.forEach(ele -> {
+                        Notification savedNotification = Notification.builder()
+                            .name("Xếp lớp không thành công!")
+                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí dạy lớp mở theo kì " + ele.getSemesterClass().getName() +   " của bạn không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                            .build();
+                        notificationRepository.save(savedNotification);
+                        UserReadNotificationKey idx = new UserReadNotificationKey(ele.getTeacher().getId(), savedNotification.getId());
+            
+                        UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                                .id(idx)
+                                .notification(savedNotification)
+                                .user(ele.getTeacher())
+                                .is_read(false)
+                                .build();
+                        uuserReadNotificationRepository.save(savedUserReadNotification);
+                    });
+                }
+                if (listUserRegisterJoinSemesters.size() > 0) {
+                    Notification savedNotification = Notification.builder()
+                        .name("Xếp lớp không thành công!")
+                        .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + new ArrayList<UserRegisterJoinSemester>(listUserRegisterJoinSemesters).get(0).getSemesterClass().getCourse().getName() +   " của bạn không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                        .build();
+                    notificationRepository.save(savedNotification);
+                    listUserRegisterJoinSemesters.forEach(ele -> {
+                        Notification savedNotification1 = Notification.builder()
+                            .name("Xếp lớp không thành công!")
+                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + ele.getSemesterClass().getCourse().getName() +   " của tài khoản con của bạn " + ele.getStudent().getUsername() + " không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                            .build();
+                        notificationRepository.save(savedNotification1);
+
+                        UserReadNotificationKey idx = new UserReadNotificationKey(ele.getStudent().getId(), savedNotification.getId());
+            
+                        UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                                .id(idx)
+                                .notification(savedNotification)
+                                .user(ele.getStudent())
+                                .is_read(false)
+                                .build();
+                        uuserReadNotificationRepository.save(savedUserReadNotification);
+
+                        UserReadNotificationKey idxx = new UserReadNotificationKey(ele.getPayer().getId(), savedNotification1.getId());
+            
+                        UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
+                                .id(idxx)
+                                .notification(savedNotification1)
+                                .user(ele.getPayer())
+                                .is_read(false)
+                                .build();
+                        uuserReadNotificationRepository.save(savedUserReadNotification1);
+                    });
+                }
+                
             } 
             check_count ++; 
             System.out.println("Loop: " + String.valueOf(check_count));
