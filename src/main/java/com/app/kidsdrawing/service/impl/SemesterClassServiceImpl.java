@@ -299,7 +299,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 .semester_id(semester_class.getSemester().getId())
                                 .student_id(ele.getId())
                                 .start_date(start_date)
-                                .student_name(ele.getUsername())
+                                .student_name(ele.getUsername() + " - " + ele.getFirstName() + " " + ele.getLastName())
                                 .status("Payed")
                                 .build();
                             allSemesterClassResponses.add(semesterClassResponse);
@@ -326,7 +326,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 .semester_id(semester_class.getSemester().getId())
                                 .student_id(ele.getId())
                                 .start_date(start_date)
-                                .student_name(ele.getUsername())
+                                .student_name(ele.getUsername() + " - " + ele.getFirstName() + " " + ele.getLastName())
                                 .status("Not pay now")
                                 .build();
                             allSemesterClassResponses.add(semesterClassResponse);
@@ -354,7 +354,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .semester_id(semester_class.getSemester().getId())
                             .student_id(ele.getId())
                             .start_date(start_date)
-                            .student_name(ele.getUsername())
+                            .student_name(ele.getUsername() + " - " + ele.getFirstName() + " " + ele.getLastName())
                             .status("Not register")
                             .build();
                         allSemesterClassResponses.add(semesterClassResponse);

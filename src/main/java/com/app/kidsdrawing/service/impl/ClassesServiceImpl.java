@@ -83,7 +83,7 @@ public class ClassesServiceImpl implements ClassesService {
             if (classHasRegisterJoinSemesterClassOpt.isPresent()) {
                 GetChildInClassResponse classResponse = GetChildInClassResponse.builder()
                     .student_id(ele.getId())
-                    .student_name(ele.getUsername())
+                    .student_name(ele.getUsername() + " - " + ele.getFirstName() + " " + ele.getLastName())
                     .dateOfBirth(ele.getDateOfBirth())
                     .sex(ele.getSex())
                     .build();
@@ -226,7 +226,7 @@ public class ClassesServiceImpl implements ClassesService {
                 List<GetStudentResponse> listStudents = new ArrayList<>();
                 ele.getClassHasRegisterJoinSemesterClasses().forEach(content -> {
                     String parent_name = content.getUserRegisterJoinSemester().getStudent().getParent()
-                            .getUsername();
+                            .getUsername() + " - " + content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " " + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
                     GetStudentResponse student = GetStudentResponse.builder()
                             .id(content.getUserRegisterJoinSemester().getStudent().getId())
                             .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
@@ -276,7 +276,7 @@ public class ClassesServiceImpl implements ClassesService {
                 List<GetStudentResponse> listStudentDones = new ArrayList<>();
                 ele.getClassHasRegisterJoinSemesterClasses().forEach(content -> {
                     String parent_name = content.getUserRegisterJoinSemester().getStudent().getParent()
-                            .getUsername();
+                            .getUsername() + " - " +  content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " " + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
                     GetStudentResponse student = GetStudentResponse.builder()
                             .id(content.getUserRegisterJoinSemester().getStudent().getId())
                             .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
@@ -529,7 +529,8 @@ public class ClassesServiceImpl implements ClassesService {
                                     .getSemesterClass()
                                     .getCourse().getName())
                     .student_name(
-                            class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getFirstName()
+                            class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getUsername() + " - "
+                            + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getFirstName()
                                     + " "
                                     + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
                                             .getLastName())
@@ -541,6 +542,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                             .getTeacher().getId())
                     .teacher_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                    .getTeacher().getUsername() + " - " + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                             .getTeacher().getFirstName()
                             + " "
                             + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
@@ -590,10 +592,11 @@ public class ClassesServiceImpl implements ClassesService {
                                 .getSemesterClass()
                                 .getCourse().getImage_url())
                         .student_name(
-                                class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getFirstName()
-                                        + " "
-                                        + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
-                                                .getLastName())
+                            class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getUsername() + " - "
+                            + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getFirstName()
+                                    + " "
+                                    + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
+                                            .getLastName())
                         .semester_id(
                                 class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass()
@@ -614,6 +617,7 @@ public class ClassesServiceImpl implements ClassesService {
                         .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                 .getTeacher().getId())
                         .teacher_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .getTeacher().getUsername() + " - " + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                 .getTeacher().getFirstName()
                                 + " "
                                 + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
@@ -721,8 +725,8 @@ public class ClassesServiceImpl implements ClassesService {
                                 class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                         .getSemesterClass()
                                         .getCourse().getName())
-                        .student_name(class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
-                                .getFirstName()
+                        .student_name(class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getUsername() + " - "
+                        + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getFirstName()
                                 + " "
                                 + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
                                         .getLastName())
@@ -730,6 +734,7 @@ public class ClassesServiceImpl implements ClassesService {
                         .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                 .getTeacher().getId())
                         .teacher_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .getTeacher().getUsername() + " - " + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                 .getTeacher().getFirstName()
                                 + " "
                                 + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
@@ -745,7 +750,7 @@ public class ClassesServiceImpl implements ClassesService {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                             .id(class_has_join_semester_class.getClasses().getId())
                             .student_id(ele.getId())
-                            .student_name(ele
+                            .student_name(ele.getUsername() + " - " + ele
                                     .getFirstName()
                                     + " "
                                     + ele
@@ -788,10 +793,11 @@ public class ClassesServiceImpl implements ClassesService {
                             .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getTeacher().getId())
                             .teacher_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            .getTeacher().getUsername() + " - " + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
                                     .getTeacher().getFirstName()
                                     + " "
                                     + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                                            .getTeacher().getLastName())
+                                            .getTeacher().getLastName() )
                             .total_student(class_has_join_semester_class.getClasses()
                                 .getClassHasRegisterJoinSemesterClasses().size())
                             .security_code(class_has_join_semester_class.getClasses().getSecurity_code())
@@ -831,6 +837,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .teacher_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
                             .getTeacher().getId())
                     .teacher_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
+                    .getTeacher().getUsername() + " - " + classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
                             .getTeacher().getFirstName()
                             + " "
                             + classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher()
@@ -1825,7 +1832,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .findByClassesId3(id);
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
             Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
-            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
+            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getUsername() + " - " + content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
                     + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
                     .id(content.getUserRegisterJoinSemester().getStudent().getId())
@@ -1915,7 +1922,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .findByClassesId3(id);
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
             Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
-            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
+            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getUsername() + " - " + content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
                     + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
                     .id(content.getUserRegisterJoinSemester().getStudent().getId())
@@ -2189,7 +2196,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .findByClassesId3(id);
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
             Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
-            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
+            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getUsername() + " - " + content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
                     + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
                     .id(content.getUserRegisterJoinSemester().getStudent().getId())

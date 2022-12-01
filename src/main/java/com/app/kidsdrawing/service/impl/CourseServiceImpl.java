@@ -345,7 +345,7 @@ public class CourseServiceImpl implements CourseService {
                 Set<Long> student_ids = new HashSet<>();
                 if (res.containsKey(course.getName())){
                     res.get(course.getName()).forEach(ele -> {
-                        student_names.add(ele.getUsername());
+                        student_names.add(ele.getUsername() + " " + ele.getFirstName() + " " + ele.getLastName());
                         student_ids.add(ele.getId());
                     });
                 }
@@ -521,7 +521,7 @@ public class CourseServiceImpl implements CourseService {
                         .create_time(course.getSemesterClass().getCourse().getCreate_time())
                         .update_time(course.getSemesterClass().getCourse().getUpdate_time())
                         .student_id(student.getId())
-                        .student_name(student.getFirstName() + " " + student.getLastName())
+                        .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
                         .build();
                     allCourseRegistedResponses.add(courseResponse);
                 }
@@ -549,7 +549,7 @@ public class CourseServiceImpl implements CourseService {
                         .create_time(course.getCreate_time())
                         .update_time(course.getUpdate_time())
                         .student_id(student.getId())
-                        .student_name(student.getFirstName() + " " + student.getLastName())
+                        .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
                         .build();
                     listCourseNotRegistered.add(courseResponse);
                 }

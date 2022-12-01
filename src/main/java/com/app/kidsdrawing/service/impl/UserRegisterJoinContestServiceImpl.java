@@ -65,7 +65,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             if (classHasRegisterJoinSemesterClassOpt.size() > 0) {
                 GetChildInClassResponse classResponse = GetChildInClassResponse.builder()
                     .student_id(student.getId())
-                    .student_name(student.getUsername())
+                    .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
                     .dateOfBirth(student.getDateOfBirth())
                     .sex(student.getSex())
                     .build();
