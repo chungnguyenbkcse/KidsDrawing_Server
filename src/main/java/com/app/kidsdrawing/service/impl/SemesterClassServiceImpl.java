@@ -491,10 +491,9 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 .findAllSemesterClassByTeacherAndCourse(id, course_id);
 
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
-
+        System.out.print(allSemesterClass.size());
         allSemesterClass.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now)
-                    && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isAfter(time_now)) {
                 schedule = "";
                 semester_class.getSchedules().forEach(schedule_item -> {
                     if (schedule.equals("")) {
