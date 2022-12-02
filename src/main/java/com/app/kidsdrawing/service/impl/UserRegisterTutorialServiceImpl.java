@@ -174,7 +174,7 @@ public class UserRegisterTutorialServiceImpl implements UserRegisterTutorialServ
             throw new EntityNotFoundException("exception.UserRegisterTutorial.not_found");
         });
 
-        if (userRegisterTutorial.getStatus().equals("Not approved now")) {
+        if (userRegisterTutorial.getStatus().equals("Not approve now")) {
             List<UserRegisterTutorialPage> userRegisterTutorialPages = userRegisterTutorialPageRepository.findByUserRegisterTutorialId(id);
             userRegisterTutorialPageRepository.deleteAll(userRegisterTutorialPages);
             userRegisterTutorialRepository.deleteById(id);

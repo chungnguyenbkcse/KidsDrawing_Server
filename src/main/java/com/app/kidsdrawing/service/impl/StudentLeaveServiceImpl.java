@@ -411,7 +411,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 .student(student)
                 .reviewer(admin)
                 .description(createStudentLeaveRequest.getDescription())
-                .status("Not approved now")
+                .status("Not approve now")
                 .build();
         studentLeaveRepository.save(savedStudentLeave);
 
