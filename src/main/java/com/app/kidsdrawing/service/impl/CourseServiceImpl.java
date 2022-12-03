@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -293,15 +293,19 @@ public class CourseServiceImpl implements CourseService {
             }
         });
 
-        List<Course> allCourses = courseRepository.findAll1();
+        List<Course> allCourses = courseRepository.findAll5();
         allCourses.forEach(course -> {
             if (listCourseRegisted.contains(course) == false) {
                 total = 0;
-                total_register = userRegisterJoinSemesterRepository.findByCourse(course.getId()).size();
+                total_register = 0;
 
                 Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
 
                 allSemesterClass.forEach(semester_course -> {
+                    total_register += semester_course.getUserRegisterJoinSemesters()
+                    .stream()
+                    .filter(c -> c.getStatus().equals("Completed"))
+                    .collect(Collectors.toList()).size();
                     if (semesterNexts.contains(semester_course.getSemester())){
                         total ++;
                     }
@@ -331,16 +335,19 @@ public class CourseServiceImpl implements CourseService {
             }
             else {
                 total = 0;
+                total_register = 0;
                 Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
 
                 allSemesterClass.forEach(semester_course -> {
+                    total_register += semester_course.getUserRegisterJoinSemesters().stream()
+                    .filter(c -> c.getStatus().equals("Completed"))
+                    .collect(Collectors.toList()).size();
                     if (semesterNexts.contains(semester_course.getSemester())){
                         total ++;
                     }
                 });
 
                 
-                total_register = userRegisterJoinSemesterRepository.findByCourse(course.getId()).size();
                 Set<String> student_names = new HashSet<>();
                 Set<Long> student_ids = new HashSet<>();
                 if (res.containsKey(course.getName())){
