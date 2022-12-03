@@ -962,6 +962,10 @@ Content-Type: application/json
     "email": "teacher-3@gmail.com"
 }
 
+###
+
+# @name get_all_user_by_student
+GET {{rest}}/user/childs/12
 
 
 

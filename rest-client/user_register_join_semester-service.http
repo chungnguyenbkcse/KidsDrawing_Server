@@ -47,6 +47,11 @@ GET {{rest}}/user-register-join-semester
 
 GET {{rest}}/user-register-join-semester/total-money
 
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/user-register-join-semester/payer/12
+
 
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
