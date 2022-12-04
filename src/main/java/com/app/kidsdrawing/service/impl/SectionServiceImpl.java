@@ -41,6 +41,7 @@ public class SectionServiceImpl implements SectionService{
     private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
     private final ExerciseRepository exerciseRepository;
+    private static Integer total = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSection() {
@@ -101,14 +102,19 @@ public class SectionServiceImpl implements SectionService{
         listSection.forEach(content -> {
             if (content.getClasses().getId().compareTo(class_id) == 0){
                 List<Exercise> allExercises = exerciseRepository.findAllExerciseBySectionAndStudent1(content.getId(), student_id);
-
+                total = 0;
+                allExercises.forEach(ele -> {
+                    if (ele.getExerciseSubmissions().size() == 0) {
+                        total += 1;
+                    }
+                });
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
                     .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                     .number(content.getNumber())
-                    .total_exercise_not_submit(allExercises.size())
+                    .total_exercise_not_submit(total)
                     .teach_form(content.getTeaching_form())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
