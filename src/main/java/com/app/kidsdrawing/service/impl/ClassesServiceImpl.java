@@ -1615,11 +1615,11 @@ public class ClassesServiceImpl implements ClassesService {
     public ResponseEntity<Map<String, Object>> getInforScheduleAllChild(Long parent_id) {
         List<Map<String, List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>>>> allCalendarForAllChild = new ArrayList<>();
             List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findAllByParent(parent_id);
-            List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
+            System.out.print(allClassHasRegisterJoinSemesterClass.size());
             LocalDateTime time_now = LocalDateTime.now();
             allClassHasRegisterJoinSemesterClass.forEach(class_has_register_join_semester_class -> {
-
                 if (class_has_register_join_semester_class.getUserRegisterJoinSemester().getSemesterClass().getSemester().getEnd_time().isAfter(time_now)) {
+                    List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
                     List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
                     class_has_register_join_semester_class.getUserRegisterJoinSemester().getSemesterClass().getSchedules().forEach(schedule_item -> {
                         GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
