@@ -130,24 +130,48 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         List<GetUserGradeContestSubmissionResponse> allUserGradeContestSubmissionResponses = new ArrayList<>();
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByStudent(id);
         listUserGradeContestSubmission.forEach(content -> {
-            GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                .teacher_id(content.getTeacher().getId())
-                .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
-                .student_id(content.getContestSubmission().getStudent().getId())
-                .student_name(content.getContestSubmission().getStudent().getUsername() + " - " + content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
-                .contest_id(content.getContestSubmission().getContest().getId())
-                .contest_name(content.getContestSubmission().getContest().getName())
-                .contest_submission_id(content.getContestSubmission().getId())
-                .feedback(content.getFeedback())
-                .url_conest_submission(content.getContestSubmission().getImage_url())
-                .art_age_name(content.getContestSubmission().getContest().getArtAges().getName())
-                .art_type_name(content.getContestSubmission().getContest().getArtTypes().getName())
-                .start_time(content.getContestSubmission().getContest().getStart_time())
-                .end_time(content.getContestSubmission().getContest().getEnd_time())
-                .score(content.getScore())
-                .time(content.getTime())
-                .build();
-            allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
+            if (content.getScore() == null) {
+                GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                    .student_id(content.getContestSubmission().getStudent().getId())
+                    .student_name(content.getContestSubmission().getStudent().getUsername() + " - " + content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                    .contest_id(content.getContestSubmission().getContest().getId())
+                    .contest_name(content.getContestSubmission().getContest().getName())
+                    .contest_submission_id(content.getContestSubmission().getId())
+                    .feedback(content.getFeedback())
+                    .url_conest_submission(content.getContestSubmission().getImage_url())
+                    .art_age_name(content.getContestSubmission().getContest().getArtAges().getName())
+                    .art_type_name(content.getContestSubmission().getContest().getArtTypes().getName())
+                    .start_time(content.getContestSubmission().getContest().getStart_time())
+                    .end_time(content.getContestSubmission().getContest().getEnd_time())
+                    .score((float) 0)
+                    .time(content.getTime())
+                    .build();
+                    allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
+                }
+              
+                else {
+                    GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                        .teacher_id(content.getTeacher().getId())
+                        .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                        .student_id(content.getContestSubmission().getStudent().getId())
+                        .student_name(content.getContestSubmission().getStudent().getUsername() + " - " + content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                        .contest_id(content.getContestSubmission().getContest().getId())
+                        .contest_name(content.getContestSubmission().getContest().getName())
+                        .contest_submission_id(content.getContestSubmission().getId())
+                        .feedback(content.getFeedback())
+                        .url_conest_submission(content.getContestSubmission().getImage_url())
+                        .art_age_name(content.getContestSubmission().getContest().getArtAges().getName())
+                        .art_type_name(content.getContestSubmission().getContest().getArtTypes().getName())
+                        .start_time(content.getContestSubmission().getContest().getStart_time())
+                        .end_time(content.getContestSubmission().getContest().getEnd_time())
+                        .score(content.getScore())
+                        .time(content.getTime())
+                        .build();
+                    allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
+                }
+            
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -161,24 +185,46 @@ public class UserGradeContestSubmissionServiceImpl implements UserGradeContestSu
         List<UserGradeContestSubmission> listUserGradeContestSubmission = userGradeContestSubmissionRepository.findByContest(id);
 
         listUserGradeContestSubmission.forEach(content -> {
-            GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
-                .teacher_id(content.getTeacher().getId())
-                .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
-                .student_id(content.getContestSubmission().getStudent().getId())
-                .student_name(content.getContestSubmission().getStudent().getUsername() + " - " + content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
-                .contest_id(content.getContestSubmission().getContest().getId())
-                .contest_name(content.getContestSubmission().getContest().getName())
-                .contest_submission_id(content.getContestSubmission().getId())
-                .url_conest_submission(content.getContestSubmission().getImage_url())
-                .art_age_name(content.getContestSubmission().getContest().getArtAges().getName())
-                .art_type_name(content.getContestSubmission().getContest().getArtTypes().getName())
-                .start_time(content.getContestSubmission().getContest().getStart_time())
-                .end_time(content.getContestSubmission().getContest().getEnd_time())
-                .feedback(content.getFeedback())
-                .score(content.getScore())
-                .time(content.getTime())
-                .build();
-            allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
+            if (content.getScore() == null) {
+                GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                    .student_id(content.getContestSubmission().getStudent().getId())
+                    .student_name(content.getContestSubmission().getStudent().getUsername() + " - " + content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                    .contest_id(content.getContestSubmission().getContest().getId())
+                    .contest_name(content.getContestSubmission().getContest().getName())
+                    .contest_submission_id(content.getContestSubmission().getId())
+                    .url_conest_submission(content.getContestSubmission().getImage_url())
+                    .art_age_name(content.getContestSubmission().getContest().getArtAges().getName())
+                    .art_type_name(content.getContestSubmission().getContest().getArtTypes().getName())
+                    .start_time(content.getContestSubmission().getContest().getStart_time())
+                    .end_time(content.getContestSubmission().getContest().getEnd_time())
+                    .feedback(content.getFeedback())
+                    .score((float) 0)
+                    .time(content.getTime())
+                    .build();
+                allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
+            }
+            else {
+                GetUserGradeContestSubmissionResponse userGradeContestSubmissionResponse = GetUserGradeContestSubmissionResponse.builder()
+                    .teacher_id(content.getTeacher().getId())
+                    .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                    .student_id(content.getContestSubmission().getStudent().getId())
+                    .student_name(content.getContestSubmission().getStudent().getUsername() + " - " + content.getContestSubmission().getStudent().getFirstName() + " " + content.getContestSubmission().getStudent().getLastName())
+                    .contest_id(content.getContestSubmission().getContest().getId())
+                    .contest_name(content.getContestSubmission().getContest().getName())
+                    .contest_submission_id(content.getContestSubmission().getId())
+                    .url_conest_submission(content.getContestSubmission().getImage_url())
+                    .art_age_name(content.getContestSubmission().getContest().getArtAges().getName())
+                    .art_type_name(content.getContestSubmission().getContest().getArtTypes().getName())
+                    .start_time(content.getContestSubmission().getContest().getStart_time())
+                    .end_time(content.getContestSubmission().getContest().getEnd_time())
+                    .feedback(content.getFeedback())
+                    .score(content.getScore())
+                    .time(content.getTime())
+                    .build();
+                allUserGradeContestSubmissionResponses.add(userGradeContestSubmissionResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();
