@@ -191,13 +191,22 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
                     final_exam = final_exam + content.getScore() ;
                 }
             });
-
-            GetFinalScoreForStudentResponse userGradeExerciseSubmissionResponse = GetFinalScoreForStudentResponse.builder()
+            if ( count_exam + middle * 30 + final_exam * 60 == 0) {
+                GetFinalScoreForStudentResponse userGradeExerciseSubmissionResponse = GetFinalScoreForStudentResponse.builder()
+                    .final_score((float) 0)  
+                    .course_id(element.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId()) 
+                    .course_name(element.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())              
+                    .build();
+                allFinalScoreForStudent.add(userGradeExerciseSubmissionResponse);
+            }
+            else {
+                GetFinalScoreForStudentResponse userGradeExerciseSubmissionResponse = GetFinalScoreForStudentResponse.builder()
                 .final_score((exam * 10 / count_exam + middle * 30 + final_exam * 60) / 100)  
                 .course_id(element.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId()) 
                 .course_name(element.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())              
                 .build();
-            allFinalScoreForStudent.add(userGradeExerciseSubmissionResponse);
+                allFinalScoreForStudent.add(userGradeExerciseSubmissionResponse);
+            }
         });
 
         Map<String, Object> response = new HashMap<>();
