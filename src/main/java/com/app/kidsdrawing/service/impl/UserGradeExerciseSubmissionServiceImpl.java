@@ -164,7 +164,12 @@ public class UserGradeExerciseSubmissionServiceImpl implements UserGradeExercise
 
         Map<String, Object> response = new HashMap<>();
         response.put("UserGradeExerciseSubmission", allUserGradeExerciseSubmissionResponses);
-        response.put("final_grade", (exam * 10 / count_exam + middle * 30 + final_exam * 60) / 100);
+        if ( count_exam + middle * 30 + final_exam * 60 == 0) {
+            response.put("final_grade", 0);
+        }
+        else {
+            response.put("final_grade", (exam * 10 / count_exam + middle * 30 + final_exam * 60) / 100);
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
