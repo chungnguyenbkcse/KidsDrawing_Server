@@ -28,10 +28,10 @@ public interface ArtAgeRepository extends JpaRepository <ArtAge, Long>{
     @Query("SELECT c FROM ArtAge c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     Optional<ArtAge> findById(Long id);
 
-    @Query("SELECT COUNT(c.id) = 1 FROM ArtAge c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT COUNT(c.id) = 1 FROM ArtAge c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     boolean existsById(Long id);
 
-    @Query("SELECT COUNT(c.id) = 1 FROM ArtAge c WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT COUNT(c.id) = 1 FROM ArtAge c WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Boolean existsByName(String name);
 
     @Modifying

@@ -28,10 +28,10 @@ public interface ArtLevelRepository extends JpaRepository <ArtLevel, Long>{
     @Query("SELECT c FROM ArtLevel c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     Optional<ArtLevel> findById(Long id);
 
-    @Query("SELECT COUNT(c.id) = 1 FROM ArtLevel c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT COUNT(c.id) = 1 FROM ArtLevel c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     boolean existsById(Long id);
 
-    @Query("SELECT COUNT(c.id) = 1 FROM ArtLevel c WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT COUNT(c.id) = 1 FROM ArtLevel c WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Boolean existsByName(String name);
 
     @Modifying

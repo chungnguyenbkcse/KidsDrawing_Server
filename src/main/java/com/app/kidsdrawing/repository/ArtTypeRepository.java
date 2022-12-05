@@ -29,10 +29,10 @@ public interface ArtTypeRepository extends JpaRepository <ArtType, Long>{
     @Query("SELECT c FROM ArtType c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     Optional<ArtType> findById(Long id);
 
-    @Query("SELECT COUNT(c.id) = 1 FROM ArtType c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT COUNT(c.id) = 1 FROM ArtType c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     boolean existsById(Long id);
 
-    @Query("SELECT COUNT(c.id) = 1 FROM ArtType c WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT COUNT(c.id) = 1 FROM ArtType c WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Boolean existsByName(String name);
 
     @Modifying
