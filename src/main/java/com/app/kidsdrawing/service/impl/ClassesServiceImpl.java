@@ -2290,23 +2290,7 @@ public class ClassesServiceImpl implements ClassesService {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                .findById(createClassRequest.getUser_register_teach_semester());
-        UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.teacher_teach_semester.not_found");
-        });
-
-        Optional<User> userOpt = userRepository.findById1(createClassRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
-
         updatedClass.setName(createClassRequest.getName());
-        updatedClass.setSecurity_code(createClassRequest.getSecurity_code());
-        updatedClass.setLink_meeting("https://meet.jit.si/" + createClassRequest.getSecurity_code());
-        updatedClass.setUser(user);
-        updatedClass.setUserRegisterTeachSemester(teacherTeachSemester);
-
         return updatedClass.getId();
     }
 }
