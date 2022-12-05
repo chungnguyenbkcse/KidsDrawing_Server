@@ -390,6 +390,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 .classes(classes)
                 .section(section)
                 .teacher(teacher)
+                .reviewer(teacher)
                 .status("Not approve now")
                 .substitute_teacher(substitute_teacher)
                 .description(createTeacherLeaveRequest.getDescription())
