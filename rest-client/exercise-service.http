@@ -88,3 +88,8 @@ GET  {{rest}}/exercises/class-parent/7/12
 # @name get_contest
 
 GET  {{rest}}/exercises/section-student/18/18
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/exercises/section-parent/62/12/2
