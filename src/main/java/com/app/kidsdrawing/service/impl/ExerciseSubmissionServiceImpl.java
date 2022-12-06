@@ -198,7 +198,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                     .image_url(content.getImage_url())
                     .exercise_description(content.getExercise().getDescription())
-                    .exercise_level_name(content.getExercise().getExerciseLevel().getWeight().toString())
                     .exercise_deadline(content.getExercise().getDeadline())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -212,7 +211,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
                     .exercise_description(content.getExercise().getDescription())
-                    .exercise_level_name(content.getExercise().getExerciseLevel().getWeight().toString())
+                    
                     .exercise_deadline(content.getExercise().getDeadline())
                     .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                     .image_url(content.getImage_url())
@@ -255,7 +254,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                                 content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                             .image_url(content.getImage_url())
                             .exercise_description(content.getExercise().getDescription())
-                            .exercise_level_name(content.getExercise().getExerciseLevel().getWeight().toString())
                             .exercise_deadline(content.getExercise().getDeadline())
                             .create_time(content.getCreate_time())
                             .update_time(content.getUpdate_time())
@@ -268,7 +266,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                             .student_id(content.getStudent().getId())
                             .exercise_name(content.getExercise().getName())
                             .exercise_description(content.getExercise().getDescription())
-                            .exercise_level_name(content.getExercise().getExerciseLevel().getWeight().toString())
                             .exercise_deadline(content.getExercise().getDeadline())
                             .student_name(
                                 content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
@@ -308,7 +305,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                     .image_url(content.getImage_url())
                     .exercise_description(content.getExercise().getDescription())
-                    .exercise_level_name(content.getExercise().getExerciseLevel().getWeight().toString())
+                    
                     .exercise_deadline(content.getExercise().getDeadline())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -322,7 +319,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
                     .exercise_description(content.getExercise().getDescription())
-                    .exercise_level_name(content.getExercise().getExerciseLevel().getWeight().toString())
+                    
                     .exercise_deadline(content.getExercise().getDeadline())
                     .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
                     .image_url(content.getImage_url())

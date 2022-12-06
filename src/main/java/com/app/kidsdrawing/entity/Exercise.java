@@ -43,10 +43,6 @@ public class Exercise {
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "level_id", referencedColumnName = "id")
-    private ExerciseLevel exerciseLevel;
-
     @Column(name = "name", nullable = false)
     private String name;
 
