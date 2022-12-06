@@ -96,6 +96,44 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllSectionParentByClassId(Long class_id, Long parent_id, int total_child_in_class) {
+        List<GetSectionStudentResponse> allSectionResponses = new ArrayList<>();
+        List<Section> listSection = sectionRepository.findByClassesId(class_id);
+        listSection.forEach(content -> {
+            if (content.getClasses().getId().compareTo(class_id) == 0){
+                List<Exercise> allExercises = exerciseRepository.findAllExerciseBySection2(content.getId());
+                System.out.print("Buổi số: " + content.getNumber());
+                System.out.print(allExercises.size());
+                total = 0;
+                allExercises.forEach(ele -> {
+                    for (int i = 0; i < new ArrayList<>(ele.getExerciseSubmissions()).size(); i++) {
+                        if (new ArrayList<>(ele.getExerciseSubmissions()).get(i).getStudent().getParent().getId() == parent_id) {
+                            total += 1;
+                            break;
+                        }
+                    }
+                });
+                GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
+                    .id(content.getId())
+                    .classes_id(content.getClasses().getId())
+                    .name(content.getName())
+                    .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
+                    .number(content.getNumber())
+                    .total_exercise_not_submit(allExercises.size() * total_child_in_class - total)
+                    .teach_form(content.getTeaching_form())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allSectionResponses.add(sectionResponse);
+            }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("Section", allSectionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllSectionStudentByClassId(Long class_id, Long student_id) {
         List<GetSectionStudentResponse> allSectionResponses = new ArrayList<>();
         List<Section> listSection = sectionRepository.findByClassesId(class_id);

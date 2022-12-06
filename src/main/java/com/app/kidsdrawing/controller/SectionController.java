@@ -46,6 +46,13 @@ public class SectionController {
         return ResponseEntity.ok().body(sectionService.getAllSectionStudentByClassId(classes_id, student_id));
     }
 
+
+    @CrossOrigin
+    @GetMapping(value = "/class-parent/{classes_id}/{parent_id}/{total}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllSectionParentByClassId(@PathVariable("classes_id") Long classes_id, @PathVariable("parent_id") Long parent_id, @PathVariable("total") int total) {
+        return ResponseEntity.ok().body(sectionService.getAllSectionParentByClassId(classes_id, parent_id, total));
+    }
+
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> createSection(@RequestBody CreateSectionRequest createSectionRequest) {
