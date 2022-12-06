@@ -35,7 +35,6 @@ import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.LessonTime;
-import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
@@ -46,7 +45,6 @@ import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
-import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ClassesService;
 
@@ -62,7 +60,6 @@ public class ClassesServiceImpl implements ClassesService {
     private final UserRepository userRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
-    private final SemesterRepository semesterRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
     private static int total_section_count = 0;
@@ -878,33 +875,182 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleAllClass() {
+        Map<String, Object> response = new HashMap<>();
+        List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> res = new ArrayList<>();
+        List<Classes> classOpt = classRepository.findAll2();
         LocalDateTime time_now = LocalDateTime.now();
-        List<Semester> allSemesters = semesterRepository.findAll1();
-        List<Classes> allClassDoing = new ArrayList<>();
-        allSemesters.forEach(semester -> {
-            if (semester.getEnd_time().isAfter(time_now)) {
-                semester.getSemesterClass().forEach(semester_class -> {
-                    semester_class.getUserRegisterTeachSemesters()
-                            .forEach(user_register_teache_semester -> {
-                                Optional<Classes> classesOpt = classRepository
-                                        .findByUserRegisterTeachSemesterId2(user_register_teache_semester.getId());
-                                Classes classes = classesOpt.orElseThrow(() -> {
-                                    throw new EntityNotFoundException("exception.Classes.not_found");
-                                });
-                                allClassDoing.add(classes);
-                            });
+        classOpt.forEach(classes -> {
+            if (time_now.isAfter(classes.getUserRegisterTeachSemester().getSemesterClass().getSemester().getStart_time()) && time_now.isBefore(classes.getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+                SemesterClass semesterCouse = classes.getUserRegisterTeachSemester().getSemesterClass();
+                List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
+                List<Integer> dayOfWeeks = new ArrayList<>();
+                List<LessonTime> lessonTimeResponses = new ArrayList<>();
+        
+                semesterCouse.getSchedules().forEach(schedule_item -> {
+                    GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
+                            .id(schedule_item.getId())
+                            .lesson_time(schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                    + schedule_item.getLessonTime().getEnd_time().toString())
+                            .lesson_time_id(schedule_item.getLessonTime().getId())
+                            .date_of_week(schedule_item.getDate_of_week())
+                            .build();
+                    allScheduleResponses.add(scheduleResponse);
+                    dayOfWeeks.add(schedule_item.getDate_of_week());
+                    lessonTimeResponses.add(schedule_item.getLessonTime());
                 });
+        
+                Collections.sort(dayOfWeeks);
+        
+                List<LocalDate> list_holiday = new ArrayList<>();
+                semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+                    list_holiday.add(holiday.getDay());
+                });
+        
+                List<Map<String, List<List<LocalDateTime>>>> allCalendarForSemesterClass = new ArrayList<>();
+                Integer total_section = semesterCouse.getCourse().getNum_of_section();
+                System.out.printf("total_section: %d\n", total_section);
+                System.out.printf("total_number_week: %d\n", semesterCouse.getSchedules().size());
+                int total_week = total_section / semesterCouse.getSchedules().size();
+                if (total_section % semesterCouse.getSchedules().size() != 0) {
+                    total_week++;
+                }
+                System.out.printf("total_week: %d\n", total_week);
+                total_section_count = 0;
+                LocalDateTime start_time = semesterCouse.getSemester().getStart_time();
+                week_count = 0;
+                while (total_section_count < total_section) {
+                    List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
+                    if (semesterCouse.getSchedules().size() > 1) {
+                        for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
+                            Integer dayOfWeek = dayOfWeeks.get(idx);
+                            LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                            LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                            // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                            System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                            List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                            if (dayOfWeek == 2) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                                    start_time = start_time.plusDays(1);
+                                }
+                            } else if (dayOfWeek == 3) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else if (dayOfWeek == 4) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else if (dayOfWeek == 5) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else if (dayOfWeek == 6) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else if (dayOfWeek == 7) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else {
+                                while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            if (total_section_count < total_section) {
+                                LocalDate start_date = start_time.toLocalDate();
+                                if (list_holiday.contains(start_date) == false) {
+                                    lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                                    lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                                    total_section_count++;
+                                }
+                            }
+                            lesson_time_in_week.add(lesson_time_in_day);
+                        }
+                    } else {
+                        for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
+                            Integer dayOfWeek = dayOfWeeks.get(idx);
+                            LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                            LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                            // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                            System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                            List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                            if (total_section_count > 0) {
+                                if (dayOfWeek == 2) {
+                                    start_time = start_time.plusDays(7);
+        
+                                } else if (dayOfWeek == 3) {
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else if (dayOfWeek == 4) {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else if (dayOfWeek == 5) {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else if (dayOfWeek == 6) {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else if (dayOfWeek == 7) {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+                            }
+        
+                            if (total_section_count < total_section) {
+                                LocalDate start_date = start_time.toLocalDate();
+                                if (list_holiday.contains(start_date) == false) {
+                                    lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                                    lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                                    total_section_count++;
+                                }
+                            }
+                            lesson_time_in_week.add(lesson_time_in_day);
+                        }
+                    }
+                    Map<String, List<List<LocalDateTime>>> schedule_in_week = new HashMap<>();
+                    String name = "week_" + week_count;
+                    schedule_in_week.put(name, lesson_time_in_week);
+                    allCalendarForSemesterClass.add(schedule_in_week);
+                    // start_time = start_time.plusWeeks(1);
+                    week_count++;
+                }
+                Map<String, List<Map<String, List<List<LocalDateTime>>>>> sheduleForClass = new HashMap<>();
+                String class_name = classes.getName();
+                sheduleForClass.put(class_name, allCalendarForSemesterClass);
+                res.add(sheduleForClass);
             }
         });
 
-        List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allScheduleForAllClass = new ArrayList<>();
-        allClassDoing.forEach(class_ele -> {
-            Map<String, List<Map<String, List<List<LocalDateTime>>>>> res = new HashMap<>();
-            res.put(class_ele.getName(), getScheduleDetailOfClass(class_ele));
-            allScheduleForAllClass.add(res);
-        });
-        Map<String, Object> response = new HashMap<>();
-        response.put("schedules", allScheduleForAllClass);
+        response.put("schedule", res);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
