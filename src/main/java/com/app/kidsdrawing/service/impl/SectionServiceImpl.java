@@ -101,11 +101,16 @@ public class SectionServiceImpl implements SectionService{
         List<Section> listSection = sectionRepository.findByClassesId(class_id);
         listSection.forEach(content -> {
             if (content.getClasses().getId().compareTo(class_id) == 0){
-                List<Exercise> allExercises = exerciseRepository.findAllExerciseBySectionAndStudent1(content.getId(), student_id);
+                List<Exercise> allExercises = exerciseRepository.findAllExerciseBySection1(content.getId());
+                System.out.print("Buổi số: " + content.getNumber());
+                System.out.print(allExercises.size());
                 total = 0;
                 allExercises.forEach(ele -> {
-                    if (ele.getExerciseSubmissions().size() == 0) {
-                        total += 1;
+                    for (int i = 0; i < new ArrayList<>(ele.getExerciseSubmissions()).size(); i++) {
+                        if (new ArrayList<>(ele.getExerciseSubmissions()).get(i).getStudent().getId() == student_id) {
+                            total += 1;
+                            break;
+                        }
                     }
                 });
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
@@ -114,7 +119,7 @@ public class SectionServiceImpl implements SectionService{
                     .name(content.getName())
                     .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                     .number(content.getNumber())
-                    .total_exercise_not_submit(total)
+                    .total_exercise_not_submit(allExercises.size() - total)
                     .teach_form(content.getTeaching_form())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
