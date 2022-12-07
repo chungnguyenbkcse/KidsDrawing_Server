@@ -77,7 +77,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
 
     @Override
     public SimpleMailMessage constructResetTokenEmail(String token, User user) {
-        String url = "https://server.kidsdrawing.site/api/v1/password-reset-token/user/changePassword/" + token;
+        String url = "http://localhost:8080/api/v1/password-reset-token/user/changePassword/" + token;
         String message = "Hello \n Bạn có yêu cầu reset password\n. Click vào đường link bên dưới: \n";
         return constructEmail("Reset Password", message + " \r\n" + url, user);
     }
@@ -108,9 +108,9 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
     public String showChangePasswordPage(@RequestParam("token") String token) {
         String result = validatePasswordResetToken(token);
         if(result != null) {
-            return "https://kids-drawing-type-script.vercel.app/auth";
+            return "http://localhost:3000/auth";
         } else {
-            return "https://kids-drawing-type-script.vercel.app/update-password";
+            return "http://localhost:3000/update-password";
         }
     } 
 

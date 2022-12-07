@@ -10,8 +10,8 @@ Content-Type: application/json
 
 {
     "username": "student-1",
-    "password": "12345678aA@",
-    "email": "student-1@gmail.com",
+    "password": "123",
+    "email": "chungnguyen100120001qx@gmail.com",
     "firstName": "student",
     "lastName": "1",
     "dateOfBirth": null,
@@ -20,7 +20,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 12,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 {
     "username": "student-2",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-2@gmail.com",
     "firstName": "student",
     "lastName": "2",
@@ -42,7 +42,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 12,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -54,7 +54,7 @@ Content-Type: application/json
 
 {
     "username": "student-3",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-3@gmail.com",
     "firstName": "student",
     "lastName": "3",
@@ -64,7 +64,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 13,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -76,7 +76,7 @@ Content-Type: application/json
 
 {
     "username": "student-4",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-4@gmail.com",
     "firstName": "student",
     "lastName": "4",
@@ -86,7 +86,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 13,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -98,7 +98,7 @@ Content-Type: application/json
 
 {
     "username": "student-5",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-5@gmail.com",
     "firstName": "student",
     "lastName": "5",
@@ -108,7 +108,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 14,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -120,7 +120,7 @@ Content-Type: application/json
 
 {
     "username": "student-6",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-6@gmail.com",
     "firstName": "student",
     "lastName": "6",
@@ -130,7 +130,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 14,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -142,7 +142,7 @@ Content-Type: application/json
 
 {
     "username": "student-7",
-    "password": "a8726357",
+    "password": "123",
     "email": "student-7@gmail.com",
     "firstName": "student",
     "lastName": "7",
@@ -152,7 +152,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 15,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -164,7 +164,7 @@ Content-Type: application/json
 
 {
     "username": "student-8",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-8@gmail.com",
     "firstName": "student",
     "lastName": "8",
@@ -174,7 +174,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 15,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -187,7 +187,7 @@ Content-Type: application/json
 
 {
     "username": "student-9",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-9@gmail.com",
     "firstName": "student",
     "lastName": "9",
@@ -197,7 +197,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 16,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -210,7 +210,7 @@ Content-Type: application/json
 
 {
     "username": "student-10",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-10@gmail.com",
     "firstName": "student",
     "lastName": "10",
@@ -220,7 +220,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 16,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -233,7 +233,7 @@ Content-Type: application/json
 
 {
     "username": "student-11",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-11@gmail.com",
     "firstName": "student",
     "lastName": "11",
@@ -243,7 +243,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 17,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -256,7 +256,7 @@ Content-Type: application/json
 
 {
     "username": "student-12",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-12@gmail.com",
     "firstName": "student",
     "lastName": "12",
@@ -266,7 +266,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 17,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -278,7 +278,7 @@ Content-Type: application/json
 
 {
     "username": "student-13",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-13@gmail.com",
     "firstName": "student",
     "lastName": "13",
@@ -288,7 +288,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 18,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -301,7 +301,7 @@ Content-Type: application/json
 
 {
     "username": "student-14",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-14@gmail.com",
     "firstName": "student",
     "lastName": "14",
@@ -311,7 +311,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 18,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -325,7 +325,7 @@ Content-Type: application/json
 
 {
     "username": "student-15",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-15@gmail.com",
     "firstName": "student",
     "lastName": "15",
@@ -335,7 +335,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 19,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -347,7 +347,7 @@ Content-Type: application/json
 
 {
     "username": "student-16",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-16@gmail.com",
     "firstName": "student",
     "lastName": "16",
@@ -357,7 +357,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 19,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -369,7 +369,7 @@ Content-Type: application/json
 
 {
     "username": "student-17",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-17@gmail.com",
     "firstName": "student",
     "lastName": "17",
@@ -379,7 +379,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 20,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -392,7 +392,7 @@ Content-Type: application/json
 
 {
     "username": "student-18",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-18@gmail.com",
     "firstName": "student",
     "lastName": "18",
@@ -402,7 +402,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 20,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -414,7 +414,7 @@ Content-Type: application/json
 
 {
     "username": "student-19",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-19@gmail.com",
     "firstName": "student",
     "lastName": "19",
@@ -424,7 +424,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 21,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -437,7 +437,7 @@ Content-Type: application/json
 
 {
     "username": "student-20",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-20@gmail.com",
     "firstName": "student",
     "lastName": "20",
@@ -447,7 +447,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": 21,
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 
@@ -460,7 +460,7 @@ Content-Type: application/json
 
 {
     "username": "student-40",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "student-40@gmail.com",
     "firstName": "student",
     "lastName": "40",
@@ -470,7 +470,7 @@ Content-Type: application/json
     "phone": null,
     "address": null,
     "parent_id": "3646e54e-97fd-41b2-9977-23448b7664bb",
-    "roleNames": ["STUDENT_USER"]
+    "roleName": "STUDENT"
 }
 
 ### REGISTER ACTION ###
@@ -482,15 +482,15 @@ Content-Type: application/json
 
 {
     "username": "parent-1",
-    "password": "a8726357",
-    "email": "parent-1@gmail.com",
+    "password": "123",
+    "email": "chung.nguyen10012001@hcmut.edu.vn",
     "firstName": "parent",
     "lastName": "1",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
     "phone": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 ### REGISTER ACTION ###
@@ -502,8 +502,8 @@ Content-Type: application/json
 
 {
     "username": "parent-2",
-    "password": "12345678aA@",
-    "email": "chung.nguyen10012001@hcmut.edu.vn",
+    "password": "123",
+    "email": "parent-2@gmail.com",
     "firstName": "parent",
     "lastName": "2",
     "dateOfBirth": null,
@@ -511,7 +511,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 ### REGISTER ACTION ###
@@ -523,7 +523,7 @@ Content-Type: application/json
 
 {
     "username": "parent-3",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "parent-3@gmail.com",
     "firstName": "parent",
     "lastName": "3",
@@ -532,7 +532,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 ### REGISTER ACTION ###
@@ -544,7 +544,7 @@ Content-Type: application/json
 
 {
     "username": "parent-4",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "parent-4@gmail.com",
     "firstName": "parent",
     "lastName": "4",
@@ -553,7 +553,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 ### REGISTER ACTION ###
@@ -565,7 +565,7 @@ Content-Type: application/json
 
 {
     "username": "parent-5",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "parent-5@gmail.com",
     "firstName": "parent",
     "lastName": "5",
@@ -574,7 +574,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 
@@ -587,7 +587,7 @@ Content-Type: application/json
 
 {
     "username": "parent-6",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "parent-6@gmail.com",
     "firstName": "parent",
     "lastName": "6",
@@ -596,7 +596,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 
@@ -609,7 +609,7 @@ Content-Type: application/json
 
 {
     "username": "parent-7",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "parent-7@gmail.com",
     "firstName": "parent",
     "lastName": "7",
@@ -618,7 +618,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 ### REGISTER ACTION ###
@@ -630,7 +630,7 @@ Content-Type: application/json
 
 {
     "username": "parent-8",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "parent-8@gmail.com",
     "firstName": "parent",
     "lastName": "8",
@@ -639,7 +639,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 
@@ -652,7 +652,7 @@ Content-Type: application/json
 
 {
     "username": "parent-9",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "parent-9@gmail.com",
     "firstName": "parent",
     "lastName": "9",
@@ -661,7 +661,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 
@@ -674,7 +674,7 @@ Content-Type: application/json
 
 {
     "username": "parent-10",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "parent-10@gmail.com",
     "firstName": "parent",
     "lastName": "10",
@@ -683,7 +683,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["PARENT_USER"]
+    "roleName": "PARENT"
 }
 
 ### REGISTER ACTION ###
@@ -695,7 +695,7 @@ Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "chungnguyen10012000@gmail.com",
     "firstName": "admin",
     "lastName": "",
@@ -715,7 +715,7 @@ Content-Type: application/json
 
 {
     "username": "teacher-1",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "thanhtrunga370qx@gmail.com",
     "firstName": "teacher",
     "lastName": "1",
@@ -735,16 +735,16 @@ Content-Type: application/json
 
 {
     "username": "teacher-2",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "teacher-2@gmail.com",
-    "firstName": "teacher",
-    "lastName": "2",
+    "firstName": "Nguyễn Thị",
+    "lastName": "X",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["TEACHER_USER"]
+    "roleName": "TEACHER"
 }
 
 ### REGISTER ACTION ###
@@ -755,16 +755,16 @@ Content-Type: application/json
 
 {
     "username": "teacher-3",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "teacher-3@gmail.com",
-    "firstName": "teacher",
-    "lastName": "3",
+    "firstName": "Nguyễn Thị",
+    "lastName": "Y",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["TEACHER_USER"]
+    "roleName": "TEACHER"
 }
 
 ### REGISTER ACTION ###
@@ -775,16 +775,16 @@ Content-Type: application/json
 
 {
     "username": "teacher-4",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "teacher-4@gmail.com",
-    "firstName": "teacher",
-    "lastName": "4",
+    "firstName": "Nguyễn Thị",
+    "lastName": "Z",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["TEACHER_USER"]
+    "roleName": "TEACHER"
 }
 
 ### REGISTER ACTION ###
@@ -795,16 +795,16 @@ Content-Type: application/json
 
 {
     "username": "teacher-10",
-    "password": "12345678aA@",
+    "password": "123",
     "email": "teacher-10@gmail.com",
-    "firstName": "teacher",
-    "lastName": "10",
+    "firstName": "Nguyễn Thị",
+    "lastName": "E",
     "dateOfBirth": null,
     "profile_image_url": null,
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["TEACHER_USER"]
+    "roleName": "TEACHER"
 }
 
 
@@ -830,7 +830,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["TEACHER_USER"]
+    "roleName": "TEACHER"
 }
 
 ### ADMIN ACTION ###
@@ -843,7 +843,7 @@ Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "12345678aA@"
+    "password": "123"
 }
 
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
@@ -901,7 +901,7 @@ Content-Type: application/json
 
 {
     "username": "teacher-1",
-    "password": "12345678aA@"
+    "password": "123"
 }
 
 ###
@@ -946,8 +946,8 @@ PUT {{rest}}/user/change-password/1
 Content-Type: application/json
 
 {
-    "pre_password": "12345678aA@",
-    "new_password": "a8726357"
+    "pre_password": "123",
+    "new_password": "123"
 }
 
 

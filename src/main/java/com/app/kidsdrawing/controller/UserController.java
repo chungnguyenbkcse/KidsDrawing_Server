@@ -89,14 +89,14 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/report/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUser(@PathVariable int id) {
-        String role_id =  "STUDENT_USER";
+        String role_id =  "STUDENT";
         return ResponseEntity.ok().body(userService.getReportUserNew(id, role_id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/student")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudent() {
-        String role_id =  "STUDENT_USER";
+        String role_id =  "STUDENT";
         return ResponseEntity.ok().body(userService.getAllStudents(role_id));
     } 
 
@@ -104,7 +104,7 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/parent")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllParent() {
-        String role_id =  "PARENT_USER";
+        String role_id =  "PARENT";
         return ResponseEntity.ok().body(userService.getAllParents(role_id));
     } 
 

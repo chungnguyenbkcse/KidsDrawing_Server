@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "12345678aA@"
+    "password": "123"
 }
 
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
@@ -22,12 +22,10 @@ Authorization: Bearer {{admin_access_token}}
 
 {
     "name": "Học kì 1 năm học 2022",
-    "description": "",
     "number": 1,
-    "start_time": "2022-09-01T00:00:00",
-    "end_time": "2022-11-01T00:00:00",
-    "year": 2022,
-    "creator_id": "1951832a-1fc6-4515-98b6-2b1835b6dc6e"
+    "start_time": "2022-12-010T00:00:00",
+    "end_time": "2023-01-01T00:00:00",
+    "year": 2022
 }
 
 

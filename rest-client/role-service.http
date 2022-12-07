@@ -20,7 +20,7 @@ POST {{rest}}/role
 Content-Type: application/json
 
 {
-    "name": "ADMIN_USER",
+    "name": "ADMIN",
     "description": "Role for admin"
 }
 
@@ -32,7 +32,7 @@ POST {{rest}}/role
 Content-Type: application/json
 
 {
-    "name": "TEACHER_USER",
+    "name": "TEACHER",
     "description": "Role for teacher"
 }
 
@@ -45,7 +45,7 @@ POST {{rest}}/role
 Content-Type: application/json
 
 {
-    "name": "PARENT_USER",
+    "name": "PARENT",
     "description": "Role for parent"
 }
 
@@ -58,6 +58,6 @@ POST {{rest}}/role
 Content-Type: application/json
 
 {
-    "name": "STUDENT_USER",
+    "name": "STUDENT",
     "description": "Role for student"
 }
