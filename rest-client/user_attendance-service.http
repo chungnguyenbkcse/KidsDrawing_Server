@@ -20,7 +20,7 @@ POST {{rest}}/user-attendance
 Content-Type: application/json
 
 {
-    "tutorial_id": 1,
+    "section_id": 1,
     "name": "Trang 1",
     "description": "xxx",
     "number": 1

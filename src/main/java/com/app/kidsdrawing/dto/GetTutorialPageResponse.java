@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetTutorialPageResponse {
     private Long id;
-    private Long tutorial_id;
-    private String name;
+    private Long section_id;
     private String description;
     private Integer number; 
 }

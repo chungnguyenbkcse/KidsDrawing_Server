@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
     "teacher_id": 4,
-    "tutorial_id": 1,
+    "section_id": 1,
     "reviewer_id": 3,
     "status": false
 }

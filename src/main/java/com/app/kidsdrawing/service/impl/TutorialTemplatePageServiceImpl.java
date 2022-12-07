@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateTutorialTemplatePageRequest;
 import com.app.kidsdrawing.dto.GetTutorialTemplatePageResponse;
+import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.TutorialTemplatePage;
-import com.app.kidsdrawing.entity.TutorialTemplate;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.repository.SectionTemplateRepository;
 import com.app.kidsdrawing.repository.TutorialTemplatePageRepository;
-import com.app.kidsdrawing.repository.TutorialTemplateRepository;
 import com.app.kidsdrawing.service.TutorialTemplatePageService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageService{
     
     private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
-    private final TutorialTemplateRepository tutorialTemplateRepository;
+    private final SectionTemplateRepository sectionTemplateRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePage() {
@@ -39,8 +39,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
         listTutorialTemplatePage.forEach(content -> {
             GetTutorialTemplatePageResponse tutorialPageResponse = GetTutorialTemplatePageResponse.builder()
                 .id(content.getId())
-                .tutorial_template_id(content.getTutorialTemplate().getId())
-                .name(content.getName())
+                .section_template_id(content.getSectionTemplate().getId())
                 .description(content.getDescription())
                 .number(content.getNumber())
                 .build();
@@ -52,36 +51,16 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageByTutorialTemplateId(Long id) {
-        List<GetTutorialTemplatePageResponse> allTutorialTemplatePageResponses = new ArrayList<>();
-        List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findByTutorialTemplateId(id);
-        listTutorialTemplatePage.forEach(content -> {
-            GetTutorialTemplatePageResponse tutorialPageResponse = GetTutorialTemplatePageResponse.builder()
-                .id(content.getId())
-                .tutorial_template_id(content.getTutorialTemplate().getId())
-                .name(content.getName())
-                .description(content.getDescription())
-                .number(content.getNumber())
-                .build();
-            allTutorialTemplatePageResponses.add(tutorialPageResponse);
-        });
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("TutorialTemplatePage", allTutorialTemplatePageResponses);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionTemplateId(Long id) {
         List<GetTutorialTemplatePageResponse> allTutorialTemplatePageResponses = new ArrayList<>();
         List<TutorialTemplatePage> listTutorialTemplatePage = tutorialTemplatePageRepository.findBySectionTemplateId(id);
         listTutorialTemplatePage.forEach(content -> {
-            if (content.getTutorialTemplate().getSectionTemplate().getId().compareTo(id) == 0){
+            if (content.getSectionTemplate().getId().compareTo(id) == 0){
                 GetTutorialTemplatePageResponse tutorialPageResponse = GetTutorialTemplatePageResponse.builder()
                     .id(content.getId())
-                    .tutorial_template_id(content.getTutorialTemplate().getId())
-                    .name(content.getName())
+                    .section_template_id(content.getSectionTemplate().getId())
                     .description(content.getDescription())
                     .number(content.getNumber())
                     .build();
@@ -103,8 +82,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
 
         return GetTutorialTemplatePageResponse.builder()
             .id(tutorialPage.getId())
-            .tutorial_template_id(tutorialPage.getTutorialTemplate().getId())
-            .name(tutorialPage.getName())
+            .section_template_id(tutorialPage.getSectionTemplate().getId())
             .description(tutorialPage.getDescription())
             .number(tutorialPage.getNumber())
             .build();
@@ -113,14 +91,13 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     @Override
     public Long createTutorialTemplatePage(CreateTutorialTemplatePageRequest createTutorialTemplatePageRequest) {
 
-        Optional <TutorialTemplate> tutorialOpt = tutorialTemplateRepository.findById1(createTutorialTemplatePageRequest.getTutorial_template_id());
-        TutorialTemplate tutorial = tutorialOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.tutorial.not_found");
+        Optional <SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findById1(createTutorialTemplatePageRequest.getSection_template_id());
+        SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });
         
         TutorialTemplatePage savedTutorialTemplatePage = TutorialTemplatePage.builder()
-                .tutorialTemplate(tutorial)
-                .name(createTutorialTemplatePageRequest.getName())
+                .sectionTemplate(sectionTemplate)
                 .description(createTutorialTemplatePageRequest.getDescription())
                 .number(createTutorialTemplatePageRequest.getNumber())
                 .build();
@@ -147,13 +124,12 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
             throw new EntityNotFoundException("exception.TutorialTemplatePage.not_found");
         });
 
-        Optional <TutorialTemplate> tutorialOpt = tutorialTemplateRepository.findById1(createTutorialTemplatePageRequest.getTutorial_template_id());
-        TutorialTemplate tutorial = tutorialOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.tutorial.not_found");
+        Optional <SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findById1(createTutorialTemplatePageRequest.getSection_template_id());
+        SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.SectionTemplate.not_found");
         });
 
-        updatedTutorialTemplatePage.setName(createTutorialTemplatePageRequest.getName());
-        updatedTutorialTemplatePage.setTutorialTemplate(tutorial);
+        updatedTutorialTemplatePage.setSectionTemplate(sectionTemplate);
         updatedTutorialTemplatePage.setDescription(createTutorialTemplatePageRequest.getDescription());
         updatedTutorialTemplatePage.setNumber(createTutorialTemplatePageRequest.getNumber());
 

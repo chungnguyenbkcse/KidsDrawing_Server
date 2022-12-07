@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class CreateTutorialPageRequest {
-    private Long tutorial_id;
-    private String name;
+    private Long section_id;
     private String description;
     private Integer number; 
 }

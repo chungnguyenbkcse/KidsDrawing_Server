@@ -49,6 +49,7 @@ public class SectionServiceImpl implements SectionService{
                 .id(content.getId())
                 .classes_id(content.getClasses().getId())
                 .name(content.getName())
+                .status(content.getStatus())
                 .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                 .number(content.getNumber())
                 .teach_form(content.getTeaching_form())
@@ -75,6 +76,7 @@ public class SectionServiceImpl implements SectionService{
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
+                    .status(content.getStatus())
                     .total_exercise_submission(allExerciseSubmissions.size())
                     .total_user_grade_exercise_submission(exerciseSubmissionGrade.size())
                     .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
@@ -114,6 +116,7 @@ public class SectionServiceImpl implements SectionService{
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
+                    .status(content.getStatus())
                     .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                     .number(content.getNumber())
                     .total_exercise_not_submit(allExercises.size() * total_child_in_class - total)
@@ -152,6 +155,7 @@ public class SectionServiceImpl implements SectionService{
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
+                    .status(content.getStatus())
                     .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                     .number(content.getNumber())
                     .total_exercise_not_submit(allExercises.size() - total)
@@ -179,6 +183,7 @@ public class SectionServiceImpl implements SectionService{
             .id(section.getId())
             .classes_id(section.getClasses().getId())
             .name(section.getName())
+            .status(section.getStatus())
             .teacher_name(section.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + section.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + section.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
             .number(section.getNumber())
             .teach_form(section.getTeaching_form())
@@ -199,6 +204,7 @@ public class SectionServiceImpl implements SectionService{
                 .classes(classes)
                 .name(createSectionRequest.getName())
                 .number(createSectionRequest.getNumber())
+                .status("Not approve now")
                 .build();
         sectionRepository.save(savedSection);
 
@@ -230,6 +236,7 @@ public class SectionServiceImpl implements SectionService{
 
         updatedSection.setName(createSectionRequest.getName());
         updatedSection.setClasses(classes);
+        updatedSection.setStatus(createSectionRequest.getStatus());
         updatedSection.setNumber(createSectionRequest.getNumber());
 
         return updatedSection.getId();

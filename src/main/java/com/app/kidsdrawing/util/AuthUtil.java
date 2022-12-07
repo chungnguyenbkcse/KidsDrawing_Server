@@ -51,6 +51,7 @@ public class AuthUtil {
                 .withSubject("User Details")
                 .withClaim("id", user.getId().toString())
                 .withClaim("username", username)
+                .withClaim("link_profile", user.getProfileImageUrl())
                 .withClaim("role", role)
                 .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenDuration))
                 .withIssuedAt(new Date())

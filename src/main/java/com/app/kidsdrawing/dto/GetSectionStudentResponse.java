@@ -19,6 +19,7 @@ public class GetSectionStudentResponse {
     private Integer number;
     private String teacher_name;
     private String recording;
+    private String status;
     private int total_exercise_not_submit;
     private String message;
     private Boolean teach_form;

@@ -24,9 +24,7 @@ import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.Tutorial;
 import com.app.kidsdrawing.entity.TutorialPage;
-import com.app.kidsdrawing.entity.TutorialTemplate;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserAttendance;
 import com.app.kidsdrawing.entity.UserReadNotification;
@@ -49,7 +47,6 @@ import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
-import com.app.kidsdrawing.repository.TutorialRepository;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
 import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -70,7 +67,6 @@ public class SemesterServiceImpl implements SemesterService {
     private final UserAttendanceRepository userAttendanceRepository;
     private final UserReadNotificationRepository uuserReadNotificationRepository;
     private final NotificationRepository notificationRepository;
-    private final TutorialRepository tutorialRepository;
     private final TutorialPageRepository tutorialPageRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
@@ -442,8 +438,18 @@ public class SemesterServiceImpl implements SemesterService {
                                 .name(section_template.getName())
                                 .number(section_template.getNumber())
                                 .teaching_form(section_template.getTeaching_form())
+                                .status("INITIAL")
                                 .build();
                             sectionRepository.save(savedSection);
+
+                            section_template.getTutorialTemplatePages().forEach(tutorial_template_page -> {
+                                TutorialPage savedTutorialPage = TutorialPage.builder()
+                                    .number(tutorial_template_page.getNumber())
+                                    .description(tutorial_template_page.getDescription())
+                                    .section(savedSection)
+                                    .build();
+                                tutorialPageRepository.save(savedTutorialPage);
+                            });
     
                             validUserRegisterSemesters.forEach(user_register_semester -> {
                                 UserAttendance savedUserAttendance = UserAttendance.builder() 
@@ -452,25 +458,6 @@ public class SemesterServiceImpl implements SemesterService {
                                     .status(false)
                                     .build();
                                 userAttendanceRepository.save(savedUserAttendance);
-                            });
-                            
-                            Tutorial savedTutorial = Tutorial.builder()
-                                .section(savedSection)
-                                .creator(creator)
-                                .name("Giáo trình " + section_template.getName())
-                                .build();
-                            tutorialRepository.save(savedTutorial);
-
-                            TutorialTemplate tutorialTemplate = section_template.getTutorialTemplate();
-
-                            tutorialTemplate.getTutorialTemplatePages().forEach(tutorial_page -> {
-                                TutorialPage savedTutorialPage = TutorialPage.builder()
-                                    .tutorial(savedTutorial)
-                                    .name(tutorial_page.getName())
-                                    .description(tutorial_page.getDescription())
-                                    .number(tutorial_page.getNumber())
-                                    .build();
-                                tutorialPageRepository.save(savedTutorialPage);
                             });
                         });
                     }

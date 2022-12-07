@@ -10,7 +10,6 @@ import com.app.kidsdrawing.dto.GetTutorialTemplatePageResponse;
 
 public interface TutorialTemplatePageService {
     ResponseEntity<Map<String, Object>> getAllTutorialTemplatePage();
-    ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageByTutorialTemplateId(Long id);
     ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionTemplateId(Long id);
     GetTutorialTemplatePageResponse getTutorialTemplatePageById(Long id);
     Long createTutorialTemplatePage(CreateTutorialTemplatePageRequest createTutorialTemplatePageRequest);
