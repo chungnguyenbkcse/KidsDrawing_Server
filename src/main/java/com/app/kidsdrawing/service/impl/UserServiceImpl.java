@@ -501,7 +501,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if (validRoles.equals("ADMIN")) {
             Admin adminUser = Admin.builder()
+                .id(savedUser.getId())
                 .phone(createUserRequest.getPhone())
+                .user(savedUser)
                 .build();
 
             adminRepository.save(adminUser);
@@ -509,14 +511,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         else if (validRoles.equals("TEACHER")) {
             Teacher teacherUser = Teacher.builder()
+                .id(savedUser.getId())
                 .phone(createUserRequest.getPhone())
+                .user(savedUser)
                 .build();
 
             teacherRepository.save(teacherUser);
         }
         else if (validRoles.equals("PARENT")) {
             Parent parentUser = Parent.builder()
+                .id(savedUser.getId())
                 .phone(createUserRequest.getPhone())
+                .user(savedUser)
                 .build();
 
             parentRepository.save(parentUser);
@@ -528,6 +534,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             });
 
             Student studentUser = Student.builder()
+                .id(savedUser.getId())
+                .user(savedUser)
                 .dateOfBirth(createUserRequest.getDateOfBirth())
                 .parent(parent)
                 .build();
@@ -585,7 +593,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(savedUser);
 
         Teacher teacherUser = Teacher.builder()
+            .id(savedUser.getId())
             .phone(createTeacherRequest.getPhone())
+            .user(savedUser)
             .build();
         teacherRepository.save(teacherUser);
 

@@ -724,7 +724,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["TEACHER_USER"]
+    "roleName": "TEACHER"
 }
 
 ### REGISTER ACTION ###
@@ -889,7 +889,7 @@ Content-Type: application/json
 ###
 
 # @name get_all_user_after_refresh
-GET {{rest}}/user
+GET {{rest}}/user/teacher
 Authorization: Bearer {{admin_access_token_after}}
 
 ### STUDENT ACTION ###

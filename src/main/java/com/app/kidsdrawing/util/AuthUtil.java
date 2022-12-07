@@ -47,12 +47,16 @@ public class AuthUtil {
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
+
+        List<String> roles = new ArrayList<>();
+        roles.add(role);
+
         return JWT.create()
                 .withSubject("User Details")
                 .withClaim("id", user.getId().toString())
                 .withClaim("username", username)
                 .withClaim("link_profile", user.getProfileImageUrl())
-                .withClaim("role", role)
+                .withClaim("role", roles)
                 .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenDuration))
                 .withIssuedAt(new Date())
                 .withIssuer("kidspainting/backdend/kidspainting")
@@ -96,7 +100,7 @@ public class AuthUtil {
         DecodedJWT decodedJWT = validateTokenAndRetrieveDecoded(jwt);
         // Get authorization info
         String username = decodedJWT.getSubject();
-        String[] roles_privileges = decodedJWT.getClaim("role_privilege").asArray(String.class);
+        String[] roles_privileges = decodedJWT.getClaim("role").asArray(String.class);
 
         Collection<SimpleGrantedAuthority> authorities = parseAuthoritiesFromRoleNames(roles_privileges);
         return new UsernamePasswordAuthenticationToken(username, "", authorities);
