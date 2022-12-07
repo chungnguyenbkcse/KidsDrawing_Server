@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class CreateClassRequest {
-    private Long creator_id;
     private Long user_register_teach_semester;
     private String security_code;
     private String name;

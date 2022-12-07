@@ -49,7 +49,6 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
                         .teacher_name(ele.getTeacher().getUsername() + " - " + ele.getTeacher().getFirstName() + " " + ele.getTeacher().getLastName())
-                        .reviewer_id(ele.getReviewer().getId())
                         .course_id(ele.getCourse().getId())
                         .course_name(ele.getCourse().getName())
                         .degree_photo_url(ele.getDegree_photo_url())
@@ -62,7 +61,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
                         .teacher_name(ele.getTeacher().getUsername() + " - " + ele.getTeacher().getFirstName() + " " + ele.getTeacher().getLastName())
-                        .reviewer_id(ele.getReviewer().getId())
+                        
                         .course_id(ele.getCourse().getId())
                         .course_name(ele.getCourse().getName())
                         .degree_photo_url(ele.getDegree_photo_url())
@@ -75,7 +74,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
                         .teacher_name(ele.getTeacher().getUsername() + " - " + ele.getTeacher().getFirstName() + " " + ele.getTeacher().getLastName())
-                        .reviewer_id(ele.getReviewer().getId())
+                        
                         .course_id(ele.getCourse().getId())
                         .course_name(ele.getCourse().getName())
                         .degree_photo_url(ele.getDegree_photo_url())
@@ -100,7 +99,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
             GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                 .id(content.getId())
                 .teacher_id(content.getTeacher().getId())
-                .reviewer_id(content.getReviewer().getId())
+                
                 .course_id(content.getCourse().getId())
                 .degree_photo_url(content.getDegree_photo_url())
                 .status(content.getStatus())
@@ -145,7 +144,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         return GetTeacherRegisterQualificationResponse.builder()
                 .id(teacherRegisterQualification.getId())
                 .teacher_id(teacherRegisterQualification.getTeacher().getId())
-                .reviewer_id(teacherRegisterQualification.getReviewer().getId())
+                
                 .course_id(teacherRegisterQualification.getCourse().getId())
                 .degree_photo_url(teacherRegisterQualification.getDegree_photo_url())
                 .status(teacherRegisterQualification.getStatus())
@@ -154,11 +153,6 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
     @Override
     public Long createTeacherRegisterQualification(CreateTeacherRegisterQualificationRequest createTeacherRegisterQualificationRequest) {
-       
-        Optional <User> adminOpt = userRepository.findByUsername1("admin");
-        User reviewer = adminOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.admin.not_found");
-        });
 
         Optional <Course> courseOpt = courseRepository.findById1(createTeacherRegisterQualificationRequest.getCourse_id());
         Course course = courseOpt.orElseThrow(() -> {
@@ -172,7 +166,6 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
         TeacherRegisterQualification savedTeacherRegisterQualification = TeacherRegisterQualification.builder()
                 .teacher(teacher)
-                .reviewer(reviewer)
                 .course(course)
                 .status(createTeacherRegisterQualificationRequest.getStatus())
                 .degree_photo_url(createTeacherRegisterQualificationRequest.getDegree_photo_url())

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class GetTeacherRegisterQualificationResponse {
     private Long id;
     private Long teacher_id;
-    private Long reviewer_id;
+    
     private Long course_id;
     private String degree_photo_url;
     private String status;

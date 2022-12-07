@@ -833,10 +833,7 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseAlreadyCreateException("exception.course.course_taken");
         }
 
-        Optional<User> userOpt = userRepository.findById1(createCourseRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createCourseRequest.getArt_age_id());
         ArtAge artAge = artAgeOpt.orElseThrow(() -> {
@@ -861,7 +858,7 @@ public class CourseServiceImpl implements CourseService {
                 .image_url(createCourseRequest.getImage_url())
                 .price(createCourseRequest.getPrice())
                 .is_enabled(createCourseRequest.getIs_enabled())
-                .user(user)
+                
                 .artAges(artAge)
                 .artTypes(artType)
                 .artLevels(artLevel)
@@ -898,10 +895,7 @@ public class CourseServiceImpl implements CourseService {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById1(createCourseRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createCourseRequest.getArt_age_id());
         ArtAge artAge = artAgeOpt.orElseThrow(() -> {
@@ -922,7 +916,6 @@ public class CourseServiceImpl implements CourseService {
         updatedCourse.setNum_of_section(createCourseRequest.getNum_of_section());
         updatedCourse.setImage_url(createCourseRequest.getImage_url());
         updatedCourse.setPrice(createCourseRequest.getPrice());
-        updatedCourse.setUser(user);
         updatedCourse.setArtAges(artAge);
         updatedCourse.setArtTypes(artType);
         updatedCourse.setArtLevels(artLevel);

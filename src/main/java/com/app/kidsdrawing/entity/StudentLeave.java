@@ -38,20 +38,12 @@ public class StudentLeave {
     private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "classes_id", referencedColumnName = "id")
-    private Classes classes;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "Student_id", referencedColumnName = "id")
     private User student;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
-    private User reviewer;
 
     @Column(name = "deleted")
     private Boolean deleted;

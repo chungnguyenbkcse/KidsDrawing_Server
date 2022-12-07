@@ -11,5 +11,5 @@ public class CreateSemesterRequest {
     private Integer number;
     private Integer year;
     private LocalDateTime start_time;
-    private Long creator_id;    
+        
 }

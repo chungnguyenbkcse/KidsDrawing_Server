@@ -41,10 +41,6 @@ public class TeacherRegisterQualification {
     private Boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
-    private User reviewer;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private User teacher;
 

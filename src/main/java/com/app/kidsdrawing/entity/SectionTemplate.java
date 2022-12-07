@@ -38,10 +38,6 @@ public class SectionTemplate {
     private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 

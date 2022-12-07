@@ -38,7 +38,7 @@ public class GetClassesParentResponse {
     private String art_type_name;
     private String art_level_name;
     private String art_age_name;
-    private Long creator_id;
+    
     private Long user_register_teach_semester;
     private String security_code;
     private String name;

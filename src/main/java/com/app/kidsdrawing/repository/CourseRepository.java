@@ -78,11 +78,6 @@ public interface CourseRepository extends JpaRepository <Course, Long>{
     @Query("FROM Course c JOIN FETCH c.artLevels al JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE al.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     boolean findByArtLevelId2(Long id);
 
-    @Query("FROM Course c JOIN FETCH c.user u WHERE u.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
-    boolean findByCreatorId1(Long id);
-
-    @Query("FROM Course c JOIN FETCH c.user u JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE u.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
-    boolean findByCreatorId2(Long id);
 
     @Query("FROM Course c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Course> findById1(Long id);

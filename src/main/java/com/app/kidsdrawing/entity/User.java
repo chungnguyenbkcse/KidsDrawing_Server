@@ -93,23 +93,8 @@ public class User{
     @OneToMany(mappedBy = "parent")
     private Set<User> childrens;
 
-    @OneToMany(mappedBy="user")
-    private Set<ArtLevel> artLevels;
-
-    @OneToMany(mappedBy="user")
-    private Set<ArtType> artTypes;
-
-    @OneToMany(mappedBy="user")
-    private Set<Contest> contests;
-
-    @OneToMany(mappedBy="user")
-    private Set<Course> courses;
-
     @OneToMany(mappedBy="student")
     private Set<UserRegisterJoinContest> userRegisterJoinContests;
-
-    @OneToMany(mappedBy="reviewer")
-    private Set<TeacherRegisterQualification> admin_review_register_qutifications;
 
     @OneToMany(mappedBy="teacher")
     private Set<TeacherRegisterQualification> teacher_register_qutifications;
@@ -120,17 +105,11 @@ public class User{
     @OneToMany(mappedBy="teacher")
     private Set<TeacherLeave> teacherLeaves_1;
 
-    @OneToMany(mappedBy="reviewer")
-    private Set<TeacherLeave> teacherLeaves_2;
-
     @OneToMany(mappedBy="substitute_teacher")
     private Set<TeacherLeave> teacherLeaves_3;
 
     @OneToMany(mappedBy="student")
     private Set<StudentLeave> studentLeaves_1;
-
-    @OneToMany(mappedBy="reviewer")
-    private Set<StudentLeave> studentLeaves_2;
 
     @OneToMany(mappedBy="student")
     private Set<ExerciseSubmission> exerciseSubmissions;
@@ -146,9 +125,6 @@ public class User{
 
     @OneToMany(mappedBy="user")
     private Set<UserReadNotification> userReadNotifications;
-
-    @OneToMany(mappedBy="user")
-    private Set<SectionTemplate> sectionTemplates;
 
     @OneToMany(mappedBy="student")
     private Set<UserAttendance> userAttendances;

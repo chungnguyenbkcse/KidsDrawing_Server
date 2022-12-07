@@ -25,7 +25,6 @@ import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.TutorialPage;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserAttendance;
 import com.app.kidsdrawing.entity.UserReadNotification;
 import com.app.kidsdrawing.entity.UserReadNotificationKey;
@@ -49,7 +48,6 @@ import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
 import com.app.kidsdrawing.repository.UserReadNotificationRepository;
-import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.SemesterService;
 
 import lombok.RequiredArgsConstructor;
@@ -61,7 +59,6 @@ public class SemesterServiceImpl implements SemesterService {
 
     private final SemesterRepository semesterRepository;
     private final ClassesRepository classRepository;
-    private final UserRepository userRepository;
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
     private final UserAttendanceRepository userAttendanceRepository;
@@ -88,7 +85,7 @@ public class SemesterServiceImpl implements SemesterService {
                     .year(semester.getYear())
                     .create_time(semester.getCreate_time())
                     .update_time(semester.getUpdate_time())
-                    .creator_id(semester.getUser().getId())
+                    
                     .build();
             allSemesterResponses.add(semesterResponse);
         });
@@ -300,11 +297,6 @@ public class SemesterServiceImpl implements SemesterService {
             holidayRepository.save(saveHoliday);
         }); 
 
-        Optional <User> userOpt = userRepository.findByUsername1("admin");
-        User creator = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_creator.not_found");
-        }); 
-
         // Danh sách học sinh đăng kí học
         // Danh sách giáo viên đăng kí dạy
         check_count = 0;
@@ -357,7 +349,7 @@ public class SemesterServiceImpl implements SemesterService {
                         String key = getSaltString();
                         System.out.println("Lop thu: " + String.valueOf(i));
                         Classes savedClass = Classes.builder()
-                            .user(creator)
+                            
                             .userRegisterTeachSemester(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i))
                             .security_code(key)
                             .name(semester_class.getName() + "-" +  String.valueOf(number) + " thuộc học kì " + String.valueOf(semester.getNumber()) + " năm học " + String.valueOf(semester.getYear()))
@@ -557,16 +549,13 @@ public class SemesterServiceImpl implements SemesterService {
                 .year(semester.getYear())
                 .create_time(semester.getCreate_time())
                 .update_time(semester.getUpdate_time())
-                .creator_id(semester.getUser().getId())
+                
                 .build();
     }
 
     @Override
     public Long createSemester(CreateSemesterRequest createSemesterRequest) {
-        Optional<User> userOpt = userRepository.findById1(createSemesterRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         Semester savedSemester = Semester.builder()
                 .name(createSemesterRequest.getName())
@@ -575,7 +564,6 @@ public class SemesterServiceImpl implements SemesterService {
                 .year(createSemesterRequest.getYear())
                 .start_time(createSemesterRequest.getStart_time())
                 .end_time(createSemesterRequest.getStart_time().plusMonths(3))
-                .user(user)
                 .build();
         semesterRepository.save(savedSemester);
 
@@ -609,10 +597,7 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById1(createSemesterRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         updatedSemester.setName(createSemesterRequest.getName());
         updatedSemester.setDescription(createSemesterRequest.getDescription());
@@ -620,7 +605,6 @@ public class SemesterServiceImpl implements SemesterService {
         updatedSemester.setYear(createSemesterRequest.getYear());
         updatedSemester.setStart_time(createSemesterRequest.getStart_time());
         updatedSemester.setEnd_time(createSemesterRequest.getStart_time().plusMonths(3));
-        updatedSemester.setUser(user);
         semesterRepository.save(updatedSemester);
 
         return updatedSemester.getId();

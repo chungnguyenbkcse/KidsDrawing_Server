@@ -18,7 +18,7 @@ public interface TeacherRegisterQualificationRepository extends JpaRepository <T
 
     @Query(
 		value = "SELECT e FROM TeacherRegisterQualification e JOIN FETCH e.teacher JOIN FETCH e.course WHERE (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id",
-		countQuery = "SELECT e FROM TeacherRegisterQualification e INNER JOIN e.reviewer  INNER JOIN e.teacher INNER JOIN e.course WHERE (e.deleted = FALSE OR e.deleted IS NULL)"
+		countQuery = "SELECT e FROM TeacherRegisterQualification e INNER JOIN e.teacher INNER JOIN e.course WHERE (e.deleted = FALSE OR e.deleted IS NULL)"
 	)
     Page<TeacherRegisterQualification> findAll(Pageable pageable);
 

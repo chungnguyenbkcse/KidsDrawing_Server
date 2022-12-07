@@ -247,7 +247,6 @@ public class ContestServiceImpl implements ContestService {
                     .art_type_id(contest.getArtTypes().getId())
                     .art_age_name(contest.getArtAges().getName())
                     .art_type_name(contest.getArtTypes().getName())
-                    .creator_id(contest.getUser().getId())
                     .create_time(contest.getCreate_time())
                     .update_time(contest.getUpdate_time())
                     .build();
@@ -274,7 +273,7 @@ public class ContestServiceImpl implements ContestService {
                     .art_type_id(contest.getArtTypes().getId())
                     .art_age_name(contest.getArtAges().getName())
                     .art_type_name(contest.getArtTypes().getName())
-                    .creator_id(contest.getUser().getId())
+                    
                     .create_time(contest.getCreate_time())
                     .update_time(contest.getUpdate_time())
                     .build();
@@ -299,7 +298,7 @@ public class ContestServiceImpl implements ContestService {
                 .art_type_id(contest.getArtTypes().getId())
                 .art_age_name(contest.getArtAges().getName())
                 .art_type_name(contest.getArtTypes().getName())
-                .creator_id(contest.getUser().getId())
+                
                 .create_time(contest.getCreate_time())
                 .update_time(contest.getUpdate_time())
                 .build();
@@ -346,7 +345,7 @@ public class ContestServiceImpl implements ContestService {
                         .is_enabled(contest.getIs_enabled())
                         .art_age_id(contest.getArtAges().getId())
                         .art_type_id(contest.getArtTypes().getId())
-                        .creator_id(contest.getUser().getId())
+                        
                         .create_time(contest.getCreate_time())
                         .update_time(contest.getUpdate_time())
                         .build();
@@ -699,7 +698,7 @@ public class ContestServiceImpl implements ContestService {
                         .is_enabled(contest.getIs_enabled())
                         .art_age_id(contest.getArtAges().getId())
                         .art_type_id(contest.getArtTypes().getId())
-                        .creator_id(contest.getUser().getId())
+                        
                         .create_time(contest.getCreate_time())
                         .update_time(contest.getUpdate_time())
                         .build();
@@ -746,7 +745,7 @@ public class ContestServiceImpl implements ContestService {
                 .is_enabled(contest.getIs_enabled())
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
-                .creator_id(contest.getUser().getId())
+                
                 .create_time(contest.getCreate_time())
                 .update_time(contest.getUpdate_time())
                 .build();
@@ -781,7 +780,7 @@ public class ContestServiceImpl implements ContestService {
                 .is_enabled(contest.getIs_enabled())
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
-                .creator_id(contest.getUser().getId())
+                
                 .create_time(contest.getCreate_time())
                 .update_time(contest.getUpdate_time())
                 .build();
@@ -793,10 +792,7 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestAlreadyCreateException("exception.contest.contest_taken");
         }
 
-        Optional<User> userOpt = userRepository.findById1(createContestRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createContestRequest.getArt_age_id());
         ArtAge artAge = artAgeOpt.orElseThrow(() -> {
@@ -817,7 +813,6 @@ public class ContestServiceImpl implements ContestService {
                 .start_time(createContestRequest.getStart_time())
                 .end_time(createContestRequest.getEnd_time())
                 .is_enabled(createContestRequest.getIs_enabled())
-                .user(user)
                 .artAges(artAge)
                 .artTypes(artType)
                 .build();
@@ -851,10 +846,7 @@ public class ContestServiceImpl implements ContestService {
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById1(createContestRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createContestRequest.getArt_age_id());
         ArtAge artAge = artAgeOpt.orElseThrow(() -> {
@@ -872,7 +864,6 @@ public class ContestServiceImpl implements ContestService {
         updatedContest.setImage_url(createContestRequest.getImage_url());
         updatedContest.setStart_time(createContestRequest.getStart_time());
         updatedContest.setEnd_time(createContestRequest.getEnd_time());
-        updatedContest.setUser(user);
         updatedContest.setArtAges(artAge);
         updatedContest.setArtTypes(artType);
         contestRepository.save(updatedContest);

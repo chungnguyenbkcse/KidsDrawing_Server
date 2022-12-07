@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetSectionTemplateResponse {
     private Long id;
-    private Long creator_id;
+    
     private Long course_id;
     private String name;
     private Integer number;

@@ -20,7 +20,7 @@ public class GetCourseNewResponse {
     private Float price;
     private String image_url;
     private Boolean is_enabled;
-    private Long creator_id;
+    
     private Long art_type_id;
     private Long art_level_id;
     private Long art_age_id;

@@ -22,7 +22,7 @@ public class GetCourseParentResponse {
     private Boolean is_enabled;
     private Long student_id;
     private String student_name;
-    private Long creator_id;
+    
     private Long art_type_id;
     private String art_type_name;
     private Long art_level_id;

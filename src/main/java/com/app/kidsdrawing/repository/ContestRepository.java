@@ -16,36 +16,36 @@ import com.app.kidsdrawing.entity.Contest;
 public interface ContestRepository extends JpaRepository <Contest, Long>{
 
     @Query(
-		value = "SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
-		countQuery = "SELECT COUNT(c) FROM Contest c INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL)"
+		value = "SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
+		countQuery = "SELECT COUNT(c) FROM Contest c INNER JOIN c.artAges INNER JOIN c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL)"
 	)
     Page<Contest> findAll(Pageable pageable);
 
     @Query(
-		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
-		countQuery = "SELECT COUNT(c) FROM Contest c LEFT JOIN c.userRegisterJoinContests LEFT JOIN c.contestSubmissions INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL)"
+		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
+		countQuery = "SELECT COUNT(c) FROM Contest c LEFT JOIN c.userRegisterJoinContests LEFT JOIN c.contestSubmissions INNER JOIN c.artAges INNER JOIN c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL)"
 	)
     Page<Contest> findAll1(Pageable pageable);
 
     @Query(
-		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
-		countQuery = "SELECT c FROM Contest c LEFT JOIN c.userRegisterJoinContests LEFT JOIN c.contestSubmissions cs LEFT JOIN cs.userGradeContestSubmissions INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL)"
+		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
+		countQuery = "SELECT c FROM Contest c LEFT JOIN c.userRegisterJoinContests LEFT JOIN c.contestSubmissions cs LEFT JOIN cs.userGradeContestSubmissions INNER JOIN c.artAges INNER JOIN c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL)"
 	)
     Page<Contest> findAll3(Pageable pageable);
 
     @Query(
-		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
-		countQuery = "SELECT COUNT(c) FROM Contest c INNER JOIN c.artAges INNER JOIN c.artTypes INNER JOIN c.user "
+		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
+		countQuery = "SELECT COUNT(c) FROM Contest c INNER JOIN c.artAges INNER JOIN c.artTypes "
 	)
     Page<Contest> findAll2(Pageable pageable);
 
-    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions ugc JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE ugc.score IS NULL AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions ugc JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE ugc.score IS NULL AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findAll1();
 
-    @Query("SELECT DISTINCT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findAll3();
 
-    @Query("SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findAll();
 
     @Query("SELECT COUNT(c.id) FROM Contest c WHERE (c.deleted = FALSE OR c.deleted IS NULL)")
@@ -57,13 +57,13 @@ public interface ContestRepository extends JpaRepository <Contest, Long>{
     @Query("FROM Contest c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Contest> findById1(Long id);
 
-    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Contest> findById2(Long id);
 
     @Query("FROM Contest c WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Contest> findByName1(String name);
 
-    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes JOIN FETCH c.user WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes  WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Contest> findByName2(String name);
 
     @Query("SELECT count(c.id) = 1 FROM Contest c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
@@ -79,18 +79,13 @@ public interface ContestRepository extends JpaRepository <Contest, Long>{
     @Query("FROM Contest c JOIN FETCH c.artAges ag WHERE ag.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findByArtAgeId1(Long artAges);
 
-    @Query("FROM Contest c JOIN FETCH c.artAges ag JOIN FETCH c.user JOIN FETCH c.artTypes WHERE ag.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("FROM Contest c JOIN FETCH c.artAges ag  JOIN FETCH c.artTypes WHERE ag.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findByArtAgeId2(Long artAges);
 
     @Query("FROM Contest c JOIN FETCH c.artTypes at WHERE at.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findByArtTypeId1(Long artTypes);
 
-    @Query("FROM Contest c JOIN FETCH c.artTypes at JOIN FETCH c.user JOIN FETCH c.artAges WHERE at.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("FROM Contest c JOIN FETCH c.artTypes at  JOIN FETCH c.artAges WHERE at.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findByArtTypeId2(Long artTypes);
 
-    @Query("FROM Contest c JOIN FETCH c.user u WHERE u.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
-    List<Contest> findByCreatorId1(Long user);
-
-    @Query("FROM Contest c JOIN FETCH c.user u JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE u.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
-    List<Contest> findByCreatorId2(Long user);
 }

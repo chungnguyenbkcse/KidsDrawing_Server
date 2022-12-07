@@ -23,7 +23,7 @@ public class GetTeacherLeaveResponse {
     private String class_name;
     private Long teacher_id;
     private String teacher_name;
-    private Long reviewer_id;
+    
     private Long substitute_teacher_id;
     private String substitute_teacher_name;
     private String description;

@@ -2394,15 +2394,9 @@ public class ClassesServiceImpl implements ClassesService {
                                 user_register_join_semester_id));
                     })
                     .run();
-        });
-
-        Optional<User> userOpt = userRepository.findById1(createClassRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        });      
 
         Classes savedClass = Classes.builder()
-                .user(user)
                 .userRegisterTeachSemester(teacherTeachSemester)
                 .security_code(createClassRequest.getSecurity_code())
                 .name(createClassRequest.getName())
