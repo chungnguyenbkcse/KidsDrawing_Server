@@ -64,6 +64,9 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student WHERE ex.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<ExerciseSubmission> findByExerciseId2(Long id);
 
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex WHERE ex.id = ?1 AND e.score IS NOT NULL AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
+    List<ExerciseSubmission> findByExerciseId3(Long id);
+
     
     @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student s WHERE ex.id = ?1 AND s.id = ?2 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<ExerciseSubmission> findByExerciseIdAndStudentId(Long exercise_id, Long student_id);

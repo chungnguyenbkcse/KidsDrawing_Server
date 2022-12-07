@@ -149,9 +149,6 @@ public class User{
     @OneToMany(mappedBy="student")
     private Set<ExerciseSubmission> exerciseSubmissions;
 
-    @OneToMany(mappedBy = "teacher")
-    private Set<UserGradeExerciseSubmission> userGradeExerciseSubmissions;
-
     @OneToMany(mappedBy = "payer")
     private Set<UserRegisterJoinSemester> userRegisterJoinSemesters;
 

@@ -10,6 +10,9 @@ import com.app.kidsdrawing.dto.GetExerciseSubmissionResponse;
 
 public interface ExerciseSubmissionService {
     ResponseEntity<Map<String, Object>> getAllExerciseSubmission();
+    ResponseEntity<Map<String, Object>> getAllFinalGradeAForStudent(Long student_id);
+    ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForStudentAndClasses(Long student_id, Long classes_id);
+    ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForParentAndClasses(Long parent_id, Long classes_id);
     ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByStudentId(Long id);
     ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByExerciseId(Long id);
     ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassId(Long id);

@@ -25,7 +25,6 @@ import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
-import com.app.kidsdrawing.repository.UserGradeExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ExerciseService;
 
@@ -40,7 +39,6 @@ public class ExerciseServiceImpl implements ExerciseService{
     private final SectionRepository sectionRepository;
     private final UserRepository userRepository;
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
-    private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllExercise() {
@@ -312,8 +310,8 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<Exercise> listExerciseBySection = exerciseRepository.findBySectionId2(id);
         listExerciseBySection.forEach(content -> {
             if (content.getSection().getId().compareTo(id) == 0){
-                int total_exercise_submission = exerciseSubmissionRepository.findByExerciseId1(content.getId()).size();
-                if (total_exercise_submission == 0) {
+                List<ExerciseSubmission> allExerciseSubmissionForExercise = exerciseSubmissionRepository.findByExerciseId1(content.getId());
+                if (allExerciseSubmissionForExercise.size() == 0) {
                     GetExerciseTeacherResponse exerciseResponse = GetExerciseTeacherResponse.builder()
                         .id(content.getId())
                         .section_id(content.getSection().getId())
@@ -328,8 +326,8 @@ public class ExerciseServiceImpl implements ExerciseService{
                     allExerciseResponses.add(exerciseResponse);
                 }
                 else {
-                    int total_user_grade_exercise_submission = userGradeExerciseSubmissionRepository.findByExercise(content.getId()).size();
-                    if (total_exercise_submission > total_user_grade_exercise_submission) {
+                    int total_user_grade_exercise_submission = (int) allExerciseSubmissionForExercise.stream().filter(animal -> animal.getScore() != null).count();
+                    if (allExerciseSubmissionForExercise.size() > total_user_grade_exercise_submission) {
                         GetExerciseTeacherResponse exerciseResponse = GetExerciseTeacherResponse.builder()
                             .id(content.getId())
                             .section_id(content.getSection().getId())

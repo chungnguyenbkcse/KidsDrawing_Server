@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -16,15 +16,17 @@ import java.time.LocalDateTime;
 
 import com.app.kidsdrawing.dto.CreateExerciseSubmissionRequest;
 import com.app.kidsdrawing.dto.GetExerciseSubmissionResponse;
+import com.app.kidsdrawing.dto.GetFinalScoreForStudentResponse;
+import com.app.kidsdrawing.dto.GetUserGradeExerciseSubmissionResponse;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.User;
-import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
+import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
-import com.app.kidsdrawing.repository.UserGradeExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ExerciseSubmissionService;
 
@@ -36,9 +38,10 @@ import lombok.RequiredArgsConstructor;
 public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService {
     
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
-    private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
     private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
+    private final ClassesRepository classRepository;
+    private static float exam = 0;
 
 
     @Override
@@ -89,11 +92,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         List<GetExerciseSubmissionResponse> exerciseGradeResponses = new ArrayList<>();
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findByStudentId2(id);
 
-        List<ExerciseSubmission> exerciseSubmissionGrade = new ArrayList<>();
-        List<UserGradeExerciseSubmission> userGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findByStudent(id);
-        userGradeExerciseSubmissions.forEach(ele -> {
-            exerciseSubmissionGrade.add(ele.getExerciseSubmission());
-        });
+        List<ExerciseSubmission> exerciseSubmissionGrade = listExerciseSubmission.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
+
 
         listExerciseSubmission.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
@@ -136,11 +136,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         List<GetExerciseSubmissionResponse> exerciseGradeResponses = new ArrayList<>();
         List<ExerciseSubmission> exerciseSubmissionByExercise = exerciseSubmissionRepository.findByExerciseId2(id); 
         
-        List<ExerciseSubmission> exerciseSubmissionGrade = new ArrayList<>();
-        List<UserGradeExerciseSubmission> userGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findByExercise(id);
-        userGradeExerciseSubmissions.forEach(ele -> {
-            exerciseSubmissionGrade.add(ele.getExerciseSubmission());
-        });
+        List<ExerciseSubmission> exerciseSubmissionGrade = exerciseSubmissionByExercise.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
         exerciseSubmissionByExercise.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
@@ -182,11 +178,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         List<GetExerciseSubmissionResponse> exerciseGradeResponses = new ArrayList<>();
 
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndStudent(section_id, student_id);
-        List<ExerciseSubmission> exerciseSubmissionGrade = new ArrayList<>();
-        List<UserGradeExerciseSubmission> userGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findByStudentAndSection(student_id, section_id);
-        userGradeExerciseSubmissions.forEach(ele -> {
-            exerciseSubmissionGrade.add(ele.getExerciseSubmission());
-        });
+        List<ExerciseSubmission> exerciseSubmissionGrade = listExerciseSubmission.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
 
         listExerciseSubmission.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
@@ -236,12 +228,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         pageUser.forEach(student -> {
             List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository
                     .findAllExerciseSubmissionByClassAndStudent(class_id, student.getId());
-            List<ExerciseSubmission> exerciseSubmissionGrade = new ArrayList<>();
-            List<UserGradeExerciseSubmission> userGradeExerciseSubmissions = userGradeExerciseSubmissionRepository
-                    .findByStudentAndClass(student.getId(), class_id);
-            userGradeExerciseSubmissions.forEach(ele -> {
-                exerciseSubmissionGrade.add(ele.getExerciseSubmission());
-            });
+
+            List<ExerciseSubmission> exerciseSubmissionGrade = listExerciseSubmission.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
 
             listExerciseSubmission.forEach(content -> {
                 if (exerciseSubmissionGrade.contains(content)) {
@@ -289,11 +277,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         List<GetExerciseSubmissionResponse> exerciseGradeResponses = new ArrayList<>();
 
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(class_id, student_id);
-        List<ExerciseSubmission> exerciseSubmissionGrade = new ArrayList<>();
-        List<UserGradeExerciseSubmission> userGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findByStudentAndClass(student_id, class_id);
-        userGradeExerciseSubmissions.forEach(ele -> {
-            exerciseSubmissionGrade.add(ele.getExerciseSubmission());
-        });
+        List<ExerciseSubmission> exerciseSubmissionGrade = listExerciseSubmission.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
 
         listExerciseSubmission.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
@@ -343,11 +327,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
 
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClass(id);
 
-        List<ExerciseSubmission> exerciseSubmissionGrade = new ArrayList<>();
-        List<UserGradeExerciseSubmission> userGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findByClass(id);
-        userGradeExerciseSubmissions.forEach(ele -> {
-            exerciseSubmissionGrade.add(ele.getExerciseSubmission());
-        });
+        List<ExerciseSubmission> exerciseSubmissionGrade = listExerciseSubmission.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
 
         listExerciseSubmission.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
@@ -381,6 +361,102 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         Map<String, Object> response = new HashMap<>();
         response.put("exercise_not_graded", exerciseResponses);
         response.put("exercise_graded", exerciseGradeResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForParentAndClasses(Long parent_id, Long classes_id) {
+        List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
+        List<User> listChilds = userRepository.findByParentId(parent_id);
+        List<Float> final_score = new ArrayList<>();
+        listChilds.forEach(student -> {
+            List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(classes_id, student.getId());
+            List<ExerciseSubmission> exerciseSubmissionGrade = listExerciseSubmission.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
+            List<Exercise> allExerciseByClass = exerciseRepository.findAllExerciseByClass(classes_id);
+            exam = (float) 0;
+            exerciseSubmissionGrade.forEach(content -> {
+                    exam = exam + content.getScore();
+                    GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
+                        .student_id(content.getStudent().getId())
+                        .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .exercise_name(content.getExercise().getName())
+                        .exercise_id(content.getExercise().getId())
+                        .time_submit(content.getUpdate_time())
+                        .image_url(content.getImage_url())
+                        .description(content.getExercise().getDescription())
+                        .deadline(content.getExercise().getDeadline())
+                        .exercise_submission_id(content.getId())
+                        .feedback(content.getFeedback())
+                        .score(content.getScore())
+                        .time(content.getTime())
+                        .build();
+                    allUserGradeExerciseSubmissionResponses.add(userGradeExerciseSubmissionResponse);
+            });
+
+            final_score.add(exam / allExerciseByClass.size());
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("UserGradeExerciseSubmission", allUserGradeExerciseSubmissionResponses);
+        response.put("final_grade", final_score);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForStudentAndClasses(Long student_id, Long classes_id) {
+        List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
+        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(classes_id, student_id);
+        List<ExerciseSubmission> exerciseSubmissionGrade = listExerciseSubmission.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
+        List<Exercise> allExerciseByClass = exerciseRepository.findAllExerciseByClass(classes_id);
+        exam = (float) 0;
+        exerciseSubmissionGrade.forEach(content -> {
+                exam = exam + content.getScore() ;
+                GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
+                    .student_id(content.getStudent().getId())
+                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .exercise_name(content.getExercise().getName())
+                    .exercise_id(content.getExercise().getId())
+                    .time_submit(content.getUpdate_time())
+                    .image_url(content.getImage_url())
+                    .description(content.getExercise().getDescription())
+                    .deadline(content.getExercise().getDeadline())
+                    .exercise_submission_id(content.getId())
+                    .feedback(content.getFeedback())
+                    .score(content.getScore())
+                    .time(content.getTime())
+                    .build();
+                allUserGradeExerciseSubmissionResponses.add(userGradeExerciseSubmissionResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("UserGradeExerciseSubmission", allUserGradeExerciseSubmissionResponses);
+        response.put("final_grade", exam / allExerciseByClass.size());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override 
+    public ResponseEntity<Map<String, Object>> getAllFinalGradeAForStudent(Long student_id) {
+        List<GetFinalScoreForStudentResponse> allFinalScoreForStudent = new ArrayList<>();
+        List<Classes> allClassForStudent = classRepository.findAllByStudent2(student_id);
+        
+        allClassForStudent.forEach(element -> {
+            List<Exercise> allExerciseByClass = exerciseRepository.findAllExerciseByClass(element.getId());
+            List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(element.getId(), student_id);
+            List<ExerciseSubmission> exerciseSubmissionGrade = listExerciseSubmission.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
+            exam = (float) 0;
+            exerciseSubmissionGrade.forEach(content -> {
+                exam = exam + content.getScore() ;
+            });
+                GetFinalScoreForStudentResponse userGradeExerciseSubmissionResponse = GetFinalScoreForStudentResponse.builder()
+                    .final_score(exam / allExerciseByClass.size())  
+                    .course_id(element.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId()) 
+                    .course_name(element.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())              
+                    .build();
+                allFinalScoreForStudent.add(userGradeExerciseSubmissionResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("final_grade", allFinalScoreForStudent);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

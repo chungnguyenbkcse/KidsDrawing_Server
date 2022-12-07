@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,12 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -61,6 +60,17 @@ public class ExerciseSubmission {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "exerciseSubmission")
-    Set<UserGradeExerciseSubmission> userGradeExerciseSubmissions;
+    @Column(name = "feedback")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String feedback;
+
+    @Column(name = "score")
+    private Float score;
+
+    @Builder.Default()
+    @Column(name = "time")
+    @CreationTimestamp
+    private LocalDateTime time = LocalDateTime.now();
+
 }

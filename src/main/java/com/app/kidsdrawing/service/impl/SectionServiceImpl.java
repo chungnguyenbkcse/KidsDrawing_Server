@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -17,7 +17,6 @@ import com.app.kidsdrawing.dto.CreateSectionRequest;
 import com.app.kidsdrawing.dto.GetSectionStudentResponse;
 import com.app.kidsdrawing.dto.GetSectionTeacherResponse;
 import com.app.kidsdrawing.entity.Section;
-import com.app.kidsdrawing.entity.UserGradeExerciseSubmission;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
@@ -26,7 +25,6 @@ import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
-import com.app.kidsdrawing.repository.UserGradeExerciseSubmissionRepository;
 import com.app.kidsdrawing.service.SectionService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +36,6 @@ public class SectionServiceImpl implements SectionService{
     
     private final SectionRepository sectionRepository;
     private final ClassesRepository classRepository;
-    private final UserGradeExerciseSubmissionRepository userGradeExerciseSubmissionRepository;
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
     private final ExerciseRepository exerciseRepository;
     private static Integer total = 0;
@@ -72,14 +69,14 @@ public class SectionServiceImpl implements SectionService{
         List<Section> listSection = sectionRepository.findByClassesId(id);
         listSection.forEach(content -> {
             List<ExerciseSubmission> allExerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySection(content.getId());
-            List<UserGradeExerciseSubmission> allUserGradeExerciseSubmissions = userGradeExerciseSubmissionRepository.findBySection(content.getId());
+            List<ExerciseSubmission> exerciseSubmissionGrade = allExerciseSubmissions.stream().filter(animal -> animal.getScore() != null).collect(Collectors.toList());
             if (content.getClasses().getId().compareTo(id) == 0){
                 GetSectionTeacherResponse sectionResponse = GetSectionTeacherResponse.builder()
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
                     .total_exercise_submission(allExerciseSubmissions.size())
-                    .total_user_grade_exercise_submission(allUserGradeExerciseSubmissions.size())
+                    .total_user_grade_exercise_submission(exerciseSubmissionGrade.size())
                     .teacher_name(content.getClasses().getUserRegisterTeachSemester().getTeacher().getUsername() + " - " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getFirstName() + " " + content.getClasses().getUserRegisterTeachSemester().getTeacher().getLastName())
                     .number(content.getNumber())
                     .teach_form(content.getTeaching_form())
