@@ -24,7 +24,6 @@ import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.TutorialPage;
 import com.app.kidsdrawing.entity.UserAttendance;
 import com.app.kidsdrawing.entity.UserReadNotification;
 import com.app.kidsdrawing.entity.UserReadNotificationKey;
@@ -45,7 +44,6 @@ import com.app.kidsdrawing.repository.HolidayRepository;
 import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
-import com.app.kidsdrawing.repository.TutorialPageRepository;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
 import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.service.SemesterService;
@@ -64,7 +62,6 @@ public class SemesterServiceImpl implements SemesterService {
     private final UserAttendanceRepository userAttendanceRepository;
     private final UserReadNotificationRepository uuserReadNotificationRepository;
     private final NotificationRepository notificationRepository;
-    private final TutorialPageRepository tutorialPageRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
     //private static int counter = 0;
@@ -430,18 +427,9 @@ public class SemesterServiceImpl implements SemesterService {
                                 .name(section_template.getName())
                                 .number(section_template.getNumber())
                                 .teaching_form(section_template.getTeaching_form())
-                                .status("INITIAL")
+                                .status("")
                                 .build();
                             sectionRepository.save(savedSection);
-
-                            section_template.getTutorialTemplatePages().forEach(tutorial_template_page -> {
-                                TutorialPage savedTutorialPage = TutorialPage.builder()
-                                    .number(tutorial_template_page.getNumber())
-                                    .description(tutorial_template_page.getDescription())
-                                    .section(savedSection)
-                                    .build();
-                                tutorialPageRepository.save(savedTutorialPage);
-                            });
     
                             validUserRegisterSemesters.forEach(user_register_semester -> {
                                 UserAttendance savedUserAttendance = UserAttendance.builder() 
