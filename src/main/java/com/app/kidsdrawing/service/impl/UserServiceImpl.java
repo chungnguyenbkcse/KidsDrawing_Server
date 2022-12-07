@@ -14,7 +14,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
-import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateTeacherUserRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
@@ -25,12 +24,20 @@ import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetTeacherResponse;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
+import com.app.kidsdrawing.entity.Admin;
 import com.app.kidsdrawing.entity.EmailDetails;
+import com.app.kidsdrawing.entity.Parent;
+import com.app.kidsdrawing.entity.Student;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.UserAlreadyRegisteredException;
+import com.app.kidsdrawing.repository.AdminRepository;
 import com.app.kidsdrawing.repository.CourseRepository;
+import com.app.kidsdrawing.repository.ParentRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
+import com.app.kidsdrawing.repository.TeacherRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinContestRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.EmailService;
@@ -56,6 +63,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
+    private final TeacherRepository teacherRepository;
+    private final StudentRepository studentRepository;
+    private final ParentRepository parentRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRegisterJoinContestRepository userRegisterJoinContestRepository;
     private final CourseRepository courseRepository;
@@ -78,23 +89,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllStudents(String role_name) {
         List<GetStudentResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAllStudent();
+        List<Student> pageUser = studentRepository.findAll();
         pageUser.forEach(user -> {
                 GetStudentResponse userResponse = GetStudentResponse.builder()
                     .id(user.getId())
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .status(user.getStatus())
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
+                    .username(user.getUser().getUsername())
+                    .email(user.getUser().getEmail())
+                    .status(user.getUser().getStatus())
+                    .firstName(user.getUser().getFirstName())
+                    .lastName(user.getUser().getLastName())
                     .dateOfBirth(user.getDateOfBirth())
-                    .profile_image_url(user.getProfileImageUrl())
-                    .sex(user.getSex())
+                    .profile_image_url(user.getUser().getProfileImageUrl())
+                    .sex(user.getUser().getSex())
                     .phone(user.getPhone())
-                    .address(user.getAddress())
-                    .createTime(user.getCreateTime())
-                    .parent(user.getParent().getUsername())
-                    .parents(user.getParent().getId())
+                    .address(user.getUser().getAddress())
+                    .createTime(user.getUser().getCreateTime())
+                    .parent(user.getParent().getUser().getUsername())
+                    .parents(user.getParent().getUser().getId())
                     .build();
                 allUserResponses.add(userResponse);
         });
@@ -145,27 +156,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllChildForParentId(Long id) {
         List<GetStudentForParentResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findByParentId(id);
+        List<Student> pageUser = studentRepository.findByParentId(id);
         pageUser.forEach(user -> {
                 Integer total_course = courseRepository.findTotalCourseForStudent(user.getId()).size();
                 Integer total_contest = userRegisterJoinContestRepository.findByStudentId1(user.getId()).size();
                 GetStudentForParentResponse userResponse = GetStudentForParentResponse.builder()
                     .id(user.getId())
-                    .username(user.getUsername())
-                    .email(user.getEmail())
+                    .username(user.getUser().getUsername())
+                    .email(user.getUser().getEmail())
                     .total_course(total_course)
                     .total_contest(total_contest)
-                    .status(user.getStatus())
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
+                    .status(user.getUser().getStatus())
+                    .firstName(user.getUser().getFirstName())
+                    .lastName(user.getUser().getLastName())
                     .dateOfBirth(user.getDateOfBirth())
-                    .profile_image_url(user.getProfileImageUrl())
-                    .sex(user.getSex())
+                    .profile_image_url(user.getUser().getProfileImageUrl())
+                    .sex(user.getUser().getSex())
                     .phone(user.getPhone())
-                    .address(user.getAddress())
-                    .createTime(user.getCreateTime())
-                    .parent(user.getParent().getUsername())
-                    .parents(user.getParent().getId())
+                    .address(user.getUser().getAddress())
+                    .createTime(user.getUser().getCreateTime())
+                    .parent(user.getParent().getUser().getUsername())
+                    .parents(user.getParent().getUser().getId())
                     .build();
                 allUserResponses.add(userResponse);
         });
@@ -270,22 +281,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllParents(String role_name) {
         List<GetUserResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAllUserByRole(role_name);
+        List<Parent> pageUser = parentRepository.findAll();
 
         pageUser.forEach(user -> {
                 GetUserResponse userResponse = GetUserResponse.builder()
                     .id(user.getId())
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .status(user.getStatus())
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .dateOfBirth(user.getDateOfBirth())
-                    .profile_image_url(user.getProfileImageUrl())
-                    .sex(user.getSex())
+                    .username(user.getUser().getUsername())
+                    .email(user.getUser().getEmail())
+                    .status(user.getUser().getStatus())
+                    .firstName(user.getUser().getFirstName())
+                    .lastName(user.getUser().getLastName())
+                    .profile_image_url(user.getUser().getProfileImageUrl())
+                    .sex(user.getUser().getSex())
                     .phone(user.getPhone())
-                    .address(user.getAddress())
-                    .createTime(user.getCreateTime())
+                    .address(user.getUser().getAddress())
+                    .createTime(user.getUser().getCreateTime())
                     .build();
                 allUserResponses.add(userResponse);
         });
@@ -297,7 +307,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllTeacher() {
         List<GetTeacherResponse> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAllUserByRole("TEACHER_USER");
+        List<Teacher> pageUser = teacherRepository.findAll();
         
         List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationResponses = new ArrayList<>();
         List<List<GetTeacherRegisterQualificationResponse>> allTeacherRegisterQualificationDoingResponses = new ArrayList<>();
@@ -307,18 +317,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         pageUser.forEach(user -> {
                 GetTeacherResponse userResponse = GetTeacherResponse.builder()
                     .id(user.getId())
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .status(user.getStatus())
-                    .password(user.getPassword())
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .dateOfBirth(user.getDateOfBirth())
-                    .profile_image_url(user.getProfileImageUrl())
-                    .sex(user.getSex())
+                    .username(user.getUser().getUsername())
+                    .email(user.getUser().getEmail())
+                    .status(user.getUser().getStatus())
+                    .password(user.getUser().getPassword())
+                    .firstName(user.getUser().getFirstName())
+                    .lastName(user.getUser().getLastName())
+                    .profile_image_url(user.getUser().getProfileImageUrl())
+                    .sex(user.getUser().getSex())
                     .phone(user.getPhone())
-                    .address(user.getAddress())
-                    .createTime(user.getCreateTime())
+                    .address(user.getUser().getAddress())
+                    .createTime(user.getUser().getCreateTime())
                     .build();
                 allUserResponses.add(userResponse);
                 List<GetTeacherRegisterQualificationResponse> teacherRegisterQualificationResponses = new ArrayList<>();
@@ -381,10 +390,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .profile_image_url(user.getProfileImageUrl())
-                .dateOfBirth(user.getDateOfBirth())
                 .sex(user.getSex())
-                .phone(user.getPhone())
-                .parents(user.getParent().getId())
                 .address(user.getAddress())
                 .createTime(user.getCreateTime())
                 .build();
@@ -396,10 +402,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
-        Long a = (long)1;
-        if (user.getParent() != null) {
-            a = user.getParent().getId();
-        }
 
         return GetUserInfoResponse.builder()
                 .id(user.getId())
@@ -408,14 +410,59 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .status(user.getStatus())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .dateOfBirth(user.getDateOfBirth())
                 .sex(user.getSex())
-                .phone(user.getPhone())
                 .address(user.getAddress())
-                .parents(a)
                 .profile_image_url(user.getProfileImageUrl())
                 .createTime(user.getCreateTime())
                 .build();
+    }
+
+    @Override
+    public GetUserInfoResponse getUserInfoStudentById(Long id) {
+        Optional<Student> userOpt = studentRepository.findById1(id);
+        Student user = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
+        });
+        
+
+        return GetUserInfoResponse.builder()
+                .id(user.getId())
+                .username(user.getUser().getUsername())
+                .email(user.getUser().getEmail())
+                .status(user.getUser().getStatus())
+                .firstName(user.getUser().getFirstName())
+                .lastName(user.getUser().getLastName())
+                .dateOfBirth(user.getDateOfBirth())
+                .sex(user.getUser().getSex())
+                .phone(user.getPhone())
+                .address(user.getUser().getAddress())
+                .parents(user.getParent().getId())
+                .profile_image_url(user.getUser().getProfileImageUrl())
+                .createTime(user.getUser().getCreateTime())
+                .build();
+    }
+
+    @Override
+    public GetUserInfoResponse getUserInfoStudentByUsername(String username) {
+        Optional<Student> userOpt = studentRepository.findByUsername(username);
+        Student user = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user.not_found");
+        });
+        return GetUserInfoResponse.builder()
+        .id(user.getId())
+        .username(user.getUser().getUsername())
+        .email(user.getUser().getEmail())
+        .status(user.getUser().getStatus())
+        .firstName(user.getUser().getFirstName())
+        .lastName(user.getUser().getLastName())
+        .dateOfBirth(user.getDateOfBirth())
+        .sex(user.getUser().getSex())
+        .phone(user.getPhone())
+        .address(user.getUser().getAddress())
+        .parents(user.getParent().getId())
+        .profile_image_url(user.getUser().getProfileImageUrl())
+        .createTime(user.getUser().getCreateTime())
+        .build();
     }
 
     @Override
@@ -438,14 +485,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserAlreadyRegisteredException("exception.user.email_taken");
         }
 
-        Optional <User> userOpt = userRepository.findById1(createUserRequest.getParent_id());
-        User parent = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.parent.not_found");
-        });
-
         String validRoles = createUserRequest.getRoleName();
-
-
 
         User savedUser = User.builder()
                 .username(createUserRequest.getUsername())
@@ -453,50 +493,54 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .password(encodedPassword)
                 .firstName(createUserRequest.getFirstName())
                 .lastName(createUserRequest.getLastName())
-                .dateOfBirth(createUserRequest.getDateOfBirth())
                 .sex(createUserRequest.getSex())
-                .phone(createUserRequest.getPhone())
                 .address(createUserRequest.getAddress())
                 .authorization(validRoles)
+                .build();
+        userRepository.save(savedUser);
+
+        if (validRoles.equals("ADMIN")) {
+            Admin adminUser = Admin.builder()
+                .phone(createUserRequest.getPhone())
+                .build();
+
+            adminRepository.save(adminUser);
+
+        }
+        else if (validRoles.equals("TEACHER")) {
+            Teacher teacherUser = Teacher.builder()
+                .phone(createUserRequest.getPhone())
+                .build();
+
+            teacherRepository.save(teacherUser);
+        }
+        else if (validRoles.equals("PARENT")) {
+            Parent parentUser = Parent.builder()
+                .phone(createUserRequest.getPhone())
+                .build();
+
+            parentRepository.save(parentUser);
+        }
+        else {
+            Optional<Parent> parentOpt = parentRepository.findById1(createUserRequest.getParent_id());
+            Parent parent = parentOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.parent.not_found");
+            });
+
+            Student studentUser = Student.builder()
+                .dateOfBirth(createUserRequest.getDateOfBirth())
                 .parent(parent)
                 .build();
-        userRepository.save(savedUser);
-        return savedUser.getId();
-    }
 
-
-    @Override
-    public Long createStudent(CreateStudentRequest createStudentOrParentRequest) {
-        String encodedPassword = passwordEncoder.encode(createStudentOrParentRequest.getPassword());
-
-        if (userRepository.existsByUsername(createStudentOrParentRequest.getUsername())) {
-            throw new UserAlreadyRegisteredException("exception.user.user_taken");
-        }
-        if (userRepository.existsByEmail(createStudentOrParentRequest.getEmail())) {
-            throw new UserAlreadyRegisteredException("exception.user.email_taken");
+            studentRepository.save(studentUser);
         }
 
-        String validRoles = createStudentOrParentRequest.getRoleName();
 
-
-
-        User savedUser = User.builder()
-                .username(createStudentOrParentRequest.getUsername())
-                .email(createStudentOrParentRequest.getEmail())
-                .password(encodedPassword)
-                .firstName(createStudentOrParentRequest.getFirstName())
-                .lastName(createStudentOrParentRequest.getLastName())
-                .dateOfBirth(createStudentOrParentRequest.getDateOfBirth())
-                .sex(createStudentOrParentRequest.getSex())
-                .phone(createStudentOrParentRequest.getPhone())
-                .address(createStudentOrParentRequest.getAddress())
-                .authorization(validRoles)
-                .build();
-        userRepository.save(savedUser);
-        /* String msgBody = "Chúc mừng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + createStudentOrParentRequest.getPassword() + "\n";
+        String msgBody = "Chúc mừng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + createUserRequest.getPassword() + "\n";
         EmailDetails details = new EmailDetails(savedUser.getEmail(), msgBody, "Thông báo tạo tài khoản thành công", "");
-        emailService.sendSimpleMail(details); */
+        emailService.sendSimpleMail(details);
 
+        
         return savedUser.getId();
     }
 
@@ -534,13 +578,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .password(encodedPassword)
                 .firstName(createTeacherRequest.getFirstName())
                 .lastName(createTeacherRequest.getLastName())
-                .dateOfBirth(createTeacherRequest.getDateOfBirth())
                 .sex(createTeacherRequest.getSex())
-                .phone(createTeacherRequest.getPhone())
                 .address(createTeacherRequest.getAddress())
                 .authorization(validRoles)
                 .build();
         userRepository.save(savedUser);
+
+        Teacher teacherUser = Teacher.builder()
+            .phone(createTeacherRequest.getPhone())
+            .build();
+        teacherRepository.save(teacherUser);
 
         String msgBody = "Chúc mưng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + password + "\n";
         EmailDetails details = new EmailDetails(savedUser.getEmail(), msgBody, "Thông báo tạo tài khoản thành công", "");
@@ -578,10 +625,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setFirstName(createUserRequest.getFirstName());
             user.setLastName(createUserRequest.getLastName());
             user.setAddress(createUserRequest.getAddress());
-            user.setDateOfBirth(createUserRequest.getDateOfBirth());
             user.setProfileImageUrl(createUserRequest.getProfile_image_url());
             user.setSex(createUserRequest.getSex());
-            user.setPhone(createUserRequest.getPhone());
     
             userRepository.save(user);
         }

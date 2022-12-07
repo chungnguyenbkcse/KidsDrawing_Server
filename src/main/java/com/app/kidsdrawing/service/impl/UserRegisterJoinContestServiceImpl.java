@@ -18,12 +18,12 @@ import com.app.kidsdrawing.dto.CreateUserRegisterJoinContestRequest;
 import com.app.kidsdrawing.dto.GetChildInClassResponse;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinContestResponse;
 import com.app.kidsdrawing.entity.Contest;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.UserRegisterJoinContest;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinContestRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.UserRegisterJoinContestService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     
     private final UserRegisterJoinContestRepository userRegisterJoinContestRepository;
     private final ContestRepository contestRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
 
     @Override
@@ -59,15 +59,15 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
     @Override 
     public ResponseEntity<Map<String, Object>> getAllUserRegisterJoinContestByContestIdAndParentId(Long contest_id, Long parent_id) {
         List<GetChildInClassResponse> allChildInClassResponse = new ArrayList<>();
-        List<User> listChilds = userRepository.findByParentId(parent_id);
+        List<Student> listChilds = studentRepository.findByParentId(parent_id);
         listChilds.forEach(student -> {
             List<UserRegisterJoinContest> classHasRegisterJoinSemesterClassOpt = userRegisterJoinContestRepository.findByContestAndStudent(contest_id, student.getId());
             if (classHasRegisterJoinSemesterClassOpt.size() > 0) {
                 GetChildInClassResponse classResponse = GetChildInClassResponse.builder()
                     .student_id(student.getId())
-                    .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
+                    .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                     .dateOfBirth(student.getDateOfBirth())
-                    .sex(student.getSex())
+                    .sex(student.getUser().getSex())
                     .build();
                 allChildInClassResponse.add(classResponse);
             }
@@ -127,13 +127,13 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             throw new EntityNotFoundException("exception.max_participant.not_register");
         }
 
-        Optional <User> teacherOpt = userRepository.findById1(createUserRegisterJoinContestRequest.getStudent_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
+        Optional <Student> studentOpt = studentRepository.findById1(createUserRegisterJoinContestRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
         UserRegisterJoinContest savedUserRegisterJoinContest = UserRegisterJoinContest.builder()
-                .student(teacher)
+                .student(student)
                 .contest(contest)
                 .build();
         userRegisterJoinContestRepository.save(savedUserRegisterJoinContest);
@@ -182,12 +182,12 @@ public class UserRegisterJoinContestServiceImpl implements UserRegisterJoinConte
             throw new EntityNotFoundException("exception.contest.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById1(createUserRegisterJoinContestRequest.getStudent_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
+        Optional <Student> studentOpt = studentRepository.findById1(createUserRegisterJoinContestRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user.not_found");
         });
         
-        updatedUserRegisterJoinContest.setStudent(teacher);
+        updatedUserRegisterJoinContest.setStudent(student);
         updatedUserRegisterJoinContest.setContest(contest);
 
         return updatedUserRegisterJoinContest.getId();

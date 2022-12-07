@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateUserGradeContestRequest;
 import com.app.kidsdrawing.dto.GetUserGradeContestResponse;
 import com.app.kidsdrawing.entity.Contest;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.UserGradeContest;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.UserGradeContestRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.TeacherRepository;
 import com.app.kidsdrawing.service.UserGradeContestService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
     
     private final UserGradeContestRepository userGradeContestRepository;
     private final ContestRepository contestRepository;
-    private final UserRepository userRepository;
+    private final TeacherRepository teacherRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserGradeContestByTeacherId(Long id) {
@@ -43,7 +43,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
                 .id(content.getId())
                 .teacher_id(id)
                 .contest_id(content.getContest().getId())
-                .teacher_name(content.getUser().getUsername() + " - " + content.getUser().getFirstName() + " " + content.getUser().getLastName())
+                .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
                 .contest_name(content.getContest().getName())
                 .build();
             allUserGradeContestResponses.add(userGradeContestResponse);
@@ -61,9 +61,9 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
         pageUserGradeContest.forEach(content -> {
             GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
                 .id(content.getId())
-                .teacher_id(content.getUser().getId())
+                .teacher_id(content.getTeacher().getUser().getId())
                 .contest_id(id)
-                .teacher_name(content.getUser().getUsername() + " - " + content.getUser().getFirstName() + " " + content.getUser().getLastName())
+                .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
                 .contest_name(content.getContest().getName())
                 .build();
                 allUserGradeContestResponses.add(userGradeContestResponse);
@@ -83,9 +83,9 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
 
         return GetUserGradeContestResponse.builder()
                 .id(userGradeContest.getId())
-                .teacher_id(userGradeContest.getUser().getId())
+                .teacher_id(userGradeContest.getTeacher().getId())
                 .contest_id(userGradeContest.getContest().getId())
-                .teacher_name(userGradeContest.getUser().getUsername() + " - " + userGradeContest.getUser().getFirstName() + " " + userGradeContest.getUser().getLastName())
+                .teacher_name(userGradeContest.getTeacher().getUser().getUsername() + " - " + userGradeContest.getTeacher().getUser().getFirstName() + " " + userGradeContest.getTeacher().getUser().getLastName())
                 .contest_name(userGradeContest.getContest().getName())
                 .build();
     }
@@ -97,13 +97,13 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
             throw new EntityNotFoundException("exception.Contest.not_found");
         });
 
-        Optional<User> teacherOpt = userRepository.findById1(createUserGradeContestRequest.getTeacher_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
+        Optional<Teacher> teacherOpt = teacherRepository.findById1(createUserGradeContestRequest.getTeacher_id());
+        Teacher teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.teacher.not_found");
         });
 
         UserGradeContest savedUserGradeContest = UserGradeContest.builder()
-                .user(teacher)
+                .teacher(teacher)
                 .contest(contest)
                 .build();
         userGradeContestRepository.save(savedUserGradeContest);
@@ -139,8 +139,8 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
             throw new EntityNotFoundException("exception.UserGradeContest.not_found");
         });
         Contest contest = contestRepository.getById(createUserGradeContestRequest.getContest_id());
-        User teacher = userRepository.getById(createUserGradeContestRequest.getTeacher_id());
-        updatedUserGradeContest.setUser(teacher);
+        Teacher teacher = teacherRepository.getById(createUserGradeContestRequest.getTeacher_id());
+        updatedUserGradeContest.setTeacher(teacher);
         updatedUserGradeContest.setContest(contest);
 
         return updatedUserGradeContest.getId();

@@ -138,13 +138,13 @@ public class EmailServiceImpl implements EmailService {
 
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             EmailDetails email = new EmailDetails();
-            email.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getEmail());
+            email.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getUser().getEmail());
             email.setSubject(details.getSubject());
             email.setMsgBody(details.getMsgBody());
             sendSimpleMail(email);
 
             EmailDetails email_1 = new EmailDetails();
-            email_1.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getParent().getEmail());
+            email_1.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getParent().getUser().getEmail());
             email_1.setSubject(details.getSubject());
             email_1.setMsgBody(details.getMsgBody());
             sendSimpleMail(email_1);
@@ -153,7 +153,7 @@ public class EmailServiceImpl implements EmailService {
             UserReadNotification savedUserReadNotification = UserReadNotification.builder()
                 .id(idx)
                 .notification(savedNotification)
-                .user(ele.getUserRegisterJoinSemester().getStudent())
+                .user(ele.getUserRegisterJoinSemester().getStudent().getUser())
                 .is_read(false)
                 .build();
             uuserReadNotificationRepository.save(savedUserReadNotification);
@@ -162,7 +162,7 @@ public class EmailServiceImpl implements EmailService {
             UserReadNotification savedUserReadNotification_1 = UserReadNotification.builder()
                 .id(id_1)
                 .notification(savedNotification)
-                .user(ele.getUserRegisterJoinSemester().getStudent().getParent())
+                .user(ele.getUserRegisterJoinSemester().getStudent().getParent().getUser())
                 .is_read(false)
                 .build();
             uuserReadNotificationRepository.save(savedUserReadNotification_1);
@@ -180,14 +180,14 @@ public class EmailServiceImpl implements EmailService {
 
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             EmailDetails email = new EmailDetails();
-            email.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getEmail());
+            email.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getUser().getEmail());
             email.setSubject(details.getSubject());
             email.setMsgBody(details.getMsgBody());
             email.setAttachment(details.getAttachment());
             sendSimpleMail(email);
 
             EmailDetails email_1 = new EmailDetails();
-            email_1.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getParent().getEmail());
+            email_1.setRecipient(ele.getUserRegisterJoinSemester().getStudent().getParent().getUser().getEmail());
             email_1.setSubject(details.getSubject());
             email_1.setMsgBody(details.getMsgBody());
             email_1.setAttachment(details.getAttachment());

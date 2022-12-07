@@ -32,7 +32,7 @@ import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
@@ -46,9 +46,9 @@ import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
-import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.CourseService;
 
 import lombok.RequiredArgsConstructor;
@@ -59,11 +59,11 @@ import lombok.RequiredArgsConstructor;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
     private final ArtAgeRepository artAgeRepository;
     private final ArtTypeRepository artTypeRepository;
     private final ArtLevelRepository artLevelRepository;
     private final ClassesRepository classRepository;
+    private final StudentRepository studentRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
@@ -265,17 +265,17 @@ public class CourseServiceImpl implements CourseService {
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByPayerId2(id);
         System.out.println(userRegisterJoinSemesters.size());
         List<Course> listCourseRegisted = new ArrayList<>();
-        Map<String, Set<User>> res = new HashMap<>();
+        Map<String, Set<Student>> res = new HashMap<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
             if (user_register_join_semester.getStatus().equals("Completed")){
                 listCourseRegisted.add(user_register_join_semester.getSemesterClass().getCourse());
                 if (res.containsKey(user_register_join_semester.getSemesterClass().getCourse().getName()) == false) {
-                    Set<User> users = new HashSet<>();
+                    Set<Student> users = new HashSet<>();
                     users.add(user_register_join_semester.getStudent());
                     res.put(user_register_join_semester.getSemesterClass().getCourse().getName(), users);
                 }
                 else {
-                    Set<User> users = res.get(user_register_join_semester.getSemesterClass().getCourse().getName());
+                    Set<Student> users = res.get(user_register_join_semester.getSemesterClass().getCourse().getName());
                     users.add(user_register_join_semester.getStudent());
                     res.replace(user_register_join_semester.getSemesterClass().getCourse().getName(), users);
                 }
@@ -352,7 +352,7 @@ public class CourseServiceImpl implements CourseService {
                 Set<Long> student_ids = new HashSet<>();
                 if (res.containsKey(course.getName())){
                     res.get(course.getName()).forEach(ele -> {
-                        student_names.add(ele.getUsername() + " " + ele.getFirstName() + " " + ele.getLastName());
+                        student_names.add(ele.getUser().getUsername() + " " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName());
                         student_ids.add(ele.getId());
                     });
                 }
@@ -501,13 +501,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourseByParentId(Long id) {
         List<GetCourseParentResponse> allCourseRegistedResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findByParentId3(id);
+        List<Student> pageUser = studentRepository.findByParentId3(id);
         List<Course> listCourseRegistered = new ArrayList<>();
         List<GetCourseParentResponse> listCourseNotRegistered = new ArrayList<>();
         List<Course> allCourse = courseRepository.findAll1();
 
         pageUser.forEach(student -> {
-            student.getUserRegisterJoinSemesters2().forEach(course -> {
+            student.getUserRegisterJoinSemesters().forEach(course -> {
                 if (course.getStatus().equals("Completed")) {
                     listCourseRegistered.add(course.getSemesterClass().getCourse());
                     GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
@@ -528,7 +528,7 @@ public class CourseServiceImpl implements CourseService {
                         .create_time(course.getSemesterClass().getCourse().getCreate_time())
                         .update_time(course.getSemesterClass().getCourse().getUpdate_time())
                         .student_id(student.getId())
-                        .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
+                        .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                         .build();
                     allCourseRegistedResponses.add(courseResponse);
                 }
@@ -556,7 +556,7 @@ public class CourseServiceImpl implements CourseService {
                         .create_time(course.getCreate_time())
                         .update_time(course.getUpdate_time())
                         .student_id(student.getId())
-                        .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
+                        .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                         .build();
                     listCourseNotRegistered.add(courseResponse);
                 }

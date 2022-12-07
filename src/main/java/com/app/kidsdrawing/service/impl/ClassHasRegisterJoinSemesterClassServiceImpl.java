@@ -23,11 +23,11 @@ import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.entity.Classes;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
-import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ClassHasRegisterJoinSemesterClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
     private final ClassesRepository classRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private static int total = 0;
     
@@ -98,7 +98,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
     @Override
     public Long updateClassHasRegisterJoinSemesterClassForStudent(CreateClassHasRegisterJoinSemesterClassStudentRequest createClassHasRegisterJoinSemesterClassStudentRequest) {
-        List<User> allChildForParent = userRepository
+        List<Student> allChildForParent = studentRepository
                 .findByParentId(createClassHasRegisterJoinSemesterClassStudentRequest.getParent_id());
         allChildForParent.forEach(ele -> {
             Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassesIdAndStudentId(createClassHasRegisterJoinSemesterClassStudentRequest.getClasses_id(),ele.getId());

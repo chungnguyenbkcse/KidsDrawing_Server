@@ -20,12 +20,12 @@ import com.app.kidsdrawing.dto.GetExerciseTeacherResponse;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.Section;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.ExerciseService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     
     private final ExerciseRepository exerciseRepository;
     private final SectionRepository sectionRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
 
     @Override
@@ -66,7 +66,7 @@ public class ExerciseServiceImpl implements ExerciseService{
     public ResponseEntity<Map<String, Object>> getAllExerciseByClassAndParent(Long classes_id, Long parent_id) {
         List<GetExerciseParentResponse> exerciseResponses = new ArrayList<>();
         List<GetExerciseParentResponse> exerciseSubmittedResponses = new ArrayList<>();
-        List<User> listChilds = userRepository.findByParentId(parent_id);
+        List<Student> listChilds = studentRepository.findByParentId(parent_id);
         listChilds.forEach(student -> {
             List<Exercise> allExerciseByClassAndStudent = exerciseRepository
                     .findAllExerciseByClassAndStudent(classes_id, student.getId());
@@ -87,7 +87,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                             .section_name(ele.getSection().getName())
                             .name(ele.getName())
                             .student_id(student.getId())
-                            .student_name(student.getUsername() + student.getFirstName() + " " + student.getLastName())
+                            .student_name(student.getUser().getUsername() + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                             .exercise_submission_id(ele.getId())
                             .description(ele.getDescription())
                             .deadline(ele.getDeadline())
@@ -102,7 +102,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                             .section_name(ele.getSection().getName())
                             .name(ele.getName())
                             .student_id(student.getId())
-                            .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
+                            .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                             .time_submit(ele.getUpdate_time())
                             .exercise_submission_id(ele.getId())
                             .description(ele.getDescription())
@@ -224,7 +224,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                     List<String> student_names = new ArrayList<>();
                     List<Long> student_ids = new ArrayList<>();
                     exerciseSubmissions.stream().filter(elex -> elex.getExercise().getId() == ele.getId()).forEach(eley -> {
-                        student_names.add(eley.getStudent().getUsername() + " - " + eley.getStudent().getFirstName() + " " + eley.getStudent().getLastName());
+                        student_names.add(eley.getStudent().getUser().getUsername() + " - " + eley.getStudent().getUser().getFirstName() + " " + eley.getStudent().getUser().getLastName());
                         student_ids.add(eley.getStudent().getId());
                     });
                     GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()

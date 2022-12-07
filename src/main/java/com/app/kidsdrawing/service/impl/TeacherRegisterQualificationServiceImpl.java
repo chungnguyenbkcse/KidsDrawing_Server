@@ -18,12 +18,12 @@ import com.app.kidsdrawing.dto.CreateTeacherRegisterQualificationRequest;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQualificationResponse;
 import com.app.kidsdrawing.dto.GetTeacherRegisterQuanlificationTeacherResponse;
 import com.app.kidsdrawing.entity.Course;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.TeacherRepository;
 import com.app.kidsdrawing.service.TeacherRegisterQualificationService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
     
     private final TeacherRegisterQualificationRepository teacherRegisterQualificationRepository;
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
+    private final TeacherRepository teacherRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllTeacherRegisterQualificationApprovedByTeacherId(Long id) {
@@ -48,7 +48,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
-                        .teacher_name(ele.getTeacher().getUsername() + " - " + ele.getTeacher().getFirstName() + " " + ele.getTeacher().getLastName())
+                        .teacher_name(ele.getTeacher().getUser().getUsername() + " - " + ele.getTeacher().getUser().getFirstName() + " " + ele.getTeacher().getUser().getLastName())
                         .course_id(ele.getCourse().getId())
                         .course_name(ele.getCourse().getName())
                         .degree_photo_url(ele.getDegree_photo_url())
@@ -60,7 +60,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
-                        .teacher_name(ele.getTeacher().getUsername() + " - " + ele.getTeacher().getFirstName() + " " + ele.getTeacher().getLastName())
+                        .teacher_name(ele.getTeacher().getUser().getUsername() + " - " + ele.getTeacher().getUser().getFirstName() + " " + ele.getTeacher().getUser().getLastName())
                         
                         .course_id(ele.getCourse().getId())
                         .course_name(ele.getCourse().getName())
@@ -73,7 +73,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
-                        .teacher_name(ele.getTeacher().getUsername() + " - " + ele.getTeacher().getFirstName() + " " + ele.getTeacher().getLastName())
+                        .teacher_name(ele.getTeacher().getUser().getUsername() + " - " + ele.getTeacher().getUser().getFirstName() + " " + ele.getTeacher().getUser().getLastName())
                         
                         .course_id(ele.getCourse().getId())
                         .course_name(ele.getCourse().getName())
@@ -159,8 +159,8 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById1(createTeacherRegisterQualificationRequest.getTeacher_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
+        Optional <Teacher> teacherOpt = teacherRepository.findById1(createTeacherRegisterQualificationRequest.getTeacher_id());
+        Teacher teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.teacher.not_found");
         });
 
@@ -198,8 +198,8 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById1(createTeacherRegisterQualificationRequest.getTeacher_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
+        Optional <Teacher> teacherOpt = teacherRepository.findById1(createTeacherRegisterQualificationRequest.getTeacher_id());
+        Teacher teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.teacher.not_found");
         });
         

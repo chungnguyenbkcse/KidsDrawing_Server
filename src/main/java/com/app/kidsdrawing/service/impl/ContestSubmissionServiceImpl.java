@@ -17,7 +17,8 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateContestSubmissionRequest;
 import com.app.kidsdrawing.dto.GetContestSubmissionResponse;
 import com.app.kidsdrawing.entity.ContestSubmission;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.UserGradeContest;
 import com.app.kidsdrawing.entity.UserGradeContestSubmission;
 import com.app.kidsdrawing.entity.UserGradeContestSubmissionKey;
@@ -26,9 +27,9 @@ import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.ContestSubmissionRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.UserGradeContestRepository;
 import com.app.kidsdrawing.repository.UserGradeContestSubmissionRepository;
-import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ContestSubmissionService;
 
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     
     private final ContestSubmissionRepository contestSubmissionRepository;
     private final ContestRepository contestRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final UserGradeContestRepository userGradeContestRepository;
     private final UserGradeContestSubmissionRepository userGradeContestSubmissionRepository;
     private static int count = 0;
@@ -67,7 +68,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public Long createUserGradeContestSubmission(User teacher, ContestSubmission contest_submission) {
+    public Long createUserGradeContestSubmission(Teacher teacher, ContestSubmission contest_submission) {
 
 
         UserGradeContestSubmissionKey id = new UserGradeContestSubmissionKey(teacher.getId(),contest_submission.getId());
@@ -136,13 +137,13 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             if (count == total_teacher - 1) {
                 List<ContestSubmission> contestSubmissions = listContestSubmission.subList(count*total, total_contest_submission);
                 contestSubmissions.forEach(ele -> {
-                    createUserGradeContestSubmission(pageUserGradeContest.get(count).getUser(), ele);
+                    createUserGradeContestSubmission(pageUserGradeContest.get(count).getTeacher(), ele);
                 });
             }
             else {
                 List<ContestSubmission> contestSubmissions = listContestSubmission.subList(count*total, (count+1)*total);
                 contestSubmissions.forEach(ele -> {
-                    createUserGradeContestSubmission(pageUserGradeContest.get(count).getUser(), ele);
+                    createUserGradeContestSubmission(pageUserGradeContest.get(count).getTeacher(), ele);
                 });
             } 
         }
@@ -162,7 +163,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     .contest_id(content.getContest().getId())
                     .student_id(content.getStudent().getId())
                     .contest_name(content.getContest().getName())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -200,7 +201,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     .contest_id(contest_submission.getContest().getId())
                     .student_id(contest_submission.getStudent().getId())
                     .contest_name(contest_submission.getContest().getName())
-                    .student_name(contest_submission.getStudent().getUsername() + " - " + contest_submission.getStudent().getFirstName() + " " + contest_submission.getStudent().getLastName())
+                    .student_name(contest_submission.getStudent().getUser().getUsername() + " - " + contest_submission.getStudent().getUser().getFirstName() + " " + contest_submission.getStudent().getUser().getLastName())
                     .image_url(contest_submission.getImage_url())
                     .create_time(contest_submission.getCreate_time())
                     .update_time(contest_submission.getUpdate_time())
@@ -226,7 +227,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             .contest_id(contestSubmissionOpt.get(0).getContest().getId())
             .student_id(contestSubmissionOpt.get(0).getStudent().getId())
             .contest_name(contestSubmissionOpt.get(0).getContest().getName())
-            .student_name(contestSubmissionOpt.get(0).getStudent().getUsername() + " - " + contestSubmissionOpt.get(0).getStudent().getFirstName() + " " + contestSubmissionOpt.get(0).getStudent().getLastName())
+            .student_name(contestSubmissionOpt.get(0).getStudent().getUser().getUsername() + " - " + contestSubmissionOpt.get(0).getStudent().getUser().getFirstName() + " " + contestSubmissionOpt.get(0).getStudent().getUser().getLastName())
             .image_url(contestSubmissionOpt.get(0).getImage_url())
             .create_time(contestSubmissionOpt.get(0).getCreate_time())
             .update_time(contestSubmissionOpt.get(0).getUpdate_time())
@@ -245,7 +246,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             .contest_id(contestSubmission.getContest().getId())
             .student_id(contestSubmission.getStudent().getId())
             .contest_name(contestSubmission.getContest().getName())
-            .student_name(contestSubmission.getStudent().getUsername() + " - " + contestSubmission.getStudent().getFirstName() + " " + contestSubmission.getStudent().getLastName())
+            .student_name(contestSubmission.getStudent().getUser().getUsername() + " - " + contestSubmission.getStudent().getUser().getFirstName() + " " + contestSubmission.getStudent().getUser().getLastName())
             .image_url(contestSubmission.getImage_url())
             .create_time(contestSubmission.getCreate_time())
             .update_time(contestSubmission.getUpdate_time())
@@ -255,8 +256,8 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     @Override
     public Long createContestSubmission(CreateContestSubmissionRequest createContestSubmissionRequest) {
 
-        Optional <User> studentOpt = userRepository.findById1(createContestSubmissionRequest.getStudent_id());
-        User student = studentOpt.orElseThrow(() -> {
+        Optional <Student> studentOpt = studentRepository.findById1(createContestSubmissionRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
@@ -304,10 +305,11 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById1(createContestSubmissionRequest.getStudent_id());
-        User student = studentOpt.orElseThrow(() -> {
+        Optional <Student> studentOpt = studentRepository.findById1(createContestSubmissionRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
+
 
         Optional <Contest> contestOpt = contestRepository.findById1(createContestSubmissionRequest.getContest_id());
         Contest contest = contestOpt.orElseThrow(() -> {

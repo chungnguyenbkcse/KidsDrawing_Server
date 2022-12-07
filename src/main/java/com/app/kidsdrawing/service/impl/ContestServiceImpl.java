@@ -27,7 +27,7 @@ import com.app.kidsdrawing.entity.ArtAge;
 import com.app.kidsdrawing.entity.ArtType;
 import com.app.kidsdrawing.entity.Contest;
 import com.app.kidsdrawing.entity.ContestSubmission;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.UserGradeContest;
 import com.app.kidsdrawing.entity.UserGradeContestSubmission;
 import com.app.kidsdrawing.entity.UserRegisterJoinContest;
@@ -38,10 +38,10 @@ import com.app.kidsdrawing.repository.ArtAgeRepository;
 import com.app.kidsdrawing.repository.ArtTypeRepository;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.ContestSubmissionRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.UserGradeContestRepository;
 import com.app.kidsdrawing.repository.UserGradeContestSubmissionRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinContestRepository;
-import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.ContestService;
 
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ import lombok.RequiredArgsConstructor;
 public class ContestServiceImpl implements ContestService {
 
     private final ContestRepository contestRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final ArtAgeRepository artAgeRepository;
     private final ArtTypeRepository artTypeRepository;
     private final UserGradeContestRepository userGradeContestRepository;
@@ -87,7 +87,7 @@ public class ContestServiceImpl implements ContestService {
             List<Long> teachers = new ArrayList<>();
             pageUserGradeContest.forEach(user_grade_contest -> {
                 if (user_grade_contest.getContest().getId().compareTo(contest.getId())  == 0) {
-                    teachers.add(user_grade_contest.getUser().getId());
+                    teachers.add(user_grade_contest.getTeacher().getId());
                 }
             });
 
@@ -511,7 +511,7 @@ public class ContestServiceImpl implements ContestService {
         List<GetContestParentResponse> contestsResponse = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
         List<Contest> allContests = contestRepository.findAll3();
-        List<User> allChildForParent = userRepository
+        List<Student> allChildForParent = studentRepository
                 .findByParentId(parent_id);
         allContests.forEach(contest -> {
             if (time_now.isBefore(contest.getRegistration_time())){
@@ -534,7 +534,7 @@ public class ContestServiceImpl implements ContestService {
                             .art_type_name(contest.getArtTypes().getName())
                             .art_age_id(contest.getArtAges().getId())
                             .art_type_id(contest.getArtTypes().getId())
-                            .student_name(ele.getUsername() + " - " + ele.getFirstName() + " " + ele.getLastName())
+                            .student_name(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName())
                             .student_id(ele.getId())
                             .build();
                         contestsResponse.add(contestResponse);
@@ -573,7 +573,7 @@ public class ContestServiceImpl implements ContestService {
         List<GetContestStudentResponse> allContestOpeningResponses = new ArrayList<>();
         List<GetContestStudentResponse> allContestEndResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<User> pageUser = userRepository.findByParentId(parent_id);
+        List<Student> pageUser = studentRepository.findByParentId(parent_id);
 
         pageUser.forEach(student -> {
             Set<UserRegisterJoinContest> listRegisterJoinContest = student.getUserRegisterJoinContests();
@@ -595,7 +595,7 @@ public class ContestServiceImpl implements ContestService {
                             .name(ele.getContest().getName())
                             .description(ele.getContest().getDescription())
                             .student_id(student.getId())
-                            .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
+                            .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                             .max_participant(ele.getContest().getMax_participant())
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission(listContestSubmissionByContest.size())
@@ -617,7 +617,7 @@ public class ContestServiceImpl implements ContestService {
                             .name(ele.getContest().getName())
                             .description(ele.getContest().getDescription())
                             .student_id(student.getId())
-                            .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
+                            .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                             .max_participant(ele.getContest().getMax_participant())
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission(listContestSubmissionByContest.size())
@@ -639,7 +639,7 @@ public class ContestServiceImpl implements ContestService {
                             .id(ele.getContest().getId())
                             .name(ele.getContest().getName())
                             .student_id(student.getId())
-                            .student_name(student.getUsername() + " - " + student.getFirstName() + " " + student.getLastName())
+                            .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                             .description(ele.getContest().getDescription())
                             .max_participant(ele.getContest().getMax_participant())
                             .total_register_contest(listUserRegisterContestByContest.size())

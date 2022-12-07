@@ -25,15 +25,15 @@ import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.SemesterClass;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.TeacherLeave;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.TeacherLeaveRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.TeacherRepository;
 import com.app.kidsdrawing.service.TeacherLeaveService;
 
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     private final TeacherLeaveRepository teacherLeaveRepository;
     private final SectionRepository sectionRepository;
     private final ClassesRepository classRepository;
-    private final UserRepository userRepository;
+    private final TeacherRepository teacherRepository;
     private static int total_section_count = 0;
 
     public List<LocalDateTime> getScheduleDetailOfClass(Classes classes, int section_number) {
@@ -219,7 +219,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
                 .id(content.getId())
                 .teacher_id(content.getTeacher().getId())
-                .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
@@ -228,7 +228,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 .end_time(time.get(1))
                 .class_name(content.getSection().getClasses().getName())
                 .substitute_teacher_id(content.getSubstitute_teacher().getId())
-                .substitute_teacher_name(content.getTeacher().getUsername() + " - " + content.getSubstitute_teacher().getFirstName() + " " + content.getSubstitute_teacher().getLastName())
+                .substitute_teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getSubstitute_teacher().getUser().getFirstName() + " " + content.getSubstitute_teacher().getUser().getLastName())
                 .status(content.getStatus())
                 .description(content.getDescription())
                 .create_time(content.getCreate_time())
@@ -257,14 +257,14 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 .teacher_id(content.getTeacher().getId())
                 .start_time(time.get(0))
                 .end_time(time.get(1))
-                .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
                 .classes_id(content.getSection().getClasses().getId())
                 .class_name(content.getSection().getClasses().getName())
                 .substitute_teacher_id(content.getSubstitute_teacher().getId())
-                .substitute_teacher_name(content.getTeacher().getUsername() + " - " + content.getSubstitute_teacher().getFirstName() + " " + content.getSubstitute_teacher().getLastName())
+                .substitute_teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getSubstitute_teacher().getUser().getFirstName() + " " + content.getSubstitute_teacher().getUser().getLastName())
                 .status(content.getStatus())
                 .description(content.getDescription())
                 .create_time(content.getCreate_time())
@@ -288,7 +288,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
                     .id(content.getId())
                     .teacher_id(content.getTeacher().getId())
-                    .teacher_name(content.getTeacher().getUsername() + " - " + content.getTeacher().getFirstName() + " " + content.getTeacher().getLastName())
+                    .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
                     .section_id(content.getSection().getId())
                     .start_time(time.get(0))
                     .end_time(time.get(1))
@@ -297,7 +297,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                     .classes_id(content.getSection().getClasses().getId())
                     .class_name(content.getSection().getClasses().getName())
                     .substitute_teacher_id(content.getSubstitute_teacher().getId())
-                    .substitute_teacher_name(content.getSubstitute_teacher().getUsername() + " - " + content.getSubstitute_teacher().getFirstName() + " " + content.getSubstitute_teacher().getLastName())
+                    .substitute_teacher_name(content.getSubstitute_teacher().getUser().getUsername() + " - " + content.getSubstitute_teacher().getUser().getFirstName() + " " + content.getSubstitute_teacher().getUser().getLastName())
                     .status(content.getStatus())
                     .description(content.getDescription())
                     .create_time(content.getCreate_time())
@@ -324,7 +324,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         return GetTeacherLeaveResponse.builder()
             .id(teacherLeave.getId())
             .teacher_id(teacherLeave.getTeacher().getId())
-            .teacher_name(teacherLeave.getTeacher().getUsername() + " - " + teacherLeave.getTeacher().getFirstName() + " " + teacherLeave.getTeacher().getLastName())
+            .teacher_name(teacherLeave.getTeacher().getUser().getUsername() + " - " + teacherLeave.getTeacher().getUser().getFirstName() + " " + teacherLeave.getTeacher().getUser().getLastName())
             .section_id(teacherLeave.getSection().getId())
             .start_time(time.get(0))
             .end_time(time.get(1))
@@ -333,7 +333,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             .section_number(teacherLeave.getSection().getNumber())
             .class_name(teacherLeave.getSection().getClasses().getName())
             .substitute_teacher_id(teacherLeave.getSubstitute_teacher().getId())
-            .substitute_teacher_name(teacherLeave.getSubstitute_teacher().getUsername() + " - " + teacherLeave.getSubstitute_teacher().getFirstName()  + " " + teacherLeave.getSubstitute_teacher().getLastName())
+            .substitute_teacher_name(teacherLeave.getSubstitute_teacher().getUser().getUsername() + " - " + teacherLeave.getSubstitute_teacher().getUser().getFirstName()  + " " + teacherLeave.getSubstitute_teacher().getUser().getLastName())
             .status(teacherLeave.getStatus())
             .description(teacherLeave.getDescription())
             .create_time(teacherLeave.getCreate_time())
@@ -344,13 +344,13 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
     @Override
     public GetTeacherLeaveResponse createTeacherLeave(CreateTeacherLeaveRequest createTeacherLeaveRequest) {
 
-        Optional <User> teacherOpt = userRepository.findById1(createTeacherLeaveRequest.getTeacher_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
+        Optional <Teacher> teacherOpt = teacherRepository.findById1(createTeacherLeaveRequest.getTeacher_id());
+        Teacher teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 
-        Optional <User> substitute_teacherOpt = userRepository.findById1(createTeacherLeaveRequest.getSubstitute_teacher_id());
-        User substitute_teacher = substitute_teacherOpt.orElseThrow(() -> {
+        Optional <Teacher> substitute_teacherOpt = teacherRepository.findById1(createTeacherLeaveRequest.getSubstitute_teacher_id());
+        Teacher substitute_teacher = substitute_teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_substitute_teacher.not_found");
         });
 
@@ -379,14 +379,14 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         return GetTeacherLeaveResponse.builder()
         .id(savedTeacherLeave.getId())
         .teacher_id(savedTeacherLeave.getTeacher().getId())
-        .teacher_name(savedTeacherLeave.getTeacher().getUsername() + " - " + savedTeacherLeave.getTeacher().getFirstName() + " " + savedTeacherLeave.getTeacher().getLastName())
+        .teacher_name(savedTeacherLeave.getTeacher().getUser().getUsername() + " - " + savedTeacherLeave.getTeacher().getUser().getFirstName() + " " + savedTeacherLeave.getTeacher().getUser().getLastName())
         .section_id(savedTeacherLeave.getSection().getId())
         .section_name(savedTeacherLeave.getSection().getName())
         .classes_id(savedTeacherLeave.getSection().getClasses().getId())
         .section_number(savedTeacherLeave.getSection().getNumber())
         .class_name(savedTeacherLeave.getSection().getClasses().getName())
         .substitute_teacher_id(savedTeacherLeave.getSubstitute_teacher().getId())
-        .substitute_teacher_name(savedTeacherLeave.getSubstitute_teacher().getUsername() + " - " + savedTeacherLeave.getSubstitute_teacher().getFirstName()  + " " + savedTeacherLeave.getSubstitute_teacher().getLastName())
+        .substitute_teacher_name(savedTeacherLeave.getSubstitute_teacher().getUser().getUsername() + " - " + savedTeacherLeave.getSubstitute_teacher().getUser().getFirstName()  + " " + savedTeacherLeave.getSubstitute_teacher().getUser().getLastName())
         .status(savedTeacherLeave.getStatus())
         .description(savedTeacherLeave.getDescription())
         .create_time(savedTeacherLeave.getCreate_time())
@@ -416,8 +416,8 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
 
-        Optional <User> substitute_teacherOpt = userRepository.findById1(createTeacherLeaveRequest.getSubstitute_teacher_id());
-        User substitute_teacher = substitute_teacherOpt.orElseThrow(() -> {
+        Optional <Teacher> substitute_teacherOpt = teacherRepository.findById1(createTeacherLeaveRequest.getSubstitute_teacher_id());
+        Teacher substitute_teacher = substitute_teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_substitute_teacher.not_found");
         });
 
@@ -469,14 +469,14 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         return GetTeacherLeaveResponse.builder()
         .id(updatedTeacherLeave.getId())
         .teacher_id(updatedTeacherLeave.getTeacher().getId())
-        .teacher_name(updatedTeacherLeave.getTeacher().getUsername() + " - " + updatedTeacherLeave.getTeacher().getFirstName() + " " + updatedTeacherLeave.getTeacher().getLastName())
+        .teacher_name(updatedTeacherLeave.getTeacher().getUser().getUsername() + " - " + updatedTeacherLeave.getTeacher().getUser().getFirstName() + " " + updatedTeacherLeave.getTeacher().getUser().getLastName())
         .section_id(updatedTeacherLeave.getSection().getId())
         .section_name(updatedTeacherLeave.getSection().getName())
         .classes_id(updatedTeacherLeave.getSection().getClasses().getId())
         .section_number(updatedTeacherLeave.getSection().getNumber())
         .class_name(updatedTeacherLeave.getSection().getClasses().getName())
         .substitute_teacher_id(updatedTeacherLeave.getSubstitute_teacher().getId())
-        .substitute_teacher_name(updatedTeacherLeave.getSubstitute_teacher().getUsername() + " - " + updatedTeacherLeave.getSubstitute_teacher().getFirstName()  + " " + updatedTeacherLeave.getSubstitute_teacher().getLastName())
+        .substitute_teacher_name(updatedTeacherLeave.getSubstitute_teacher().getUser().getUsername() + " - " + updatedTeacherLeave.getSubstitute_teacher().getUser().getFirstName()  + " " + updatedTeacherLeave.getSubstitute_teacher().getUser().getLastName())
         .status(updatedTeacherLeave.getStatus())
         .description(updatedTeacherLeave.getDescription())
         .create_time(updatedTeacherLeave.getCreate_time())

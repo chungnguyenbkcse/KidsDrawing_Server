@@ -42,7 +42,7 @@ public class TeacherRegisterQualification {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private User teacher;
+    private Teacher teacher;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "course_id", referencedColumnName = "id")

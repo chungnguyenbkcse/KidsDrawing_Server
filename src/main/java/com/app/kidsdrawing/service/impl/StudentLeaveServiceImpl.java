@@ -17,13 +17,13 @@ import com.app.kidsdrawing.dto.CreateReviewStudentLeaveRequest;
 import com.app.kidsdrawing.dto.CreateStudentLeaveRequest;
 import com.app.kidsdrawing.dto.GetStudentLeaveResponse;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.StudentLeave;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.StudentLeaveRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.StudentLeaveService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     
     private final StudentLeaveRepository studentLeaveRepository;
     private final SectionRepository sectionRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllStudentLeave() {
@@ -45,7 +45,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                 .id(content.getId())
                 .student_id(content.getStudent().getId())
-                .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
@@ -75,7 +75,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getUsername() + " - " +content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " +content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .section_id(content.getSection().getId())
                     .section_number(content.getSection().getNumber())
                     .section_name(content.getSection().getName())
@@ -92,7 +92,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .section_id(content.getSection().getId())
                     .section_number(content.getSection().getNumber())
                     .section_name(content.getSection().getName())
@@ -109,7 +109,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     
                     .section_id(content.getSection().getId())
                     .section_number(content.getSection().getNumber())
@@ -137,7 +137,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         List<GetStudentLeaveResponse> allStudentLeaveApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedResponses = new ArrayList<>();
         List<GetStudentLeaveResponse> allStudentLeaveNotApprovedNowResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findByParentId1(id);
+        List<Student> pageUser = studentRepository.findByParentId1(id);
         pageUser.forEach(student -> {
             List<StudentLeave> listStudentLeave = studentLeaveRepository.findByStudentId2(student.getId());
             listStudentLeave.forEach(content -> {
@@ -145,7 +145,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                         .id(content.getId())
                         .student_id(content.getStudent().getId())
-                        .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                         
                         .section_id(content.getSection().getId())
                         .section_number(content.getSection().getNumber())
@@ -163,7 +163,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                         .id(content.getId())
                         .student_id(content.getStudent().getId())
-                        .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                         
                         .section_id(content.getSection().getId())
                         .section_number(content.getSection().getNumber())
@@ -181,7 +181,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                         .id(content.getId())
                         .student_id(content.getStudent().getId())
-                        .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                         
                         .section_id(content.getSection().getId())
                         .section_number(content.getSection().getNumber())
@@ -212,7 +212,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .id(content.getId())
                     .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     
                     .section_id(content.getSection().getId())
                     .section_number(content.getSection().getNumber())
@@ -240,7 +240,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                 .id(content.getId())
                 .student_id(content.getStudent().getId())
-                .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
@@ -263,7 +263,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     @Override
     public ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndParent(Long classes_id, Long parent_id) {
         List<GetStudentLeaveResponse> allStudentLeaveResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findByParentId(parent_id);
+        List<Student> pageUser = studentRepository.findByParentId(parent_id);
         pageUser.forEach(student -> {
             List<StudentLeave> listStudentLeave = studentLeaveRepository.findByClassesAndStudent(classes_id,
                     student.getId());
@@ -271,7 +271,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                         .id(content.getId())
                         .student_id(content.getStudent().getId())
-                        .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                         
                         .section_id(content.getSection().getId())
                         .section_number(content.getSection().getNumber())
@@ -299,7 +299,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                 .id(content.getId())
                 .student_id(content.getStudent().getId())
-                .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
@@ -329,7 +329,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         return GetStudentLeaveResponse.builder()
             .id(StudentLeave.getId())
             .student_id(StudentLeave.getStudent().getId())
-            .student_name(StudentLeave.getStudent().getUsername() + " - " + StudentLeave.getStudent().getFirstName() + " " + StudentLeave.getStudent().getLastName())
+            .student_name(StudentLeave.getStudent().getUser().getUsername() + " - " + StudentLeave.getStudent().getUser().getFirstName() + " " + StudentLeave.getStudent().getUser().getLastName())
             
             .section_id(StudentLeave.getSection().getId())
             .section_number(StudentLeave.getSection().getNumber())
@@ -353,7 +353,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
         return GetStudentLeaveResponse.builder()
             .id(StudentLeaveOpt.get(0).getId())
             .student_id(StudentLeaveOpt.get(0).getStudent().getId())
-            .student_name(StudentLeaveOpt.get(0).getStudent().getUsername() + " - " + StudentLeaveOpt.get(0).getStudent().getFirstName() + " " + StudentLeaveOpt.get(0).getStudent().getLastName())
+            .student_name(StudentLeaveOpt.get(0).getStudent().getUser().getUsername() + " - " + StudentLeaveOpt.get(0).getStudent().getUser().getFirstName() + " " + StudentLeaveOpt.get(0).getStudent().getUser().getLastName())
             .section_id(StudentLeaveOpt.get(0).getSection().getId())
             .section_number(StudentLeaveOpt.get(0).getSection().getNumber())
             .section_name(StudentLeaveOpt.get(0).getSection().getName())
@@ -369,8 +369,8 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     @Override
     public Long createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest) {
 
-        Optional <User> studentOpt = userRepository.findById1(createStudentLeaveRequest.getStudent_id());
-        User student = studentOpt.orElseThrow(() -> {
+        Optional <Student> studentOpt = studentRepository.findById1(createStudentLeaveRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 

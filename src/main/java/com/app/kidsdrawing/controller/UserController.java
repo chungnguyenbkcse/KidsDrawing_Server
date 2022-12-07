@@ -5,7 +5,6 @@ import java.util.Map;
 
 
 import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
-import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateTeacherUserRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
@@ -35,8 +34,8 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createStudent(@RequestBody CreateStudentRequest createStudentOrParentRequest) {
-        Long userId = userService.createStudent(createStudentOrParentRequest);
+    public ResponseEntity<String> createStudent(@RequestBody CreateUserRequest createUserRequest) {
+        Long userId = userService.createUser(createUserRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();

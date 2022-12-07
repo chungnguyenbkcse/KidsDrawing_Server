@@ -43,7 +43,7 @@ public class StudentLeave {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "Student_id", referencedColumnName = "id")
-    private User student;
+    private Student student;
 
     @Column(name = "deleted")
     private Boolean deleted;

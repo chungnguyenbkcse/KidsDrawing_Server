@@ -25,10 +25,10 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE se.id =?1 AND st.id =?2 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<ExerciseSubmission> findAllExerciseSubmissionBySectionAndStudent(Long section_id, Long student_id);
 
-    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student  st  JOIN FETCH st.parent pa JOIN FETCH ex.section se WHERE se.id =?1 AND pa.id =?2 AND (e.deleted = FALSE OR e.deleted IS NULL) AND (ex.deleted = FALSE OR ex.deleted IS NULL)  AND (st.deleted = FALSE OR st.deleted IS NULL) AND (pa.deleted = FALSE OR pa.deleted IS NULL) ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student  st  JOIN FETCH st.parent pa JOIN FETCH ex.section se WHERE se.id =?1 AND pa.id =?2 AND (e.deleted = FALSE OR e.deleted IS NULL) AND (ex.deleted = FALSE OR ex.deleted IS NULL)  ORDER BY e.id")
     List<ExerciseSubmission> findAllExerciseSubmissionBySectionAndParent(Long section_id, Long parent_id);
 
-    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se WHERE se.id =?1 AND st.id =?2 AND (e.deleted = FALSE OR e.deleted IS NULL) AND (ex.deleted = FALSE OR ex.deleted IS NULL) AND (st.deleted = FALSE OR st.deleted IS NULL) ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se WHERE se.id =?1 AND st.id =?2 AND (e.deleted = FALSE OR e.deleted IS NULL) AND (ex.deleted = FALSE OR ex.deleted IS NULL)  ORDER BY e.id")
     List<ExerciseSubmission> findAllExerciseSubmissionBySectionAndStudent1(Long section_id, Long student_id);
 
     @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE cl.id =?1 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")

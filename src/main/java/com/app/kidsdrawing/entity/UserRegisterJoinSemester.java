@@ -42,11 +42,11 @@ public class UserRegisterJoinSemester {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private User student;
+    private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "payer_id", referencedColumnName = "id")
-    private User payer;
+    private Parent payer;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "semester_classes_id", referencedColumnName = "id")

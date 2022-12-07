@@ -33,7 +33,7 @@ public class UserGradeContest {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private User user;
+    private Teacher teacher;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "contest_id", referencedColumnName = "id")

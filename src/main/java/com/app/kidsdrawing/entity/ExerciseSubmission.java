@@ -38,7 +38,7 @@ public class ExerciseSubmission {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private User student;
+    private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "exercise_id", referencedColumnName = "id")

@@ -17,11 +17,11 @@ import com.app.kidsdrawing.dto.CreateUserAttendanceRequest;
 import com.app.kidsdrawing.dto.GetCheckUserAttendanceResponse;
 import com.app.kidsdrawing.dto.GetUserAttendanceResponse;
 import com.app.kidsdrawing.entity.UserAttendance;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.service.UserAttendanceService;
 
@@ -34,7 +34,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     
     private final UserAttendanceRepository userAttendanceRepository;
     private final SectionRepository sectionRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserAttendance() {
@@ -47,10 +47,10 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
                 .section_number(content.getSection().getNumber())
                 .course_id(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
                 .course_name(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -71,11 +71,11 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                 .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -108,11 +108,11 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                 .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -134,11 +134,11 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                 .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -159,11 +159,11 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
                 .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -189,11 +189,11 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         return GetUserAttendanceResponse.builder()
             .id(userAttendance.getId())
             .section_number(userAttendance.getSection().getNumber())
-            .email(userAttendance.getStudent().getEmail())
+            .email(userAttendance.getStudent().getUser().getEmail())
             .section_id(userAttendance.getSection().getId())
             .student_id(userAttendance.getStudent().getId())
             .section_name(userAttendance.getSection().getName())
-            .student_name(userAttendance.getStudent().getUsername() + " - " + userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
+            .student_name(userAttendance.getStudent().getUser().getUsername() + " - " + userAttendance.getStudent().getUser().getFirstName() + " " + userAttendance.getStudent().getUser().getLastName())
             .create_time(userAttendance.getCreateTime())
             .update_time(userAttendance.getUpdateTime())
             .status(userAttendance.getStatus())
@@ -212,11 +212,11 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         return GetUserAttendanceResponse.builder()
             .id(userAttendance.getId())
             .section_number(userAttendance.getSection().getNumber())
-            .email(userAttendance.getStudent().getEmail())
+            .email(userAttendance.getStudent().getUser().getEmail())
             .section_id(userAttendance.getSection().getId())
             .student_id(userAttendance.getStudent().getId())
             .section_name(userAttendance.getSection().getName())
-            .student_name(userAttendance.getStudent().getUsername() + " - " + userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
+            .student_name(userAttendance.getStudent().getUser().getUsername() + " - " + userAttendance.getStudent().getUser().getFirstName() + " " + userAttendance.getStudent().getUser().getLastName())
             .create_time(userAttendance.getCreateTime())
             .update_time(userAttendance.getUpdateTime())
             .status(userAttendance.getStatus())
@@ -231,8 +231,8 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById1(createUserAttendanceRequest.getStudent_id());
-        User student = userOpt.orElseThrow(() -> {
+        Optional <Student> userOpt = studentRepository.findById1(createUserAttendanceRequest.getStudent_id());
+        Student student = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
         
@@ -270,9 +270,9 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById1(createUserAttendanceRequest.getStudent_id());
-        User student = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.student.not_found");
+        Optional <Student> userOpt = studentRepository.findById1(createUserAttendanceRequest.getStudent_id());
+        Student student = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user_creator.not_found");
         });
 
         updatedUserAttendance.setStatus(createUserAttendanceRequest.getStatus());

@@ -35,7 +35,7 @@ public class UserGradeContestSubmission {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("teacherId")
     @JoinColumn(name = "teacher_id")
-    User teacher;
+    Teacher teacher;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("submissionId")

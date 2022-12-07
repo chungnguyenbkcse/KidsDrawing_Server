@@ -26,7 +26,7 @@ import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
@@ -38,7 +38,7 @@ import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.SemesterClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private final SemesterClassRepository semesterClassRepository;
     private final SemesterRepository semesterRepository;
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final ClassesRepository classRepository;
@@ -273,7 +273,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     }
                 });
                 total_register = userRegisterJoinSemesterRepository.findBySemesterClassId4(semester_class.getId()).size();
-                List<User> allChildForParent = userRepository.findByParentId(parent_id);
+                List<Student> allChildForParent = studentRepository.findByParentId(parent_id);
                 allChildForParent.forEach(ele -> {
                     Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findBySemesterClassIdAndStudent(semester_class.getId(), ele.getId());
                     if (userRegisterJoinSemesterOpt.isPresent()) {
@@ -299,7 +299,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 .semester_id(semester_class.getSemester().getId())
                                 .student_id(ele.getId())
                                 .start_date(start_date)
-                                .student_name(ele.getUsername() + " - " + ele.getFirstName() + " " + ele.getLastName())
+                                .student_name(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName())
                                 .status("Payed")
                                 .build();
                             allSemesterClassResponses.add(semesterClassResponse);
@@ -326,7 +326,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 .semester_id(semester_class.getSemester().getId())
                                 .student_id(ele.getId())
                                 .start_date(start_date)
-                                .student_name(ele.getUsername() + " - " + ele.getFirstName() + " " + ele.getLastName())
+                                .student_name(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName())
                                 .status("Not pay now")
                                 .build();
                             allSemesterClassResponses.add(semesterClassResponse);
@@ -354,7 +354,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .semester_id(semester_class.getSemester().getId())
                             .student_id(ele.getId())
                             .start_date(start_date)
-                            .student_name(ele.getUsername() + " - " + ele.getFirstName() + " " + ele.getLastName())
+                            .student_name(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName())
                             .status("Not register")
                             .build();
                         allSemesterClassResponses.add(semesterClassResponse);

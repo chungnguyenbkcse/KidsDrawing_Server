@@ -370,7 +370,7 @@ public class SemesterServiceImpl implements SemesterService {
                         UserReadNotification savedUserReadNotification3 = UserReadNotification.builder()
                                 .id(idxz)
                                 .notification(savedNotification3)
-                                .user(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getTeacher())
+                                .user(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getTeacher().getUser())
                                 .is_read(false)
                                 .build();
                         uuserReadNotificationRepository.save(savedUserReadNotification3);
@@ -380,7 +380,7 @@ public class SemesterServiceImpl implements SemesterService {
 
                             Notification savedNotification1 = Notification.builder()
                                 .name("Xếp lớp thành công!")
-                                .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + user_register_semester.getSemesterClass().getCourse().getName() +   " của tài khoản con của bạn " + user_register_semester.getStudent().getUsername() + " được xếp lớp thành công!\n Chân thành cảm ơn!")
+                                .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + user_register_semester.getSemesterClass().getCourse().getName() +   " của tài khoản con của bạn " + user_register_semester.getStudent().getUser().getUsername() + " được xếp lớp thành công!\n Chân thành cảm ơn!")
                                 .build();
                             notificationRepository.save(savedNotification1);
 
@@ -395,7 +395,7 @@ public class SemesterServiceImpl implements SemesterService {
                             UserReadNotification savedUserReadNotification = UserReadNotification.builder()
                                     .id(idxy)
                                     .notification(savedNotification)
-                                    .user(user_register_semester.getStudent())
+                                    .user(user_register_semester.getStudent().getUser())
                                     .is_read(false)
                                     .build();
                             uuserReadNotificationRepository.save(savedUserReadNotification);
@@ -405,7 +405,7 @@ public class SemesterServiceImpl implements SemesterService {
                             UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
                                     .id(idxx)
                                     .notification(savedNotification1)
-                                    .user(user_register_semester.getPayer())
+                                    .user(user_register_semester.getPayer().getUser())
                                     .is_read(false)
                                     .build();
                             uuserReadNotificationRepository.save(savedUserReadNotification1);
@@ -470,7 +470,7 @@ public class SemesterServiceImpl implements SemesterService {
                         UserReadNotification savedUserReadNotification = UserReadNotification.builder()
                                 .id(idx)
                                 .notification(savedNotification)
-                                .user(ele.getTeacher())
+                                .user(ele.getTeacher().getUser())
                                 .is_read(false)
                                 .build();
                         uuserReadNotificationRepository.save(savedUserReadNotification);
@@ -485,7 +485,7 @@ public class SemesterServiceImpl implements SemesterService {
                     listUserRegisterJoinSemesters.forEach(ele -> {
                         Notification savedNotification1 = Notification.builder()
                             .name("Xếp lớp không thành công!")
-                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + ele.getSemesterClass().getCourse().getName() +   " của tài khoản con của bạn " + ele.getStudent().getUsername() + " không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + ele.getSemesterClass().getCourse().getName() +   " của tài khoản con của bạn " + ele.getStudent().getUser().getUsername() + " không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
                             .build();
                         notificationRepository.save(savedNotification1);
 
@@ -494,7 +494,7 @@ public class SemesterServiceImpl implements SemesterService {
                         UserReadNotification savedUserReadNotification = UserReadNotification.builder()
                                 .id(idx)
                                 .notification(savedNotification)
-                                .user(ele.getStudent())
+                                .user(ele.getStudent().getUser())
                                 .is_read(false)
                                 .build();
                         uuserReadNotificationRepository.save(savedUserReadNotification);
@@ -504,7 +504,7 @@ public class SemesterServiceImpl implements SemesterService {
                         UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
                                 .id(idxx)
                                 .notification(savedNotification1)
-                                .user(ele.getPayer())
+                                .user(ele.getPayer().getUser())
                                 .is_read(false)
                                 .build();
                         uuserReadNotificationRepository.save(savedUserReadNotification1);

@@ -36,7 +36,7 @@ public class UserRegisterTeachSemester {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private User teacher;
+    private Teacher teacher;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "semester_classes_id", referencedColumnName = "id")

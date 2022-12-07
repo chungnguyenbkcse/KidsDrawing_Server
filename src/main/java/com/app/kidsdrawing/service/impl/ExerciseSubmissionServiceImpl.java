@@ -19,7 +19,7 @@ import com.app.kidsdrawing.dto.GetExerciseSubmissionResponse;
 import com.app.kidsdrawing.dto.GetFinalScoreForStudentResponse;
 import com.app.kidsdrawing.dto.GetUserGradeExerciseSubmissionResponse;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
@@ -27,7 +27,7 @@ import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.ExerciseSubmissionService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
     private final ExerciseRepository exerciseRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final ClassesRepository classRepository;
     private static float exam = 0;
 
@@ -102,7 +102,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -115,7 +115,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
-                    .student_name(content.getStudent().getUsername() + " - " +content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " +content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -144,7 +144,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
-                    .student_name(content.getStudent().getUsername() + " - " +content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " +content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -157,7 +157,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -187,7 +187,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .exercise_description(content.getExercise().getDescription())
                     .exercise_deadline(content.getExercise().getDeadline())
@@ -205,7 +205,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_description(content.getExercise().getDescription())
                     
                     .exercise_deadline(content.getExercise().getDeadline())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -224,7 +224,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByClassAndParent(Long class_id, Long parent_id) {
         List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
         List<GetExerciseSubmissionResponse> exerciseGradeResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findByParentId(parent_id);
+        List<Student> pageUser = studentRepository.findByParentId(parent_id);
         pageUser.forEach(student -> {
             List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository
                     .findAllExerciseSubmissionByClassAndStudent(class_id, student.getId());
@@ -239,7 +239,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                             .student_id(content.getStudent().getId())
                             .exercise_name(content.getExercise().getName())
                             .student_name(
-                                content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                                content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                             .image_url(content.getImage_url())
                             .exercise_description(content.getExercise().getDescription())
                             .exercise_deadline(content.getExercise().getDeadline())
@@ -256,7 +256,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                             .exercise_description(content.getExercise().getDescription())
                             .exercise_deadline(content.getExercise().getDeadline())
                             .student_name(
-                                content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                                content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                             .image_url(content.getImage_url())
                             .create_time(content.getCreate_time())
                             .update_time(content.getUpdate_time())
@@ -286,7 +286,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .exercise_description(content.getExercise().getDescription())
                     
@@ -305,7 +305,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_description(content.getExercise().getDescription())
                     
                     .exercise_deadline(content.getExercise().getDeadline())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -336,7 +336,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -349,7 +349,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .image_url(content.getImage_url())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -367,7 +367,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     @Override
     public ResponseEntity<Map<String, Object>> getFinalGradeAndReviewForParentAndClasses(Long parent_id, Long classes_id) {
         List<GetUserGradeExerciseSubmissionResponse> allUserGradeExerciseSubmissionResponses = new ArrayList<>();
-        List<User> listChilds = userRepository.findByParentId(parent_id);
+        List<Student> listChilds = studentRepository.findByParentId(parent_id);
         List<Float> final_score = new ArrayList<>();
         listChilds.forEach(student -> {
             List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(classes_id, student.getId());
@@ -378,7 +378,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     exam = exam + content.getScore();
                     GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                         .student_id(content.getStudent().getId())
-                        .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                        .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                         .exercise_name(content.getExercise().getName())
                         .exercise_id(content.getExercise().getId())
                         .time_submit(content.getUpdate_time())
@@ -413,7 +413,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                 exam = exam + content.getScore() ;
                 GetUserGradeExerciseSubmissionResponse userGradeExerciseSubmissionResponse = GetUserGradeExerciseSubmissionResponse.builder()
                     .student_id(content.getStudent().getId())
-                    .student_name(content.getStudent().getUsername() + " - " + content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                    .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .exercise_name(content.getExercise().getName())
                     .exercise_id(content.getExercise().getId())
                     .time_submit(content.getUpdate_time())
@@ -472,7 +472,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             .exercise_id(exerciseSubmission.getExercise().getId())
             .student_id(exerciseSubmission.getStudent().getId())
             .exercise_name(exerciseSubmission.getExercise().getName())
-            .student_name(exerciseSubmission.getStudent().getUsername() + " - " + exerciseSubmission.getStudent().getFirstName() + " " + exerciseSubmission.getStudent().getLastName())
+            .student_name(exerciseSubmission.getStudent().getUser().getUsername() + " - " + exerciseSubmission.getStudent().getUser().getFirstName() + " " + exerciseSubmission.getStudent().getUser().getLastName())
             .image_url(exerciseSubmission.getImage_url())
             .create_time(exerciseSubmission.getCreate_time())
             .update_time(exerciseSubmission.getUpdate_time())
@@ -482,8 +482,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     @Override
     public Long createExerciseSubmission(CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
 
-        Optional <User> studentOpt = userRepository.findById1(createExerciseSubmissionRequest.getStudent_id());
-        User student = studentOpt.orElseThrow(() -> {
+        Optional <Student> studentOpt = studentRepository.findById1(createExerciseSubmissionRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
         });
 
