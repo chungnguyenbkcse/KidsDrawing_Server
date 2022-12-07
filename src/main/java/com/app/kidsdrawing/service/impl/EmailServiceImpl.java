@@ -1,10 +1,8 @@
 package com.app.kidsdrawing.service.impl;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 
 import javax.mail.MessagingException;
@@ -20,7 +18,7 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateEmailDetailRequest;
 import com.app.kidsdrawing.entity.EmailDetails;
 import com.app.kidsdrawing.entity.Notification;
-import com.app.kidsdrawing.entity.Role;
+
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.UserReadNotification;
 import com.app.kidsdrawing.entity.UserReadNotificationKey;
@@ -207,13 +205,8 @@ public class EmailServiceImpl implements EmailService {
         notificationRepository.save(savedNotification);
 
         allUser.forEach(user -> {           
-            List<String> role_name = new ArrayList<>();
-            Set<Role> role = user.getRoles();
-            role.forEach(ele -> {
-                role_name.add(ele.getName());
-            });
-
-            if (role_name.contains("TEACHER_USER")){
+            
+            if ((user.getAuthorization() == "TEACHER")){
                 EmailDetails email = new EmailDetails();
                 email.setRecipient(user.getEmail());
                 email.setSubject(details.getSubject());
@@ -236,13 +229,7 @@ public class EmailServiceImpl implements EmailService {
     public String sendMailAttachmentToTeacher(CreateEmailDetailRequest details) {
         List<User> allUser = userRepository.findAll();
         allUser.forEach(user -> {           
-            List<String> role_name = new ArrayList<>();
-            Set<Role> role = user.getRoles();
-            role.forEach(ele -> {
-                role_name.add(ele.getName());
-            });
-
-            if (role_name.contains("TEACHER_USER")){
+            if ((user.getAuthorization() == "TEACHER")){
                 EmailDetails email = new EmailDetails();
                 email.setRecipient(user.getEmail());
                 email.setSubject(details.getSubject());
@@ -263,13 +250,8 @@ public class EmailServiceImpl implements EmailService {
 
         List<User> allUser = userRepository.findAll();
         allUser.forEach(user -> {           
-            List<String> role_name = new ArrayList<>();
-            Set<Role> role = user.getRoles();
-            role.forEach(ele -> {
-                role_name.add(ele.getName());
-            });
-
-            if (role_name.contains("PARENT_USER") || role_name.contains("STUDENT_USER")){
+            
+            if ((user.getAuthorization() == "PARENT") || (user.getAuthorization() == "STUDENT")){
                 EmailDetails email = new EmailDetails();
                 email.setRecipient(user.getEmail());
                 email.setSubject(details.getSubject());
@@ -291,13 +273,7 @@ public class EmailServiceImpl implements EmailService {
     public String sendMailAttachmentToStudent(CreateEmailDetailRequest details) {
         List<User> allUser = userRepository.findAll();
         allUser.forEach(user -> {           
-            List<String> role_name = new ArrayList<>();
-            Set<Role> role = user.getRoles();
-            role.forEach(ele -> {
-                role_name.add(ele.getName());
-            });
-
-            if (role_name.contains("PARENT_USER") || role_name.contains("STUDENT_USER")){
+            if ((user.getAuthorization() == "PARENT") || (user.getAuthorization() == "STUDENT")){
                 EmailDetails email = new EmailDetails();
                 email.setRecipient(user.getEmail());
                 email.setSubject(details.getSubject());

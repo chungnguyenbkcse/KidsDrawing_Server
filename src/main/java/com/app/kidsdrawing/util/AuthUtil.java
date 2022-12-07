@@ -10,10 +10,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.RoleRepository;
 import com.app.kidsdrawing.repository.UserRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -41,10 +39,9 @@ public class AuthUtil {
     private String secret;
     private long accessTokenDuration = 3600000;
     private long refreshTokenDuration = 7200000;
-    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
-    public String generateAccessToken(String username, List<String> role_privilege)
+    public String generateAccessToken(String username, String role)
             throws IllegalArgumentException, JWTCreationException {
         Optional<User> userOpt = userRepository.findByUsername1(username);
         User user = userOpt.orElseThrow(() -> {
@@ -54,7 +51,7 @@ public class AuthUtil {
                 .withSubject("User Details")
                 .withClaim("id", user.getId().toString())
                 .withClaim("username", username)
-                .withClaim("role_privilege", role_privilege)
+                .withClaim("role", role)
                 .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenDuration))
                 .withIssuedAt(new Date())
                 .withIssuer("kidspainting/backdend/kidspainting")
@@ -118,32 +115,18 @@ public class AuthUtil {
         return roleNames;
     }
 
-    public Collection<SimpleGrantedAuthority> parseAuthoritiesFromRoles(Collection<Role> roles) {
+    public Collection<SimpleGrantedAuthority> parseAuthoritiesFromRoles(Collection<String> roles) {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         roles.forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(new SimpleGrantedAuthority(role));
         });
         return authorities;
     }
 
-    public Set<GrantedAuthority> getAuthorities(List<String> rolesName) {
-
-        List<Role> roles = new ArrayList<>();
-        rolesName.forEach(role -> {
-            Optional<Role> roleOpt = roleRepository.findByName(role);
-            Role role_item = roleOpt.orElseThrow(() -> {
-                throw new EntityNotFoundException("exception.role.not_found");
-            });
-            roles.add(role_item);
-        });
+    public Set<GrantedAuthority> getAuthorities(String rolesName) {
 
         Set<GrantedAuthority> authorities = new LinkedHashSet<>();
-        roles.forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-            role.getPrivileges().forEach(privilege -> {
-                authorities.add(new SimpleGrantedAuthority(privilege.getName()));
-            });
-        });
+        authorities.add(new SimpleGrantedAuthority(rolesName));
         return authorities;
     }
 }

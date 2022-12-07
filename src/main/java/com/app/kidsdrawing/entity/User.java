@@ -11,9 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -63,6 +61,9 @@ public class User{
     @Column(name = "sex")
     private String sex;
 
+    @Column(name="authorization", nullable = false)
+    private String authorization;
+
     @Column(name = "phone")
     private String phone;
 
@@ -84,12 +85,6 @@ public class User{
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime updateTime = LocalDateTime.now();
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_has_role",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_id") })
-    private Set<Role> roles;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
@@ -166,9 +161,6 @@ public class User{
 
     @OneToMany(mappedBy="student")
     private Set<UserAttendance> userAttendances;
-
-    /* @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
-    private PasswordResetToken passwordResetToken; */
 
     @OneToMany(mappedBy="parent")
     private Set<User> childs;

@@ -704,7 +704,7 @@ Content-Type: application/json
     "sex": null,
     "phone": null,
     "address": null,
-    "roleNames": ["ADMIN_USER"]
+    "roleName": "ADMIN"
 }
 
 ### REGISTER ACTION ###

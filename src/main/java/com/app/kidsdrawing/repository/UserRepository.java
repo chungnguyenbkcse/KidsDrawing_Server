@@ -17,22 +17,22 @@ public interface UserRepository extends JpaRepository <User, Long>{
     @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent WHERE (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
     List<User> findAll();
 
-    @Query("SELECT COUNT(e.id) FROM User e INNER JOIN e.roles ro WHERE ro.name = 'STUDENT_USER' AND (e.deleted = FALSE OR e.deleted IS NULL) ")
+    @Query("SELECT COUNT(e.id) FROM User e  WHERE e.authorization = 'STUDENT' AND (e.deleted = FALSE OR e.deleted IS NULL) ")
     int findAll1();
 
-    @Query("SELECT COUNT(e.id) FROM User e INNER JOIN e.roles ro WHERE ro.name = 'PARENT_USER' AND (e.deleted = FALSE OR e.deleted IS NULL) ")
+    @Query("SELECT COUNT(e.id) FROM User e  WHERE e.authorization = 'PARENT' AND (e.deleted = FALSE OR e.deleted IS NULL) ")
     int findAll2();
 
-    @Query("SELECT COUNT(e.id) FROM User e INNER JOIN e.roles ro WHERE ro.name = 'TEACHER_USER' AND (e.deleted = FALSE OR e.deleted IS NULL) ")
+    @Query("SELECT COUNT(e.id) FROM User e  WHERE e.authorization = 'TEACHER' AND (e.deleted = FALSE OR e.deleted IS NULL) ")
     int findAll3();
 
-    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent JOIN FETCH e.roles ro WHERE ro.name = 'STUDENT_USER' AND (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
+    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent  WHERE e.authorization = 'STUDENT' AND (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
     List<User> findAllStudent();
 
-    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent JOIN FETCH e.roles ro WHERE ro.name = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
+    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent  WHERE e.authorization = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
     List<User> findAllUserByRole(String role_name);
 
-    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent LEFT JOIN FETCH e.roles WHERE (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
+    @Query("SELECT e FROM User e LEFT JOIN FETCH e.parent WHERE (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
     List<User> findAllFetchRole();
 
     @Query(

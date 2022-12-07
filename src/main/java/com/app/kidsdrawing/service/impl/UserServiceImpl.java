@@ -26,12 +26,10 @@ import com.app.kidsdrawing.dto.GetTeacherResponse;
 import com.app.kidsdrawing.dto.GetUserInfoResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
 import com.app.kidsdrawing.entity.EmailDetails;
-import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.TeacherRegisterQualification;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.UserAlreadyRegisteredException;
 import com.app.kidsdrawing.repository.CourseRepository;
-import com.app.kidsdrawing.repository.RoleRepository;
 import com.app.kidsdrawing.repository.TeacherRegisterQualificationRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinContestRepository;
 import com.app.kidsdrawing.repository.UserRepository;
@@ -58,7 +56,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRegisterJoinContestRepository userRegisterJoinContestRepository;
     private final CourseRepository courseRepository;
@@ -446,14 +443,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new EntityNotFoundException("exception.parent.not_found");
         });
 
-        List<Role> validRoles = new ArrayList<>();
-        createUserRequest.getRoleNames().forEach(roleName -> {
-            roleRepository.findByName(roleName).<Runnable>map(role -> () -> validRoles.add(role))
-                    .orElseThrow(() -> {
-                        throw new EntityNotFoundException(String.format("exception.role.invalid", roleName));
-                    })
-                    .run();
-        });
+        String validRoles = createUserRequest.getRoleName();
 
 
 
@@ -467,8 +457,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .sex(createUserRequest.getSex())
                 .phone(createUserRequest.getPhone())
                 .address(createUserRequest.getAddress())
+                .authorization(validRoles)
                 .parent(parent)
-                .roles(new HashSet<>(validRoles))
                 .build();
         userRepository.save(savedUser);
         return savedUser.getId();
@@ -486,14 +476,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserAlreadyRegisteredException("exception.user.email_taken");
         }
 
-        List<Role> validRoles = new ArrayList<>();
-        createStudentOrParentRequest.getRoleNames().forEach(roleName -> {
-            roleRepository.findByName(roleName).<Runnable>map(role -> () -> validRoles.add(role))
-                    .orElseThrow(() -> {
-                        throw new EntityNotFoundException(String.format("exception.role.invalid", roleName));
-                    })
-                    .run();
-        });
+        String validRoles = createStudentOrParentRequest.getRoleName();
 
 
 
@@ -507,7 +490,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .sex(createStudentOrParentRequest.getSex())
                 .phone(createStudentOrParentRequest.getPhone())
                 .address(createStudentOrParentRequest.getAddress())
-                .roles(new HashSet<>(validRoles))
+                .authorization(validRoles)
                 .build();
         userRepository.save(savedUser);
         /* String msgBody = "Chúc mừng bạn đã tạo thành công tài khoản trên KidsDrawing.\n" + "Thông tin đăng nhập của bạn: \n" + "Tên đăng nhập: " + savedUser.getUsername() + "\n" + "Mật khẩu: " + createStudentOrParentRequest.getPassword() + "\n";
@@ -541,14 +524,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserAlreadyRegisteredException("exception.user.email_taken");
         }
 
-        List<Role> validRoles = new ArrayList<>();
-        createTeacherRequest.getRoleNames().forEach(roleName -> {
-            roleRepository.findByName(roleName).<Runnable>map(role -> () -> validRoles.add(role))
-                    .orElseThrow(() -> {
-                        throw new EntityNotFoundException(String.format("exception.role.invalid", roleName));
-                    })
-                    .run();
-        });
+        String validRoles = createTeacherRequest.getRoleName();
 
 
 
@@ -562,7 +538,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .sex(createTeacherRequest.getSex())
                 .phone(createTeacherRequest.getPhone())
                 .address(createTeacherRequest.getAddress())
-                .roles(new HashSet<>(validRoles))
+                .authorization(validRoles)
                 .build();
         userRepository.save(savedUser);
 
@@ -581,7 +557,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
-        Collection<SimpleGrantedAuthority> authorities = authUtil.parseAuthoritiesFromRoles(user.getRoles());
+        List<String> roles = new ArrayList<>();
+        roles.add(user.getAuthorization());
+
+        Collection<SimpleGrantedAuthority> authorities = authUtil.parseAuthoritiesFromRoles( new HashSet<>(roles));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 authorities);
     }

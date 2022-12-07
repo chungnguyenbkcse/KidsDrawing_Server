@@ -52,10 +52,8 @@ public class AuthController {
             
             System.out.println(roles);
 
-            List<String> roles_privileges = authUtil.getAuthorities(roles).stream().map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());;
             // Initialize access, refresh token
-            String accessToken = authUtil.generateAccessToken(username, roles_privileges);
+            String accessToken = authUtil.generateAccessToken(username, roles.get(0));
             String refreshToken = authUtil.generateRefreshToken(username);
 
             AuthResponse authResponse = AuthResponse.builder()
@@ -78,12 +76,9 @@ public class AuthController {
             String username = decodedJWT.getClaim("username").asString();
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             List<String> roles = authUtil.parseRoleNamesFromAuthorities(userDetails.getAuthorities());
-            List<String> roles_privileges_refresh = authUtil.getAuthorities(roles).stream().map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());;
-
             //System.out.print(roles_privileges_refresh);
             // Initialize access, refresh token
-            String accessToken = authUtil.generateAccessToken(username, roles_privileges_refresh);
+            String accessToken = authUtil.generateAccessToken(username, roles.get(0));
             String refreshToken = authUtil.generateRefreshToken(username);
 
             AuthResponse authResponse = AuthResponse.builder()
