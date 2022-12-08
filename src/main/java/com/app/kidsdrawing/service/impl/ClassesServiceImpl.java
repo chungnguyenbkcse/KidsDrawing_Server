@@ -485,7 +485,7 @@ public class ClassesServiceImpl implements ClassesService {
                             .getSemester().getEnd_time()) == false) {
                 totalSectionStudyedByClass(class_has_join_semester_class.getClasses()).forEach((key, tab) -> {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
-                    .id(class_has_join_semester_class.getClasses().getSemesterClass().getId())
+                    .id(class_has_join_semester_class.getClasses().getId())
                     .student_id(id)
                     .total_section_studied(total)
                     .schedule_section_next(schedule_section_next)

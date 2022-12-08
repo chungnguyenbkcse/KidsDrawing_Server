@@ -52,6 +52,7 @@ public class TutorialTemplatePageServiceImpl implements TutorialTemplatePageServ
     }
 
 
+
     @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionTemplateId(Long id) {
         List<GetTutorialTemplatePageResponse> allTutorialTemplatePageResponses = new ArrayList<>();

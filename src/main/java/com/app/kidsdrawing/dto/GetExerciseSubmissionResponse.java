@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetExerciseSubmissionResponse {
-    private Long id;
     private Long student_id;
     private Long exercise_id;
     private String student_name;
@@ -23,4 +22,7 @@ public class GetExerciseSubmissionResponse {
     private String image_url;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
+    private Float score;
+    private LocalDateTime time;
+    private String feedback;
 }

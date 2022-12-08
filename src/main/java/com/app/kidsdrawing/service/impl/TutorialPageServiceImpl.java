@@ -17,9 +17,11 @@ import com.app.kidsdrawing.dto.CreateTutorialPageRequest;
 import com.app.kidsdrawing.dto.GetTutorialPageResponse;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.TutorialPage;
+import com.app.kidsdrawing.entity.TutorialTemplatePage;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.TutorialPageRepository;
+import com.app.kidsdrawing.repository.TutorialTemplatePageRepository;
 import com.app.kidsdrawing.service.TutorialPageService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class TutorialPageServiceImpl implements TutorialPageService{
     
     private final TutorialPageRepository tutorialPageRepository;
+    private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
     private final SectionRepository sectionRepository;
 
     @Override
@@ -40,6 +43,30 @@ public class TutorialPageServiceImpl implements TutorialPageService{
             GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
                 .id(content.getId())
                 .section_id(content.getSection().getId())
+                .description(content.getDescription())
+                .number(content.getNumber())
+                .build();
+            allTutorialPageResponses.add(tutorialPageResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("TutorialPage", allTutorialPageResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionId(Long id) {
+        Optional<Section> sectionOpt = sectionRepository.findById7(id);
+        Section section = sectionOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Section.not_found");
+        });
+
+        List<TutorialTemplatePage> aTutorialTemplatePages = tutorialTemplatePageRepository.findByCourseIdAndNumber(section.getClasses().getSemesterClass().getCourse().getId(), section.getNumber());
+
+        List<GetTutorialPageResponse> allTutorialPageResponses = new ArrayList<>();
+        aTutorialTemplatePages.forEach(content -> {
+            GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
+                .id(content.getId())
                 .description(content.getDescription())
                 .number(content.getNumber())
                 .build();

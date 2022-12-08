@@ -23,7 +23,7 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex  JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE cl.id =?1 AND st.id =?2  ORDER BY e.id")
     List<ExerciseSubmission> findAllExerciseSubmissionByClassAndStudent(Long class_id, Long student_id);
 
-    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE se.id =?1 AND st.id =?2  ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student st JOIN FETCH ex.section se JOIN FETCH se.classes cl WHERE se.id =?1 AND st.id =?2 ")
     List<ExerciseSubmission> findAllExerciseSubmissionBySectionAndStudent(Long section_id, Long student_id);
 
     @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student  st  JOIN FETCH st.parent pa JOIN FETCH ex.section se WHERE se.id =?1 AND pa.id =?2  AND (ex.deleted = FALSE OR ex.deleted IS NULL)  ORDER BY e.id")
@@ -69,7 +69,7 @@ public interface ExerciseSubmissionRepository extends JpaRepository <ExerciseSub
     List<ExerciseSubmission> findByExerciseId3(Long id);
 
     
-    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student s WHERE ex.id = ?1 AND s.id = ?2  ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM ExerciseSubmission e JOIN FETCH e.exercise ex JOIN FETCH e.student s JOIN FETCH s.user WHERE ex.id = ?1 AND s.id = ?2  ORDER BY e.id")
     Optional<ExerciseSubmission> findByExerciseIdAndStudentId(Long exercise_id, Long student_id);
 
     @Modifying

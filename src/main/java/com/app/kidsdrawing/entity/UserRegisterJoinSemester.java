@@ -43,6 +43,12 @@ public class UserRegisterJoinSemester {
     @Column(name = "register_by_type")
     private String register_by_type;
 
+    @Column(name = "order_id")
+    private String orderId;
+
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;

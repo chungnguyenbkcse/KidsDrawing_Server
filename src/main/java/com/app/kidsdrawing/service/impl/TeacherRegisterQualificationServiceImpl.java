@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -213,12 +214,14 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
 
     @Override
     public Long updateTeacherRegisterQualificationByAdmin(Long id, CreateTeacherRegisterQualificationAdminRequest createTeacherRegisterQualificationAdminRequest) {
+        LocalDateTime time_now = LocalDateTime.now();
         Optional<TeacherRegisterQualification> teacherRegisterQualificationOpt = teacherRegisterQualificationRepository.findById1(id);
         TeacherRegisterQualification updatedTeacherRegisterQualification = teacherRegisterQualificationOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.TeacherRegisterQualification.not_found");
         });
-
+        updatedTeacherRegisterQualification.setTime_approved(time_now);
         updatedTeacherRegisterQualification.setStatus(createTeacherRegisterQualificationAdminRequest.getStatus());
+        
         teacherRegisterQualificationRepository.save(updatedTeacherRegisterQualification);
         return updatedTeacherRegisterQualification.getId();
     }

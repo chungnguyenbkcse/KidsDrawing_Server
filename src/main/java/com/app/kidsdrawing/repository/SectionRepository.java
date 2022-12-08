@@ -33,4 +33,7 @@ public interface SectionRepository extends JpaRepository <Section, Long>{
 
     boolean existsById(Long id);
     void deleteById(Long id);
+
+    @Query("SELECT e FROM Section e JOIN FETCH  e.classes c JOIN FETCH c.semesterClass sc JOIN FETCH sc.course WHERE e.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
+    Optional<Section> findById7(Long id);
 }

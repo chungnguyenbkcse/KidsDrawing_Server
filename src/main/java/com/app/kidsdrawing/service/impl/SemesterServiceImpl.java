@@ -26,6 +26,7 @@ import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
 import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.UserAttendance;
+import com.app.kidsdrawing.entity.UserAttendanceKey;
 import com.app.kidsdrawing.entity.UserReadNotification;
 import com.app.kidsdrawing.entity.UserReadNotificationKey;
 import com.app.kidsdrawing.entity.Classes;
@@ -433,7 +434,9 @@ public class SemesterServiceImpl implements SemesterService {
                             sectionRepository.save(savedSection);
     
                             validUserRegisterSemesters.forEach(user_register_semester -> {
+                                UserAttendanceKey idxx = new UserAttendanceKey(savedSection.getId(), user_register_semester.getStudent().getId());
                                 UserAttendance savedUserAttendance = UserAttendance.builder() 
+                                    .id(idxx)
                                     .section(savedSection)
                                     .student(user_register_semester.getStudent())
                                     .status(false)

@@ -147,6 +147,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .deadline(ele.getDeadline())
                     .create_time(ele.getCreate_time())
                     .update_time(ele.getUpdate_time())
+                    .time_submit(ele.getUpdate_time())
                     .build();
                 exerciseResponses.add(exerciseResponse);
             }
@@ -162,6 +163,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .deadline(ele.getDeadline())
                     .create_time(ele.getCreate_time())
                     .update_time(ele.getUpdate_time())
+                    .time_submit(ele.getUpdate_time())
                     .build();
                 exerciseSubmittedResponses.add(exerciseResponse);
             }
@@ -202,6 +204,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .deadline(ele.getDeadline())
                     .create_time(ele.getCreate_time())
                     .update_time(ele.getUpdate_time())
+                    .time_submit(ele.getUpdate_time())
                     .build();
                 exerciseNotSubmitResponses.add(exerciseResponse);
             }
@@ -217,6 +220,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                         .deadline(ele.getDeadline())
                         .create_time(ele.getCreate_time())
                         .update_time(ele.getUpdate_time())
+                        .time_submit(ele.getUpdate_time())
                         .build();
                     exerciseSubmittedResponses.add(exerciseResponse);
                 }
@@ -239,6 +243,7 @@ public class ExerciseServiceImpl implements ExerciseService{
                         .deadline(ele.getDeadline())
                         .create_time(ele.getCreate_time())
                         .update_time(ele.getUpdate_time())
+                        .time_submit(ele.getUpdate_time())
                         .build();
                     exerciseEleSubmittedResponses.add(exerciseResponse);
                 }
@@ -257,13 +262,18 @@ public class ExerciseServiceImpl implements ExerciseService{
     public ResponseEntity<Map<String, Object>> getAllExerciseBySectionAndStudent(Long section_id, Long student_id) {
         List<GetExerciseResponse> exerciseResponses = new ArrayList<>();
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
+        List<GetExerciseResponse> exerciseSubmittedNotGradeResponses = new ArrayList<>();
 
         List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySectionAndStudent(section_id, student_id);
         List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndStudent(section_id, student_id);
 
         List<Exercise> allExerciseSubmiss = new ArrayList<>();
+        List<Exercise> allExerciseGradeSubmiss = new ArrayList<>();
         exerciseSubmissions.forEach(ele -> {
             allExerciseSubmiss.add(ele.getExercise());
+            if (ele.getScore() != null) {
+                allExerciseGradeSubmiss.add(ele.getExercise());
+            }
         });
 
         listExerciseForSectionAndStuent.forEach(ele -> {
@@ -278,11 +288,13 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .deadline(ele.getDeadline())
                     .create_time(ele.getCreate_time())
                     .update_time(ele.getUpdate_time())
+                    .time_submit(ele.getUpdate_time())
                     .build();
                 exerciseResponses.add(exerciseResponse);
             }
             else {
-                GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                if (allExerciseGradeSubmiss.contains(ele) == false){
+                    GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
                     .id(ele.getId())
                     .section_id(ele.getSection().getId())
                     .section_name(ele.getSection().getName())
@@ -292,15 +304,34 @@ public class ExerciseServiceImpl implements ExerciseService{
                     .deadline(ele.getDeadline())
                     .create_time(ele.getCreate_time())
                     .update_time(ele.getUpdate_time())
+                    .time_submit(ele.getUpdate_time())
                     .build();
                 exerciseSubmittedResponses.add(exerciseResponse);
+                }
+                else {
+                    GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                    .id(ele.getId())
+                    .section_id(ele.getSection().getId())
+                    .section_name(ele.getSection().getName())
+                    .name(ele.getName())
+                    .exercise_submission_id(ele.getId())
+                    .description(ele.getDescription())
+                    .deadline(ele.getDeadline())
+                    .create_time(ele.getCreate_time())
+                    .update_time(ele.getUpdate_time())
+                    .time_submit(ele.getUpdate_time())
+                    .build();
+                    exerciseSubmittedNotGradeResponses.add(exerciseResponse);
+                }
+                
             }
         });
 
         
         Map<String, Object> response = new HashMap<>();
         response.put("exercise_not_submit", exerciseResponses);
-        response.put("exercise_submitted", exerciseSubmittedResponses);
+        response.put("exercise_submitted_not_grade", exerciseSubmittedResponses);
+        response.put("exercise_submitted_graded", exerciseSubmittedNotGradeResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
