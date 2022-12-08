@@ -65,4 +65,8 @@ public class SemesterClass {
 
     @Column(name = "registration_expiration_time")
     private LocalDateTime registration_expiration_time;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 }

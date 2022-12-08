@@ -3,6 +3,7 @@ package com.app.kidsdrawing.entity;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,9 +38,17 @@ public class Classes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  id;
 
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_register_teach_semester_id", referencedColumnName = "id")
-    private UserRegisterTeachSemester userRegisterTeachSemester;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "semester_class_id", referencedColumnName = "id")
+    private SemesterClass semesterClass;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private Teacher teacher;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 
     @Column(name = "security_code", nullable = false, unique = true)
     private String security_code;

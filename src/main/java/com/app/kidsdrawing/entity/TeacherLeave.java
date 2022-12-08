@@ -41,10 +41,6 @@ public class TeacherLeave {
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private Teacher teacher;
-
     @Column(name = "deleted")
     private Boolean deleted;
 
@@ -59,6 +55,9 @@ public class TeacherLeave {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "time_approved")
+    private LocalDateTime time_approved;
 
     @Builder.Default()
     @Column(name = "create_time")

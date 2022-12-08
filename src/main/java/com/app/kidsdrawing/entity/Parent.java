@@ -39,7 +39,4 @@ public class Parent {
     @OneToMany(mappedBy = "parent")
     private Set<Student> childrens;
 
-    @OneToMany(mappedBy = "payer")
-    private Set<UserRegisterJoinSemester> userRegisterJoinSemesters;
-
 }

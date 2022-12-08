@@ -125,7 +125,7 @@ public class FCMService {
                 .putData("body", pnsRequest.getBody())
                 .putData("icon", "https://images.pexels.com/photos/1382734/pexels-photo-1382734.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500")
                 .putData("click_action", "https://google.com")
-                .setToken(ele.getUserRegisterJoinSemester().getStudent().getUser().getStatus())
+                .setToken(ele.getStudent().getUser().getStatus())
                 .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
@@ -138,7 +138,7 @@ public class FCMService {
                 .putData("body", pnsRequest.getBody())
                 .putData("icon", "https://images.pexels.com/photos/1382734/pexels-photo-1382734.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500")
                 .putData("click_action", "https://google.com")
-                .setToken(ele.getUserRegisterJoinSemester().getStudent().getParent().getUser().getStatus())
+                .setToken(ele.getStudent().getParent().getUser().getStatus())
                 .build();
             try {
                 FirebaseMessaging.getInstance().send(message_1);

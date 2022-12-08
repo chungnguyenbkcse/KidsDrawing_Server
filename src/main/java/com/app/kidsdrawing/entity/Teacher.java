@@ -42,13 +42,10 @@ public class Teacher {
     private Set<UserRegisterTeachSemester> teacher_teach_semester;
 
     @OneToMany(mappedBy="teacher")
-    private Set<TeacherLeave> teacherLeaves_1;
-
-    @OneToMany(mappedBy="teacher")
     private Set<UserGradeContest> userGradeContests;
 
     @OneToMany(mappedBy="substitute_teacher")
-    private Set<TeacherLeave> teacherLeaves_3;
+    private Set<TeacherLeave> teacherLeaves;
 
     @OneToMany(mappedBy="teacher")
     private Set<ContestSubmission> contestSubmissions;

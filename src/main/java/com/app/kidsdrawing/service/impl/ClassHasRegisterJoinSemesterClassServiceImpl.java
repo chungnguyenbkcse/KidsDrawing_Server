@@ -20,14 +20,12 @@ import com.app.kidsdrawing.dto.GetClassHasRegisterJoinSemesterClassResponse;
 import com.app.kidsdrawing.dto.GetReviewStarForClassResponse;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
-import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.entity.Classes;
-import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.StudentRepository;
-import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.service.ClassHasRegisterJoinSemesterClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -40,7 +38,6 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
     private final ClassesRepository classRepository;
     private final StudentRepository studentRepository;
-    private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private static int total = 0;
     
     @Override
@@ -50,7 +47,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
         pageClassHasRegisterJoinSemesterClass.forEach(class_has_register_join_semester_class -> {
             GetClassHasRegisterJoinSemesterClassResponse classHasRegisterJoinSemesterClassResponse = GetClassHasRegisterJoinSemesterClassResponse.builder()
                     .classes_id(class_has_register_join_semester_class.getClasses().getId())
-                    .user_register_join_semester_id(class_has_register_join_semester_class.getUserRegisterJoinSemester().getId())
+                    .student_id(class_has_register_join_semester_class.getStudent().getId())
                     .review_star(class_has_register_join_semester_class.getReview_star())
                     .build();
             allClassHasRegisterJoinSemesterClassResponses.add(classHasRegisterJoinSemesterClassResponse);
@@ -88,7 +85,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
         return GetClassHasRegisterJoinSemesterClassResponse.builder()
         .classes_id(updatedClassHasRegisterJoinSemesterClass.getClasses().getId())
-        .user_register_join_semester_id(updatedClassHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getId())
+        .student_id(updatedClassHasRegisterJoinSemesterClass.getStudent().getId())
         .review_star(updatedClassHasRegisterJoinSemesterClass.getReview_star())
         .student_feedback(updatedClassHasRegisterJoinSemesterClass.getStudent_feedback())
         .teacher_feedback(updatedClassHasRegisterJoinSemesterClass.getTeacher_feedback())
@@ -135,17 +132,17 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
             throw new EntityNotFoundException("exception.classes.not_found");
         });
 
-        Optional <UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(createClassHasRegisterJoinSemesterClassRequest.getUser_register_join_semester_id());
-        UserRegisterJoinSemester userRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
+        Optional <Student> studentOpt = studentRepository.findById1(createClassHasRegisterJoinSemesterClassRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Student.not_found");
         });
 
-        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),userRegisterJoinSemester.getId());
+        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),student.getId());
 
         ClassHasRegisterJoinSemesterClass savedClassHasRegisterJoinSemesterClass = ClassHasRegisterJoinSemesterClass.builder()
                 .id(id)
                 .classes(classes)
-                .userRegisterJoinSemester(userRegisterJoinSemester)
+                .student(student)
                 .review_star(createClassHasRegisterJoinSemesterClassRequest.getReview_star())
                 .build();
         classHasRegisterJoinSemesterClassRepository.save(savedClassHasRegisterJoinSemesterClass);
@@ -161,14 +158,14 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
             throw new EntityNotFoundException("exception.classes.not_found");
         });
 
-        Optional <UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(user_register_join_semester);
-        UserRegisterJoinSemester userRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
+        Optional <Student> studentOpt = studentRepository.findById1(user_register_join_semester);
+        Student student = studentOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Student.not_found");
         });
 
-        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),userRegisterJoinSemester.getId());
+        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),student.getId());
         
-        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassIdAndUserRegisterJoinSemester(classes.getId(),userRegisterJoinSemester.getId());
+        Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findById(id);
         classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
         });
@@ -185,12 +182,12 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
             throw new EntityNotFoundException("exception.classes.not_found");
         });
 
-        Optional <UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(createClassHasRegisterJoinSemesterClassRequest.getUser_register_join_semester_id());
-        UserRegisterJoinSemester userRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.UserRegisterJoinSemester.not_found");
+        Optional <Student> studentOpt = studentRepository.findById1(createClassHasRegisterJoinSemesterClassRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Student.not_found");
         });
 
-        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),userRegisterJoinSemester.getId());
+        ClassHasRegisterJoinSemesterClassKey id = new ClassHasRegisterJoinSemesterClassKey(classes.getId(),student.getId());
         
         Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findById(id);
         ClassHasRegisterJoinSemesterClass updatedClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassOpt.orElseThrow(() -> {
@@ -199,7 +196,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
 
         updatedClassHasRegisterJoinSemesterClass.setId(id);
         updatedClassHasRegisterJoinSemesterClass.setClasses(classes);
-        updatedClassHasRegisterJoinSemesterClass.setUserRegisterJoinSemester(userRegisterJoinSemester);
+        updatedClassHasRegisterJoinSemesterClass.setStudent(student);
         updatedClassHasRegisterJoinSemesterClass.setReview_star(createClassHasRegisterJoinSemesterClassRequest.getReview_star());
         classHasRegisterJoinSemesterClassRepository.save(updatedClassHasRegisterJoinSemesterClass);
 

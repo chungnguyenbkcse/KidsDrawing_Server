@@ -22,8 +22,8 @@ public class ClassHasRegisterJoinSemesterClassKey implements Serializable {
     @Column(name = "classes_id")
     Long classesId;
 
-    @Column(name = "user_register_join_semester_id")
-    Long userRegisterJoinSemesterId;
+    @Column(name = "student_id")
+    Long studentId;
 
     // standard constructors, getters, and setters
     // hashcode and equals implementation

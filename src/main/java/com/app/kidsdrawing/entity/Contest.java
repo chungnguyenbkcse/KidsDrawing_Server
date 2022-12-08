@@ -92,4 +92,7 @@ public class Contest {
     @OneToMany(mappedBy="contest")
     private Set<ContestSubmission> contestSubmissions;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 }

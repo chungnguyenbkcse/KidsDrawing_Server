@@ -84,6 +84,10 @@ public class Course {
     @JoinColumn(name = "art_age_id", referencedColumnName = "id")
     private ArtAge artAges;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
+
     @OneToMany(mappedBy = "course")
     private Set<SectionTemplate> sectionTemplates;
 

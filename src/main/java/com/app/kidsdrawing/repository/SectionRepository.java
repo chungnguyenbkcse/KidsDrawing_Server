@@ -13,22 +13,22 @@ import com.app.kidsdrawing.entity.Section;
 
 @Repository
 public interface SectionRepository extends JpaRepository <Section, Long>{
-    @Query("SELECT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher ORDER BY e.id")
+    @Query("SELECT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.teacher ORDER BY e.id")
     List<Section> findAll();
 
     @Query(
-		value = "SELECT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher ORDER BY e.id",
-		countQuery = "SELECT e FROM Section e INNER JOIN e.classes cl INNER JOIN cl.userRegisterTeachSemester urt INNER JOIN urt.teacher"
+		value = "SELECT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.teacher ORDER BY e.id",
+		countQuery = "SELECT e FROM Section e INNER JOIN e.classes cl INNER JOIN cl.teacher"
 	)
     Page<Section> findAll(Pageable pageable);
 
     @Query("FROM Section e WHERE e.id = ?1")
     Optional<Section> findById1(Long id);
 
-    @Query("FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher WHERE e.id = ?1")
+    @Query("FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.teacher WHERE e.id = ?1")
     Optional<Section> findById2(Long id);
 
-    @Query("SELECT DISTINCT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher WHERE cl.id = ?1 ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM Section e JOIN FETCH e.classes cl JOIN FETCH cl.teacher WHERE cl.id = ?1 ORDER BY e.id")
     List<Section> findByClassesId(Long id);
 
     boolean existsById(Long id);

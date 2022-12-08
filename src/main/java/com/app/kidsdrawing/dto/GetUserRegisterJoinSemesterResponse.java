@@ -16,6 +16,7 @@ public class GetUserRegisterJoinSemesterResponse {
     private Long id;
     private Long student_id;
     private String student_name;
+    private String register_by_type;
     private String semester_classes_name;
     private String semester_name;
     private String link_url;

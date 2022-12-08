@@ -7,7 +7,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -32,10 +31,10 @@ public class ClassHasRegisterJoinSemesterClass {
     @JoinColumn(name = "classes_id")
     Classes classes;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId("userRegisterJoinSemesterId")
-    @JoinColumn(name = "user_register_join_semester_id")
-    UserRegisterJoinSemester userRegisterJoinSemester;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("studentId")
+    @JoinColumn(name = "student_id")
+    Student student;
 
     @Column(name = "review_star")
     private Integer review_star;

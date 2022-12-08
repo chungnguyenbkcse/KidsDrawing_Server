@@ -33,10 +33,10 @@ public interface SemesterClassRepository extends JpaRepository <SemesterClass, L
     @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester JOIN FETCH e.userRegisterTeachSemesters urt JOIN FETCH urt.teacher te  JOIN FETCH e.course c JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes WHERE te.id = ?1 AND c.id =?2 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<SemesterClass> findAllSemesterClassByTeacherAndCourse(Long teacher_id, Long course_id);
 
-    @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH urj.payer pa JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes  WHERE pa.id = ?1 AND c.id =?2 AND urj.status = 'Completed' AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH st.parent pa JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes  WHERE pa.id = ?1 AND c.id =?2 AND urj.status = 'Completed' AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<SemesterClass> findAllSemesterClassByParentAndCourse1(Long student_id, Long course_id);
 
-    @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH urj.payer pa JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes  WHERE pa.id = ?1 AND c.id =?2 AND urj.status = 'Waiting' AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM SemesterClass e JOIN FETCH e.semester  JOIN FETCH e.course c JOIN FETCH e.userRegisterJoinSemesters urj JOIN FETCH urj.student st JOIN FETCH st.parent pa JOIN FETCH e.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH c.artAges JOIN FETCH c.artLevels JOIN FETCH c.artTypes  WHERE pa.id = ?1 AND c.id =?2 AND urj.status = 'Waiting' AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<SemesterClass> findAllSemesterClassByParentAndCourse2(Long student_id, Long course_id);
 
     @Query(

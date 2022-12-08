@@ -756,7 +756,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         LocalDateTime time_now = LocalDateTime.now();
 
         for (int i = 0; i < listClass.size(); i++) {
-            if (time_now.isBefore(listClass.get(i).getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+            if (time_now.isBefore(listClass.get(i).getSemesterClass().getSemester().getEnd_time())) {
                 throw new ArtAgeNotDeleteException("exception.SemesterClass_Classes.not_delete");
             }
         }

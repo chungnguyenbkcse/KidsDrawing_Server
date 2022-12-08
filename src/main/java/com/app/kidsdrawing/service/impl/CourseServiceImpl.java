@@ -689,15 +689,12 @@ public class CourseServiceImpl implements CourseService {
         List<Classes> allClassResponses = new ArrayList<>();
         List<Classes> listClass = classRepository.findAll();
 
-        // Danh sach dang ki giao vien duoc xep lop
-        List<UserRegisterTeachSemester> allTeacherRegisterSuccessfullTeachSemesterResponses = new ArrayList<>();
         // Danh sach khoa hoc theo ki giao vien chua dang ki
         List<SemesterClass> allRegisterSuccessfullSemesterClass = new ArrayList<>();
         // Danh sach dang ki nhung khong duoc xep lop
         listClass.forEach(ele -> {
-            if (allTeacherTeachSemesterResponses.contains(ele.getUserRegisterTeachSemester())){
-                allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getUserRegisterTeachSemester());
-                allRegisterSuccessfullSemesterClass.add(ele.getUserRegisterTeachSemester().getSemesterClass());
+            if (ele.getTeacher().getId() == id){
+                allRegisterSuccessfullSemesterClass.add(ele.getSemesterClass());
                 allClassResponses.add(ele);
             }
         });
@@ -879,7 +876,7 @@ public class CourseServiceImpl implements CourseService {
         LocalDateTime time_now = LocalDateTime.now();
 
         for (int i = 0; i < listClass.size(); i++) {
-            if (time_now.isBefore(listClass.get(i).getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+            if (time_now.isBefore(listClass.get(i).getSemesterClass().getSemester().getEnd_time())) {
                 throw new ArtAgeNotDeleteException("exception.Course_Classes.not_delete");
             }
         }

@@ -18,7 +18,7 @@ public interface StudentLeaveRepository extends JpaRepository <StudentLeave, Lon
     @Query("SELECT e FROM StudentLeave e JOIN FETCH e.section se JOIN FETCH se.classes JOIN FETCH e.student WHERE (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<StudentLeave> findAll();
 
-    @Query("SELECT e FROM StudentLeave e JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.userRegisterTeachSemester urt JOIN FETCH urt.teacher te JOIN FETCH e.section JOIN FETCH e.student  WHERE te.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
+    @Query("SELECT e FROM StudentLeave e JOIN FETCH e.section se JOIN FETCH se.classes cl JOIN FETCH cl.teacher te JOIN FETCH e.section JOIN FETCH e.student  WHERE te.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<StudentLeave> findAllStudentLeaveByTeacher(Long teacher_id);
 
     @Query(

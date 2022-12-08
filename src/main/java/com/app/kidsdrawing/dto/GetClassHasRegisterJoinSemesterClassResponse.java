@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetClassHasRegisterJoinSemesterClassResponse {
     private Long classes_id;
-    private Long user_register_join_semester_id;
+    private Long student_id;
     private Integer review_star;
     private String student_feedback;
     private String teacher_feedback;

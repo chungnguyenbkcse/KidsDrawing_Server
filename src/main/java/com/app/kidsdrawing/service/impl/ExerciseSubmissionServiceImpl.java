@@ -438,8 +438,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             });
                 GetFinalScoreForStudentResponse userGradeExerciseSubmissionResponse = GetFinalScoreForStudentResponse.builder()
                     .final_score(exam / allExerciseByClass.size())  
-                    .course_id(element.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId()) 
-                    .course_name(element.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())              
+                    .course_id(element.getSemesterClass().getCourse().getId()) 
+                    .course_name(element.getSemesterClass().getCourse().getName())              
                     .build();
                 allFinalScoreForStudent.add(userGradeExerciseSubmissionResponse);
         });

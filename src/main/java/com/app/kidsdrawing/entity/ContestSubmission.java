@@ -68,4 +68,7 @@ public class ContestSubmission {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
+
+    @Column(name = "time")
+    private LocalDateTime time;
 }

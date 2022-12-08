@@ -16,6 +16,7 @@ public class GetClassesStudentResponse {
     private String link_url;
     private String teacher_name;
     private Long teacher_id;
+    private Long semester_class_id;
     private int total_student;
     private int total_section;
     private Integer total_section_studied;
@@ -28,9 +29,6 @@ public class GetClassesStudentResponse {
     private String art_type_name;
     private String art_level_name;
     private String art_age_name;
-    
-    private Long user_register_join_semester_id;
-    private Long user_register_teach_semester;
     private String security_code;
     private String name;
     private LocalDateTime create_time;

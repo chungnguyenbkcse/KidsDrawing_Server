@@ -24,6 +24,7 @@ import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.UserAttendance;
 import com.app.kidsdrawing.entity.UserReadNotification;
 import com.app.kidsdrawing.entity.UserReadNotificationKey;
@@ -305,11 +306,11 @@ public class SemesterServiceImpl implements SemesterService {
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
             Set<UserRegisterTeachSemester> allUserRegisterTeachSemesters = semester_class.getUserRegisterTeachSemesters();
 
-            Map<UserRegisterTeachSemester, Integer> list_total_register_of_teacher = new HashMap<>();
+            Map<Teacher, Integer> list_total_register_of_teacher = new HashMap<>();
 
             allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
                 List<Classes> allClassForTeacherAndSemester = classRepository.findAllByTeacherAndSemester(teacher_register_teach_semester.getTeacher().getId(), id);
-                list_total_register_of_teacher.put(teacher_register_teach_semester, allClassForTeacherAndSemester.size());
+                list_total_register_of_teacher.put(teacher_register_teach_semester.getTeacher(), allClassForTeacherAndSemester.size());
             });
 
             sortByValue(list_total_register_of_teacher);
@@ -346,8 +347,8 @@ public class SemesterServiceImpl implements SemesterService {
                         String key = getSaltString();
                         System.out.println("Lop thu: " + String.valueOf(i));
                         Classes savedClass = Classes.builder()
-                            
-                            .userRegisterTeachSemester(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i))
+                            .teacher(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i))
+                            .semesterClass(semester_class)
                             .security_code(key)
                             .name(semester_class.getName() + "-" +  String.valueOf(number) + " thuộc học kì " + String.valueOf(semester.getNumber()) + " năm học " + String.valueOf(semester.getYear()))
                             .build();
@@ -358,16 +359,16 @@ public class SemesterServiceImpl implements SemesterService {
 
                         Notification savedNotification3 = Notification.builder()
                             .name("Xếp lớp thành công!")
-                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí dạy lớp mở theo kì " + new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getSemesterClass().getName() +   " của bạn được xếp lớp thành công!\n Chân thành cảm ơn!")
+                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí dạy lớp mở theo kì " + semester_class.getName() +   " của bạn được xếp lớp thành công!\n Chân thành cảm ơn!")
                             .build();
                         notificationRepository.save(savedNotification3);
 
-                        UserReadNotificationKey idxz = new UserReadNotificationKey(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getTeacher().getId(), savedNotification3.getId());
+                        UserReadNotificationKey idxz = new UserReadNotificationKey(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getId(), savedNotification3.getId());
             
                         UserReadNotification savedUserReadNotification3 = UserReadNotification.builder()
                                 .id(idxz)
                                 .notification(savedNotification3)
-                                .user(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getTeacher().getUser())
+                                .user(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getUser())
                                 .is_read(false)
                                 .build();
                         uuserReadNotificationRepository.save(savedUserReadNotification3);
@@ -397,12 +398,12 @@ public class SemesterServiceImpl implements SemesterService {
                                     .build();
                             uuserReadNotificationRepository.save(savedUserReadNotification);
 
-                            UserReadNotificationKey idxx = new UserReadNotificationKey(user_register_semester.getPayer().getId(), savedNotification1.getId());
+                            UserReadNotificationKey idxx = new UserReadNotificationKey(user_register_semester.getStudent().getParent().getId(), savedNotification1.getId());
                             
                             UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
                                     .id(idxx)
                                     .notification(savedNotification1)
-                                    .user(user_register_semester.getPayer().getUser())
+                                    .user(user_register_semester.getStudent().getParent().getUser())
                                     .is_read(false)
                                     .build();
                             uuserReadNotificationRepository.save(savedUserReadNotification1);
@@ -412,7 +413,7 @@ public class SemesterServiceImpl implements SemesterService {
                             ClassHasRegisterJoinSemesterClass savedClassHasRegisterJoinSemesterClass = ClassHasRegisterJoinSemesterClass.builder()
                                 .id(idx)
                                 .classes(savedClass)
-                                .userRegisterJoinSemester(user_register_semester)
+                                .student(user_register_semester.getStudent())
                                 .review_star(-1)
                                 .build();
                             classHasRegisterJoinSemesterClassRepository.save(savedClassHasRegisterJoinSemesterClass);
@@ -487,12 +488,12 @@ public class SemesterServiceImpl implements SemesterService {
                                 .build();
                         uuserReadNotificationRepository.save(savedUserReadNotification);
 
-                        UserReadNotificationKey idxx = new UserReadNotificationKey(ele.getPayer().getId(), savedNotification1.getId());
+                        UserReadNotificationKey idxx = new UserReadNotificationKey(ele.getStudent().getParent().getId(), savedNotification1.getId());
             
                         UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
                                 .id(idxx)
                                 .notification(savedNotification1)
-                                .user(ele.getPayer().getUser())
+                                .user(ele.getStudent().getParent().getUser())
                                 .is_read(false)
                                 .build();
                         uuserReadNotificationRepository.save(savedUserReadNotification1);
@@ -569,7 +570,7 @@ public class SemesterServiceImpl implements SemesterService {
         LocalDateTime time_now = LocalDateTime.now();
 
         for (int i = 0; i < listClass.size(); i++) {
-            if (time_now.isBefore(listClass.get(i).getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+            if (time_now.isBefore(listClass.get(i).getSemesterClass().getSemester().getEnd_time())) {
                 throw new ArtAgeNotDeleteException("exception.Course_Classes.not_delete");
             }
         }
