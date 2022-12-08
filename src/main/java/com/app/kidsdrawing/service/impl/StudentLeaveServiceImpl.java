@@ -388,14 +388,14 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     }
 
     @Override
-    public Long updateStudentLeaveById(CreateStudentLeaveRequest createStudentLeaveRequest) {
+    public Long updateStudentLeaveById(Long student_id, Long section_id, CreateStudentLeaveRequest createStudentLeaveRequest) {
 
         Optional <Section> sectionOpt = sectionRepository.findById1(createStudentLeaveRequest.getSection_id());
         Section section = sectionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findBySectionAndStudent(createStudentLeaveRequest.getSection_id(), createStudentLeaveRequest.getStudent_id());
+        Optional<StudentLeave> StudentLeaveOpt = studentLeaveRepository.findBySectionAndStudent(section_id, student_id);
         
         StudentLeave updatedStudentLeave = StudentLeaveOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.StudentLeave.not_found");

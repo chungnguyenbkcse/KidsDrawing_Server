@@ -20,6 +20,6 @@ public interface StudentLeaveService {
     GetStudentLeaveResponse getStudentLeaveBySectionAndStudent(Long section_id, Long student_id);
     Long createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest);
     Long removeStudentLeaveById(Long student_id, Long section_id);
-    Long updateStudentLeaveById(CreateStudentLeaveRequest createStudentLeaveRequest);
+    Long updateStudentLeaveById(Long student_id, Long section_id, CreateStudentLeaveRequest createStudentLeaveRequest);
     Long updateStatusStudentLeaveById(Long student_id, Long section_id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest);
 }

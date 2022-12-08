@@ -87,9 +87,9 @@ public class StudentLeaveController {
     }
 
     @CrossOrigin
-    @PutMapping
-    public ResponseEntity<String> updateStudentLeave(@RequestBody CreateStudentLeaveRequest createStudentLeaveRequest) {
-        Long studentLeaveId = studentLeaveService.updateStudentLeaveById(createStudentLeaveRequest);
+    @PutMapping(value = "/student/{section_id}/{student_id}")
+    public ResponseEntity<String> updateStudentLeave(@PathVariable("student_id") Long student_id, @PathVariable("section_id") Long section_id,@RequestBody CreateStudentLeaveRequest createStudentLeaveRequest) {
+        Long studentLeaveId = studentLeaveService.updateStudentLeaveById(student_id, section_id, createStudentLeaveRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(studentLeaveId).toUri();
         return ResponseEntity.created(location).build();

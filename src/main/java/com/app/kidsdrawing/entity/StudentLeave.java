@@ -44,9 +44,6 @@ public class StudentLeave {
     @JoinColumn(name = "section_id")
     Section section;
 
-    @Column(name = "deleted")
-    private Boolean deleted;
-
     @Column(name = "description")
     @Lob
     @Type(type = "org.hibernate.type.TextType")
