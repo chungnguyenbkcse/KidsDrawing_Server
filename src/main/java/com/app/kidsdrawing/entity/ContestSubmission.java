@@ -1,22 +1,20 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -33,17 +31,22 @@ import lombok.Setter;
 @Entity
 @Table(name = "contest_submission")
 public class ContestSubmission {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  id;
+    @EmbeddedId
+    ContestSubmissionKey id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("studentId")
+    @JoinColumn(name = "student_id")
+    Student student;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("contestId")
+    @JoinColumn(name = "contest_id")
+    Contest contest;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private Student student;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "contest_id", referencedColumnName = "id")
-    private Contest contest;
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private Teacher teacher;
 
     @Column(name = "image_url")
     private String image_url;
@@ -53,14 +56,16 @@ public class ContestSubmission {
     @CreationTimestamp
     private LocalDateTime create_time = LocalDateTime.now();
 
-    @Column(name = "deleted")
-    private Boolean deleted;
+    @Column(name = "feedback")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String feedback;
+
+    @Column(name = "score")
+    private Float score;
 
     @Builder.Default()
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
-
-    @OneToMany(mappedBy = "contestSubmission")
-    private Set<UserGradeContestSubmission> userGradeContestSubmissions;
 }

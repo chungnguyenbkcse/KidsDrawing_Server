@@ -19,6 +19,7 @@ import com.app.kidsdrawing.dto.GetExerciseSubmissionResponse;
 import com.app.kidsdrawing.dto.GetFinalScoreForStudentResponse;
 import com.app.kidsdrawing.dto.GetUserGradeExerciseSubmissionResponse;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
+import com.app.kidsdrawing.entity.ExerciseSubmissionKey;
 import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Exercise;
@@ -50,8 +51,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findAll();
         listExerciseSubmission.forEach(content -> {
             GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                .id(content.getId())
-                .exercise_id(content.getExercise().getId())
                 .student_id(content.getStudent().getId())
                 .image_url(content.getImage_url())
                 .create_time(content.getCreate_time())
@@ -66,24 +65,20 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override 
-    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionByExerciseAndStudent(Long exercise_id, Long student_id) {
-        List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
-        List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository.findByExerciseIdAndStudentId(exercise_id, student_id);
-        listExerciseSubmission.forEach(content -> {
-            GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                .id(content.getId())
-                .exercise_id(content.getExercise().getId())
-                .student_id(content.getStudent().getId())
-                .image_url(content.getImage_url())
-                .create_time(content.getCreate_time())
-                .update_time(content.getUpdate_time())
-                .build();
-            exerciseResponses.add(exerciseSubmissionResponse);
+    public GetExerciseSubmissionResponse getAllExerciseSubmissionByExerciseAndStudent(Long exercise_id, Long student_id) {
+        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findByExerciseIdAndStudentId(exercise_id, student_id);
+        ExerciseSubmission exerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("ExerciseSubmission", exerciseResponses);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+            .exercise_id(exerciseSubmission.getExercise().getId())
+            .student_id(exerciseSubmission.getStudent().getId())
+            .image_url(exerciseSubmission.getImage_url())
+            .create_time(exerciseSubmission.getCreate_time())
+            .update_time(exerciseSubmission.getUpdate_time())
+            .build();
+        return exerciseSubmissionResponse;
     }
 
     @Override
@@ -98,7 +93,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         listExerciseSubmission.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -111,7 +105,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             }
             else {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -140,7 +133,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         exerciseSubmissionByExercise.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -153,7 +145,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             }
             else {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -183,7 +174,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         listExerciseSubmission.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
+                    
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -198,7 +189,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             }
             else {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
+                    
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -234,7 +225,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             listExerciseSubmission.forEach(content -> {
                 if (exerciseSubmissionGrade.contains(content)) {
                     GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                            .id(content.getId())
+                            
                             .exercise_id(content.getExercise().getId())
                             .student_id(content.getStudent().getId())
                             .exercise_name(content.getExercise().getName())
@@ -249,7 +240,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     exerciseGradeResponses.add(exerciseSubmissionResponse);
                 } else {
                     GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                            .id(content.getId())
+                            
                             .exercise_id(content.getExercise().getId())
                             .student_id(content.getStudent().getId())
                             .exercise_name(content.getExercise().getName())
@@ -282,7 +273,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         listExerciseSubmission.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
+                    
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -298,7 +289,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             }
             else {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
+                    
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -332,7 +323,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         listExerciseSubmission.forEach(content -> {
             if (exerciseSubmissionGrade.contains(content)) {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
+                    
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -345,7 +336,7 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             }
             else {
                 GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
-                    .id(content.getId())
+                    
                     .exercise_id(content.getExercise().getId())
                     .student_id(content.getStudent().getId())
                     .exercise_name(content.getExercise().getName())
@@ -385,7 +376,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                         .image_url(content.getImage_url())
                         .description(content.getExercise().getDescription())
                         .deadline(content.getExercise().getDeadline())
-                        .exercise_submission_id(content.getId())
                         .feedback(content.getFeedback())
                         .score(content.getScore())
                         .time(content.getTime())
@@ -420,7 +410,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                     .image_url(content.getImage_url())
                     .description(content.getExercise().getDescription())
                     .deadline(content.getExercise().getDeadline())
-                    .exercise_submission_id(content.getId())
                     .feedback(content.getFeedback())
                     .score(content.getScore())
                     .time(content.getTime())
@@ -461,25 +450,6 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
-    public GetExerciseSubmissionResponse getExerciseSubmissionById(Long id) {
-        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById2(id);
-        ExerciseSubmission exerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
-        });
-
-        return GetExerciseSubmissionResponse.builder()
-            .id(exerciseSubmission.getId())
-            .exercise_id(exerciseSubmission.getExercise().getId())
-            .student_id(exerciseSubmission.getStudent().getId())
-            .exercise_name(exerciseSubmission.getExercise().getName())
-            .student_name(exerciseSubmission.getStudent().getUser().getUsername() + " - " + exerciseSubmission.getStudent().getUser().getFirstName() + " " + exerciseSubmission.getStudent().getUser().getLastName())
-            .image_url(exerciseSubmission.getImage_url())
-            .create_time(exerciseSubmission.getCreate_time())
-            .update_time(exerciseSubmission.getUpdate_time())
-            .build();
-    }
-
-    @Override
     public Long createExerciseSubmission(CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
 
         Optional <Student> studentOpt = studentRepository.findById1(createExerciseSubmissionRequest.getStudent_id());
@@ -492,6 +462,8 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             throw new EntityNotFoundException("exception.exercise.not_found");
         });
 
+        ExerciseSubmissionKey id = new ExerciseSubmissionKey(student.getId(),exercise.getId());
+
         LocalDateTime time_now = LocalDateTime.now();
 
         if (time_now.isAfter((exercise.getDeadline()))) {
@@ -499,19 +471,20 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
         }
         else {
             ExerciseSubmission savedExerciseSubmission = ExerciseSubmission.builder()
+                .id(id)
                 .student(student)
                 .exercise(exercise)
                 .image_url(createExerciseSubmissionRequest.getImage_url())
                 .build();
             exerciseSubmissionRepository.save(savedExerciseSubmission);
 
-            return savedExerciseSubmission.getId();
+            return savedExerciseSubmission.getStudent().getId();
         }
     }
 
     @Override
-    public Long removeExerciseSubmissionById(Long id) {
-        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(id);
+    public Long removeExerciseSubmissionById(Long exercise_id, Long student_id) {
+        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findByExerciseIdAndStudentId(exercise_id, student_id);
         ExerciseSubmission exerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
@@ -521,19 +494,35 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
             throw new ArtAgeNotDeleteException("exception.Exercise_Deadline.not_delete");
         }
 
-        exerciseSubmissionRepository.deleteById(id);
-        return id;
+        exerciseSubmissionRepository.deleteById(exerciseSubmission.getId());
+        return student_id;
     }
 
     @Override
-    public Long updateExerciseSubmissionById(Long id, CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
-        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findById1(id);
+    public Long updateExerciseSubmissionByTeacher(CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
+        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findByExerciseIdAndStudentId(createExerciseSubmissionRequest.getExercise_id(), createExerciseSubmissionRequest.getStudent_id());
+        ExerciseSubmission updatedExerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
+        });
+
+        updatedExerciseSubmission.setScore(createExerciseSubmissionRequest.getScore());
+        updatedExerciseSubmission.setFeedback(createExerciseSubmissionRequest.getFeedback());
+        
+
+        return updatedExerciseSubmission.getStudent().getId();
+    }
+
+
+    @Override
+    public Long updateExerciseSubmissionByStudent(CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
+        Optional<ExerciseSubmission> exerciseSubmissionOpt = exerciseSubmissionRepository.findByExerciseIdAndStudentId(createExerciseSubmissionRequest.getExercise_id(), createExerciseSubmissionRequest.getStudent_id());
         ExerciseSubmission updatedExerciseSubmission = exerciseSubmissionOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ExerciseSubmission.not_found");
         });
 
         updatedExerciseSubmission.setImage_url(createExerciseSubmissionRequest.getImage_url());
+        
 
-        return updatedExerciseSubmission.getId();
+        return updatedExerciseSubmission.getStudent().getId();
     }
 }

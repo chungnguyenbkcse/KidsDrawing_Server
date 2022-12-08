@@ -87,33 +87,28 @@ public class StudentLeaveController {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateStudentLeave(@PathVariable Long id, @RequestBody CreateStudentLeaveRequest createStudentLeaveRequest) {
-        Long studentLeaveId = studentLeaveService.updateStudentLeaveById(id,createStudentLeaveRequest);
+    @PutMapping
+    public ResponseEntity<String> updateStudentLeave(@RequestBody CreateStudentLeaveRequest createStudentLeaveRequest) {
+        Long studentLeaveId = studentLeaveService.updateStudentLeaveById(createStudentLeaveRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(studentLeaveId).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @CrossOrigin
-    @PutMapping(value = "/admin/{id}")
-    public ResponseEntity<String> updateStatusStudentLeave(@PathVariable Long id, @RequestBody CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest) {
-        Long studentLeaveId = studentLeaveService.updateStatusStudentLeaveById(id,createReviewStudentLeaveRequest);
+    @PutMapping(value = "/admin/{student_id}/{section_id}")
+    public ResponseEntity<String> updateStatusStudentLeave(@PathVariable("student_id") Long student_id, @PathVariable("section_id") Long section_id, @RequestBody CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest) {
+        Long studentLeaveId = studentLeaveService.updateStatusStudentLeaveById(student_id, section_id,createReviewStudentLeaveRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(studentLeaveId).toUri();
         return ResponseEntity.created(location).build();
     }
 
-    @CrossOrigin
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<GetStudentLeaveResponse> getStudentLeaveById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(studentLeaveService.getStudentLeaveById(id));
-    }
 
     @CrossOrigin
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteStudentLeaveById(@PathVariable Long id) {
-        Long studentLeaveId = studentLeaveService.removeStudentLeaveById(id);
+    @DeleteMapping(value = "/{student_id}/{section_id}")
+    public ResponseEntity<String> deleteStudentLeaveById(@PathVariable("student_id") Long student_id, @PathVariable("section_id") Long section_id) {
+        Long studentLeaveId = studentLeaveService.removeStudentLeaveById(student_id,section_id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(studentLeaveId).toUri();
         return ResponseEntity.created(location).build();

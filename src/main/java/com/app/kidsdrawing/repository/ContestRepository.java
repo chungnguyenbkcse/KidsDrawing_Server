@@ -28,18 +28,18 @@ public interface ContestRepository extends JpaRepository <Contest, Long>{
     Page<Contest> findAll1(Pageable pageable);
 
     @Query(
-		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
-		countQuery = "SELECT c FROM Contest c LEFT JOIN c.userRegisterJoinContests LEFT JOIN c.contestSubmissions cs LEFT JOIN cs.userGradeContestSubmissions INNER JOIN c.artAges INNER JOIN c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL)"
+		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs  JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
+		countQuery = "SELECT c FROM Contest c LEFT JOIN c.userRegisterJoinContests LEFT JOIN c.contestSubmissions cs  INNER JOIN c.artAges INNER JOIN c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL)"
 	)
     Page<Contest> findAll3(Pageable pageable);
 
     @Query(
-		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
+		value = "SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs  JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id",
 		countQuery = "SELECT COUNT(c) FROM Contest c INNER JOIN c.artAges INNER JOIN c.artTypes "
 	)
     Page<Contest> findAll2(Pageable pageable);
 
-    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions ugc JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE ugc.score IS NULL AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs  JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE cs.score IS NULL AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findAll1();
 
     @Query("SELECT DISTINCT c FROM Contest c JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
@@ -57,13 +57,13 @@ public interface ContestRepository extends JpaRepository <Contest, Long>{
     @Query("FROM Contest c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Contest> findById1(Long id);
 
-    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs  JOIN FETCH c.artAges JOIN FETCH c.artTypes WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Contest> findById2(Long id);
 
     @Query("FROM Contest c WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Contest> findByName1(String name);
 
-    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs LEFT JOIN FETCH cs.userGradeContestSubmissions JOIN FETCH c.artAges JOIN FETCH c.artTypes  WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
+    @Query("SELECT DISTINCT c FROM Contest c LEFT JOIN FETCH c.userRegisterJoinContests LEFT JOIN FETCH c.contestSubmissions cs  JOIN FETCH c.artAges JOIN FETCH c.artTypes  WHERE c.name = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")
     Optional<Contest> findByName2(String name);
 
     @Query("SELECT count(c.id) = 1 FROM Contest c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")

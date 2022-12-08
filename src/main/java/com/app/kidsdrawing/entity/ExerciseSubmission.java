@@ -2,16 +2,14 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,23 +30,21 @@ import lombok.Setter;
 @Entity
 @Table(name = "exercise_submission")
 public class ExerciseSubmission {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  id;
+    @EmbeddedId
+    ExerciseSubmissionKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private Student student;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("studentId")
+    @JoinColumn(name = "student_id")
+    Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "exercise_id", referencedColumnName = "id")
-    private Exercise exercise;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("exerciseId")
+    @JoinColumn(name = "exercise_id")
+    Exercise exercise;
 
     @Column(name = "image_url")
     private String image_url;
-
-    @Column(name = "deleted")
-    private Boolean deleted;
 
     @Builder.Default()
     @Column(name = "create_time")

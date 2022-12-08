@@ -8,4 +8,6 @@ public class CreateExerciseSubmissionRequest {
     private Long student_id;
     private Long exercise_id;
     private String image_url;
+    private String feedback;
+    private Float score;
 }

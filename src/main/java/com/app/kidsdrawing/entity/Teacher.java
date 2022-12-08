@@ -50,6 +50,6 @@ public class Teacher {
     @OneToMany(mappedBy="substitute_teacher")
     private Set<TeacherLeave> teacherLeaves_3;
 
-    @OneToMany(mappedBy = "teacher")
-    private Set<UserGradeContestSubmission> userGradeContestSubmissions;
+    @OneToMany(mappedBy="teacher")
+    private Set<ContestSubmission> contestSubmissions;
 }

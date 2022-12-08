@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.app.kidsdrawing.entity.StudentLeave;
+import com.app.kidsdrawing.entity.StudentLeaveKey;
 
 @Repository
 public interface StudentLeaveRepository extends JpaRepository <StudentLeave, Long>{
@@ -36,7 +37,7 @@ public interface StudentLeaveRepository extends JpaRepository <StudentLeave, Lon
     
     @Modifying
     @Query("UPDATE StudentLeave e SET e.deleted = true WHERE e.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL)")
-    void deleteById(Long id);
+    void deleteById(StudentLeaveKey id);
 
     @Query("FROM StudentLeave e JOIN FETCH e.student st WHERE st.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<StudentLeave> findByStudentId1(Long id);
@@ -60,5 +61,5 @@ public interface StudentLeaveRepository extends JpaRepository <StudentLeave, Lon
     List<StudentLeave> findByClassesAndStudent(Long class_id ,Long student_id);
 
     @Query("SELECT DISTINCT e FROM StudentLeave e JOIN FETCH e.section se JOIN FETCH e.student st WHERE se.id = ?1 AND st.id = ?2 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.update_time  desc")
-    List<StudentLeave> findBySectionAndStudent(Long section_id ,Long student_id);
+    Optional<StudentLeave> findBySectionAndStudent(Long section_id ,Long student_id);
 }

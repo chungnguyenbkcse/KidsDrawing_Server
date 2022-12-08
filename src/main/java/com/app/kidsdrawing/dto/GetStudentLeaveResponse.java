@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetStudentLeaveResponse {
-    private Long id;
     private Long section_id;
     private int section_number;
     private String section_name;

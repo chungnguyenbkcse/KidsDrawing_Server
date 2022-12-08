@@ -17,14 +17,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserGradeContestSubmissionKey implements Serializable {
+public class UserAttendanceKey implements Serializable {
+    @Column(name = "section_id")
+    Long sectionId;
 
-    @Column(name = "teacher_id")
-    Long teacherId;
-
-    @Column(name = "submission_id")
-    Long submissionId;
-
-    // standard constructors, getters, and setters
-    // hashcode and equals implementation
+    @Column(name = "student_id")
+    Long studentId;
 }

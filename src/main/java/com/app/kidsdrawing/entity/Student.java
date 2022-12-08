@@ -54,6 +54,9 @@ public class Student{
     @OneToMany(mappedBy="student")
     private Set<ExerciseSubmission> exerciseSubmissions;
 
+    @OneToMany(mappedBy="student")
+    private Set<ContestSubmission> contestSubmissions;
+
     @OneToMany(mappedBy = "student")
     private Set<UserRegisterJoinSemester> userRegisterJoinSemesters;
 

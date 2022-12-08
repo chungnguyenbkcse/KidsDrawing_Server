@@ -17,9 +17,7 @@ public interface UserAttendanceService {
     ResponseEntity<Map<String, Object>> getAllUserAttendanceByClass(Long classes_id);
     ResponseEntity<Map<String, Object>> getAllUserAttendanceByStudent(Long id);
     GetUserAttendanceResponse getAllUserAttendanceBySectionAndStudent(Long section_id, Long student_id);
-    GetUserAttendanceResponse getUserAttendanceById(Long id);
     Long createUserAttendance(CreateUserAttendanceRequest createUserAttendanceRequest);
-    Long removeUserAttendanceById(Long id);
-    Long updateUserAttendanceById(Long id, CreateUserAttendanceRequest createUserAttendanceRequest);
+    Long updateUserAttendanceById(CreateUserAttendanceRequest createUserAttendanceRequest);
     Long updateUserAttendanceBySectionAndStudent(Long section_id, Long student_id);
 }

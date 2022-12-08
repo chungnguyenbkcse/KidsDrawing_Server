@@ -17,10 +17,9 @@ public interface StudentLeaveService {
     ResponseEntity<Map<String, Object>> getAllStudentLeaveByParent(Long id);
     ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndStudent(Long classes_id, Long student_id);
     ResponseEntity<Map<String, Object>> getAllStudentLeaveByClassAndParent(Long classes_id, Long parent_id);
-    GetStudentLeaveResponse getStudentLeaveById(Long id);
     GetStudentLeaveResponse getStudentLeaveBySectionAndStudent(Long section_id, Long student_id);
     Long createStudentLeave(CreateStudentLeaveRequest createStudentLeaveRequest);
-    Long removeStudentLeaveById(Long id);
-    Long updateStudentLeaveById(Long id, CreateStudentLeaveRequest createStudentLeaveRequest);
-    Long updateStatusStudentLeaveById(Long id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest);
+    Long removeStudentLeaveById(Long student_id, Long section_id);
+    Long updateStudentLeaveById(CreateStudentLeaveRequest createStudentLeaveRequest);
+    Long updateStatusStudentLeaveById(Long student_id, Long section_id, CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest);
 }
