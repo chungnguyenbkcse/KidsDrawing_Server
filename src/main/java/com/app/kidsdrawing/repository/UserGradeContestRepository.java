@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.app.kidsdrawing.entity.UserGradeContest;
+import com.app.kidsdrawing.entity.UserGradeContestKey;
 
 @Repository
 public interface UserGradeContestRepository extends JpaRepository <UserGradeContest, Long>{
@@ -23,10 +24,10 @@ public interface UserGradeContestRepository extends JpaRepository <UserGradeCont
     Page<UserGradeContest> findAll(Pageable pageable);
 
     @Query("FROM UserGradeContest e WHERE e.id = ?1")
-    Optional<UserGradeContest> findById1(Long id);
+    Optional<UserGradeContest> findById1(UserGradeContestKey id);
 
     @Query("FROM UserGradeContest e JOIN FETCH e.teacher  JOIN FETCH e.contest WHERE e.id = ?1")
-    Optional<UserGradeContest> findById2(Long id);
+    Optional<UserGradeContest> findById2(UserGradeContestKey id);
 
     @Query("SELECT DISTINCT e FROM UserGradeContest e JOIN FETCH e.contest c WHERE c.id = ?1 ORDER BY e.id")
     List<UserGradeContest> findByContestId1(Long id);
@@ -41,5 +42,7 @@ public interface UserGradeContestRepository extends JpaRepository <UserGradeCont
     List<UserGradeContest> findByTeacherId2(Long id);
     
     boolean existsById(Long id);
-    void deleteById(Long id);
+
+
+    void deleteById(UserGradeContestKey id);
 }
