@@ -41,7 +41,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
         List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findByTeacherId2(id);
         pageUserGradeContest.forEach(content -> {
             GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
-                
+                .number(content.getNumber())
                 .teacher_id(id)
                 .contest_id(content.getContest().getId())
                 .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
@@ -61,7 +61,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
         List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findByContestId2(id);
         pageUserGradeContest.forEach(content -> {
             GetUserGradeContestResponse userGradeContestResponse = GetUserGradeContestResponse.builder()
-                
+                .number(content.getNumber())
                 .teacher_id(content.getTeacher().getUser().getId())
                 .contest_id(id)
                 .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
@@ -91,6 +91,7 @@ public class UserGradeContestServiceImpl implements UserGradeContestService{
 
         UserGradeContest savedUserGradeContest = UserGradeContest.builder()
                 .id(id)
+                .number(createUserGradeContestRequest.getNumber())
                 .teacher(teacher)
                 .contest(contest)
                 .build();

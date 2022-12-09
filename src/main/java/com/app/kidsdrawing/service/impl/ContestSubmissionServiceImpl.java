@@ -49,9 +49,12 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findAll();
         listContestSubmission.forEach(content -> {
             GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
-                
+                .score(content.getScore())
+                .feedback(content.getFeedback())
+                .time(content.getTime())
                 .contest_id(content.getContest().getId())
                 .student_id(content.getStudent().getId())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .image_url(content.getImage_url())
                 .create_time(content.getCreate_time())
                 .update_time(content.getUpdate_time())
@@ -68,8 +71,90 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     public ResponseEntity<Map<String, Object>> getAllContestSubmissionByTeacherAndContest(Long teacher_id, Long contest_id) {
         List<GetContestSubmissionResponse> allContestSubmissionNotGradeResponses = new ArrayList<>();
         List<GetContestSubmissionResponse> allContestSubmissionGradeResponses = new ArrayList<>();
+       
+        List<ContestSubmission> listContestSubmission = contestSubmissionRepository.findByContestId1(contest_id);
+        List<UserGradeContest> pageUserGradeContest = userGradeContestRepository.findByContestId2(contest_id);
         
-        List<ContestSubmission> userGradeContestSubmissions = contestSubmissionRepository.findByContestAndTeacher(contest_id, teacher_id);
+        int total_teacher = pageUserGradeContest.size();
+        int total_contest_submission = listContestSubmission.size();
+
+        int total = total_contest_submission / total_teacher;
+        count = 0;
+        pageUserGradeContest.forEach(ele -> {
+            if (ele.getTeacher().getId() == teacher_id) {
+                count = ele.getNumber();
+            }
+        });
+
+        if (count-1 == total_teacher - 1) {
+            List<ContestSubmission> contestSubmissions = listContestSubmission.subList((count-1)*total, total_contest_submission);
+            contestSubmissions.forEach(ele -> {
+                if (ele.getScore() == null) {
+                    GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                        .score(ele.getScore())
+                        .feedback(ele.getFeedback())
+                        .time(ele.getTime())
+                        .student_name(ele.getStudent().getUser().getUsername() + " - " + ele.getStudent().getUser().getFirstName() + " " + ele.getStudent().getUser().getLastName())
+                        .contest_id(ele.getContest().getId())
+                        .student_id(ele.getStudent().getId())
+                        .image_url(ele.getImage_url())
+                        .create_time(ele.getCreate_time())
+                        .update_time(ele.getUpdate_time())
+                        .build();
+                    allContestSubmissionNotGradeResponses.add(contestSubmissionResponse);
+                }
+                else {
+                    GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                        .score(ele.getScore())
+                        .feedback(ele.getFeedback())
+                        .time(ele.getTime())
+                        .student_name(ele.getStudent().getUser().getUsername() + " - " + ele.getStudent().getUser().getFirstName() + " " + ele.getStudent().getUser().getLastName())
+                        .contest_id(ele.getContest().getId())
+                        .student_id(ele.getStudent().getId())
+                        .image_url(ele.getImage_url())
+                        .create_time(ele.getCreate_time())
+                        .update_time(ele.getUpdate_time())
+                        .build();
+                        allContestSubmissionGradeResponses.add(contestSubmissionResponse);
+                }
+            });
+        }
+        else {
+            List<ContestSubmission> contestSubmissions = listContestSubmission.subList((count-1)*total, (count)*total);
+            contestSubmissions.forEach(ele -> {
+                if (ele.getScore() == null) {
+                    GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                        .score(ele.getScore())
+                        .feedback(ele.getFeedback())
+                        .time(ele.getTime())
+                        .student_name(ele.getStudent().getUser().getUsername() + " - " + ele.getStudent().getUser().getFirstName() + " " + ele.getStudent().getUser().getLastName())
+                        .contest_id(ele.getContest().getId())
+                        .student_id(ele.getStudent().getId())
+                        .image_url(ele.getImage_url())
+                        .create_time(ele.getCreate_time())
+                        .update_time(ele.getUpdate_time())
+                        .build();
+                    allContestSubmissionNotGradeResponses.add(contestSubmissionResponse);
+                }
+                else {
+                    GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                        .score(ele.getScore())
+                        .feedback(ele.getFeedback())
+                        .time(ele.getTime())
+                        .student_name(ele.getStudent().getUser().getUsername() + " - " + ele.getStudent().getUser().getFirstName() + " " + ele.getStudent().getUser().getLastName())
+                        .contest_id(ele.getContest().getId())
+                        .student_id(ele.getStudent().getId())
+                        .image_url(ele.getImage_url())
+                        .create_time(ele.getCreate_time())
+                        .update_time(ele.getUpdate_time())
+                        .build();
+                        allContestSubmissionGradeResponses.add(contestSubmissionResponse);
+                }
+            });
+        } 
+        
+
+        /* List<ContestSubmission> userGradeContestSubmissions = contestSubmissionRepository.findByContestAndTeacher(contest_id, teacher_id);
         userGradeContestSubmissions.forEach(ele -> {
             if (ele.getScore() == null) {
                 GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
@@ -93,7 +178,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     .build();
                     allContestSubmissionGradeResponses.add(contestSubmissionResponse);
             }
-        });
+        }); */
 
         Map<String, Object> response = new HashMap<>();
         response.put("contest_submission_not_grade", allContestSubmissionNotGradeResponses);
@@ -118,13 +203,13 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             if (count == total_teacher - 1) {
                 List<ContestSubmission> contestSubmissions = listContestSubmission.subList(count*total, total_contest_submission);
                 contestSubmissions.forEach(ele -> {
-                    ele.setTeacher(pageUserGradeContest.get(count).getTeacher());
+                    
                 });
             }
             else {
                 List<ContestSubmission> contestSubmissions = listContestSubmission.subList(count*total, (count+1)*total);
                 contestSubmissions.forEach(ele -> {
-                    ele.setTeacher(pageUserGradeContest.get(count).getTeacher());
+                    
                 });
             } 
         }
@@ -140,7 +225,9 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         listContestSubmission.forEach(content -> {
             if (content.getStudent().getId().compareTo(id) == 0){
                 GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
-                    
+                    .score(content.getScore())
+                    .feedback(content.getFeedback())
+                    .time(content.getTime())
                     .contest_id(content.getContest().getId())
                     .student_id(content.getStudent().getId())
                     .contest_name(content.getContest().getName())
@@ -177,17 +264,36 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         List<GetContestSubmissionResponse> allContestSubmissionNotGradedResponses = new ArrayList<>();
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId2(id);
         listContestSubmissionByContest.forEach(contest_submission -> {
-                GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
-                    
-                    .contest_id(contest_submission.getContest().getId())
-                    .student_id(contest_submission.getStudent().getId())
-                    .contest_name(contest_submission.getContest().getName())
-                    .student_name(contest_submission.getStudent().getUser().getUsername() + " - " + contest_submission.getStudent().getUser().getFirstName() + " " + contest_submission.getStudent().getUser().getLastName())
-                    .image_url(contest_submission.getImage_url())
-                    .create_time(contest_submission.getCreate_time())
-                    .update_time(contest_submission.getUpdate_time())
-                    .build();
-                allContestSubmissionNotGradedResponses.add(contestSubmissionResponse);
+                if (contest_submission.getScore() != null) {
+                    GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                        .score(contest_submission.getScore())
+                        .feedback(contest_submission.getFeedback())
+                        .time(contest_submission.getTime())
+                        .contest_id(contest_submission.getContest().getId())
+                        .student_id(contest_submission.getStudent().getId())
+                        .contest_name(contest_submission.getContest().getName())
+                        .student_name(contest_submission.getStudent().getUser().getUsername() + " - " + contest_submission.getStudent().getUser().getFirstName() + " " + contest_submission.getStudent().getUser().getLastName())
+                        .image_url(contest_submission.getImage_url())
+                        .create_time(contest_submission.getCreate_time())
+                        .update_time(contest_submission.getUpdate_time())
+                        .build();
+                    allContestSubmissionGradedResponses.add(contestSubmissionResponse);
+                }
+                else {
+                    GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                        .score(contest_submission.getScore())
+                        .feedback(contest_submission.getFeedback())
+                        .time(contest_submission.getTime())
+                        .contest_id(contest_submission.getContest().getId())
+                        .student_id(contest_submission.getStudent().getId())
+                        .contest_name(contest_submission.getContest().getName())
+                        .student_name(contest_submission.getStudent().getUser().getUsername() + " - " + contest_submission.getStudent().getUser().getFirstName() + " " + contest_submission.getStudent().getUser().getLastName())
+                        .image_url(contest_submission.getImage_url())
+                        .create_time(contest_submission.getCreate_time())
+                        .update_time(contest_submission.getUpdate_time())
+                        .build();
+                    allContestSubmissionNotGradedResponses.add(contestSubmissionResponse);
+                }
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -204,7 +310,9 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         });
 
         return GetContestSubmissionResponse.builder()
-            
+            .score(contestSubmission.getScore())
+            .feedback(contestSubmission.getFeedback())
+            .time(contestSubmission.getTime())
             .contest_id(contestSubmission.getContest().getId())
             .student_id(contestSubmission.getStudent().getId())
             .contest_name(contestSubmission.getContest().getName())
@@ -289,8 +397,11 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             throw new EntityNotFoundException("exception.ContestSubmission.not_found");
         });
 
+        LocalDateTime time_now = LocalDateTime.now();
+
         updatedContestSubmission.setScore(createContestSubmissionRequest.getScore());
         updatedContestSubmission.setFeedback(createContestSubmissionRequest.getFeedback());
+        updatedContestSubmission.setTime(time_now);
 
         return updatedContestSubmission.getStudent().getId();
     }

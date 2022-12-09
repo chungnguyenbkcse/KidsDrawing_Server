@@ -17,8 +17,11 @@ public class GetContestSubmissionResponse {
     private Long contest_id;
     private String student_name;
     private String contest_name;
+    private Float score;
+    private String feedback;
     private Long student_id;
     private String image_url;
+    private LocalDateTime time;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

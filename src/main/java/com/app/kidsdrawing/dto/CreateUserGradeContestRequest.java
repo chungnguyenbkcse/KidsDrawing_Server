@@ -6,4 +6,5 @@ import lombok.Data;
 public class CreateUserGradeContestRequest {
     private Long teacher_id;
     private Long contest_id;
+    private Integer number;
 }

@@ -32,6 +32,9 @@ public interface UserGradeContestRepository extends JpaRepository <UserGradeCont
     @Query("SELECT DISTINCT e FROM UserGradeContest e JOIN FETCH e.contest c WHERE c.id = ?1 ORDER BY e.id")
     List<UserGradeContest> findByContestId1(Long id);
 
+    @Query("SELECT DISTINCT e FROM UserGradeContest e JOIN FETCH e.contest c JOIN FETCH e.teacher te WHERE c.id = ?1 AND te.id = ?2 ORDER BY e.id")
+    Optional<UserGradeContest> findByContestAnsTeacher(Long contest_id, Long teacher_id);
+
     @Query("SELECT DISTINCT e FROM UserGradeContest e JOIN FETCH e.contest c JOIN FETCH e.teacher WHERE c.id = ?1 ORDER BY e.id")
     List<UserGradeContest> findByContestId2(Long id);
 

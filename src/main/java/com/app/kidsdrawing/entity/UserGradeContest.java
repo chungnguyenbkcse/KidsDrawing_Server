@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,4 +38,7 @@ public class UserGradeContest {
     @MapsId("contestId")
     @JoinColumn(name = "contest_id")
     Contest contest;
+
+    @Column(name = "number")
+    private Integer number;
 }

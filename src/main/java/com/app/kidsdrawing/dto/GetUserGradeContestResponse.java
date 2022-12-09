@@ -16,4 +16,5 @@ public class GetUserGradeContestResponse {
     private String teacher_name;
     private Long contest_id;
     private String contest_name;
+    private Integer number;
 }

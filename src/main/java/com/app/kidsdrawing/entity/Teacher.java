@@ -46,7 +46,4 @@ public class Teacher {
 
     @OneToMany(mappedBy="substitute_teacher")
     private Set<TeacherLeave> teacherLeaves;
-
-    @OneToMany(mappedBy="teacher")
-    private Set<ContestSubmission> contestSubmissions;
 }

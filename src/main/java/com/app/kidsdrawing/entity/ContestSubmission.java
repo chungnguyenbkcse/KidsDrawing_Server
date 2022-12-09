@@ -2,7 +2,6 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -43,10 +42,6 @@ public class ContestSubmission {
     @MapsId("contestId")
     @JoinColumn(name = "contest_id")
     Contest contest;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private Teacher teacher;
 
     @Column(name = "image_url")
     private String image_url;
