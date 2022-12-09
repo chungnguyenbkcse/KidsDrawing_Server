@@ -87,3 +87,9 @@ GET  {{rest}}/section/class-student/7/22
 # @name get_contest
 
 GET  {{rest}}/section/class-parent/7/12/2
+
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/section/admin

@@ -14,9 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.CreateSectionRequest;
+import com.app.kidsdrawing.dto.CreateTutorialTemplatePageRequest;
 import com.app.kidsdrawing.dto.GetSectionStudentResponse;
 import com.app.kidsdrawing.dto.GetSectionTeacherResponse;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.SectionTemplate;
+import com.app.kidsdrawing.entity.TutorialPage;
+import com.app.kidsdrawing.entity.TutorialTemplatePage;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
@@ -25,6 +29,9 @@ import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
+import com.app.kidsdrawing.repository.SectionTemplateRepository;
+import com.app.kidsdrawing.repository.TutorialPageRepository;
+import com.app.kidsdrawing.repository.TutorialTemplatePageRepository;
 import com.app.kidsdrawing.service.SectionService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +45,9 @@ public class SectionServiceImpl implements SectionService{
     private final ClassesRepository classRepository;
     private final ExerciseSubmissionRepository exerciseSubmissionRepository;
     private final ExerciseRepository exerciseRepository;
+    private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
+    private final SectionTemplateRepository sectionTemplateRepository;
+    private final TutorialPageRepository tutorialPageRepository;
     private static Integer total = 0;
 
     @Override
@@ -61,6 +71,71 @@ public class SectionServiceImpl implements SectionService{
 
         Map<String, Object> response = new HashMap<>();
         response.put("Section", allSectionResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllSectionByAdmin() {
+        List<GetSectionStudentResponse> allSectionApprovedResponses = new ArrayList<>();
+        List<GetSectionStudentResponse> allSectionNotApprovedResponses = new ArrayList<>();
+        List<GetSectionStudentResponse> allSectionNotApproveNowResponses = new ArrayList<>();
+
+        List<Section> listSection = sectionRepository.findAll();
+        listSection.forEach(content -> {
+            if (content.getStatus().equals("Not approve now")) {
+                GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
+                    .id(content.getId())
+                    .classes_id(content.getClasses().getId())
+                    .name(content.getName())
+                    .class_name(content.getClasses().getName())
+                    .status(content.getStatus())
+                    .teacher_name(content.getClasses().getTeacher().getUser().getUsername() + " - " + content.getClasses().getTeacher().getUser().getFirstName() + " " + content.getClasses().getTeacher().getUser().getLastName())
+                    .number(content.getNumber())
+                    .teach_form(content.getTeaching_form())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allSectionNotApproveNowResponses.add(sectionResponse);
+            }
+
+            else if (content.getStatus().equals("Not approved")) {
+                GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
+                    .id(content.getId())
+                    .classes_id(content.getClasses().getId())
+                    .name(content.getName())
+                    .class_name(content.getClasses().getName())
+                    .status(content.getStatus())
+                    .teacher_name(content.getClasses().getTeacher().getUser().getUsername() + " - " + content.getClasses().getTeacher().getUser().getFirstName() + " " + content.getClasses().getTeacher().getUser().getLastName())
+                    .number(content.getNumber())
+                    .teach_form(content.getTeaching_form())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allSectionNotApprovedResponses.add(sectionResponse);
+            }
+
+            else if (content.getStatus().equals("Approved")) {
+                GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
+                    .id(content.getId())
+                    .classes_id(content.getClasses().getId())
+                    .name(content.getName())
+                    .class_name(content.getClasses().getName())
+                    .status(content.getStatus())
+                    .teacher_name(content.getClasses().getTeacher().getUser().getUsername() + " - " + content.getClasses().getTeacher().getUser().getFirstName() + " " + content.getClasses().getTeacher().getUser().getLastName())
+                    .number(content.getNumber())
+                    .teach_form(content.getTeaching_form())
+                    .create_time(content.getCreate_time())
+                    .update_time(content.getUpdate_time())
+                    .build();
+                allSectionApprovedResponses.add(sectionResponse);
+            }
+            
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("section_approved", allSectionApprovedResponses);
+        response.put("section_not_approved", allSectionNotApprovedResponses);
+        response.put("section_not_approve_now", allSectionNotApproveNowResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -192,6 +267,56 @@ public class SectionServiceImpl implements SectionService{
             .build();
     }
 
+    @Override 
+    public Long deleteTutorialTemplatePageBySection(Long id) {
+        Optional<Section> sectionOpt = sectionRepository.findById7(id);
+        Section section = sectionOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Section.not_found");
+        });
+
+        List<TutorialPage> allTutorialPages = tutorialPageRepository.findBySection(id);
+
+        List<TutorialTemplatePage> allTutorialTemplatePages = tutorialTemplatePageRepository.findByCourseIdAndNumber(section.getClasses().getSemesterClass().getCourse().getId(), section.getNumber());
+        tutorialTemplatePageRepository.deleteAll(allTutorialTemplatePages);
+
+        Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber1(section.getClasses().getSemesterClass().getCourse().getId(), section.getNumber());
+        SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.sectionTemplateOpt.not_found");
+        });
+
+        allTutorialPages.forEach(ele -> {
+            TutorialTemplatePage tutorialTemplatePage = TutorialTemplatePage.builder()
+                .number(ele.getNumber())
+                .sectionTemplate(sectionTemplate)
+                .description(ele.getDescription())
+                .build();
+            tutorialTemplatePageRepository.save(tutorialTemplatePage);
+        });
+        
+        return id;
+    }
+
+    @Override
+    public Long createTutorialPageBySection(Long id, CreateTutorialTemplatePageRequest createTutorialTemplatePageRequest) {
+        Optional<Section> sectionOpt = sectionRepository.findById7(id);
+        Section section = sectionOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Section.not_found");
+        });
+
+        Optional<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseIdAndNumber1(section.getClasses().getSemesterClass().getCourse().getId(), section.getNumber());
+        SectionTemplate sectionTemplate = sectionTemplateOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.sectionTemplateOpt.not_found");
+        });
+
+        TutorialTemplatePage tutorialTemplatePage = TutorialTemplatePage.builder()
+            .number(createTutorialTemplatePageRequest.getNumber())
+            .sectionTemplate(sectionTemplate)
+            .description(createTutorialTemplatePageRequest.getDescription())
+            .build();
+        tutorialTemplatePageRepository.save(tutorialTemplatePage);
+        return id;
+    }
+
     @Override
     public Long createSection(CreateSectionRequest createSectionRequest) {
 
@@ -238,6 +363,18 @@ public class SectionServiceImpl implements SectionService{
         updatedSection.setClasses(classes);
         updatedSection.setStatus(createSectionRequest.getStatus());
         updatedSection.setNumber(createSectionRequest.getNumber());
+
+        return updatedSection.getId();
+    }
+
+    @Override
+    public Long updateSectionByAdmin(Long id, CreateSectionRequest createSectionRequest) {
+        Optional<Section> sectionOpt = sectionRepository.findById1(id);
+        Section updatedSection = sectionOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Section.not_found");
+        });
+
+        updatedSection.setStatus(createSectionRequest.getStatus());
 
         return updatedSection.getId();
     }

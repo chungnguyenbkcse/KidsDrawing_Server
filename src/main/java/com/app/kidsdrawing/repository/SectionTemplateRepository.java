@@ -35,10 +35,10 @@ public interface SectionTemplateRepository extends JpaRepository <SectionTemplat
     List<SectionTemplate> findByCourseId2(Long id);
 
     @Query("SELECT DISTINCT e FROM SectionTemplate e JOIN FETCH e.course co WHERE co.id = ?1 AND e.number = ?2")
-    Optional<SectionTemplate> findByCourseIdAndNumber1(Long course_id, int number);
+    Optional<SectionTemplate> findByCourseIdAndNumber1(Long course_id, Integer number);
 
     @Query("SELECT DISTINCT e FROM SectionTemplate e  JOIN FETCH e.course co WHERE co.id = ?1 AND e.number = ?2")
-    Optional<SectionTemplate> findByCourseIdAndNumber2(Long course_id, int number);
+    Optional<SectionTemplate> findByCourseIdAndNumber2(Long course_id, Integer number);
 
     boolean existsById(Long id);
     void deleteById(Long id);

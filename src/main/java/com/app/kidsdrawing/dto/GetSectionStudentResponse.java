@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class GetSectionStudentResponse {
     private Long id;
     private Long classes_id;
+    private String class_name;
     private String name;
     private Integer number;
     private String teacher_name;

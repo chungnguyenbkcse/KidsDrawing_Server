@@ -96,7 +96,7 @@ public class StudentLeaveController {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/admin/{student_id}/{section_id}")
+    @PutMapping(value = "/admin/{section_id}/{student_id}")
     public ResponseEntity<String> updateStatusStudentLeave(@PathVariable("student_id") Long student_id, @PathVariable("section_id") Long section_id, @RequestBody CreateReviewStudentLeaveRequest createReviewStudentLeaveRequest) {
         Long studentLeaveId = studentLeaveService.updateStatusStudentLeaveById(student_id, section_id,createReviewStudentLeaveRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
