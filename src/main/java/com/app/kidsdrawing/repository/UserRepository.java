@@ -29,9 +29,6 @@ public interface UserRepository extends JpaRepository <User, Long>{
     @Query("SELECT e FROM User e WHERE e.authorization = 'STUDENT' AND (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
     List<User> findAllStudent();
 
-    @Query("SELECT e FROM User e WHERE e.authorization = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
-    List<User> findAllUserByRole(String role_name);
-
     @Query("SELECT e FROM User e WHERE (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.id")
     List<User> findAllFetchRole();
 

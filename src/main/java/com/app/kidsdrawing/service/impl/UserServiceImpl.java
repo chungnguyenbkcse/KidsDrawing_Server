@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override 
     public ResponseEntity<Map<String, Object>> getReportUserNew(int year, String role_name) {
         List<Integer> allUserResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findAllUserByRole(role_name);
+        List<Parent> pageUser = parentRepository.findAll();
         
         total_user_of_jan = 0;
         total_user_of_feb = 0;
@@ -208,39 +208,39 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         total_user_of_oct = 0;
         total_user_of_nov = 0;
         total_user_of_dec = 0;
-        pageUser.forEach(user -> {
-            if (user.getCreateTime().getYear() == year){
-                if (user.getCreateTime().getMonth().toString().equals("JANUARY")){
+        pageUser.forEach(parent -> {
+            if (parent.getUser().getCreateTime().getYear() == year){
+                if (parent.getUser().getCreateTime().getMonth().toString().equals("JANUARY")){
                     total_user_of_jan += 1;
                 }
-                else if (user.getCreateTime().getMonth().toString().equals("FEBRUARY")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("FEBRUARY")){
                     total_user_of_feb += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString().equals("MARCH")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("MARCH")){
                     total_user_of_mar += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString().equals("APRIL")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("APRIL")){
                     total_user_of_apr += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString().equals("MAY")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("MAY")){
                     total_user_of_may += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString().equals("JUNE")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("JUNE")){
                     total_user_of_jun += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString().equals("JULY")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("JULY")){
                     total_user_of_jul += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString().equals("AUGUST")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("AUGUST")){
                     total_user_of_aug += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString().equals("SEPTEMBER")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("SEPTEMBER")){
                     total_user_of_sep += 1;
                 } 
-                else if (user.getCreateTime().getMonth().toString().equals("OCTOBER")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("OCTOBER")){
                     total_user_of_oct += 1;
                 }
-                else if (user.getCreateTime().getMonth().toString().equals("NOVEMBER")){
+                else if (parent.getUser().getCreateTime().getMonth().toString().equals("NOVEMBER")){
                     total_user_of_nov += 1;
                 }
                 else {
