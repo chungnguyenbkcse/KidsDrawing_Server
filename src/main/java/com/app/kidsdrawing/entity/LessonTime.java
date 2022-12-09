@@ -3,11 +3,15 @@ package com.app.kidsdrawing.entity;
 import java.time.LocalTime;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -39,6 +43,10 @@ public class LessonTime {
 
     @Column(name = "deleted")
     private Boolean deleted;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 
     @OneToMany(mappedBy="lessonTime")
     private Set<Schedule> schedules;

@@ -56,6 +56,9 @@ public class Admin {
     @OneToMany(mappedBy="admin")
     private Set<Semester> semester;
 
+    @OneToMany(mappedBy="admin")
+    private Set<LessonTime> lessonTimes;
+
     @Column(name = "phone")
     private String phone;
 }

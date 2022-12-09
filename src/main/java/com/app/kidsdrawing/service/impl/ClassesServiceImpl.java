@@ -433,7 +433,7 @@ public class ClassesServiceImpl implements ClassesService {
                     .num_of_section(content.getSemesterClass().getCourse().getNum_of_section())
                     .image_url(content.getSemesterClass().getCourse().getImage_url())
                     .price(content.getSemesterClass().getCourse().getPrice())
-                    .is_enabled(content.getSemesterClass().getCourse().getIs_enabled())
+                    
                     .art_age_id(content.getSemesterClass().getCourse().getArtAges().getId())
                     .art_type_id(content.getSemesterClass().getCourse().getArtTypes().getId())
                     .art_level_id(content.getSemesterClass().getCourse().getArtLevels().getId())
@@ -1998,7 +1998,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .num_of_section(semesterCouse.getCourse().getNum_of_section())
                 .image_url(semesterCouse.getCourse().getImage_url())
                 .price(semesterCouse.getCourse().getPrice())
-                .is_enabled(semesterCouse.getCourse().getIs_enabled())
+               
                 .art_age_id(semesterCouse.getCourse().getArtAges().getId())
                 .art_type_id(semesterCouse.getCourse().getArtTypes().getId())
                 .art_level_id(semesterCouse.getCourse().getArtLevels().getId())
@@ -2263,7 +2263,7 @@ public class ClassesServiceImpl implements ClassesService {
                         .num_of_section(semesterCouse.getCourse().getNum_of_section())
                         .image_url(semesterCouse.getCourse().getImage_url())
                         .price(semesterCouse.getCourse().getPrice())
-                        .is_enabled(semesterCouse.getCourse().getIs_enabled())
+                       
                         .art_age_id(semesterCouse.getCourse().getArtAges().getId())
                         .art_type_id(semesterCouse.getCourse().getArtTypes().getId())
                         .art_level_id(semesterCouse.getCourse().getArtLevels().getId())

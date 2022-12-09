@@ -69,9 +69,6 @@ public class Course {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @Column(name = "is_enabled")
-    private Boolean is_enabled;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "art_level_id", referencedColumnName = "id")
     private ArtLevel artLevels;

@@ -105,7 +105,7 @@ public class ContestSubmissionController {
     }
 
     @CrossOrigin
-    @DeleteMapping(value = "{contest_id}/{student_id}")
+    @DeleteMapping(value = "/{contest_id}/{student_id}")
     public ResponseEntity<String> deleteContestSubmissionById(@PathVariable("contest_id") Long contest_id, @PathVariable("student_id") Long student_id) {
         Long contestSubmissionId = contestSubmissionService.removeContestSubmissionById(contest_id, student_id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")

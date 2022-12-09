@@ -106,13 +106,13 @@ public class ContestServiceImpl implements ContestService {
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission(listContestSubmissionByContest.size())
                             .total_contest_submission_graded(total)
-                            .registration_time(contest.getRegistration_time())
+                            
                             .image_url(contest.getImage_url())
                             .start_time(contest.getStart_time())
                             .art_age_id(contest.getArtAges().getId())
                             .art_type_id(contest.getArtTypes().getId())
                             .end_time(contest.getEnd_time())
-                            .is_enabled(contest.getIs_enabled())
+                            
                             .art_age_name(contest.getArtAges().getName())
                             .art_type_name(contest.getArtTypes().getName())
                             .build();
@@ -126,13 +126,13 @@ public class ContestServiceImpl implements ContestService {
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission(listContestSubmissionByContest.size())
                             .total_contest_submission_graded(total)
-                            .registration_time(contest.getRegistration_time())
+                            
                             .image_url(contest.getImage_url())
                             .start_time(contest.getStart_time())
                             .art_age_id(contest.getArtAges().getId())
                             .art_type_id(contest.getArtTypes().getId())
                             .end_time(contest.getEnd_time())
-                            .is_enabled(contest.getIs_enabled())
+                            
                             .art_age_name(contest.getArtAges().getName())
                             .art_type_name(contest.getArtTypes().getName())
                             .build();
@@ -149,11 +149,11 @@ public class ContestServiceImpl implements ContestService {
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission(listContestSubmissionByContest.size())
                             .total_contest_submission_graded(total)
-                            .registration_time(contest.getRegistration_time())
+                            
                             .image_url(contest.getImage_url())
                             .start_time(contest.getStart_time())
                             .end_time(contest.getEnd_time())
-                            .is_enabled(contest.getIs_enabled())
+                            
                             .art_age_name(contest.getArtAges().getName())
                             .art_type_name(contest.getArtTypes().getName())
                             .build();
@@ -169,13 +169,13 @@ public class ContestServiceImpl implements ContestService {
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission(listContestSubmissionByContest.size())
                             .total_contest_submission_graded(total)
-                            .registration_time(contest.getRegistration_time())
+                            
                             .art_age_id(contest.getArtAges().getId())
                             .art_type_id(contest.getArtTypes().getId())
                             .image_url(contest.getImage_url())
                             .start_time(contest.getStart_time())
                             .end_time(contest.getEnd_time())
-                            .is_enabled(contest.getIs_enabled())
+                            
                             .art_age_name(contest.getArtAges().getName())
                             .art_type_name(contest.getArtTypes().getName())
                             .build();
@@ -235,11 +235,11 @@ public class ContestServiceImpl implements ContestService {
                     .total_register_contest(listUserRegisterContestByContest.size())
                     .total_contest_submission(listContestSubmissionByContest.size())
                     .total_contest_submission_graded(total)
-                    .registration_time(contest.getRegistration_time())
+                    
                     .image_url(contest.getImage_url())
                     .start_time(contest.getStart_time())
                     .end_time(contest.getEnd_time())
-                    .is_enabled(contest.getIs_enabled())
+                    
                     .art_age_id(contest.getArtAges().getId())
                     .art_type_id(contest.getArtTypes().getId())
                     .art_age_name(contest.getArtAges().getName())
@@ -261,11 +261,11 @@ public class ContestServiceImpl implements ContestService {
                     .total_contest_submission(listContestSubmissionByContest.size())
                     .total_contest_submission_graded(total)
                     .check_gen(check_gen)
-                    .registration_time(contest.getRegistration_time())
+                    
                     .image_url(contest.getImage_url())
                     .start_time(contest.getStart_time())
                     .end_time(contest.getEnd_time())
-                    .is_enabled(contest.getIs_enabled())
+                    
                     .art_age_id(contest.getArtAges().getId())
                     .art_type_id(contest.getArtTypes().getId())
                     .art_age_name(contest.getArtAges().getName())
@@ -286,11 +286,11 @@ public class ContestServiceImpl implements ContestService {
                 .total_register_contest(listUserRegisterContestByContest.size())
                 .total_contest_submission(listContestSubmissionByContest.size())
                 .total_contest_submission_graded(total)
-                .registration_time(contest.getRegistration_time())
+                
                 .image_url(contest.getImage_url())
                 .start_time(contest.getStart_time())
                 .end_time(contest.getEnd_time())
-                .is_enabled(contest.getIs_enabled())
+                
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
                 .art_age_name(contest.getArtAges().getName())
@@ -335,11 +335,11 @@ public class ContestServiceImpl implements ContestService {
                         .total_register_contest(listUserRegisterContestByContest.size())
                         .total_contest_submission(listContestSubmissionByContest.size())
                         .total_contest_submission_graded(total)
-                        .registration_time(contest.getRegistration_time())
+                        
                         .image_url(contest.getImage_url())
                         .start_time(contest.getStart_time())
                         .end_time(contest.getEnd_time())
-                        .is_enabled(contest.getIs_enabled())
+                        
                         .art_age_id(contest.getArtAges().getId())
                         .art_type_id(contest.getArtTypes().getId())
                         
@@ -389,11 +389,11 @@ public class ContestServiceImpl implements ContestService {
                         .total_register_contest(listUserRegisterContestByContest.size())
                         .total_contest_submission(listContestSubmissionByContest.size())
                         .total_contest_submission_graded(total)
-                        .registration_time(ele.getContest().getRegistration_time())
+                        
                         .image_url(ele.getContest().getImage_url())
                         .start_time(ele.getContest().getStart_time())
                         .end_time(ele.getContest().getEnd_time())
-                        .is_enabled(ele.getContest().getIs_enabled())
+                        
                         .art_age_id(ele.getContest().getArtAges().getId())
                         .art_type_id(ele.getContest().getArtTypes().getId())
                         .art_age_name(ele.getContest().getArtAges().getName())
@@ -409,13 +409,13 @@ public class ContestServiceImpl implements ContestService {
                         .total_register_contest(listUserRegisterContestByContest.size())
                         .total_contest_submission(listContestSubmissionByContest.size())
                         .total_contest_submission_graded(total)
-                        .registration_time(ele.getContest().getRegistration_time())
+                        
                         .image_url(ele.getContest().getImage_url())
                         .start_time(ele.getContest().getStart_time())
                         .art_age_id(ele.getContest().getArtAges().getId())
                         .art_type_id(ele.getContest().getArtTypes().getId())
                         .end_time(ele.getContest().getEnd_time())
-                        .is_enabled(ele.getContest().getIs_enabled())
+                        
                         .art_age_name(ele.getContest().getArtAges().getName())
                         .art_type_name(ele.getContest().getArtTypes().getName())
                         .build();
@@ -430,13 +430,13 @@ public class ContestServiceImpl implements ContestService {
                         .total_register_contest(listUserRegisterContestByContest.size())
                         .total_contest_submission(listContestSubmissionByContest.size())
                         .total_contest_submission_graded(total)
-                        .registration_time(ele.getContest().getRegistration_time())
+                        
                         .art_age_id(ele.getContest().getArtAges().getId())
                         .art_type_id(ele.getContest().getArtTypes().getId())
                         .image_url(ele.getContest().getImage_url())
                         .start_time(ele.getContest().getStart_time())
                         .end_time(ele.getContest().getEnd_time())
-                        .is_enabled(ele.getContest().getIs_enabled())
+                        
                         .art_age_name(ele.getContest().getArtAges().getName())
                         .art_type_name(ele.getContest().getArtTypes().getName())
                         .build();
@@ -445,7 +445,7 @@ public class ContestServiceImpl implements ContestService {
         });
 
         allContest.forEach(contest -> {
-            if (time_now.isBefore(contest.getRegistration_time())) {
+            if (time_now.isBefore(contest.getStart_time())) {
                 if (allContestForStudent.contains(contest)) {
                     List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository
                     .findByContestId1(contest.getId());
@@ -457,11 +457,11 @@ public class ContestServiceImpl implements ContestService {
                         .max_participant(contest.getMax_participant())
                         .total_register_contest(listUserRegisterContestByContest.size())
                         .total_contest_submission_graded(total)
-                        .registration_time(contest.getRegistration_time())
+                        
                         .image_url(contest.getImage_url())
                         .start_time(contest.getStart_time())
                         .end_time(contest.getEnd_time())
-                        .is_enabled(contest.getIs_enabled())
+                        
                         .art_age_id(contest.getArtAges().getId())
                         .art_type_id(contest.getArtTypes().getId())
                         .art_age_name(contest.getArtAges().getName())
@@ -480,11 +480,11 @@ public class ContestServiceImpl implements ContestService {
                     .max_participant(contest.getMax_participant())
                     .total_register_contest(listUserRegisterContestByContest.size())
                     .total_contest_submission_graded(total)
-                    .registration_time(contest.getRegistration_time())
+                    
                     .image_url(contest.getImage_url())
                     .start_time(contest.getStart_time())
                     .end_time(contest.getEnd_time())
-                    .is_enabled(contest.getIs_enabled())
+                    
                     .art_age_id(contest.getArtAges().getId())
                     .art_type_id(contest.getArtTypes().getId())
                     .art_age_name(contest.getArtAges().getName())
@@ -511,7 +511,7 @@ public class ContestServiceImpl implements ContestService {
         List<Student> allChildForParent = studentRepository
                 .findByParentId(parent_id);
         allContests.forEach(contest -> {
-            if (time_now.isBefore(contest.getRegistration_time())){
+            if (time_now.isBefore(contest.getStart_time())){
                 allChildForParent.forEach(ele -> {
                     List<UserRegisterJoinContest> userRegisterJoinContests = userRegisterJoinContestRepository.findByContestAndStudent(contest.getId(), ele.getId());
                     int total_registed_contest = userRegisterJoinContestRepository.findByContestId1(contest.getId()).size();
@@ -522,11 +522,11 @@ public class ContestServiceImpl implements ContestService {
                             .description(contest.getDescription())
                             .max_participant(contest.getMax_participant())
                             .total_register_contest(total_registed_contest)
-                            .registration_time(contest.getRegistration_time())
+                            
                             .image_url(contest.getImage_url())
                             .start_time(contest.getStart_time())
                             .end_time(contest.getEnd_time())
-                            .is_enabled(contest.getIs_enabled())
+                            
                             .art_age_name(contest.getArtAges().getName())
                             .art_type_name(contest.getArtTypes().getName())
                             .art_age_id(contest.getArtAges().getId())
@@ -543,11 +543,11 @@ public class ContestServiceImpl implements ContestService {
                             .description(contest.getDescription())
                             .max_participant(contest.getMax_participant())
                             .total_register_contest(total_registed_contest)
-                            .registration_time(contest.getRegistration_time())
+                            
                             .image_url(contest.getImage_url())
                             .start_time(contest.getStart_time())
                             .end_time(contest.getEnd_time())
-                            .is_enabled(contest.getIs_enabled())
+                            
                             .art_age_name(contest.getArtAges().getName())
                             .art_type_name(contest.getArtTypes().getName())
                             .art_age_id(contest.getArtAges().getId())
@@ -597,11 +597,11 @@ public class ContestServiceImpl implements ContestService {
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission(listContestSubmissionByContest.size())
                             .total_contest_submission_graded(total)
-                            .registration_time(ele.getContest().getRegistration_time())
+                            
                             .image_url(ele.getContest().getImage_url())
                             .start_time(ele.getContest().getStart_time())
                             .end_time(ele.getContest().getEnd_time())
-                            .is_enabled(ele.getContest().getIs_enabled())
+                            
                             .art_age_id(ele.getContest().getArtAges().getId())
                             .art_type_id(ele.getContest().getArtTypes().getId())
                             .art_age_name(ele.getContest().getArtAges().getName())
@@ -619,13 +619,13 @@ public class ContestServiceImpl implements ContestService {
                             .total_register_contest(listUserRegisterContestByContest.size())
                             .total_contest_submission(listContestSubmissionByContest.size())
                             .total_contest_submission_graded(total)
-                            .registration_time(ele.getContest().getRegistration_time())
+                            
                             .image_url(ele.getContest().getImage_url())
                             .art_age_id(ele.getContest().getArtAges().getId())
                             .art_type_id(ele.getContest().getArtTypes().getId())
                             .start_time(ele.getContest().getStart_time())
                             .end_time(ele.getContest().getEnd_time())
-                            .is_enabled(ele.getContest().getIs_enabled())
+                            
                             .art_age_name(ele.getContest().getArtAges().getName())
                             .art_type_name(ele.getContest().getArtTypes().getName())
                             .build();
@@ -644,11 +644,11 @@ public class ContestServiceImpl implements ContestService {
                             .total_contest_submission_graded(total)
                             .art_age_id(ele.getContest().getArtAges().getId())
                             .art_type_id(ele.getContest().getArtTypes().getId())
-                            .registration_time(ele.getContest().getRegistration_time())
+                            
                             .image_url(ele.getContest().getImage_url())
                             .start_time(ele.getContest().getStart_time())
                             .end_time(ele.getContest().getEnd_time())
-                            .is_enabled(ele.getContest().getIs_enabled())
+                            
                             .art_age_name(ele.getContest().getArtAges().getName())
                             .art_type_name(ele.getContest().getArtTypes().getName())
                             .build();
@@ -688,11 +688,11 @@ public class ContestServiceImpl implements ContestService {
                         .total_register_contest(listUserRegisterContestByContest.size())
                         .total_contest_submission(listContestSubmissionByContest.size())
                         .total_contest_submission_graded(total)
-                        .registration_time(contest.getRegistration_time())
+                        
                         .image_url(contest.getImage_url())
                         .start_time(contest.getStart_time())
                         .end_time(contest.getEnd_time())
-                        .is_enabled(contest.getIs_enabled())
+                        
                         .art_age_id(contest.getArtAges().getId())
                         .art_type_id(contest.getArtTypes().getId())
                         
@@ -735,11 +735,11 @@ public class ContestServiceImpl implements ContestService {
                 .total_register_contest(listUserRegisterContestByContest.size())
                 .total_contest_submission(listContestSubmissionByContest.size())
                 .total_contest_submission_graded(total)
-                .registration_time(contest.getRegistration_time())
+                
                 .image_url(contest.getImage_url())
                 .start_time(contest.getStart_time())
                 .end_time(contest.getEnd_time())
-                .is_enabled(contest.getIs_enabled())
+                
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
                 
@@ -769,12 +769,12 @@ public class ContestServiceImpl implements ContestService {
                 .total_register_contest(listUserRegisterContestByContest.size())
                 .total_contest_submission(listContestSubmissionByContest.size())
                 .total_contest_submission_graded(total)
-                .registration_time(contest.getRegistration_time())
+                
                 .image_url(contest.getImage_url())
                 .check_gen(check_gen)
                 .start_time(contest.getStart_time())
                 .end_time(contest.getEnd_time())
-                .is_enabled(contest.getIs_enabled())
+                
                 .art_age_id(contest.getArtAges().getId())
                 .art_type_id(contest.getArtTypes().getId())
                 
@@ -805,11 +805,9 @@ public class ContestServiceImpl implements ContestService {
                 .name(createContestRequest.getName())
                 .description(createContestRequest.getDescription())
                 .max_participant(createContestRequest.getMax_participant())
-                .registration_time(createContestRequest.getRegistration_time())
                 .image_url(createContestRequest.getImage_url())
                 .start_time(createContestRequest.getStart_time())
                 .end_time(createContestRequest.getEnd_time())
-                .is_enabled(createContestRequest.getIs_enabled())
                 .artAges(artAge)
                 .artTypes(artType)
                 .build();
@@ -857,7 +855,6 @@ public class ContestServiceImpl implements ContestService {
         updatedContest.setName(createContestRequest.getName());
         updatedContest.setDescription(createContestRequest.getDescription());
         updatedContest.setMax_participant(createContestRequest.getMax_participant());
-        updatedContest.setRegistration_time(createContestRequest.getRegistration_time());
         updatedContest.setImage_url(createContestRequest.getImage_url());
         updatedContest.setStart_time(createContestRequest.getStart_time());
         updatedContest.setEnd_time(createContestRequest.getEnd_time());

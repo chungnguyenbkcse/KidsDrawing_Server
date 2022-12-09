@@ -50,9 +50,6 @@ public class Contest {
     @Column(name = "max_participant")
     private Integer max_participant;
 
-    @Column(name = "registration_time")
-    private LocalDateTime registration_time;
-
     @Column(name = "image_url")
     private String image_url;
 
@@ -71,9 +68,6 @@ public class Contest {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
-
-    @Column(name = "is_enabled")
-    private Boolean is_enabled;
 
     @Column(name = "deleted")
     private Boolean deleted;

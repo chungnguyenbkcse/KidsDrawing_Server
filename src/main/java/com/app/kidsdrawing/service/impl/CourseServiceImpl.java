@@ -86,7 +86,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
@@ -184,7 +184,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
@@ -240,7 +240,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -317,7 +317,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
@@ -364,7 +364,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
@@ -422,7 +422,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -451,7 +451,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -481,7 +481,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -517,7 +517,7 @@ public class CourseServiceImpl implements CourseService {
                         .num_of_section(course.getSemesterClass().getCourse().getNum_of_section())
                         .image_url(course.getSemesterClass().getCourse().getImage_url())
                         .price(course.getSemesterClass().getCourse().getPrice())
-                        .is_enabled(course.getSemesterClass().getCourse().getIs_enabled())
+                        
                         .art_age_id(course.getSemesterClass().getCourse().getArtAges().getId())
                         .art_age_name(course.getSemesterClass().getCourse().getArtAges().getName())
                         .art_type_id(course.getSemesterClass().getCourse().getArtTypes().getId())
@@ -545,7 +545,7 @@ public class CourseServiceImpl implements CourseService {
                         .num_of_section(course.getNum_of_section())
                         .image_url(course.getImage_url())
                         .price(course.getPrice())
-                        .is_enabled(course.getIs_enabled())
+                        
                         .art_age_id(course.getArtAges().getId())
                         .art_age_name(course.getArtAges().getName())
                         .art_type_id(course.getArtTypes().getId())
@@ -585,7 +585,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(user_register_join_semester.getSemesterClass().getCourse().getNum_of_section())
                     .image_url(user_register_join_semester.getSemesterClass().getCourse().getImage_url())
                     .price(user_register_join_semester.getSemesterClass().getCourse().getPrice())
-                    .is_enabled(user_register_join_semester.getSemesterClass().getCourse().getIs_enabled())
+                    
                     .art_age_id(user_register_join_semester.getSemesterClass().getCourse().getArtAges().getId())
                     .art_age_name(user_register_join_semester.getSemesterClass().getCourse().getArtAges().getName())
                     .art_type_id(user_register_join_semester.getSemesterClass().getCourse().getArtTypes().getId())
@@ -608,7 +608,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_age_name(course.getArtAges().getName())
                     .art_type_id(course.getArtTypes().getId())
@@ -790,7 +790,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -814,7 +814,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -854,7 +854,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(createCourseRequest.getNum_of_section())
                 .image_url(createCourseRequest.getImage_url())
                 .price(createCourseRequest.getPrice())
-                .is_enabled(createCourseRequest.getIs_enabled())
+                
                 
                 .artAges(artAge)
                 .artTypes(artType)

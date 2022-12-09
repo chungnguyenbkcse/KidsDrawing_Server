@@ -40,6 +40,20 @@ public class TutorialPageController {
         return ResponseEntity.ok().body(tutorialPageService.getAllTutorialPageBySectionId(id));
     }
 
+
+    @CrossOrigin
+    @GetMapping(value = "/section-not-approve/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialPageBySectionIdNotApproved(@PathVariable Long id) {
+        return ResponseEntity.ok().body(tutorialPageService.getAllTutorialPageBySectionIdNotApproved(id));
+    }
+
+
+    @CrossOrigin
+    @GetMapping(value = "/section-check/{id}")
+    public ResponseEntity<GetTutorialPageResponse> checkTutorialPageBySectionId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(tutorialPageService.checkTutorialPageBySectionId(id));
+    }
+
     @CrossOrigin
     @GetMapping(value = "/section-x/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialTemplatePageBySectionId(@PathVariable Long id) {
@@ -74,6 +88,16 @@ public class TutorialPageController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteTutorialPageById(@PathVariable Long id) {
         Long tutorialPageId = tutorialPageService.removeTutorialPageById(id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(tutorialPageId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+
+    @CrossOrigin
+    @DeleteMapping(value = "/section/{id}")
+    public ResponseEntity<String> removeTutorialPageBySection(@PathVariable Long id) {
+        Long tutorialPageId = tutorialPageService.removeTutorialPageBySection(id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(tutorialPageId).toUri();
         return ResponseEntity.created(location).build();
