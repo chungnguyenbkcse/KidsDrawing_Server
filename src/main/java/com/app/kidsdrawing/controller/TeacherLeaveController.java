@@ -42,9 +42,9 @@ public class TeacherLeaveController {
     }
     
     @CrossOrigin
-    @GetMapping(value = "/teacher/{id}")
+    @GetMapping(value = "/substitute-teacher/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTeacherLeaveByTeacher(@PathVariable Long id) {
-        return ResponseEntity.ok().body(teacherLeaveService.getTeacherLeaveByTeacher(id));
+        return ResponseEntity.ok().body(teacherLeaveService.getTeacherLeaveByTeacherSubstitute(id));
     }
 
     @CrossOrigin

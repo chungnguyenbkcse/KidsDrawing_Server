@@ -14,6 +14,7 @@ public interface TeacherLeaveService {
     GetTeacherLeaveResponse getTeacherLeaveById(Long id);
     ResponseEntity<Map<String, Object>> getTeacherLeaveByClassId(Long id);
     ResponseEntity<Map<String, Object>> getTeacherLeaveByTeacher(Long id);
+    ResponseEntity<Map<String, Object>> getTeacherLeaveByTeacherSubstitute(Long id);
     GetTeacherLeaveResponse createTeacherLeave(CreateTeacherLeaveRequest createTeacherLeaveRequest);
     Long removeTeacherLeaveById(Long id);
     Long updateTeacherLeaveById(Long id, CreateTeacherLeaveRequest createTeacherLeaveRequest);

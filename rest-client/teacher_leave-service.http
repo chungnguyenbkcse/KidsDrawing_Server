@@ -36,7 +36,7 @@ GET {{rest}}/teacher-leave/1
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 
-GET {{rest}}/teacher-leave
+GET {{rest}}/teacher-leave/class/2
 
 
 ### GET USER GRADE semester ACTION ###

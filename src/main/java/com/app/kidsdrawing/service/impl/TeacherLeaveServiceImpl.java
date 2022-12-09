@@ -142,6 +142,10 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                             lesson_time_in_day.add(end_lessontime.atDate(start_date));
                             total_section_count++;
                         }
+
+                        if (total_section_count == section_number - 1) {
+                            return lesson_time_in_day;
+                        }
                     }
                     lesson_time_in_week.add(lesson_time_in_day);
                 }
@@ -221,6 +225,42 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 .classes_id(content.getSection().getClasses().getId())
                 .start_time(time.get(0))
                 .end_time(time.get(1))
+                .class_name(content.getSection().getClasses().getName())
+                .substitute_teacher_id(content.getSubstitute_teacher().getId())
+                .substitute_teacher_name(content.getSubstitute_teacher().getUser().getUsername() + " - " + content.getSubstitute_teacher().getUser().getFirstName() + " " + content.getSubstitute_teacher().getUser().getLastName())
+                .status(content.getStatus())
+                .description(content.getDescription())
+                .create_time(content.getCreate_time())
+                .update_time(content.getUpdate_time())
+                .build();
+            allTeacherLeaveResponses.add(TeacherLeaveResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("teacher_leave", allTeacherLeaveResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getTeacherLeaveByTeacherSubstitute(Long id) {
+        List<GetTeacherLeaveResponse> allTeacherLeaveResponses = new ArrayList<>();
+        List<TeacherLeave> listTeacherLeave = teacherLeaveRepository.findBySubstituteTeacherId2(id);
+        listTeacherLeave.forEach(content -> {
+            Optional<Classes> classOpt = classRepository.findById5(content.getSection().getClasses().getId());
+            Classes classes = classOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.Class.not_found");
+            });
+            List<LocalDateTime> time = getScheduleDetailOfClass(classes, content.getSection().getNumber());
+            GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
+                .id(content.getId())
+                
+                .start_time(time.get(0))
+                .end_time(time.get(1))
+                
+                .section_id(content.getSection().getId())
+                .section_number(content.getSection().getNumber())
+                .section_name(content.getSection().getName())
+                .classes_id(content.getSection().getClasses().getId())
                 .class_name(content.getSection().getClasses().getName())
                 .substitute_teacher_id(content.getSubstitute_teacher().getId())
                 .substitute_teacher_name(content.getSubstitute_teacher().getUser().getUsername() + " - " + content.getSubstitute_teacher().getUser().getFirstName() + " " + content.getSubstitute_teacher().getUser().getLastName())
