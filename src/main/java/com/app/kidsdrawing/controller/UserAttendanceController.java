@@ -65,6 +65,12 @@ public class UserAttendanceController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/section-parent-check/{section_id}/{parent_id}")
+    public ResponseEntity<GetCheckUserAttendanceResponse> checkUserAttendanceBySectionAndParent(@PathVariable("section_id") Long section_id, @PathVariable("parent_id") Long parent_id) {
+        return ResponseEntity.ok().body(tutorialTemplate.checkUserAttendanceBySectionAndParent(section_id, parent_id));
+    }
+
+    @CrossOrigin
     @PutMapping(value = "/section-student/{section_id}/{student_id}")
     public ResponseEntity<GetUserAttendanceResponse> putUserAttendanceBySectionAndStudent(@PathVariable("section_id") Long section_id, @PathVariable("student_id") Long student_id) {
         Long tutorialPageId = tutorialTemplate.updateUserAttendanceBySectionAndStudent(section_id, student_id);

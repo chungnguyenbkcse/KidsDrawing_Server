@@ -88,6 +88,22 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     }
 
     @Override
+    public GetCheckUserAttendanceResponse checkUserAttendanceBySectionAndParent(Long section_id, Long parent) {
+        List<UserAttendance> userAttendanceOpt = userAttendanceRepository.findBySectionIdAndParentId(section_id, parent);
+        for (int i = 0; i < userAttendanceOpt.size(); i++) {
+            if (userAttendanceOpt.get(i).getStatus() == true) {
+                return GetCheckUserAttendanceResponse.builder()
+                .status(true)
+                .build();
+            }
+        }
+
+        return GetCheckUserAttendanceResponse.builder()
+                .status(false)
+                .build();
+    }
+
+    @Override
     public GetCheckUserAttendanceResponse checkUserAttendanceBySectionAndStudent(Long section_id, Long student_id) {
         Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
         UserAttendance userAttendance = userAttendanceOpt.orElseThrow(() -> {
