@@ -263,38 +263,91 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         List<GetContestSubmissionResponse> allContestSubmissionGradedResponses = new ArrayList<>();
         List<GetContestSubmissionResponse> allContestSubmissionNotGradedResponses = new ArrayList<>();
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId2(id);
-        listContestSubmissionByContest.forEach(contest_submission -> {
-                if (contest_submission.getScore() != null) {
-                    GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
-                        .score(contest_submission.getScore())
-                        .feedback(contest_submission.getFeedback())
-                        .time(contest_submission.getTime())
-                        .contest_id(contest_submission.getContest().getId())
-                        .student_id(contest_submission.getStudent().getId())
-                        .contest_name(contest_submission.getContest().getName())
-                        .student_name(contest_submission.getStudent().getUser().getUsername() + " - " + contest_submission.getStudent().getUser().getFirstName() + " " + contest_submission.getStudent().getUser().getLastName())
-                        .image_url(contest_submission.getImage_url())
-                        .create_time(contest_submission.getCreate_time())
-                        .update_time(contest_submission.getUpdate_time())
-                        .build();
-                    allContestSubmissionGradedResponses.add(contestSubmissionResponse);
+        List <UserGradeContest> userGradeContests = userGradeContestRepository.findByContestId2(id);
+  
+        int total_teacher = userGradeContests.size();
+        int total_contest_submission = listContestSubmissionByContest.size();
+
+        int total = total_contest_submission / total_teacher;
+
+        for (int index = 0; index < total_teacher; index++) {
+            if (index == total_teacher - 1) {
+                List<ContestSubmission> contestSubmissions = listContestSubmissionByContest.subList(index*total, total_contest_submission);
+                System.out.print(contestSubmissions.size());
+                for (int y = 0; y < contestSubmissions.size(); y++) {
+                    if (contestSubmissions.get(y).getScore() != null) {
+                        GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                            .score(contestSubmissions.get(y).getScore())
+                            .feedback(contestSubmissions.get(y).getFeedback())
+                            .time(contestSubmissions.get(y).getTime())
+                            .teacher_id(userGradeContests.get(index).getTeacher().getId())
+                            .contest_id(contestSubmissions.get(y).getContest().getId())
+                            .student_id(contestSubmissions.get(y).getStudent().getId())
+                            .contest_name(contestSubmissions.get(y).getContest().getName())
+                            .student_name(contestSubmissions.get(y).getStudent().getUser().getUsername() + " - " + contestSubmissions.get(y).getStudent().getUser().getFirstName() + " " + contestSubmissions.get(y).getStudent().getUser().getLastName())
+                            .image_url(contestSubmissions.get(y).getImage_url())
+                            .create_time(contestSubmissions.get(y).getCreate_time())
+                            .update_time(contestSubmissions.get(y).getUpdate_time())
+                            .build();
+                        allContestSubmissionGradedResponses.add(contestSubmissionResponse);
+                    }
+                    else {
+                        GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                            .score(contestSubmissions.get(y).getScore())
+                            .feedback(contestSubmissions.get(y).getFeedback())
+                            .time(contestSubmissions.get(y).getTime())
+                            .teacher_id(userGradeContests.get(index).getTeacher().getId())
+                            .contest_id(contestSubmissions.get(y).getContest().getId())
+                            .student_id(contestSubmissions.get(y).getStudent().getId())
+                            .contest_name(contestSubmissions.get(y).getContest().getName())
+                            .student_name(contestSubmissions.get(y).getStudent().getUser().getUsername() + " - " + contestSubmissions.get(y).getStudent().getUser().getFirstName() + " " + contestSubmissions.get(y).getStudent().getUser().getLastName())
+                            .image_url(contestSubmissions.get(y).getImage_url())
+                            .create_time(contestSubmissions.get(y).getCreate_time())
+                            .update_time(contestSubmissions.get(y).getUpdate_time())
+                            .build();
+                        allContestSubmissionNotGradedResponses.add(contestSubmissionResponse);
+                    }
                 }
-                else {
-                    GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
-                        .score(contest_submission.getScore())
-                        .feedback(contest_submission.getFeedback())
-                        .time(contest_submission.getTime())
-                        .contest_id(contest_submission.getContest().getId())
-                        .student_id(contest_submission.getStudent().getId())
-                        .contest_name(contest_submission.getContest().getName())
-                        .student_name(contest_submission.getStudent().getUser().getUsername() + " - " + contest_submission.getStudent().getUser().getFirstName() + " " + contest_submission.getStudent().getUser().getLastName())
-                        .image_url(contest_submission.getImage_url())
-                        .create_time(contest_submission.getCreate_time())
-                        .update_time(contest_submission.getUpdate_time())
-                        .build();
-                    allContestSubmissionNotGradedResponses.add(contestSubmissionResponse);
+            }
+            else {
+                List<ContestSubmission> contestSubmissions = listContestSubmissionByContest.subList(index*total, (index+1)*total);
+                System.out.print(contestSubmissions.size());
+                for (int y = 0; y < contestSubmissions.size(); y++) {
+                    if (contestSubmissions.get(y).getScore() != null) {
+                        GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                            .score(contestSubmissions.get(y).getScore())
+                            .feedback(contestSubmissions.get(y).getFeedback())
+                            .time(contestSubmissions.get(y).getTime())
+                            .teacher_id(userGradeContests.get(index).getTeacher().getId())
+                            .contest_id(contestSubmissions.get(y).getContest().getId())
+                            .student_id(contestSubmissions.get(y).getStudent().getId())
+                            .contest_name(contestSubmissions.get(y).getContest().getName())
+                            .student_name(contestSubmissions.get(y).getStudent().getUser().getUsername() + " - " + contestSubmissions.get(y).getStudent().getUser().getFirstName() + " " + contestSubmissions.get(y).getStudent().getUser().getLastName())
+                            .image_url(contestSubmissions.get(y).getImage_url())
+                            .create_time(contestSubmissions.get(y).getCreate_time())
+                            .update_time(contestSubmissions.get(y).getUpdate_time())
+                            .build();
+                        allContestSubmissionGradedResponses.add(contestSubmissionResponse);
+                    }
+                    else {
+                        GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
+                            .score(contestSubmissions.get(y).getScore())
+                            .feedback(contestSubmissions.get(y).getFeedback())
+                            .time(contestSubmissions.get(y).getTime())
+                            .teacher_id(userGradeContests.get(index).getTeacher().getId())
+                            .contest_id(contestSubmissions.get(y).getContest().getId())
+                            .student_id(contestSubmissions.get(y).getStudent().getId())
+                            .contest_name(contestSubmissions.get(y).getContest().getName())
+                            .student_name(contestSubmissions.get(y).getStudent().getUser().getUsername() + " - " + contestSubmissions.get(y).getStudent().getUser().getFirstName() + " " + contestSubmissions.get(y).getStudent().getUser().getLastName())
+                            .image_url(contestSubmissions.get(y).getImage_url())
+                            .create_time(contestSubmissions.get(y).getCreate_time())
+                            .update_time(contestSubmissions.get(y).getUpdate_time())
+                            .build();
+                        allContestSubmissionNotGradedResponses.add(contestSubmissionResponse);
+                    }
                 }
-        });
+            } 
+        }
 
         Map<String, Object> response = new HashMap<>();
         response.put("contest_not_graded", allContestSubmissionNotGradedResponses);

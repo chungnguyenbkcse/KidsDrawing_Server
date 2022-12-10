@@ -17,6 +17,8 @@ public class GetContestSubmissionResponse {
     private Long contest_id;
     private String student_name;
     private String contest_name;
+    private Long teacher_id;
+    private String teacher_name;
     private Float score;
     private String feedback;
     private Long student_id;
