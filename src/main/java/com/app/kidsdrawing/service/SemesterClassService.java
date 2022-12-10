@@ -10,6 +10,7 @@ import com.app.kidsdrawing.dto.GetSemesterClassResponse;
 
 public interface SemesterClassService {
     ResponseEntity<Map<String, Object>> getAllSemesterClass();
+    ResponseEntity<Map<String, Object>> getAllSemesterClass1();
     ResponseEntity<Map<String, Object>> getAllSemesterClassBySemester(Long id);
     ResponseEntity<Map<String, Object>> getAllSemesterClassBySemesterScheduleClass(Long id);
     ResponseEntity<Map<String, Object>> getAllSemesterClassByCourse(Long id);

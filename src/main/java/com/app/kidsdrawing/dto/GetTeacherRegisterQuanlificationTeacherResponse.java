@@ -14,7 +14,7 @@ public class GetTeacherRegisterQuanlificationTeacherResponse {
     private Long id;
     private Long teacher_id;
     private String teacher_name;
-    private Long reviewer_id;
+    
     private Long course_id;
     private String course_name;
     private String art_age_name;

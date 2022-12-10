@@ -87,24 +87,27 @@ public class ContestSubmissionController {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateContestSubmission(@PathVariable Long id, @RequestBody CreateContestSubmissionRequest createContestSubmissionRequest) {
-        Long contestSubmissionId = contestSubmissionService.updateContestSubmissionById(id,createContestSubmissionRequest);
+    @PutMapping(value = "/student")
+    public ResponseEntity<String> updateContestSubmission(@RequestBody CreateContestSubmissionRequest createContestSubmissionRequest) {
+        Long contestSubmissionId = contestSubmissionService.updateContestSubmissionByStudent(createContestSubmissionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(contestSubmissionId).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @CrossOrigin
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<GetContestSubmissionResponse> getContestSubmissionById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(contestSubmissionService.getContestSubmissionById(id));
+    @PutMapping(value = "/teacher")
+    public ResponseEntity<String> updateContestSubmissionTeacher(@RequestBody CreateContestSubmissionRequest createContestSubmissionRequest) {
+        Long contestSubmissionId = contestSubmissionService.updateContestSubmissionByTeacher(createContestSubmissionRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(contestSubmissionId).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @CrossOrigin
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteContestSubmissionById(@PathVariable Long id) {
-        Long contestSubmissionId = contestSubmissionService.removeContestSubmissionById(id);
+    @DeleteMapping(value = "/{contest_id}/{student_id}")
+    public ResponseEntity<String> deleteContestSubmissionById(@PathVariable("contest_id") Long contest_id, @PathVariable("student_id") Long student_id) {
+        Long contestSubmissionId = contestSubmissionService.removeContestSubmissionById(contest_id, student_id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(contestSubmissionId).toUri();
         return ResponseEntity.created(location).build();

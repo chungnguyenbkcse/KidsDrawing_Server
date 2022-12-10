@@ -7,8 +7,8 @@ POST {{rest}}/auth
 Content-Type: application/json
 
 {
-    "username": "student-1_1",
-    "password": "12345678aA@"
+    "username": "student-1",
+    "password": "123"
 }
 
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
@@ -37,6 +37,11 @@ GET {{rest}}/student-leave/1
 
 GET {{rest}}/student-leave
 
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+GET {{rest}}/student-leave/section-student/10/26
+
 
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
@@ -46,12 +51,19 @@ GET {{rest}}/student-leave/class-student/23/8
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 
-GET {{rest}}/student-leave/class-parent/7/12
+GET {{rest}}/student-leave/class-parent/2/12
 
 ### GET USER GRADE semester ACTION ###
 # @name get_all_user_grade_semester
 
 GET {{rest}}/student-leave/teacher/5
+
+
+### GET USER GRADE semester ACTION ###
+# @name get_all_user_grade_semester
+
+DELETE {{rest}}/student-leave/4/21
+Authorization: Bearer {{admin_access_token}}
 
 ### CREATE STUDENT REGISTER JOIN semester ACTION ###
 # @name create_student_register_join_semester

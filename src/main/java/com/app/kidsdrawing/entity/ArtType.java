@@ -41,13 +41,16 @@ public class ArtType {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @OneToMany(mappedBy="artTypes")
     private Set<Contest> contests;
 
     @OneToMany(mappedBy="artTypes")
     private Set<Course> courses;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 }

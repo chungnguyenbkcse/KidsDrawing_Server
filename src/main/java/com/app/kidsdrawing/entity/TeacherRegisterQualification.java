@@ -1,5 +1,7 @@
 package com.app.kidsdrawing.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,15 +39,17 @@ public class TeacherRegisterQualification {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
-    private User reviewer;
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private User teacher;
+    private Teacher teacher;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
+
+    @Column(name = "time_approved")
+    private LocalDateTime time_approved;
 }

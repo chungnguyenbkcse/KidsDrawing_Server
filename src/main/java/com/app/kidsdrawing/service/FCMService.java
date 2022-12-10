@@ -1,15 +1,12 @@
 package com.app.kidsdrawing.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 
 import org.springframework.stereotype.Service;
 
 import com.app.kidsdrawing.dto.PnsRequest;
-import com.app.kidsdrawing.entity.Role;
 import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.entity.Classes;
@@ -53,13 +50,7 @@ public class FCMService {
     public String pushNotificationForTeacher(PnsRequest pnsRequest) {
         List<User> allUser = userRepository.findAll();
         allUser.forEach(user -> {           
-            List<String> role_name = new ArrayList<>();
-            Set<Role> role = user.getRoles();
-            role.forEach(ele -> {
-                role_name.add(ele.getName());
-            });
-
-            if (role_name.contains("TEACHER_USER")){
+            if (user.getAuthorization() == "TEACHER"){
                 Message message = Message.builder()
                     .putData("title", pnsRequest.getTitle())
                     .putData("body", pnsRequest.getBody())
@@ -81,13 +72,8 @@ public class FCMService {
     public String pushNotificationForStudent(PnsRequest pnsRequest) {
         List<User> allUser = userRepository.findAll();
         allUser.forEach(user -> {           
-            List<String> role_name = new ArrayList<>();
-            Set<Role> role = user.getRoles();
-            role.forEach(ele -> {
-                role_name.add(ele.getName());
-            });
 
-            if (role_name.contains("PARENT_USER") || role_name.contains("STUDENT_USER")){
+            if ((user.getAuthorization() == "PARENT") || (user.getAuthorization() == "STUDENT")){
                 Message message = Message.builder()
                     .putData("title", pnsRequest.getTitle())
                     .putData("body", pnsRequest.getBody())
@@ -132,14 +118,14 @@ public class FCMService {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(classes.getId());
+        List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId2(classes.getId());
         listClassHasRegisterJoinSemesterClass.forEach(ele -> {
             Message message = Message.builder()
                 .putData("title", pnsRequest.getTitle())
                 .putData("body", pnsRequest.getBody())
                 .putData("icon", "https://images.pexels.com/photos/1382734/pexels-photo-1382734.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500")
                 .putData("click_action", "https://google.com")
-                .setToken(ele.getUserRegisterJoinSemester().getStudent().getStatus())
+                .setToken(ele.getStudent().getUser().getStatus())
                 .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
@@ -152,7 +138,7 @@ public class FCMService {
                 .putData("body", pnsRequest.getBody())
                 .putData("icon", "https://images.pexels.com/photos/1382734/pexels-photo-1382734.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500")
                 .putData("click_action", "https://google.com")
-                .setToken(ele.getUserRegisterJoinSemester().getStudent().getParent().getStatus())
+                .setToken(ele.getStudent().getParent().getUser().getStatus())
                 .build();
             try {
                 FirebaseMessaging.getInstance().send(message_1);

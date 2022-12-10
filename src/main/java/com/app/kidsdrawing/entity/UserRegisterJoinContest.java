@@ -32,7 +32,7 @@ public class UserRegisterJoinContest {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private User student;
+    private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "contest_id", referencedColumnName = "id")

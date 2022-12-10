@@ -11,4 +11,5 @@ public class GlobalErrorCode {
     public static final Long ERROR_CONTEST_ALREADY_CREATE = 1007L;
     public static final Long ERROR_COURSE_ALREADY_CREATE = 1008L;
     public static final Long ERROR_SEMESTER_CLASS_ALREADY_CREATE = 1008L;
+    public static final Long ERROR_NOT_DELETED = 1009L;
 }

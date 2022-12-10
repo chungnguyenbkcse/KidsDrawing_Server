@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.app.kidsdrawing.dto.CreateUserGradeContestRequest;
-import com.app.kidsdrawing.dto.GetUserGradeContestResponse;
 import com.app.kidsdrawing.service.UserGradeContestService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,24 +49,18 @@ public class UserGradeContestController {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateUserGradeContest(@PathVariable Long id, @RequestBody CreateUserGradeContestRequest createUserGradeContestRequest) {
-        Long UserGradeContestId = userGradeContestService.updateUserGradeContestById(id,createUserGradeContestRequest);
+    @PutMapping
+    public ResponseEntity<String> updateUserGradeContest(@RequestBody CreateUserGradeContestRequest createUserGradeContestRequest) {
+        Long UserGradeContestId = userGradeContestService.updateUserGradeContestById(createUserGradeContestRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(UserGradeContestId).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @CrossOrigin
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserGradeContestResponse> getUserGradeContestById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userGradeContestService.getUserGradeContestById(id));
-    }
-
-    @CrossOrigin
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserGradeContestById(@PathVariable Long id) {
-        Long UserGradeContestId = userGradeContestService.removeUserGradeContestById(id);
+    @DeleteMapping(value = "/{contest_id}/{teacher_id}")
+    public ResponseEntity<String> deleteUserGradeContestById(@PathVariable("contest_id") Long contest_id, @PathVariable("teacher_id") Long teacher_id) {
+        Long UserGradeContestId = userGradeContestService.removeUserGradeContestById(contest_id, teacher_id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(UserGradeContestId).toUri();
         return ResponseEntity.created(location).build();

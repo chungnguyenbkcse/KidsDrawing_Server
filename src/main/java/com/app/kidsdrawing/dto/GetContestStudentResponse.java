@@ -27,7 +27,7 @@ public class GetContestStudentResponse {
     private LocalDateTime start_time;
     private LocalDateTime end_time;
     private Boolean is_enabled;
-    private Long creator_id;
+    
     private Long art_age_id;
     private Long art_type_id;
     private String art_age_name;

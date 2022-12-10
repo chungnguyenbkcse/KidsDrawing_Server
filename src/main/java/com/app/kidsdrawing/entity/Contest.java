@@ -50,9 +50,6 @@ public class Contest {
     @Column(name = "max_participant")
     private Integer max_participant;
 
-    @Column(name = "registration_time")
-    private LocalDateTime registration_time;
-
     @Column(name = "image_url")
     private String image_url;
 
@@ -72,12 +69,8 @@ public class Contest {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @Column(name = "is_enabled")
-    private Boolean is_enabled;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "art_age_id", referencedColumnName = "id")
@@ -93,4 +86,7 @@ public class Contest {
     @OneToMany(mappedBy="contest")
     private Set<ContestSubmission> contestSubmissions;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 }

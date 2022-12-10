@@ -54,7 +54,7 @@ public class ExerciseSubmissionController {
 
     @CrossOrigin
     @GetMapping(value = "/exercise-student/{exercise_id}/{student_id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllExerciseSubmissionByExerciseAndStudent(@PathVariable("exercise_id") Long exercise_id, @PathVariable("student_id") Long student_id) {
+    public ResponseEntity<GetExerciseSubmissionResponse> getAllExerciseSubmissionByExerciseAndStudent(@PathVariable("exercise_id") Long exercise_id, @PathVariable("student_id") Long student_id) {
         return ResponseEntity.ok().body(exerciseSubmissionService.getAllExerciseSubmissionByExerciseAndStudent(exercise_id, student_id));
     }
 
@@ -86,24 +86,28 @@ public class ExerciseSubmissionController {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateExerciseSubmission(@PathVariable Long id, @RequestBody CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
-        Long exerciseSubmissionId = exerciseSubmissionService.updateExerciseSubmissionById(id,createExerciseSubmissionRequest);
+    @PutMapping(value = "/student")
+    public ResponseEntity<String> updateExerciseSubmission( @RequestBody CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
+        Long exerciseSubmissionId = exerciseSubmissionService.updateExerciseSubmissionByStudent(createExerciseSubmissionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(exerciseSubmissionId).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @CrossOrigin
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<GetExerciseSubmissionResponse> getExerciseSubmissionById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(exerciseSubmissionService.getExerciseSubmissionById(id));
+    @PutMapping(value = "/teacher")
+    public ResponseEntity<String> updateExerciseSubmissionTeacher( @RequestBody CreateExerciseSubmissionRequest createExerciseSubmissionRequest) {
+        Long exerciseSubmissionId = exerciseSubmissionService.updateExerciseSubmissionByTeacher(createExerciseSubmissionRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .buildAndExpand(exerciseSubmissionId).toUri();
+        return ResponseEntity.created(location).build();
     }
 
+
     @CrossOrigin
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteExerciseSubmissionById(@PathVariable Long id) {
-        Long exerciseSubmissionId = exerciseSubmissionService.removeExerciseSubmissionById(id);
+    @DeleteMapping(value = "/{exercise_id}/{student_id}")
+    public ResponseEntity<String> deleteExerciseSubmissionById(@PathVariable("exercise_id") Long exercise_id, @PathVariable("student_id") Long student_id) {
+        Long exerciseSubmissionId = exerciseSubmissionService.removeExerciseSubmissionById(exercise_id, student_id);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(exerciseSubmissionId).toUri();
         return ResponseEntity.created(location).build();

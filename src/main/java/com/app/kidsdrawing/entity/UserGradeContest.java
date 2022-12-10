@@ -1,14 +1,13 @@
 package com.app.kidsdrawing.entity;
 
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 
@@ -27,15 +26,19 @@ import lombok.Setter;
 @Entity
 @Table(name = "User_Grade_Contest")
 public class UserGradeContest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  id;
+    @EmbeddedId
+    UserGradeContestKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("teacherId")
+    @JoinColumn(name = "teacher_id")
+    Teacher teacher;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "contest_id", referencedColumnName = "id")
-    private Contest contest;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("contestId")
+    @JoinColumn(name = "contest_id")
+    Contest contest;
+
+    @Column(name = "number")
+    private Integer number;
 }

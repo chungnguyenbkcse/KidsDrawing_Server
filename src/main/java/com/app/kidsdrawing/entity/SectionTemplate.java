@@ -1,6 +1,7 @@
 package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,10 +38,6 @@ public class SectionTemplate {
     private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
@@ -63,6 +60,6 @@ public class SectionTemplate {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @OneToOne(mappedBy="sectionTemplate", fetch = FetchType.LAZY)
-    private TutorialTemplate tutorialTemplate;
+    @OneToMany(mappedBy="sectionTemplate")
+    private Set<TutorialTemplatePage> tutorialTemplatePages;
 }

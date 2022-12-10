@@ -49,6 +49,9 @@ public class Semester {
     @Column(name =  "year")
     private Integer year;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @Column(name =  "start_time")
     private LocalDateTime start_time;
 
@@ -65,13 +68,13 @@ public class Semester {
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
-
     @OneToMany(mappedBy="semester")
     private Set<SemesterClass> semesterClass;
 
     @OneToMany(mappedBy="semester")
     private Set<Holiday> holidays;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 }

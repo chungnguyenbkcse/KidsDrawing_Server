@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +20,12 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateArtLevelRequest;
 import com.app.kidsdrawing.dto.GetArtLevelResponse;
 import com.app.kidsdrawing.entity.ArtLevel;
+import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.ArtLevelAlreadyCreateException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtLevelRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.service.ArtLevelService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class ArtLevelServiceImpl implements ArtLevelService {
 
     private final ArtLevelRepository artLevelRepository;
+    private final ClassesRepository classRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllArtLevel(int page, int size) {
@@ -90,6 +95,15 @@ public class ArtLevelServiceImpl implements ArtLevelService {
         artLevelOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtLevel.not_found");
         });
+
+        List<Classes> listClass = classRepository.findAllByArtLevel(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.ArtLevel_Classes.not_delete");
+            }
+        }
 
         artLevelRepository.deleteById(id);
         return id;

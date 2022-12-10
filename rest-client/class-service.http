@@ -21,7 +21,6 @@ Content-Type: application/json
 
 {
     "name": "Lớp mầm chì màu 4 đến 6 tuổi 1",
-    "creator_id": 3,
     "user_register_teach_semester": 1,
     "security_code": "CM-1HK2022"
 }
@@ -41,7 +40,6 @@ Content-Type: application/json
     "start_time": "2022-08-12T12:59:11.332",
     "end_time": "2022-09-12T12:59:11.332",
     "is_enabled": true,
-    "creator_id": 3,
     "art_age_id": 1,
     "art_type_id": 1
 }
@@ -61,7 +59,7 @@ GET  {{rest}}/classes/info/2
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/student/22
+GET  {{rest}}/classes/student/21
 
 ### GET classes ACTION ###
 # @name get_classes
@@ -72,7 +70,7 @@ GET  {{rest}}/classes/student/detail/18
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/schedule-all/1
+GET  {{rest}}/classes/schedule-all
 
 ### GET classes ACTION ###
 # @name get_classes
@@ -97,14 +95,14 @@ GET  {{rest}}/classes/student/22
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/teacher-list/5
+GET  {{rest}}/classes/teacher-list/2
 
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/class-parent/childs/7/12
+GET  {{rest}}/classes/class-parent/childs/2/12
 
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/classes/teacher-1/2
+GET  {{rest}}/classes/teacher/4

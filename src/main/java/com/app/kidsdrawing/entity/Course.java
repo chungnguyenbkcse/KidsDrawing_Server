@@ -53,6 +53,9 @@ public class Course {
     @Column(name = "price")
     private Float price;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @Column(name = "image_url")
     private String image_url;
 
@@ -65,9 +68,6 @@ public class Course {
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime update_time = LocalDateTime.now();
-
-    @Column(name = "is_enabled")
-    private Boolean is_enabled;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "art_level_id", referencedColumnName = "id")
@@ -83,7 +83,7 @@ public class Course {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
+    private Admin admin;
 
     @OneToMany(mappedBy = "course")
     private Set<SectionTemplate> sectionTemplates;

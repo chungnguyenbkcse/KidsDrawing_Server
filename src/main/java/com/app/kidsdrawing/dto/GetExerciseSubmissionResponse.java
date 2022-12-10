@@ -13,15 +13,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetExerciseSubmissionResponse {
-    private Long id;
     private Long student_id;
     private Long exercise_id;
     private String student_name;
     private String exercise_name;
     private String exercise_description;
-    private String exercise_level_name;
     private LocalDateTime exercise_deadline;
     private String image_url;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
+    private Float score;
+    private LocalDateTime time;
+    private String feedback;
 }

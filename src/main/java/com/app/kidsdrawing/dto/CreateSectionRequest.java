@@ -7,6 +7,5 @@ public class CreateSectionRequest {
     private Long classes_id;
     private String name;
     private Integer number;
-    private String recording;
-    private String message;
+    private String status;
 }

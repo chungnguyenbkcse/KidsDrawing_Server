@@ -19,12 +19,12 @@ import com.app.kidsdrawing.dto.GetTeacherTeachSemesterResponse;
 import com.app.kidsdrawing.dto.GetUserRegisterTeachSemesterScheduleClassResponse;
 import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.SemesterClass;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.TeacherRepository;
 import com.app.kidsdrawing.service.SemesterClassService;
 import com.app.kidsdrawing.service.UserRegisterTeachSemesterService;
 
@@ -37,7 +37,7 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
     
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
-    private final UserRepository userRepository;
+    private final TeacherRepository teacherRepository;
     private final SemesterClassService semesterCourseService;
 
     @Override
@@ -143,8 +143,8 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
             throw new EntityNotFoundException("exception.deadline.not_found");
         }
 
-        Optional <User> teacherOpt = userRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
+        Optional <Teacher> teacherOpt = teacherRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
+        Teacher teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
         
@@ -206,8 +206,8 @@ public class UserRegisterTeachSemesterServiceImpl implements UserRegisterTeachSe
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        Optional <User> teacherOpt = userRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
-        User teacher = teacherOpt.orElseThrow(() -> {
+        Optional <Teacher> teacherOpt = teacherRepository.findById1(createTeacherTeachSemesterRequest.getTeacher_id());
+        Teacher teacher = teacherOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_teacher.not_found");
         });
 

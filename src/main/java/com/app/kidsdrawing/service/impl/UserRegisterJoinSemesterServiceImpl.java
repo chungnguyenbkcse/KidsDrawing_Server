@@ -21,12 +21,12 @@ import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterResponse;
 import com.app.kidsdrawing.dto.GetUserRegisterJoinSemesterScheduleClassResponse;
 import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.SemesterClass;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.UserRegisterJoinSemesterService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
     
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private static int total_user_of_jan = 0;
     private static int total_user_of_feb = 0;
     private static int total_user_of_mar = 0;
@@ -60,12 +60,13 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
                 .student_id(content.getStudent().getId())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .register_by_type(content.getRegister_by_type())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .semester_classes_name(content.getSemesterClass().getName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
                 .semester_classes_id(content.getSemesterClass().getId())
-                .payer_id(content.getPayer().getId())
-                .payer_name(content.getPayer().getUsername())
+                .payer_id(content.getStudent().getParent().getId())
+                .payer_name(content.getStudent().getParent().getUser().getUsername())
                 .course_name(content.getSemesterClass().getCourse().getName())
                 .price(content.getPrice())
                 .time(content.getTime())
@@ -94,13 +95,14 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         listUserRegisterJoinSemester.forEach(content -> {
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
+                .register_by_type(content.getRegister_by_type())
                 .student_id(content.getStudent().getId())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .semester_classes_name(content.getSemesterClass().getName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
                 .semester_classes_id(content.getSemesterClass().getId())
                 .course_name(content.getSemesterClass().getCourse().getName())
-                .payer_id(content.getPayer().getId())
+                .payer_id(content.getStudent().getParent().getId())
                 .price(content.getPrice())
                 .time(content.getTime())
                 .status(content.getStatus())
@@ -136,13 +138,14 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         listUserRegisterJoinSemester.forEach(content -> {
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
+                .register_by_type(content.getRegister_by_type())
                 .student_id(content.getStudent().getId())
                 .semester_classes_id(content.getSemesterClass().getId())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .semester_classes_name(content.getSemesterClass().getName())
-                .payer_name(content.getPayer().getFirstName() + " " + content.getPayer().getLastName())
+                .payer_name(content.getStudent().getParent().getUser().getUsername() + " " + content.getStudent().getParent().getUser().getLastName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
-                .payer_id(content.getPayer().getId())
+                .payer_id(content.getStudent().getParent().getId())
                 .semester_name(content.getSemesterClass().getSemester().getName())
                 .price(content.getPrice())
                 .course_name(content.getSemesterClass().getCourse().getName())
@@ -164,13 +167,14 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         listUserRegisterJoinSemester.forEach(content -> {
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
+                .register_by_type(content.getRegister_by_type())
                 .student_id(content.getStudent().getId())
                 .semester_classes_id(content.getSemesterClass().getId())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .semester_classes_name(content.getSemesterClass().getName())
-                .payer_name(content.getPayer().getFirstName() + " " + content.getPayer().getLastName())
+                .payer_name(content.getStudent().getParent().getUser().getUsername() + " " + content.getStudent().getParent().getUser().getLastName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
-                .payer_id(content.getPayer().getId())
+                .payer_id(content.getStudent().getParent().getId())
                 .price(content.getPrice())
                 .course_name(content.getSemesterClass().getCourse().getName())
                 .time(content.getTime())
@@ -191,16 +195,17 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         listUserRegisterJoinSemester.forEach(content -> {
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
+                .register_by_type(content.getRegister_by_type())
                 .student_id(content.getStudent().getId())
                 .semester_classes_id(content.getSemesterClass().getId())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .semester_classes_name(content.getSemesterClass().getName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
                 .course_name(content.getSemesterClass().getCourse().getName())
-                .payer_id(content.getPayer().getId())
+                .payer_id(content.getStudent().getParent().getId())
                 .semester_name(content.getSemesterClass().getSemester().getName())
                 .course_name(content.getSemesterClass().getCourse().getName())
-                .payer_name(content.getPayer().getFirstName() + " " + content.getPayer().getLastName())
+                .payer_name(content.getStudent().getParent().getUser().getUsername() + " " + content.getStudent().getParent().getUser().getLastName())
                 .price(content.getPrice())
                 .time(content.getTime())
                 .status(content.getStatus())
@@ -220,13 +225,14 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
         listUserRegisterJoinSemester.forEach(content -> {
             GetUserRegisterJoinSemesterResponse userRegisterJoinSemesterResponse = GetUserRegisterJoinSemesterResponse.builder()
                 .id(content.getId())
+                .register_by_type(content.getRegister_by_type())
                 .student_id(content.getStudent().getId())
                 .semester_classes_id(content.getSemesterClass().getId())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .semester_classes_name(content.getSemesterClass().getName())
                 .link_url(content.getSemesterClass().getCourse().getImage_url())
-                .payer_name(content.getPayer().getFirstName() + " " + content.getPayer().getLastName())
-                .payer_id(content.getPayer().getId())
+                .payer_name(content.getStudent().getParent().getUser().getUsername() + " " + content.getStudent().getParent().getUser().getLastName())
+                .payer_id(content.getStudent().getParent().getId())
                 .course_name(content.getSemesterClass().getCourse().getName())
                 .price(content.getPrice())
                 .time(content.getTime())
@@ -249,10 +255,11 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
         return GetUserRegisterJoinSemesterResponse.builder()
                 .id(userRegisterJoinSemester.getId())
+                .register_by_type(userRegisterJoinSemester.getRegister_by_type())
                 .student_id(userRegisterJoinSemester.getStudent().getId())
                 .semester_classes_id(userRegisterJoinSemester.getSemesterClass().getId())
-                .payer_id(userRegisterJoinSemester.getPayer().getId())
-                .student_name(userRegisterJoinSemester.getStudent().getFirstName() + " " + userRegisterJoinSemester.getStudent().getLastName())
+                .payer_id(userRegisterJoinSemester.getStudent().getParent().getId())
+                .student_name(userRegisterJoinSemester.getStudent().getUser().getUsername() + " - " + userRegisterJoinSemester.getStudent().getUser().getFirstName() + " " + userRegisterJoinSemester.getStudent().getUser().getLastName())
                 .semester_classes_name(userRegisterJoinSemester.getSemesterClass().getName())
                 .link_url(userRegisterJoinSemester.getSemesterClass().getCourse().getImage_url())
                 .price(userRegisterJoinSemester.getPrice())
@@ -461,20 +468,15 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.max_participant.not_register");
         }
 
-        Optional <User> studentOpt = userRepository.findById1(createUserRegisterJoinSemesterRequest.getStudent_id());
-        User student = studentOpt.orElseThrow(() -> {
+        Optional <Student> studentOpt = studentRepository.findById1(createUserRegisterJoinSemesterRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
-        });
-
-        Optional <User> payer_idOpt = userRepository.findById1(createUserRegisterJoinSemesterRequest.getPayer_id());
-        User payer = payer_idOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_payer.not_found");
         });
         
         UserRegisterJoinSemester savedUserRegisterJoinSemester = UserRegisterJoinSemester.builder()
                 .semesterClass(semesterCouse)
                 .student(student)
-                .payer(payer)
+                .register_by_type(createUserRegisterJoinSemesterRequest.getRegister_by_type())
                 .status(createUserRegisterJoinSemesterRequest.getStatus())
                 .price(createUserRegisterJoinSemesterRequest.getPrice())
                 .build();
@@ -498,9 +500,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
         Optional<UserRegisterJoinSemester> allUserRegisterJoinSemester = userRegisterJoinSemesterRepository.findBySemesterClassIdAndStudent(semester_class_id, student_id);
         if (allUserRegisterJoinSemester.isPresent()) {
-            if (allUserRegisterJoinSemester.get().getStatus().equals("Waiting")) {
-                userRegisterJoinSemesterRepository.deleteById(allUserRegisterJoinSemester.get().getId());
-            }
+            userRegisterJoinSemesterRepository.deleteById(allUserRegisterJoinSemester.get().getId());
         }
         return semester_class_id;
     }
@@ -528,19 +528,14 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             throw new EntityNotFoundException("exception.semester_class.not_found");
         });
 
-        Optional <User> studentOpt = userRepository.findById1(createUserRegisterJoinSemesterRequest.getStudent_id());
-        User student = studentOpt.orElseThrow(() -> {
+        Optional <Student> studentOpt = studentRepository.findById1(createUserRegisterJoinSemesterRequest.getStudent_id());
+        Student student = studentOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_student.not_found");
-        });
-
-        Optional <User> payer_idOpt = userRepository.findById1(createUserRegisterJoinSemesterRequest.getPayer_id());
-        User payer = payer_idOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_payer.not_found");
         });
 
         updatedUserRegisterJoinSemester.setSemesterClass(semesterCouse);
         updatedUserRegisterJoinSemester.setStudent(student);
-        updatedUserRegisterJoinSemester.setPayer(payer);
+        updatedUserRegisterJoinSemester.setRegister_by_type(createUserRegisterJoinSemesterRequest.getRegister_by_type());
         updatedUserRegisterJoinSemester.setStatus(createUserRegisterJoinSemesterRequest.getStatus());
         updatedUserRegisterJoinSemester.setPrice(createUserRegisterJoinSemesterRequest.getPrice());
 
@@ -549,7 +544,7 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
 
     @Override
     public Long updateStatusUserRegisterJoinSemester(List<Long> ids, CreateMomoRequest createMomoRequest) {
-        
+        LocalDateTime time_now = LocalDateTime.now();
         ids.forEach(ele -> {
             Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findById1(ele);
             UserRegisterJoinSemester updatedUserRegisterJoinSemester = userRegisterJoinSemesterOpt.orElseThrow(() -> {
@@ -557,6 +552,8 @@ public class UserRegisterJoinSemesterServiceImpl implements UserRegisterJoinSeme
             });
             if (createMomoRequest.getResultCode() == 0){
                 updatedUserRegisterJoinSemester.setStatus("Completed");
+                updatedUserRegisterJoinSemester.setTime(time_now);
+                updatedUserRegisterJoinSemester.setOrderId(createMomoRequest.getOrderId());
             }
         });
 

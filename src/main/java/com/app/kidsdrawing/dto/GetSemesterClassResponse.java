@@ -19,6 +19,7 @@ public class GetSemesterClassResponse {
     private String semester_name;
     private Long course_id;
     private String course_name;
+    private Boolean is_new;
     private Integer max_participant;
     private LocalDateTime registration_time;
     private LocalDateTime registration_expiration_time;

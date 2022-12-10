@@ -40,11 +40,13 @@ public class ArtLevel {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @OneToMany(mappedBy="artLevels")
     private Set<Course> courses;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 }

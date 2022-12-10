@@ -40,13 +40,18 @@ public class UserRegisterJoinSemester {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private User student;
+    @Column(name = "register_by_type")
+    private String register_by_type;
+
+    @Column(name = "order_id")
+    private String orderId;
+
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "payer_id", referencedColumnName = "id")
-    private User payer;
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "semester_classes_id", referencedColumnName = "id")

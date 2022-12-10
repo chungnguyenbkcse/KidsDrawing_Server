@@ -81,12 +81,12 @@ GET  {{rest}}/exercise-submission/classes-student/7/22
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/exercise-submission/section-student/62/22
+GET  {{rest}}/exercise-submission/section-student/2/21
 
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/exercise-submission/exercise-student/7/22
+GET  {{rest}}/exercise-submission/exercise-student/1/21
 
 ### GET CONTEST ACTION ###
 # @name get_contest

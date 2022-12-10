@@ -2,16 +2,14 @@ package com.app.kidsdrawing.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,25 +31,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "student_leave")
 public class StudentLeave {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  id;
+    @EmbeddedId
+    StudentLeaveKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "classes_id", referencedColumnName = "id")
-    private Classes classes;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("studentId")
+    @JoinColumn(name = "student_id")
+    Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "section_id", referencedColumnName = "id")
-    private Section section;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "Student_id", referencedColumnName = "id")
-    private User student;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
-    private User reviewer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("sectionId")
+    @JoinColumn(name = "section_id")
+    Section section;
 
     @Column(name = "description")
     @Lob
@@ -60,6 +51,9 @@ public class StudentLeave {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "time_approved")
+    private LocalDateTime time_approved;
 
     @Builder.Default()
     @Column(name = "create_time")

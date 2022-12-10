@@ -16,12 +16,10 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateSectionTemplateRequest;
 import com.app.kidsdrawing.dto.GetSectionTemplateResponse;
 import com.app.kidsdrawing.entity.SectionTemplate;
-import com.app.kidsdrawing.entity.User;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.SectionTemplateRepository;
-import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.SectionTemplateService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 public class SectionTemplateServiceImpl implements SectionTemplateService{
     
     private final SectionTemplateRepository sectionTemplateRepository;
-    private final UserRepository userRepository;
     private final CourseRepository courseRepository;
 
     @Override
@@ -42,7 +39,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
         listSectionTemplate.forEach(content -> {
             GetSectionTemplateResponse sectionResponse = GetSectionTemplateResponse.builder()
                 .id(content.getId())
-                .creator_id(content.getUser().getId())
+                
                 .course_id(content.getCourse().getId())
                 .name(content.getName())
                 .number(content.getNumber())
@@ -65,7 +62,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
         listSectionTemplate.forEach(content -> {
             GetSectionTemplateResponse sectionResponse = GetSectionTemplateResponse.builder()
                 .id(content.getId())
-                .creator_id(content.getUser().getId())
+                
                 .course_id(id)
                 .name(content.getName())   
                 .number(content.getNumber())
@@ -90,7 +87,6 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
 
         return GetSectionTemplateResponse.builder()
             .id(section.getId())
-            .creator_id(section.getUser().getId())
             .course_id(section.getCourse().getId())
             .name(section.getName())
             .number(section.getNumber())
@@ -108,14 +104,10 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById1(createSectionTemplateRequest.getCreator_id());
-        User creator = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
         
         SectionTemplate savedSectionTemplate = SectionTemplate.builder()
                 .course(course)
-                .user(creator)
                 .name(createSectionTemplateRequest.getName())
                 .number(createSectionTemplateRequest.getNumber())
                 .teaching_form(createSectionTemplateRequest.getTeaching_form())
@@ -148,14 +140,10 @@ public class SectionTemplateServiceImpl implements SectionTemplateService{
             throw new EntityNotFoundException("exception.course.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById1(createSectionTemplateRequest.getCreator_id());
-        User creator = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         updatedSectionTemplate.setName(createSectionTemplateRequest.getName());
         updatedSectionTemplate.setCourse(course);
-        updatedSectionTemplate.setUser(creator);
         updatedSectionTemplate.setTeaching_form(createSectionTemplateRequest.getTeaching_form());
         updatedSectionTemplate.setNumber(createSectionTemplateRequest.getNumber());
 

@@ -24,18 +24,21 @@ import com.app.kidsdrawing.dto.GetSemesterClassStudentResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassTeacherNewResponse;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Semester;
+import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.exception.SemesterClassAlreadyCreateException;
 import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.SemesterClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -48,11 +51,56 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private final SemesterClassRepository semesterClassRepository;
     private final SemesterRepository semesterRepository;
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
+    private final ClassesRepository classRepository;
     private static String schedule = "";
     private static int total_register = 0;
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllSemesterClass1() {
+        List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
+        List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
+        LocalDateTime time_now = LocalDateTime.now();
+        pageSemesterClass.forEach(semesterClass -> {
+            if (time_now.isBefore(semesterClass.getRegistration_time())) {
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(semesterClass.getId())
+                    .name(semesterClass.getName())
+                    .is_new(true)
+                    .semester_id(semesterClass.getSemester().getId())
+                    .semester_name(semesterClass.getSemester().getName())
+                    .course_id(semesterClass.getCourse().getId())
+                    .course_name(semesterClass.getCourse().getName())
+                    .max_participant(semesterClass.getMax_participant())
+                    .registration_time(semesterClass.getRegistration_time())
+                    .registration_expiration_time(semesterClass.getRegistration_expiration_time())
+                    .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+            else {
+                GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
+                    .id(semesterClass.getId())
+                    .name(semesterClass.getName())
+                    .is_new(false)
+                    .semester_id(semesterClass.getSemester().getId())
+                    .semester_name(semesterClass.getSemester().getName())
+                    .course_id(semesterClass.getCourse().getId())
+                    .course_name(semesterClass.getCourse().getName())
+                    .max_participant(semesterClass.getMax_participant())
+                    .registration_time(semesterClass.getRegistration_time())
+                    .registration_expiration_time(semesterClass.getRegistration_expiration_time())
+                    .build();
+                allSemesterClassResponses.add(semesterClassResponse);
+            }
+            
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("semester_classes", allSemesterClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClass() {
@@ -225,7 +273,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     }
                 });
                 total_register = userRegisterJoinSemesterRepository.findBySemesterClassId4(semester_class.getId()).size();
-                List<User> allChildForParent = userRepository.findByParentId(parent_id);
+                List<Student> allChildForParent = studentRepository.findByParentId(parent_id);
                 allChildForParent.forEach(ele -> {
                     Optional<UserRegisterJoinSemester> userRegisterJoinSemesterOpt = userRegisterJoinSemesterRepository.findBySemesterClassIdAndStudent(semester_class.getId(), ele.getId());
                     if (userRegisterJoinSemesterOpt.isPresent()) {
@@ -251,7 +299,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 .semester_id(semester_class.getSemester().getId())
                                 .student_id(ele.getId())
                                 .start_date(start_date)
-                                .student_name(ele.getUsername())
+                                .student_name(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName())
                                 .status("Payed")
                                 .build();
                             allSemesterClassResponses.add(semesterClassResponse);
@@ -278,7 +326,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                                 .semester_id(semester_class.getSemester().getId())
                                 .student_id(ele.getId())
                                 .start_date(start_date)
-                                .student_name(ele.getUsername())
+                                .student_name(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName())
                                 .status("Not pay now")
                                 .build();
                             allSemesterClassResponses.add(semesterClassResponse);
@@ -306,7 +354,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                             .semester_id(semester_class.getSemester().getId())
                             .student_id(ele.getId())
                             .start_date(start_date)
-                            .student_name(ele.getUsername())
+                            .student_name(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName())
                             .status("Not register")
                             .build();
                         allSemesterClassResponses.add(semesterClassResponse);
@@ -443,10 +491,9 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                 .findAllSemesterClassByTeacherAndCourse(id, course_id);
 
         List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId3(course_id);
-
+        System.out.print(allSemesterClass.size());
         allSemesterClass.forEach(semester_class -> {
-            if (semester_class.getRegistration_time().isAfter(time_now)
-                    && semester_class.getSemester().getStart_time().isAfter(time_now)) {
+            if (semester_class.getRegistration_time().isAfter(time_now)) {
                 schedule = "";
                 semester_class.getSchedules().forEach(schedule_item -> {
                     if (schedule.equals("")) {
@@ -704,6 +751,15 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         SemesterClassOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.SemesterClass.not_found");
         });
+
+        List<Classes> listClass = classRepository.findAllBySemesterClass(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.SemesterClass_Classes.not_delete");
+            }
+        }
 
         semesterClassRepository.deleteById(id);
         return id;

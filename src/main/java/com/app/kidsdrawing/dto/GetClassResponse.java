@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetClassResponse {
     private Long id;
-    private Long creator_id;
-    private Long user_register_teach_semester;
+    private Long teacher_id;
+    private Long semester_class_id;
     private String security_code;
     private String name;
     private LocalDateTime create_time;

@@ -10,10 +10,13 @@ import com.app.kidsdrawing.dto.GetTutorialPageResponse;
 
 public interface TutorialPageService {
     ResponseEntity<Map<String, Object>> getAllTutorialPage();
-    ResponseEntity<Map<String, Object>> getAllTutorialPageByTutorialId(Long id);
     ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionId(Long id);
+    ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionIdNotApproved(Long id);
+    GetTutorialPageResponse checkTutorialPageBySectionId(Long id);
+    ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionId(Long id);
     GetTutorialPageResponse getTutorialPageById(Long id);
     Long createTutorialPage(CreateTutorialPageRequest createTutorialPageRequest);
     Long removeTutorialPageById(Long id);
+    Long removeTutorialPageBySection(Long id);
     Long updateTutorialPageById(Long id, CreateTutorialPageRequest createTutorialPageRequest);
 }

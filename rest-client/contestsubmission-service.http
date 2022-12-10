@@ -79,12 +79,12 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/contest-submission/contest/1
+GET  {{rest}}/contest-submission/contest/2
 
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/contest-submission/contest-teacher/1/2
+GET  {{rest}}/contest-submission/contest-teacher/2/2
 
 ### GET CONTEST ACTION ###
 # @name get_contest

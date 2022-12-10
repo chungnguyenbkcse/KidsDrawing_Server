@@ -5,7 +5,6 @@ import java.util.Map;
 
 
 import com.app.kidsdrawing.dto.CreateChangePassowrdRequest;
-import com.app.kidsdrawing.dto.CreateStudentRequest;
 import com.app.kidsdrawing.dto.CreateTeacherRequest;
 import com.app.kidsdrawing.dto.CreateTeacherUserRequest;
 import com.app.kidsdrawing.dto.CreateUserRequest;
@@ -35,8 +34,8 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<String> createStudent(@RequestBody CreateStudentRequest createStudentOrParentRequest) {
-        Long userId = userService.createStudent(createStudentOrParentRequest);
+    public ResponseEntity<String> createStudent(@RequestBody CreateUserRequest createUserRequest) {
+        Long userId = userService.createUser(createUserRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
                 .buildAndExpand(userId).toUri();
         return ResponseEntity.created(location).build();
@@ -90,14 +89,14 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/report/{id}")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getReportUser(@PathVariable int id) {
-        String role_id =  "STUDENT_USER";
+        String role_id =  "STUDENT";
         return ResponseEntity.ok().body(userService.getReportUserNew(id, role_id));
     }
 
     @CrossOrigin
     @GetMapping(value = "/student")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllStudent() {
-        String role_id =  "STUDENT_USER";
+        String role_id =  "STUDENT";
         return ResponseEntity.ok().body(userService.getAllStudents(role_id));
     } 
 
@@ -105,7 +104,7 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/parent")
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllParent() {
-        String role_id =  "PARENT_USER";
+        String role_id =  "PARENT";
         return ResponseEntity.ok().body(userService.getAllParents(role_id));
     } 
 

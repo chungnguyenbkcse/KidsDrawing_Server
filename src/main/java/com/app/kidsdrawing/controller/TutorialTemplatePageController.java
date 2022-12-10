@@ -33,12 +33,6 @@ public class TutorialTemplatePageController {
     public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialTemplatePage() {
         return ResponseEntity.ok().body(tutorialTemplate.getAllTutorialTemplatePage());
     }
-    
-    @CrossOrigin
-    @GetMapping(value = "/tutorial-template/{id}")
-    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialTemplatePageByClassId(@PathVariable Long id) {
-        return ResponseEntity.ok().body(tutorialTemplate.getAllTutorialTemplatePageByTutorialTemplateId(id));
-    }
 
     @CrossOrigin
     @GetMapping(value = "/section-template/{id}")

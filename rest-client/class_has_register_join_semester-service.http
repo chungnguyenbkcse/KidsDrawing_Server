@@ -46,7 +46,7 @@ Authorization: Bearer {{admin_access_token}}
 ### GET classes ACTION ###
 # @name get_classes
 
-GET  {{rest}}/class-has-register-join-semester/1/11
+GET  {{rest}}/class-has-register-join-semester/1/22
 
 ### GET classes ACTION ###
 # @name get_classes

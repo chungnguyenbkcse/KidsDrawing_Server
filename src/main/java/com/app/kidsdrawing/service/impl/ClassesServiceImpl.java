@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -32,22 +31,19 @@ import com.app.kidsdrawing.dto.GetScheduleResponse;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.dto.GetStudentResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
-import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.LessonTime;
-import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.User;
-import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
+import com.app.kidsdrawing.entity.Student;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
-import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
-import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
+import com.app.kidsdrawing.repository.TeacherRepository;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
-import com.app.kidsdrawing.repository.SemesterRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.ClassesService;
 
 import lombok.RequiredArgsConstructor;
@@ -58,11 +54,9 @@ import lombok.RequiredArgsConstructor;
 public class ClassesServiceImpl implements ClassesService {
 
     private final ClassesRepository classRepository;
-    private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
-    private final UserRepository userRepository;
-    private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
+    private final TeacherRepository teacherRepository;
+    private final StudentRepository studentRepository;
     private final SemesterClassRepository semesterClassRepository;
-    private final SemesterRepository semesterRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
     private static int total_section_count = 0;
@@ -75,16 +69,16 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getChildInClassByClassAndParent(Long class_id, Long parent_id) {
         List<GetChildInClassResponse> allChildInClassResponse = new ArrayList<>();
-        List<User> allChildForParent = userRepository
+        List<Student> allChildForParent = studentRepository
                 .findByParentId(parent_id);
         allChildForParent.forEach(ele -> {
             Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByClassesIdAndStudentId(class_id, ele.getId());
             if (classHasRegisterJoinSemesterClassOpt.isPresent()) {
                 GetChildInClassResponse classResponse = GetChildInClassResponse.builder()
                     .student_id(ele.getId())
-                    .student_name(ele.getUsername())
+                    .student_name(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName())
                     .dateOfBirth(ele.getDateOfBirth())
-                    .sex(ele.getSex())
+                    .sex(ele.getUser().getSex())
                     .build();
                 allChildInClassResponse.add(classResponse);
             }
@@ -101,7 +95,7 @@ public class ClassesServiceImpl implements ClassesService {
         listClass.forEach(content -> {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
-                    .user_register_teach_semester(content.getUserRegisterTeachSemester().getId())
+                    .semester_class_id(content.getSemesterClass().getId())
                     .security_code(content.getSecurity_code())
                     .name(content.getName())
                     .create_time(content.getCreate_time())
@@ -124,18 +118,18 @@ public class ClassesServiceImpl implements ClassesService {
         listClass.forEach(ele -> {
 
             if (time_now
-                    .isBefore(ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {       
+                    .isBefore(ele.getSemesterClass().getSemester().getEnd_time())) {       
                 GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
-                        .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
+                        .semester_class_id(ele.getSemesterClass().getId())
                         .security_code(ele.getSecurity_code())
                         .name(ele.getName())
                         .link_url(ele.getLink_meeting())
-                        .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                        .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
-                        .semster_class_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
+                        .course_id(ele.getSemesterClass().getCourse().getId())
+                        .course_name(ele.getSemesterClass().getCourse().getName())
+                        .semster_class_id(ele.getSemesterClass().getId())
                         .total_student(ele.getClassHasRegisterJoinSemesterClasses().size())
-                        .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .num_of_section(ele.getSemesterClass().getCourse()
                                 .getNum_of_section())
                         .build();
                 allInfoClassTeacherDoingResponses.add(infoClassTeacherResponse);
@@ -144,16 +138,17 @@ public class ClassesServiceImpl implements ClassesService {
             else {
                 GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
-                        .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
+                        .semester_class_id(ele.getSemesterClass().getId())
                         .security_code(ele.getSecurity_code())
                         .name(ele.getName())
                         .link_url(ele.getLink_meeting())
-                        .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                        .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
-                        .semster_class_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
+                        .course_id(ele.getSemesterClass().getCourse().getId())
+                        .course_name(ele.getSemesterClass().getCourse().getName())
+                        .semster_class_id(ele.getSemesterClass().getId())
                         .total_student(ele.getClassHasRegisterJoinSemesterClasses().size())
-                        .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .num_of_section(ele.getSemesterClass().getCourse()
                                 .getNum_of_section())
+                        .review_star(getReviewStarForClass(ele.getId()))
                         .build();
                 allInfoClassTeacherDoneResponses.add(infoClassTeacherResponse);
             }
@@ -177,8 +172,8 @@ public class ClassesServiceImpl implements ClassesService {
         listClass.forEach(ele -> {
             schedule = "";
             // LocalDateTime res = getEndSectionOfClass(ele.getId());
-            ele.getUserRegisterTeachSemester().getSemesterClass().getSchedules().forEach(schedule_ele -> {
-                if (ele.getUserRegisterTeachSemester().getSemesterClass().getSchedules().contains(schedule_ele)) {
+            ele.getSemesterClass().getSchedules().forEach(schedule_ele -> {
+                if (ele.getSemesterClass().getSchedules().contains(schedule_ele)) {
                     if (schedule.equals("")) {
                         schedule = schedule + "Thứ " + schedule_ele.getDate_of_week() + " ("
                                 + schedule_ele.getLessonTime().getStart_time().toString() + " - "
@@ -192,30 +187,30 @@ public class ClassesServiceImpl implements ClassesService {
             });
 
             if (time_now
-                    .isBefore(ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+                    .isBefore(ele.getSemesterClass().getSemester().getEnd_time())) {
                 List<Map<String, List<List<LocalDateTime>>>> schedule_time = getScheduleDetailOfClass(ele);
                 Map<String, List<Map<String, List<List<LocalDateTime>>>>> x = new HashMap<>();
                 x.put(ele.getName(), schedule_time);
                 allScheduleTime.add(x);
                 GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
-                        .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
+                        .semester_class_id(ele.getSemesterClass().getId())
                         .security_code(ele.getSecurity_code())
                         .name(ele.getName())
                         .link_url(ele.getLink_meeting())
-                        .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                        .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
+                        .course_id(ele.getSemesterClass().getCourse().getId())
+                        .course_name(ele.getSemesterClass().getCourse().getName())
                         .semester_name(
-                                ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName())
-                        .semster_class_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
+                                ele.getSemesterClass().getSemester().getName())
+                        .semster_class_id(ele.getSemesterClass().getId())
                         .total_student(ele.getClassHasRegisterJoinSemesterClasses().size())
-                        .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .num_of_section(ele.getSemesterClass().getCourse()
                                 .getNum_of_section())
-                        .art_age_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getArtAges()
+                        .art_age_name(ele.getSemesterClass().getCourse().getArtAges()
                                 .getName())
-                        .art_type_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .art_type_name(ele.getSemesterClass().getCourse()
                                 .getArtTypes().getName())
-                        .art_level_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .art_level_name(ele.getSemesterClass().getCourse()
                                 .getArtLevels().getName())
                         .schedule(schedule)
                         .build();
@@ -223,22 +218,22 @@ public class ClassesServiceImpl implements ClassesService {
 
                 List<GetStudentResponse> listStudents = new ArrayList<>();
                 ele.getClassHasRegisterJoinSemesterClasses().forEach(content -> {
-                    String parent_name = content.getUserRegisterJoinSemester().getStudent().getParent()
-                            .getUsername();
+                    String parent_name = content.getStudent().getParent()
+                            .getUser().getUsername() + " - " + content.getStudent().getParent().getUser().getFirstName() + " " + content.getStudent().getParent().getUser().getLastName();
                     GetStudentResponse student = GetStudentResponse.builder()
-                            .id(content.getUserRegisterJoinSemester().getStudent().getId())
-                            .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
-                            .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
-                            .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
-                            .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
-                            .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
+                            .id(content.getStudent().getId())
+                            .username(content.getStudent().getUser().getUsername())
+                            .email(content.getStudent().getUser().getEmail())
+                            .firstName(content.getStudent().getUser().getFirstName())
+                            .lastName(content.getStudent().getUser().getLastName())
+                            .dateOfBirth(content.getStudent().getDateOfBirth())
                             .profile_image_url(
-                                    content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
-                            .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
-                            .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
-                            .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
+                                    content.getStudent().getUser().getProfileImageUrl())
+                            .sex(content.getStudent().getUser().getSex())
+                            .phone(content.getStudent().getPhone())
+                            .address(content.getStudent().getUser().getAddress())
                             .parent(parent_name)
-                            .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
+                            .createTime(content.getStudent().getUser().getCreateTime())
                             .build();
                     listStudents.add(student);
                 });
@@ -248,46 +243,47 @@ public class ClassesServiceImpl implements ClassesService {
             else {
                 GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
-                        .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
+                        .semester_class_id(ele.getSemesterClass().getId())
                         .security_code(ele.getSecurity_code())
                         .name(ele.getName())
                         .link_url(ele.getLink_meeting())
-                        .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                        .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
+                        .course_id(ele.getSemesterClass().getCourse().getId())
+                        .course_name(ele.getSemesterClass().getCourse().getName())
                         .semester_name(
-                                ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName())
-                        .semster_class_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
+                                ele.getSemesterClass().getSemester().getName())
+                        .semster_class_id(ele.getSemesterClass().getId())
                         .total_student(ele.getClassHasRegisterJoinSemesterClasses().size())
-                        .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .num_of_section(ele.getSemesterClass().getCourse()
                                 .getNum_of_section())
-                        .art_age_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getArtAges()
+                        .art_age_name(ele.getSemesterClass().getCourse().getArtAges()
                                 .getName())
-                        .art_type_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .art_type_name(ele.getSemesterClass().getCourse()
                                 .getArtTypes().getName())
-                        .art_level_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .art_level_name(ele.getSemesterClass().getCourse()
                                 .getArtLevels().getName())
                         .schedule(schedule)
+                        .review_star(getReviewStarForClass(ele.getId()))
                         .build();
                 allInfoClassTeacherDoneResponses.add(infoClassTeacherResponse);
 
                 List<GetStudentResponse> listStudentDones = new ArrayList<>();
                 ele.getClassHasRegisterJoinSemesterClasses().forEach(content -> {
-                    String parent_name = content.getUserRegisterJoinSemester().getStudent().getParent()
-                            .getUsername();
+                    String parent_name = content.getStudent().getParent()
+                    .getUser().getUsername() + " - " +  content.getStudent().getParent().getUser().getFirstName() + " " + content.getStudent().getParent().getUser().getLastName();
                     GetStudentResponse student = GetStudentResponse.builder()
-                            .id(content.getUserRegisterJoinSemester().getStudent().getId())
-                            .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
-                            .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
-                            .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
-                            .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
-                            .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
+                            .id(content.getStudent().getId())
+                            .username(content.getStudent().getUser().getUsername())
+                            .email(content.getStudent().getUser().getEmail())
+                            .firstName(content.getStudent().getUser().getFirstName())
+                            .lastName(content.getStudent().getUser().getLastName())
+                            .dateOfBirth(content.getStudent().getDateOfBirth())
                             .profile_image_url(
-                                    content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
-                            .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
-                            .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
-                            .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
+                                    content.getStudent().getUser().getProfileImageUrl())
+                            .sex(content.getStudent().getUser().getSex())
+                            .phone(content.getStudent().getPhone())
+                            .address(content.getStudent().getUser().getAddress())
                             .parent(parent_name)
-                            .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
+                            .createTime(content.getStudent().getUser().getCreateTime())
                             .build();
                     listStudentDones.add(student);
                 });
@@ -324,8 +320,8 @@ public class ClassesServiceImpl implements ClassesService {
         listClass.forEach(ele -> {
             schedule = "";
             // LocalDateTime res = getEndSectionOfClass(ele.getId());
-            ele.getUserRegisterTeachSemester().getSemesterClass().getSchedules().forEach(schedule_ele -> {
-                if (ele.getUserRegisterTeachSemester().getSemesterClass().getSchedules().contains(schedule_ele)) {
+            ele.getSemesterClass().getSchedules().forEach(schedule_ele -> {
+                if (ele.getSemesterClass().getSchedules().contains(schedule_ele)) {
                     if (schedule.equals("")) {
                         schedule = schedule + "Thứ " + schedule_ele.getDate_of_week() + " ("
                                 + schedule_ele.getLessonTime().getStart_time().toString() + " - "
@@ -339,27 +335,27 @@ public class ClassesServiceImpl implements ClassesService {
             });
 
             if (time_now
-                    .isBefore(ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getEnd_time())) {
+                    .isBefore(ele.getSemesterClass().getSemester().getEnd_time())) {
 
                 GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
-                        .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
+                        .semester_class_id(ele.getSemesterClass().getId())
                         .security_code(ele.getSecurity_code())
                         .name(ele.getName())
                         .link_url(ele.getLink_meeting())
-                        .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                        .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
+                        .course_id(ele.getSemesterClass().getCourse().getId())
+                        .course_name(ele.getSemesterClass().getCourse().getName())
                         .semester_name(
-                                ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName())
-                        .semster_class_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
+                                ele.getSemesterClass().getSemester().getName())
+                        .semster_class_id(ele.getSemesterClass().getId())
                         .total_student(ele.getClassHasRegisterJoinSemesterClasses().size())
-                        .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .num_of_section(ele.getSemesterClass().getCourse()
                                 .getNum_of_section())
-                        .art_age_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getArtAges()
+                        .art_age_name(ele.getSemesterClass().getCourse().getArtAges()
                                 .getName())
-                        .art_type_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .art_type_name(ele.getSemesterClass().getCourse()
                                 .getArtTypes().getName())
-                        .art_level_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .art_level_name(ele.getSemesterClass().getCourse()
                                 .getArtLevels().getName())
                         .schedule(schedule)
                         .build();
@@ -369,23 +365,23 @@ public class ClassesServiceImpl implements ClassesService {
             else {
                 GetInfoClassTeacherResponse infoClassTeacherResponse = GetInfoClassTeacherResponse.builder()
                         .id(ele.getId())
-                        .user_register_teach_semester(ele.getUserRegisterTeachSemester().getId())
+                        .semester_class_id(ele.getSemesterClass().getId())
                         .security_code(ele.getSecurity_code())
                         .name(ele.getName())
                         .link_url(ele.getLink_meeting())
-                        .course_id(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                        .course_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
+                        .course_id(ele.getSemesterClass().getCourse().getId())
+                        .course_name(ele.getSemesterClass().getCourse().getName())
                         .semester_name(
-                                ele.getUserRegisterTeachSemester().getSemesterClass().getSemester().getName())
-                        .semster_class_id(ele.getUserRegisterTeachSemester().getSemesterClass().getId())
+                                ele.getSemesterClass().getSemester().getName())
+                        .semster_class_id(ele.getSemesterClass().getId())
                         .total_student(ele.getClassHasRegisterJoinSemesterClasses().size())
-                        .num_of_section(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .num_of_section(ele.getSemesterClass().getCourse()
                                 .getNum_of_section())
-                        .art_age_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse().getArtAges()
+                        .art_age_name(ele.getSemesterClass().getCourse().getArtAges()
                                 .getName())
-                        .art_type_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .art_type_name(ele.getSemesterClass().getCourse()
                                 .getArtTypes().getName())
-                        .art_level_name(ele.getUserRegisterTeachSemester().getSemesterClass().getCourse()
+                        .art_level_name(ele.getSemesterClass().getCourse()
                                 .getArtLevels().getName())
                         .schedule(schedule)
                         .review_star(getReviewStarForClass(ele.getId()))
@@ -410,7 +406,7 @@ public class ClassesServiceImpl implements ClassesService {
         listClass.forEach(content -> {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
-                    .user_register_teach_semester(content.getUserRegisterTeachSemester().getId())
+                    .semester_class_id(content.getSemesterClass().getId())
                     .security_code(content.getSecurity_code())
                     .name(content.getName())
                     .create_time(content.getCreate_time())
@@ -418,61 +414,48 @@ public class ClassesServiceImpl implements ClassesService {
                     .build();
             allClassResponses.add(classResponse);
 
-            Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                    .findById2(content.getUserRegisterTeachSemester().getId());
-            UserRegisterTeachSemester userRegisterTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
-                throw new EntityNotFoundException("exception.TeacherTeachSemester.not_found");
-            });
-
-            Optional<SemesterClass> semester_classOpt = semesterClassRepository
-                    .findById3(userRegisterTeachSemester.getSemesterClass().getId());
-            SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
-                throw new EntityNotFoundException("exception.semester_class.not_found");
-            });
-
             GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
-                    .id(semesterCouse.getSemester().getId())
-                    .name(semesterCouse.getSemester().getName())
-                    .description(semesterCouse.getSemester().getDescription())
-                    .start_time(semesterCouse.getSemester().getStart_time())
-                    .number(semesterCouse.getSemester().getNumber())
-                    .year(semesterCouse.getSemester().getYear())
-                    .create_time(semesterCouse.getSemester().getCreate_time())
-                    .update_time(semesterCouse.getSemester().getUpdate_time())
+                    .id(content.getSemesterClass().getSemester().getId())
+                    .name(content.getSemesterClass().getSemester().getName())
+                    .description(content.getSemesterClass().getSemester().getDescription())
+                    .start_time(content.getSemesterClass().getSemester().getStart_time())
+                    .number(content.getSemesterClass().getSemester().getNumber())
+                    .year(content.getSemesterClass().getSemester().getYear())
+                    .create_time(content.getSemesterClass().getSemester().getCreate_time())
+                    .update_time(content.getSemesterClass().getSemester().getUpdate_time())
                     .build();
             allSemesterResponses.add(semesterResponse);
 
             GetCourseResponse courseResponse = GetCourseResponse.builder()
-                    .id(semesterCouse.getCourse().getId())
-                    .name(semesterCouse.getCourse().getName())
-                    .description(semesterCouse.getCourse().getDescription())
-                    .num_of_section(semesterCouse.getCourse().getNum_of_section())
-                    .image_url(semesterCouse.getCourse().getImage_url())
-                    .price(semesterCouse.getCourse().getPrice())
-                    .is_enabled(semesterCouse.getCourse().getIs_enabled())
-                    .art_age_id(semesterCouse.getCourse().getArtAges().getId())
-                    .art_type_id(semesterCouse.getCourse().getArtTypes().getId())
-                    .art_level_id(semesterCouse.getCourse().getArtLevels().getId())
-                    .create_time(semesterCouse.getCourse().getCreate_time())
-                    .update_time(semesterCouse.getCourse().getUpdate_time())
+                    .id(content.getSemesterClass().getCourse().getId())
+                    .name(content.getSemesterClass().getCourse().getName())
+                    .description(content.getSemesterClass().getCourse().getDescription())
+                    .num_of_section(content.getSemesterClass().getCourse().getNum_of_section())
+                    .image_url(content.getSemesterClass().getCourse().getImage_url())
+                    .price(content.getSemesterClass().getCourse().getPrice())
+                    
+                    .art_age_id(content.getSemesterClass().getCourse().getArtAges().getId())
+                    .art_type_id(content.getSemesterClass().getCourse().getArtTypes().getId())
+                    .art_level_id(content.getSemesterClass().getCourse().getArtLevels().getId())
+                    .create_time(content.getSemesterClass().getCourse().getCreate_time())
+                    .update_time(content.getSemesterClass().getCourse().getUpdate_time())
                     .build();
             allCourseResponses.add(courseResponse);
 
             String parent_name = "";
 
             GetStudentResponse userResponse = GetStudentResponse.builder()
-                    .id(userRegisterTeachSemester.getTeacher().getId())
-                    .username(userRegisterTeachSemester.getTeacher().getUsername())
-                    .email(userRegisterTeachSemester.getTeacher().getEmail())
-                    .firstName(userRegisterTeachSemester.getTeacher().getFirstName())
-                    .lastName(userRegisterTeachSemester.getTeacher().getLastName())
-                    .dateOfBirth(userRegisterTeachSemester.getTeacher().getDateOfBirth())
-                    .profile_image_url(userRegisterTeachSemester.getTeacher().getProfileImageUrl())
-                    .sex(userRegisterTeachSemester.getTeacher().getSex())
-                    .phone(userRegisterTeachSemester.getTeacher().getPhone())
-                    .address(userRegisterTeachSemester.getTeacher().getAddress())
+                    .id(content.getTeacher().getId())
+                    .username(content.getTeacher().getUser().getUsername())
+                    .email(content.getTeacher().getUser().getEmail())
+                    .firstName(content.getTeacher().getUser().getFirstName())
+                    .lastName(content.getTeacher().getUser().getLastName())
+                    .profile_image_url(content.getTeacher().getUser().getProfileImageUrl())
+                    .sex(content.getTeacher().getUser().getSex())
+                    .phone(content.getTeacher().getPhone())
+                    .address(content.getTeacher().getUser().getAddress())
                     .parent(parent_name)
-                    .createTime(userRegisterTeachSemester.getTeacher().getCreateTime())
+                    .createTime(content.getTeacher().getUser().getCreateTime())
                     .build();
             allUserResponses.add(userResponse);
 
@@ -498,7 +481,7 @@ public class ClassesServiceImpl implements ClassesService {
 
         allClassHasRegisterJoinSemesterClass.forEach(class_has_join_semester_class -> {
             if (time_now.isAfter(
-                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
+                    class_has_join_semester_class.getClasses().getSemesterClass()
                             .getSemester().getEnd_time()) == false) {
                 totalSectionStudyedByClass(class_has_join_semester_class.getClasses()).forEach((key, tab) -> {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
@@ -507,66 +490,68 @@ public class ClassesServiceImpl implements ClassesService {
                     .total_section_studied(total)
                     .schedule_section_next(schedule_section_next)
                     .semester_id(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            class_has_join_semester_class.getClasses()
                                     .getSemesterClass()
                                     .getSemester().getId())
-                    .url_image_course(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                    .url_image_course(class_has_join_semester_class.getClasses()
                         .getSemesterClass()
                         .getCourse().getImage_url())
-                    .semester_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                    .semester_name(class_has_join_semester_class.getClasses()
                             .getSemesterClass().getSemester().getName())
-                    .user_register_join_semester_id(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getId())
+                    .student_id(
+                            class_has_join_semester_class.getClasses().getSemesterClass().getId())
                     .course_id(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            class_has_join_semester_class.getClasses()
                                     .getSemesterClass()
                                     .getCourse().getId())
                     .course_name(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            class_has_join_semester_class.getClasses()
                                     .getSemesterClass()
                                     .getCourse().getName())
                     .student_name(
-                            class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getFirstName()
+                            class_has_join_semester_class.getStudent().getUser().getUsername() + " - "
+                            + class_has_join_semester_class.getStudent().getUser().getFirstName()
                                     + " "
-                                    + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
-                                            .getLastName())
-                    .semester_class_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                    + class_has_join_semester_class.getStudent()
+                                    .getUser().getLastName())
+                    .semester_class_id(class_has_join_semester_class.getClasses()
                             .getSemesterClass().getId())
-                    .semester_class_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                    .semester_class_name(class_has_join_semester_class.getClasses()
                             .getSemesterClass().getName())
                     .link_url(class_has_join_semester_class.getClasses().getLink_meeting())
-                    .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                    .teacher_id(class_has_join_semester_class.getClasses()
                             .getTeacher().getId())
-                    .teacher_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                            .getTeacher().getFirstName()
+                    .teacher_name(class_has_join_semester_class.getClasses()
+                    .getTeacher().getUser().getUsername() + " - " + class_has_join_semester_class.getClasses()
+                            .getTeacher().getUser().getFirstName()
                             + " "
-                            + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                                    .getTeacher().getLastName())
+                            + class_has_join_semester_class.getClasses()
+                                    .getTeacher().getUser().getLastName())
                     .art_age_id(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            class_has_join_semester_class.getClasses()
                                     .getSemesterClass()
                                     .getCourse().getArtAges().getId())
                     .art_age_name(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            class_has_join_semester_class.getClasses()
                                     .getSemesterClass()
                                     .getCourse().getArtAges().getName())
                     .art_level_id(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            class_has_join_semester_class.getClasses()
                                     .getSemesterClass()
                                     .getCourse().getArtLevels().getId())
-                    .art_level_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                    .art_level_name(class_has_join_semester_class.getClasses()
                             .getSemesterClass().getCourse().getArtLevels().getName())
                     .art_type_id(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            class_has_join_semester_class.getClasses()
                                     .getSemesterClass()
                                     .getCourse().getArtTypes().getId())
-                    .art_type_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                    .art_type_name(class_has_join_semester_class.getClasses()
                             .getSemesterClass().getCourse().getArtTypes().getName())
                     .total_section(class_has_join_semester_class.getClasses().getSections().size())
                     .total_student(class_has_join_semester_class.getClasses()
                             .getClassHasRegisterJoinSemesterClasses().size())
-                    .user_register_teach_semester(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                    .semester_class_id(
+                            class_has_join_semester_class.getClasses()
                                     .getId())
                     .security_code(class_has_join_semester_class.getClasses().getSecurity_code())
                     .name(class_has_join_semester_class.getClasses().getName())
@@ -579,67 +564,69 @@ public class ClassesServiceImpl implements ClassesService {
                 GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                         .id(class_has_join_semester_class.getClasses().getId())
                         .student_id(id)
-                        .semester_class_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .semester_class_id(class_has_join_semester_class.getClasses()
                                 .getSemesterClass().getId())
-                        .semester_class_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .semester_class_name(class_has_join_semester_class.getClasses()
                                 .getSemesterClass().getName())
-                        .url_image_course(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .url_image_course(class_has_join_semester_class.getClasses()
                                 .getSemesterClass()
                                 .getCourse().getImage_url())
                         .student_name(
-                                class_has_join_semester_class.getUserRegisterJoinSemester().getStudent().getFirstName()
-                                        + " "
-                                        + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
-                                                .getLastName())
+                            class_has_join_semester_class.getStudent().getUser().getUsername() + " - "
+                            + class_has_join_semester_class.getStudent().getUser().getFirstName()
+                                    + " "
+                                    + class_has_join_semester_class.getStudent()
+                                    .getUser().getLastName())
                         .semester_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getSemester().getId())
-                        .semester_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .semester_name(class_has_join_semester_class.getClasses()
                                 .getSemesterClass().getSemester().getName())
                         .course_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getId())
-                        .user_register_join_semester_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getId())
+                        .student_id(
+                                class_has_join_semester_class.getClasses().getSemesterClass().getId())
                         .course_name(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getName())
                         .link_url(class_has_join_semester_class.getClasses().getLink_meeting())
-                        .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .teacher_id(class_has_join_semester_class.getClasses()
                                 .getTeacher().getId())
-                        .teacher_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                                .getTeacher().getFirstName()
+                        .teacher_name(class_has_join_semester_class.getClasses()
+                        .getTeacher().getUser().getUsername() + " - " + class_has_join_semester_class.getClasses()
+                                .getTeacher().getUser().getFirstName()
                                 + " "
-                                + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                                        .getTeacher().getLastName())
+                                + class_has_join_semester_class.getClasses()
+                                        .getTeacher().getUser().getLastName())
                         .art_age_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getArtAges().getId())
                         .art_age_name(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getArtAges().getName())
                         .art_level_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getArtLevels().getId())
-                        .art_level_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .art_level_name(class_has_join_semester_class.getClasses()
                                 .getSemesterClass().getCourse().getArtLevels().getName())
                         .art_type_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getArtTypes().getId())
-                        .art_type_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .art_type_name(class_has_join_semester_class.getClasses()
                                 .getSemesterClass().getCourse().getArtTypes().getName())
                         .total_section(class_has_join_semester_class.getClasses().getSections().size())
                         .total_student(class_has_join_semester_class.getClasses()
                                 .getClassHasRegisterJoinSemesterClasses().size())
-                        .user_register_teach_semester(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .semester_class_id(
+                                class_has_join_semester_class.getClasses()
                                         .getId())
                         .security_code(class_has_join_semester_class.getClasses().getSecurity_code())
                         .name(class_has_join_semester_class.getClasses().getName())
@@ -660,7 +647,7 @@ public class ClassesServiceImpl implements ClassesService {
         List<GetClassesParentResponse> allClassDoingResponses = new ArrayList<>();
         List<GetClassesParentResponse> allClassDoneResponses = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        List<User> allChildForParent = userRepository
+        List<Student> allChildForParent = studentRepository
                 .findByParentId4(parent_id);
         allChildForParent.forEach(ele -> {
             List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
@@ -668,7 +655,7 @@ public class ClassesServiceImpl implements ClassesService {
 
             allClassHasRegisterJoinSemesterClass.forEach(class_has_join_semester_class -> {
                 if (time_now.isAfter(
-                        class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getSemesterClass()
+                        class_has_join_semester_class.getClasses().getSemesterClass()
                                 .getSemester().getEnd_time()) == false) {
                     totalSectionStudyedByClass(class_has_join_semester_class.getClasses()).forEach((key, tab) -> {
                         GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
@@ -677,60 +664,61 @@ public class ClassesServiceImpl implements ClassesService {
                         .total_section_studied(total)
                         .schedule_section_next(schedule_section_next)
                         .semester_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getSemester().getId())
-                        .user_register_join_semester_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester().getId())
+                        .student_id(
+                                class_has_join_semester_class.getClasses().getSemesterClass().getId())
                         .course_id(
-                            class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            class_has_join_semester_class.getClasses()
                             .getSemesterClass()
                             .getCourse().getId())
-                        .url_image_course(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .url_image_course(class_has_join_semester_class.getClasses()
                             .getSemesterClass()
                             .getCourse().getImage_url())
-                        .total_section(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .total_section(class_has_join_semester_class.getClasses()
                             .getSemesterClass()
                             .getCourse().getNum_of_section())
                             .art_age_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getArtAges().getId())
                         .total_student(class_has_join_semester_class.getClasses()
                             .getClassHasRegisterJoinSemesterClasses().size())
                         .art_age_name(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getArtAges().getName())
                         .art_level_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getArtLevels().getId())
-                        .art_level_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .art_level_name(class_has_join_semester_class.getClasses()
                                 .getSemesterClass().getCourse().getArtLevels().getName())
                         .art_type_id(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getArtTypes().getId())
-                        .art_type_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .art_type_name(class_has_join_semester_class.getClasses()
                                 .getSemesterClass().getCourse().getArtTypes().getName())
                         .course_name(
-                                class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                class_has_join_semester_class.getClasses()
                                         .getSemesterClass()
                                         .getCourse().getName())
-                        .student_name(class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
-                                .getFirstName()
+                        .student_name(class_has_join_semester_class.getStudent().getUser().getUsername() + " - "
+                        + class_has_join_semester_class.getStudent().getUser().getFirstName()
                                 + " "
-                                + class_has_join_semester_class.getUserRegisterJoinSemester().getStudent()
-                                        .getLastName())
+                                + class_has_join_semester_class.getStudent()
+                                .getUser().getLastName())
                         .link_url(class_has_join_semester_class.getClasses().getLink_meeting())
-                        .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                        .teacher_id(class_has_join_semester_class.getClasses()
                                 .getTeacher().getId())
-                        .teacher_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                                .getTeacher().getFirstName()
+                        .teacher_name(class_has_join_semester_class.getClasses()
+                        .getTeacher().getUser().getUsername() + " - " + class_has_join_semester_class.getClasses()
+                                .getTeacher().getUser().getFirstName()
                                 + " "
-                                + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                                        .getTeacher().getLastName())
+                                + class_has_join_semester_class.getClasses()
+                                        .getTeacher().getUser().getLastName())
                         .security_code(class_has_join_semester_class.getClasses().getSecurity_code())
                         .name(class_has_join_semester_class.getClasses().getName())
                         .create_time(class_has_join_semester_class.getClasses().getCreate_time())
@@ -742,53 +730,54 @@ public class ClassesServiceImpl implements ClassesService {
                     GetClassesParentResponse classResponse = GetClassesParentResponse.builder()
                             .id(class_has_join_semester_class.getClasses().getId())
                             .student_id(ele.getId())
-                            .student_name(ele
-                                    .getFirstName()
+                            .student_name(ele.getUser().getUsername() + " - " + ele
+                                .getUser().getFirstName()
                                     + " "
                                     + ele
-                                            .getLastName())
+                                    .getUser().getLastName())
                             .course_id(
-                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                    class_has_join_semester_class.getClasses()
                                             .getSemesterClass()
                                             .getCourse().getId())
-                            .total_section(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            .total_section(class_has_join_semester_class.getClasses()
                                 .getSemesterClass()
                                 .getCourse().getNum_of_section())
-                            .url_image_course(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            .url_image_course(class_has_join_semester_class.getClasses()
                                 .getSemesterClass()
                                 .getCourse().getImage_url())
                                 .art_age_id(
-                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                    class_has_join_semester_class.getClasses()
                                             .getSemesterClass()
                                             .getCourse().getArtAges().getId())
                             .art_age_name(
-                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                    class_has_join_semester_class.getClasses()
                                             .getSemesterClass()
                                             .getCourse().getArtAges().getName())
                             .art_level_id(
-                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                    class_has_join_semester_class.getClasses()
                                             .getSemesterClass()
                                             .getCourse().getArtLevels().getId())
-                            .art_level_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            .art_level_name(class_has_join_semester_class.getClasses()
                                     .getSemesterClass().getCourse().getArtLevels().getName())
                             .art_type_id(
-                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                    class_has_join_semester_class.getClasses()
                                             .getSemesterClass()
                                             .getCourse().getArtTypes().getId())
-                            .art_type_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            .art_type_name(class_has_join_semester_class.getClasses()
                                     .getSemesterClass().getCourse().getArtTypes().getName())
                             .course_name(
-                                    class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                                    class_has_join_semester_class.getClasses()
                                             .getSemesterClass()
                                             .getCourse().getName())
                             .link_url(class_has_join_semester_class.getClasses().getLink_meeting())
-                            .teacher_id(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
+                            .teacher_id(class_has_join_semester_class.getClasses()
                                     .getTeacher().getId())
-                            .teacher_name(class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                                    .getTeacher().getFirstName()
+                            .teacher_name(class_has_join_semester_class.getClasses()
+                            .getTeacher().getUser().getUsername() + " - " + class_has_join_semester_class.getClasses()
+                                    .getTeacher().getUser().getFirstName()
                                     + " "
-                                    + class_has_join_semester_class.getClasses().getUserRegisterTeachSemester()
-                                            .getTeacher().getLastName())
+                                    + class_has_join_semester_class.getClasses()
+                                            .getTeacher().getUser().getLastName() )
                             .total_student(class_has_join_semester_class.getClasses()
                                 .getClassHasRegisterJoinSemesterClasses().size())
                             .security_code(class_has_join_semester_class.getClasses().getSecurity_code())
@@ -809,52 +798,46 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public ResponseEntity<Map<String, Object>> getClassesStudentForStudentId(Long id) {
         List<GetClassesStudentResponse> allClassResponses = new ArrayList<>();
-        List<UserRegisterJoinSemester> listUserRegisterJoinSemester = userRegisterJoinSemesterRepository
-                .findByStudentId2(id);
-        listUserRegisterJoinSemester.forEach(user_register_join_semester -> {
+        List<ClassHasRegisterJoinSemesterClass> listClassHasJoinSemester = classHasRegisterJoinSemesterClassRepository.findAllByStudent(id);
+        listClassHasJoinSemester.forEach(classHasRegisterJoinSemesterClass -> {
             // ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClassOpt =
-            // user_register_join_semester.getClassHasRegisterJoinSemesterClass();
-            Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository
-                    .findByUserRegisterJoinSemesterId1(user_register_join_semester.getId());
-            ClassHasRegisterJoinSemesterClass classHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassOpt
-                    .orElseThrow(() -> {
-                        throw new EntityNotFoundException("exception.ClassHasRegisterJoinSemesterClass.not_found");
-                    });
+            // student.getClassHasRegisterJoinSemesterClass();
             GetClassesStudentResponse classResponse = GetClassesStudentResponse.builder()
                     .id(classHasRegisterJoinSemesterClass.getClasses().getId())
-                    .user_register_join_semester_id(
-                            classHasRegisterJoinSemesterClass.getUserRegisterJoinSemester().getId())
+                    .semester_class_id(
+                            classHasRegisterJoinSemesterClass.getClasses().getSemesterClass().getId())
                     .link_url(classHasRegisterJoinSemesterClass.getClasses().getLink_meeting())
-                    .teacher_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
+                    .teacher_id(classHasRegisterJoinSemesterClass.getClasses()
                             .getTeacher().getId())
-                    .teacher_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
-                            .getTeacher().getFirstName()
+                    .teacher_name(classHasRegisterJoinSemesterClass.getClasses()
+                    .getTeacher().getUser().getUsername() + " - " + classHasRegisterJoinSemesterClass.getClasses()
+                            .getTeacher().getUser().getFirstName()
                             + " "
-                            + classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getTeacher()
-                                    .getLastName())
-                    .art_age_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
+                            + classHasRegisterJoinSemesterClass.getClasses().getTeacher()
+                            .getUser().getLastName())
+                    .art_age_id(classHasRegisterJoinSemesterClass.getClasses()
                             .getSemesterClass()
                             .getCourse().getArtAges().getId())
-                    .art_age_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
+                    .art_age_name(classHasRegisterJoinSemesterClass.getClasses()
                             .getSemesterClass()
                             .getCourse().getArtAges().getName())
-                    .art_level_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
+                    .art_level_id(classHasRegisterJoinSemesterClass.getClasses()
                             .getSemesterClass()
                             .getCourse().getArtLevels().getId())
-                    .art_level_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
+                    .art_level_name(classHasRegisterJoinSemesterClass.getClasses()
                             .getSemesterClass()
                             .getCourse().getArtLevels().getName())
-                    .art_type_id(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
+                    .art_type_id(classHasRegisterJoinSemesterClass.getClasses()
                             .getSemesterClass()
                             .getCourse().getArtTypes().getId())
-                    .art_type_name(classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester()
+                    .art_type_name(classHasRegisterJoinSemesterClass.getClasses()
                             .getSemesterClass()
                             .getCourse().getArtTypes().getName())
                     .total_section(classHasRegisterJoinSemesterClass.getClasses().getSections().size())
                     .total_student(classHasRegisterJoinSemesterClass.getClasses()
                             .getClassHasRegisterJoinSemesterClasses().size())
-                    .user_register_teach_semester(
-                            classHasRegisterJoinSemesterClass.getClasses().getUserRegisterTeachSemester().getId())
+                    .semester_class_id(
+                            classHasRegisterJoinSemesterClass.getClasses().getSemesterClass().getId())
                     .security_code(classHasRegisterJoinSemesterClass.getClasses().getSecurity_code())
                     .name(classHasRegisterJoinSemesterClass.getClasses().getName())
                     .create_time(classHasRegisterJoinSemesterClass.getClasses().getCreate_time())
@@ -869,41 +852,188 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleAllClass() {
+        Map<String, Object> response = new HashMap<>();
+        List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> res = new ArrayList<>();
+        List<Classes> classOpt = classRepository.findAll2();
         LocalDateTime time_now = LocalDateTime.now();
-        List<Semester> allSemesters = semesterRepository.findAll1();
-        List<Classes> allClassDoing = new ArrayList<>();
-        allSemesters.forEach(semester -> {
-            if (semester.getEnd_time().isAfter(time_now)) {
-                semester.getSemesterClass().forEach(semester_class -> {
-                    semester_class.getUserRegisterTeachSemesters()
-                            .forEach(user_register_teache_semester -> {
-                                Optional<Classes> classesOpt = classRepository
-                                        .findByUserRegisterTeachSemesterId2(user_register_teache_semester.getId());
-                                Classes classes = classesOpt.orElseThrow(() -> {
-                                    throw new EntityNotFoundException("exception.Classes.not_found");
-                                });
-                                allClassDoing.add(classes);
-                            });
+        classOpt.forEach(classes -> {
+            if (time_now.isAfter(classes.getSemesterClass().getSemester().getStart_time()) && time_now.isBefore(classes.getSemesterClass().getSemester().getEnd_time())) {
+                SemesterClass semesterCouse = classes.getSemesterClass();
+                List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
+                List<Integer> dayOfWeeks = new ArrayList<>();
+                List<LessonTime> lessonTimeResponses = new ArrayList<>();
+        
+                semesterCouse.getSchedules().forEach(schedule_item -> {
+                    GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
+                            .id(schedule_item.getId())
+                            .lesson_time(schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                    + schedule_item.getLessonTime().getEnd_time().toString())
+                            .lesson_time_id(schedule_item.getLessonTime().getId())
+                            .date_of_week(schedule_item.getDate_of_week())
+                            .build();
+                    allScheduleResponses.add(scheduleResponse);
+                    dayOfWeeks.add(schedule_item.getDate_of_week());
+                    lessonTimeResponses.add(schedule_item.getLessonTime());
                 });
+        
+                Collections.sort(dayOfWeeks);
+        
+                List<LocalDate> list_holiday = new ArrayList<>();
+                semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+                    list_holiday.add(holiday.getDay());
+                });
+        
+                List<Map<String, List<List<LocalDateTime>>>> allCalendarForSemesterClass = new ArrayList<>();
+                Integer total_section = semesterCouse.getCourse().getNum_of_section();
+                System.out.printf("total_section: %d\n", total_section);
+                System.out.printf("total_number_week: %d\n", semesterCouse.getSchedules().size());
+                int total_week = total_section / semesterCouse.getSchedules().size();
+                if (total_section % semesterCouse.getSchedules().size() != 0) {
+                    total_week++;
+                }
+                System.out.printf("total_week: %d\n", total_week);
+                total_section_count = 0;
+                LocalDateTime start_time = semesterCouse.getSemester().getStart_time();
+                week_count = 0;
+                while (total_section_count < total_section) {
+                    List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
+                    if (semesterCouse.getSchedules().size() > 1) {
+                        for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
+                            Integer dayOfWeek = dayOfWeeks.get(idx);
+                            LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                            LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                            // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                            System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                            List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                            if (dayOfWeek == 2) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                                    start_time = start_time.plusDays(1);
+                                }
+                            } else if (dayOfWeek == 3) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else if (dayOfWeek == 4) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else if (dayOfWeek == 5) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else if (dayOfWeek == 6) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else if (dayOfWeek == 7) {
+                                while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            else {
+                                while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+        
+                                    start_time = start_time.plusDays(1);
+                                }
+                            }
+        
+                            if (total_section_count < total_section) {
+                                LocalDate start_date = start_time.toLocalDate();
+                                if (list_holiday.contains(start_date) == false) {
+                                    lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                                    lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                                    total_section_count++;
+                                }
+                            }
+                            lesson_time_in_week.add(lesson_time_in_day);
+                        }
+                    } else {
+                        for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
+                            Integer dayOfWeek = dayOfWeeks.get(idx);
+                            LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                            LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                            // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                            System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                            List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                            if (total_section_count > 0) {
+                                if (dayOfWeek == 2) {
+                                    start_time = start_time.plusDays(7);
+        
+                                } else if (dayOfWeek == 3) {
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else if (dayOfWeek == 4) {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else if (dayOfWeek == 5) {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else if (dayOfWeek == 6) {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else if (dayOfWeek == 7) {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+        
+                                else {
+        
+                                    start_time = start_time.plusDays(7);
+                                }
+                            }
+        
+                            if (total_section_count < total_section) {
+                                LocalDate start_date = start_time.toLocalDate();
+                                if (list_holiday.contains(start_date) == false) {
+                                    lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                                    lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                                    total_section_count++;
+                                }
+                            }
+                            lesson_time_in_week.add(lesson_time_in_day);
+                        }
+                    }
+                    Map<String, List<List<LocalDateTime>>> schedule_in_week = new HashMap<>();
+                    String name = "week_" + week_count;
+                    schedule_in_week.put(name, lesson_time_in_week);
+                    allCalendarForSemesterClass.add(schedule_in_week);
+                    // start_time = start_time.plusWeeks(1);
+                    week_count++;
+                }
+                Map<String, List<Map<String, List<List<LocalDateTime>>>>> sheduleForClass = new HashMap<>();
+                String class_name = classes.getName();
+                sheduleForClass.put(class_name, allCalendarForSemesterClass);
+                res.add(sheduleForClass);
             }
         });
 
-        List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allScheduleForAllClass = new ArrayList<>();
-        allClassDoing.forEach(class_ele -> {
-            Map<String, List<Map<String, List<List<LocalDateTime>>>>> res = new HashMap<>();
-            res.put(class_ele.getName(), getScheduleDetailOfClass(class_ele));
-            allScheduleForAllClass.add(res);
-        });
-        Map<String, Object> response = new HashMap<>();
-        response.put("schedules", allScheduleForAllClass);
+        response.put("schedule", res);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     public LocalDateTime getEndSectionOfClass(Classes classes) {
 
-        UserRegisterTeachSemester userRegisterTeachSemester = classes.getUserRegisterTeachSemester();
-
-        SemesterClass semesterCouse = userRegisterTeachSemester.getSemesterClass();
+        SemesterClass semesterCouse = classes.getSemesterClass();
 
         List<Integer> dayOfWeeks = new ArrayList<>();
         List<LessonTime> lessonTimeResponses = new ArrayList<>();
@@ -1063,9 +1193,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     public List<Map<String, List<List<LocalDateTime>>>> getScheduleDetailOfClass(Classes classes) {
 
-        UserRegisterTeachSemester userRegisterTeachSemester = classes.getUserRegisterTeachSemester();
-
-        SemesterClass semesterCouse = userRegisterTeachSemester.getSemesterClass();
+        SemesterClass semesterCouse = classes.getSemesterClass();
 
         List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
         semesterCouse.getSchedules().forEach(schedule_item -> {
@@ -1240,9 +1368,8 @@ public class ClassesServiceImpl implements ClassesService {
     public Map<String, Integer> totalSectionStudyedByClass(Classes classes) {
         Map<String, Integer> res =  new HashMap<>();
         total = 0;
-        UserRegisterTeachSemester userRegisterTeachSemester = classes.getUserRegisterTeachSemester();
 
-        SemesterClass semesterCouse = userRegisterTeachSemester.getSemesterClass();
+        SemesterClass semesterCouse = classes.getSemesterClass();
 
         List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
         semesterCouse.getSchedules().forEach(schedule_item -> {
@@ -1412,20 +1539,13 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleChild(Long child_id) {
-        List<UserRegisterJoinSemester> userRegisterJoinSemester = userRegisterJoinSemesterRepository
-                .findByStudentId2(child_id);
+        List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClassByChild = classHasRegisterJoinSemesterClassRepository.findAllByStudent(child_id);
         List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
         LocalDateTime time_now = LocalDateTime.now();
-        userRegisterJoinSemester.forEach(user_register_join_semester -> {
-            Optional<SemesterClass> semester_classOpt = semesterClassRepository
-                    .findById(user_register_join_semester.getSemesterClass().getId());
-            SemesterClass semesterCouse = semester_classOpt.orElseThrow(() -> {
-                throw new EntityNotFoundException("exception.semester_class.not_found");
-            });
-
-            if (semesterCouse.getSemester().getEnd_time().isAfter(time_now)) {
+        allClassHasRegisterJoinSemesterClassByChild.forEach(class_has_join_semester_class -> {
+            if (class_has_join_semester_class.getClasses().getSemesterClass().getSemester().getEnd_time().isAfter(time_now)) {
                 List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
-                semesterCouse.getSchedules().forEach(schedule_item -> {
+                class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().forEach(schedule_item -> {
                     GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
                             .id(schedule_item.getId())
                             .lesson_time(schedule_item.getLessonTime().getStart_time().toString() + " - "
@@ -1437,38 +1557,38 @@ public class ClassesServiceImpl implements ClassesService {
                 });
 
                 List<Integer> dayOfWeeks = new ArrayList<>();
-                semesterCouse.getSchedules().forEach(ele -> {
+                class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().forEach(ele -> {
                     dayOfWeeks.add(ele.getDate_of_week());
                 });
 
                 Collections.sort(dayOfWeeks);
 
                 List<LessonTime> lessonTimeResponses = new ArrayList<>();
-                semesterCouse.getSchedules().forEach(schedule_item -> {
+                class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().forEach(schedule_item -> {
                     lessonTimeResponses.add(schedule_item.getLessonTime());
                 });
 
                 List<LocalDate> list_holiday = new ArrayList<>();
-                semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+                class_has_join_semester_class.getClasses().getSemesterClass().getSemester().getHolidays().forEach(holiday -> {
                     list_holiday.add(holiday.getDay());
                 });
 
                 List<Map<String, List<List<LocalDateTime>>>> allCalendarForSemesterClass = new ArrayList<>();
-                Integer total_section = semesterCouse.getCourse().getNum_of_section();
+                Integer total_section = class_has_join_semester_class.getClasses().getSemesterClass().getCourse().getNum_of_section();
                 System.out.printf("total_section: %d\n", total_section);
-                System.out.printf("total_number_week: %d\n", semesterCouse.getSchedules().size());
-                int total_week = total_section / semesterCouse.getSchedules().size();
-                if (total_section % semesterCouse.getSchedules().size() != 0) {
+                System.out.printf("total_number_week: %d\n", class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().size());
+                int total_week = total_section / class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().size();
+                if (total_section % class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().size() != 0) {
                     total_week++;
                 }
                 System.out.printf("total_week: %d\n", total_week);
                 total_section_count = 0;
-                LocalDateTime start_time = semesterCouse.getSemester().getStart_time();
+                LocalDateTime start_time = class_has_join_semester_class.getClasses().getSemesterClass().getSemester().getStart_time();
                 week_count = 0;
                 while (total_section_count < total_section) {
                     List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
-                    if (semesterCouse.getSchedules().size() > 1) {
-                        for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
+                    if (class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().size() > 1) {
+                        for (int idx = 0; idx < class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().size(); idx++) {
                             Integer dayOfWeek = dayOfWeeks.get(idx);
                             LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
                             LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
@@ -1531,7 +1651,7 @@ public class ClassesServiceImpl implements ClassesService {
                             lesson_time_in_week.add(lesson_time_in_day);
                         }
                     } else {
-                        for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
+                        for (int idx = 0; idx < class_has_join_semester_class.getClasses().getSemesterClass().getSchedules().size(); idx++) {
                             Integer dayOfWeek = dayOfWeeks.get(idx);
                             LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
                             LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
@@ -1591,7 +1711,7 @@ public class ClassesServiceImpl implements ClassesService {
                     week_count++;
                 }
                 Map<String, List<Map<String, List<List<LocalDateTime>>>>> schedule_class = new HashMap<>();
-                String name = user_register_join_semester.getSemesterClass().getName();
+                String name = class_has_join_semester_class.getClasses().getSemesterClass().getCourse().getName();
                 schedule_class.put(name, allCalendarForSemesterClass);
                 allCalendarForChild.add(schedule_class);
             }
@@ -1604,197 +1724,190 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getInforScheduleAllChild(Long parent_id) {
-        List<User> listChilds = userRepository.findByParentId5(parent_id);
         List<Map<String, List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>>>> allCalendarForAllChild = new ArrayList<>();
-        listChilds.forEach(child -> {
-            Set<UserRegisterJoinSemester> userRegisterJoinSemester = child.getUserRegisterJoinSemesters2();
-            List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
+            List<ClassHasRegisterJoinSemesterClass> allClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findAllByParent(parent_id);
+            System.out.print(allClassHasRegisterJoinSemesterClass.size());
             LocalDateTime time_now = LocalDateTime.now();
-            userRegisterJoinSemester.forEach(user_register_join_semester -> {
-                Optional<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClassOpt = classHasRegisterJoinSemesterClassRepository.findByUserRegisterJoinSemesterId1(user_register_join_semester.getId());
+            allClassHasRegisterJoinSemesterClass.forEach(class_has_register_join_semester_class -> {
+                if (class_has_register_join_semester_class.getClasses().getSemesterClass().getSemester().getEnd_time().isAfter(time_now)) {
+                    List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>> allCalendarForChild = new ArrayList<>();
+                    List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
+                    class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().forEach(schedule_item -> {
+                        GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
+                                .id(schedule_item.getId())
+                                .lesson_time(schedule_item.getLessonTime().getStart_time().toString() + " - "
+                                        + schedule_item.getLessonTime().getEnd_time().toString())
+                                .lesson_time_id(schedule_item.getLessonTime().getId())
+                                .date_of_week(schedule_item.getDate_of_week())
+                                .build();
+                        allScheduleResponses.add(scheduleResponse);
+                    });
 
-                if (classHasRegisterJoinSemesterClassOpt.isPresent()) {
-                    SemesterClass semesterCouse = user_register_join_semester.getSemesterClass();
+                    List<Integer> dayOfWeeks = new ArrayList<>();
+                    class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().forEach(ele -> {
+                        dayOfWeeks.add(ele.getDate_of_week());
+                    });
 
-                    if (semesterCouse.getSemester().getEnd_time().isAfter(time_now)) {
-                        List<GetScheduleResponse> allScheduleResponses = new ArrayList<>();
-                        semesterCouse.getSchedules().forEach(schedule_item -> {
-                            GetScheduleResponse scheduleResponse = GetScheduleResponse.builder()
-                                    .id(schedule_item.getId())
-                                    .lesson_time(schedule_item.getLessonTime().getStart_time().toString() + " - "
-                                            + schedule_item.getLessonTime().getEnd_time().toString())
-                                    .lesson_time_id(schedule_item.getLessonTime().getId())
-                                    .date_of_week(schedule_item.getDate_of_week())
-                                    .build();
-                            allScheduleResponses.add(scheduleResponse);
-                        });
-    
-                        List<Integer> dayOfWeeks = new ArrayList<>();
-                        semesterCouse.getSchedules().forEach(ele -> {
-                            dayOfWeeks.add(ele.getDate_of_week());
-                        });
-    
-                        Collections.sort(dayOfWeeks);
-    
-                        List<LessonTime> lessonTimeResponses = new ArrayList<>();
-                        semesterCouse.getSchedules().forEach(schedule_item -> {
-                            lessonTimeResponses.add(schedule_item.getLessonTime());
-                        });
-    
-                        List<LocalDate> list_holiday = new ArrayList<>();
-                        semesterCouse.getSemester().getHolidays().forEach(holiday -> {
-                            list_holiday.add(holiday.getDay());
-                        });
-    
-                        List<Map<String, List<List<LocalDateTime>>>> allCalendarForSemesterClass = new ArrayList<>();
-                        Integer total_section = semesterCouse.getCourse().getNum_of_section();
-                        System.out.printf("total_section: %d\n", total_section);
-                        System.out.printf("total_number_week: %d\n", semesterCouse.getSchedules().size());
-                        int total_week = total_section / semesterCouse.getSchedules().size();
-                        if (total_section % semesterCouse.getSchedules().size() != 0) {
-                            total_week++;
-                        }
-                        System.out.printf("total_week: %d\n", total_week);
-                        total_section_count = 0;
-                        LocalDateTime start_time = semesterCouse.getSemester().getStart_time();
-                        week_count = 0;
-                        while (total_section_count < total_section) {
-                            List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
-                            if (semesterCouse.getSchedules().size() > 1) {
-                                for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
-                                    Integer dayOfWeek = dayOfWeeks.get(idx);
-                                    LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
-                                    LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
-                                    // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
-                                    System.out.printf("Day_of_week: %d\n", dayOfWeek);
-                                    List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                                    if (dayOfWeek == 2) {
-                                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                                            start_time = start_time.plusDays(1);
-                                        }
-                                    } else if (dayOfWeek == 3) {
-                                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                                            start_time = start_time.plusDays(1);
-                                        }
-                                    }
-    
-                                    else if (dayOfWeek == 4) {
-                                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-    
-                                            start_time = start_time.plusDays(1);
-                                        }
-                                    }
-    
-                                    else if (dayOfWeek == 5) {
-                                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-    
-                                            start_time = start_time.plusDays(1);
-                                        }
-                                    }
-    
-                                    else if (dayOfWeek == 6) {
-                                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-    
-                                            start_time = start_time.plusDays(1);
-                                        }
-                                    }
-    
-                                    else if (dayOfWeek == 7) {
-                                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-    
-                                            start_time = start_time.plusDays(1);
-                                        }
-                                    }
-    
-                                    else {
-                                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-    
-                                            start_time = start_time.plusDays(1);
-                                        }
-                                    }
-    
-                                    if (total_section_count < total_section) {
-                                        LocalDate start_date = start_time.toLocalDate();
-                                        if (list_holiday.contains(start_date) == false) {
-                                            lesson_time_in_day.add(start_lessontime.atDate(start_date));
-                                            lesson_time_in_day.add(end_lessontime.atDate(start_date));
-                                            total_section_count++;
-                                        }
-                                    }
-                                    lesson_time_in_week.add(lesson_time_in_day);
-                                }
-                            } else {
-                                for (int idx = 0; idx < semesterCouse.getSchedules().size(); idx++) {
-                                    Integer dayOfWeek = dayOfWeeks.get(idx);
-                                    LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
-                                    LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
-                                    // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
-                                    System.out.printf("Day_of_week: %d\n", dayOfWeek);
-                                    List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                                    if (total_section_count > 0) {
-                                        if (dayOfWeek == 2) {
-                                            start_time = start_time.plusDays(7);
-    
-                                        } else if (dayOfWeek == 3) {
-                                            start_time = start_time.plusDays(7);
-                                        }
-    
-                                        else if (dayOfWeek == 4) {
-    
-                                            start_time = start_time.plusDays(7);
-                                        }
-    
-                                        else if (dayOfWeek == 5) {
-    
-                                            start_time = start_time.plusDays(7);
-                                        }
-    
-                                        else if (dayOfWeek == 6) {
-    
-                                            start_time = start_time.plusDays(7);
-                                        }
-    
-                                        else if (dayOfWeek == 7) {
-    
-                                            start_time = start_time.plusDays(7);
-                                        }
-    
-                                        else {
-    
-                                            start_time = start_time.plusDays(7);
-                                        }
-                                    }
-    
-                                    if (total_section_count < total_section) {
-                                        LocalDate start_date = start_time.toLocalDate();
-                                        if (list_holiday.contains(start_date) == false) {
-                                            lesson_time_in_day.add(start_lessontime.atDate(start_date));
-                                            lesson_time_in_day.add(end_lessontime.atDate(start_date));
-                                            total_section_count++;
-                                        }
-                                    }
-                                    lesson_time_in_week.add(lesson_time_in_day);
-                                }
-                            }
-                            Map<String, List<List<LocalDateTime>>> schedule_in_week = new HashMap<>();
-                            String name = "week_" + week_count;
-                            schedule_in_week.put(name, lesson_time_in_week);
-                            allCalendarForSemesterClass.add(schedule_in_week);
-                            // start_time = start_time.plusWeeks(1);
-                            week_count++;
-                        }
-                        Map<String, List<Map<String, List<List<LocalDateTime>>>>> schedule_class = new HashMap<>();
-                        schedule_class.put(
-                                user_register_join_semester.getSemesterClass().getName(),
-                                allCalendarForSemesterClass);
-                        allCalendarForChild.add(schedule_class);
+                    Collections.sort(dayOfWeeks);
+
+                    List<LessonTime> lessonTimeResponses = new ArrayList<>();
+                    class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().forEach(schedule_item -> {
+                        lessonTimeResponses.add(schedule_item.getLessonTime());
+                    });
+
+                    List<LocalDate> list_holiday = new ArrayList<>();
+                    class_has_register_join_semester_class.getClasses().getSemesterClass().getSemester().getHolidays().forEach(holiday -> {
+                        list_holiday.add(holiday.getDay());
+                    });
+
+                    List<Map<String, List<List<LocalDateTime>>>> allCalendarForSemesterClass = new ArrayList<>();
+                    Integer total_section = class_has_register_join_semester_class.getClasses().getSemesterClass().getCourse().getNum_of_section();
+                    System.out.printf("total_section: %d\n", total_section);
+                    System.out.printf("total_number_week: %d\n", class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().size());
+                    int total_week = total_section / class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().size();
+                    if (total_section % class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().size() != 0) {
+                        total_week++;
                     }
+                    System.out.printf("total_week: %d\n", total_week);
+                    total_section_count = 0;
+                    LocalDateTime start_time = class_has_register_join_semester_class.getClasses().getSemesterClass().getSemester().getStart_time();
+                    week_count = 0;
+                    while (total_section_count < total_section) {
+                        List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
+                        if (class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().size() > 1) {
+                            for (int idx = 0; idx < class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().size(); idx++) {
+                                Integer dayOfWeek = dayOfWeeks.get(idx);
+                                LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                                LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                                // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                                System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                                List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                                if (dayOfWeek == 2) {
+                                    while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                                        start_time = start_time.plusDays(1);
+                                    }
+                                } else if (dayOfWeek == 3) {
+                                    while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                                        start_time = start_time.plusDays(1);
+                                    }
+                                }
+
+                                else if (dayOfWeek == 4) {
+                                    while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+
+                                        start_time = start_time.plusDays(1);
+                                    }
+                                }
+
+                                else if (dayOfWeek == 5) {
+                                    while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+
+                                        start_time = start_time.plusDays(1);
+                                    }
+                                }
+
+                                else if (dayOfWeek == 6) {
+                                    while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+
+                                        start_time = start_time.plusDays(1);
+                                    }
+                                }
+
+                                else if (dayOfWeek == 7) {
+                                    while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+
+                                        start_time = start_time.plusDays(1);
+                                    }
+                                }
+
+                                else {
+                                    while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+
+                                        start_time = start_time.plusDays(1);
+                                    }
+                                }
+
+                                if (total_section_count < total_section) {
+                                    LocalDate start_date = start_time.toLocalDate();
+                                    if (list_holiday.contains(start_date) == false) {
+                                        lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                                        lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                                        total_section_count++;
+                                    }
+                                }
+                                lesson_time_in_week.add(lesson_time_in_day);
+                            }
+                        } else {
+                            for (int idx = 0; idx < class_has_register_join_semester_class.getClasses().getSemesterClass().getSchedules().size(); idx++) {
+                                Integer dayOfWeek = dayOfWeeks.get(idx);
+                                LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
+                                LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
+                                // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                                System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                                List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                                if (total_section_count > 0) {
+                                    if (dayOfWeek == 2) {
+                                        start_time = start_time.plusDays(7);
+
+                                    } else if (dayOfWeek == 3) {
+                                        start_time = start_time.plusDays(7);
+                                    }
+
+                                    else if (dayOfWeek == 4) {
+
+                                        start_time = start_time.plusDays(7);
+                                    }
+
+                                    else if (dayOfWeek == 5) {
+
+                                        start_time = start_time.plusDays(7);
+                                    }
+
+                                    else if (dayOfWeek == 6) {
+
+                                        start_time = start_time.plusDays(7);
+                                    }
+
+                                    else if (dayOfWeek == 7) {
+
+                                        start_time = start_time.plusDays(7);
+                                    }
+
+                                    else {
+
+                                        start_time = start_time.plusDays(7);
+                                    }
+                                }
+
+                                if (total_section_count < total_section) {
+                                    LocalDate start_date = start_time.toLocalDate();
+                                    if (list_holiday.contains(start_date) == false) {
+                                        lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                                        lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                                        total_section_count++;
+                                    }
+                                }
+                                lesson_time_in_week.add(lesson_time_in_day);
+                            }
+                        }
+                        Map<String, List<List<LocalDateTime>>> schedule_in_week = new HashMap<>();
+                        String name = "week_" + week_count;
+                        schedule_in_week.put(name, lesson_time_in_week);
+                        allCalendarForSemesterClass.add(schedule_in_week);
+                        // start_time = start_time.plusWeeks(1);
+                        week_count++;
+                    }
+                    Map<String, List<Map<String, List<List<LocalDateTime>>>>> schedule_class = new HashMap<>();
+                    schedule_class.put(
+                        class_has_register_join_semester_class.getClasses().getSemesterClass().getCourse().getName(),
+                            allCalendarForSemesterClass);
+                    allCalendarForChild.add(schedule_class);
+
+                    Map<String, List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>>> schedule_child = new HashMap<>();
+                    schedule_child.put(class_has_register_join_semester_class.getStudent().getUser().getUsername() + " - " + class_has_register_join_semester_class.getStudent().getUser().getFirstName() + " " + class_has_register_join_semester_class.getStudent().getUser().getLastName(), allCalendarForChild);
+                    allCalendarForAllChild.add(schedule_child);
                 }
             });
-            Map<String, List<Map<String, List<Map<String, List<List<LocalDateTime>>>>>>> schedule_child = new HashMap<>();
-            schedule_child.put(child.getUsername(), allCalendarForChild);
-            allCalendarForAllChild.add(schedule_child);
-        });
 
         Map<String, Object> response = new HashMap<>();
         response.put("schedules", allCalendarForAllChild);
@@ -1810,7 +1923,7 @@ public class ClassesServiceImpl implements ClassesService {
         });
         response.put("classes", GetClassResponse.builder()
                 .id(classes.getId())
-                .user_register_teach_semester(classes.getUserRegisterTeachSemester().getId())
+                .semester_class_id(classes.getSemesterClass().getId())
                 .security_code(classes.getSecurity_code())
                 .name(classes.getName())
                 .create_time(classes.getCreate_time())
@@ -1821,23 +1934,23 @@ public class ClassesServiceImpl implements ClassesService {
         List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
                 .findByClassesId3(id);
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
-            Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
-            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
-                    + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
+            Long parent_idx = content.getStudent().getParent().getId();
+            String parent_namex = content.getStudent().getParent().getUser().getUsername() + " - " + content.getStudent().getParent().getUser().getFirstName() + " "
+                    + content.getStudent().getParent().getUser().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
-                    .id(content.getUserRegisterJoinSemester().getStudent().getId())
-                    .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
-                    .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
-                    .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
-                    .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
-                    .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
-                    .profile_image_url(content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
-                    .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
-                    .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
-                    .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
+                    .id(content.getStudent().getId())
+                    .username(content.getStudent().getUser().getUsername())
+                    .email(content.getStudent().getUser().getEmail())
+                    .firstName(content.getStudent().getUser().getFirstName())
+                    .lastName(content.getStudent().getUser().getLastName())
+                    .dateOfBirth(content.getStudent().getDateOfBirth())
+                    .profile_image_url(content.getStudent().getUser().getProfileImageUrl())
+                    .sex(content.getStudent().getUser().getSex())
+                    .phone(content.getStudent().getPhone())
+                    .address(content.getStudent().getUser().getAddress())
                     .parent(parent_namex)
                     .parents(parent_idx)
-                    .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
+                    .createTime(content.getStudent().getUser().getCreateTime())
                     .build();
             listStudents.add(student);
         });
@@ -1856,30 +1969,27 @@ public class ClassesServiceImpl implements ClassesService {
         });
         response.put("classes", GetClassResponse.builder()
                 .id(classes.getId())
-                .user_register_teach_semester(classes.getUserRegisterTeachSemester().getId())
+                .semester_class_id(classes.getSemesterClass().getId())
                 .security_code(classes.getSecurity_code())
                 .name(classes.getName())
                 .create_time(classes.getCreate_time())
                 .update_time(classes.getUpdate_time())
                 .build());
 
-        UserRegisterTeachSemester userRegisterTeachSemester = classes.getUserRegisterTeachSemester();
-
         response.put("teacher", GetUserResponse.builder()
-                .id(userRegisterTeachSemester.getTeacher().getId())
-                .username(userRegisterTeachSemester.getTeacher().getUsername())
-                .email(userRegisterTeachSemester.getTeacher().getEmail())
-                .firstName(userRegisterTeachSemester.getTeacher().getFirstName())
-                .lastName(userRegisterTeachSemester.getTeacher().getLastName())
-                .dateOfBirth(userRegisterTeachSemester.getTeacher().getDateOfBirth())
-                .profile_image_url(userRegisterTeachSemester.getTeacher().getProfileImageUrl())
-                .sex(userRegisterTeachSemester.getTeacher().getSex())
-                .phone(userRegisterTeachSemester.getTeacher().getPhone())
-                .address(userRegisterTeachSemester.getTeacher().getAddress())
-                .createTime(userRegisterTeachSemester.getTeacher().getCreateTime())
+                .id(classes.getTeacher().getId())
+                .username(classes.getTeacher().getUser().getUsername())
+                .email(classes.getTeacher().getUser().getEmail())
+                .firstName(classes.getTeacher().getUser().getFirstName())
+                .lastName(classes.getTeacher().getUser().getLastName())
+                .profile_image_url(classes.getTeacher().getUser().getProfileImageUrl())
+                .sex(classes.getTeacher().getUser().getSex())
+                .phone(classes.getTeacher().getPhone())
+                .address(classes.getTeacher().getUser().getAddress())
+                .createTime(classes.getTeacher().getUser().getCreateTime())
                 .build());
 
-        SemesterClass semesterCouse = userRegisterTeachSemester.getSemesterClass();
+        SemesterClass semesterCouse = classes.getSemesterClass();
 
         response.put("course", GetCourseResponse.builder()
                 .id(semesterCouse.getCourse().getId())
@@ -1888,7 +1998,7 @@ public class ClassesServiceImpl implements ClassesService {
                 .num_of_section(semesterCouse.getCourse().getNum_of_section())
                 .image_url(semesterCouse.getCourse().getImage_url())
                 .price(semesterCouse.getCourse().getPrice())
-                .is_enabled(semesterCouse.getCourse().getIs_enabled())
+               
                 .art_age_id(semesterCouse.getCourse().getArtAges().getId())
                 .art_type_id(semesterCouse.getCourse().getArtTypes().getId())
                 .art_level_id(semesterCouse.getCourse().getArtLevels().getId())
@@ -1911,23 +2021,23 @@ public class ClassesServiceImpl implements ClassesService {
         List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
                 .findByClassesId3(id);
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
-            Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
-            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
-                    + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
+            Long parent_idx = content.getStudent().getParent().getId();
+            String parent_namex = content.getStudent().getParent().getUser().getUsername() + " - " + content.getStudent().getParent().getUser().getFirstName() + " "
+                    + content.getStudent().getParent().getUser().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
-                    .id(content.getUserRegisterJoinSemester().getStudent().getId())
-                    .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
-                    .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
-                    .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
-                    .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
-                    .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
-                    .profile_image_url(content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
-                    .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
-                    .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
-                    .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
+                    .id(content.getStudent().getId())
+                    .username(content.getStudent().getUser().getUsername())
+                    .email(content.getStudent().getUser().getEmail())
+                    .firstName(content.getStudent().getUser().getFirstName())
+                    .lastName(content.getStudent().getUser().getLastName())
+                    .dateOfBirth(content.getStudent().getDateOfBirth())
+                    .profile_image_url(content.getStudent().getUser().getProfileImageUrl())
+                    .sex(content.getStudent().getUser().getSex())
+                    .phone(content.getStudent().getPhone())
+                    .address(content.getStudent().getUser().getAddress())
                     .parent(parent_namex)
                     .parents(parent_idx)
-                    .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
+                    .createTime(content.getStudent().getUser().getCreateTime())
                     .build();
             listStudents.add(student);
         });
@@ -2125,29 +2235,26 @@ public class ClassesServiceImpl implements ClassesService {
         });
         response.put("classes", GetClassResponse.builder()
                 .id(classes.getId())
-                .user_register_teach_semester(classes.getUserRegisterTeachSemester().getId())
+                .semester_class_id(classes.getSemesterClass().getId())
                 .security_code(classes.getSecurity_code())
                 .name(classes.getName())
                 .create_time(classes.getCreate_time())
                 .update_time(classes.getUpdate_time())
                 .build());
 
-        UserRegisterTeachSemester userRegisterTeachSemester = classes.getUserRegisterTeachSemester();
-
         response.put("teacher", GetUserResponse.builder()
-                .id(userRegisterTeachSemester.getTeacher().getId())
-                .username(userRegisterTeachSemester.getTeacher().getUsername())
-                .email(userRegisterTeachSemester.getTeacher().getEmail())
-                .firstName(userRegisterTeachSemester.getTeacher().getFirstName())
-                .lastName(userRegisterTeachSemester.getTeacher().getLastName())
-                .dateOfBirth(userRegisterTeachSemester.getTeacher().getDateOfBirth())
-                .profile_image_url(userRegisterTeachSemester.getTeacher().getProfileImageUrl())
-                .sex(userRegisterTeachSemester.getTeacher().getSex())
-                .phone(userRegisterTeachSemester.getTeacher().getPhone())
-                .address(userRegisterTeachSemester.getTeacher().getAddress())
-                .createTime(userRegisterTeachSemester.getTeacher().getCreateTime())
+                .id(classes.getTeacher().getId())
+                .username(classes.getTeacher().getUser().getUsername())
+                .email(classes.getTeacher().getUser().getEmail())
+                .firstName(classes.getTeacher().getUser().getFirstName())
+                .lastName(classes.getTeacher().getUser().getLastName())
+                .profile_image_url(classes.getTeacher().getUser().getProfileImageUrl())
+                .sex(classes.getTeacher().getUser().getSex())
+                .phone(classes.getTeacher().getPhone())
+                .address(classes.getTeacher().getUser().getAddress())
+                .createTime(classes.getTeacher().getUser().getCreateTime())
                 .build());
-                SemesterClass semesterCouse = userRegisterTeachSemester.getSemesterClass();
+                SemesterClass semesterCouse = classes.getSemesterClass();
 
                 response.put("course", GetCourseResponse.builder()
                         .id(semesterCouse.getCourse().getId())
@@ -2156,7 +2263,7 @@ public class ClassesServiceImpl implements ClassesService {
                         .num_of_section(semesterCouse.getCourse().getNum_of_section())
                         .image_url(semesterCouse.getCourse().getImage_url())
                         .price(semesterCouse.getCourse().getPrice())
-                        .is_enabled(semesterCouse.getCourse().getIs_enabled())
+                       
                         .art_age_id(semesterCouse.getCourse().getArtAges().getId())
                         .art_type_id(semesterCouse.getCourse().getArtTypes().getId())
                         .art_level_id(semesterCouse.getCourse().getArtLevels().getId())
@@ -2185,23 +2292,22 @@ public class ClassesServiceImpl implements ClassesService {
         List<ClassHasRegisterJoinSemesterClass> listClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository
                 .findByClassesId3(id);
         listClassHasRegisterJoinSemesterClass.forEach(content -> {
-            Long parent_idx = content.getUserRegisterJoinSemester().getStudent().getParent().getId();
-            String parent_namex = content.getUserRegisterJoinSemester().getStudent().getParent().getFirstName() + " "
-                    + content.getUserRegisterJoinSemester().getStudent().getParent().getLastName();
+            Long parent_idx = content.getStudent().getParent().getId();
+            String parent_namex = content.getStudent().getParent().getUser().getUsername() + " - " + content.getStudent().getParent().getUser().getFirstName() + " "
+                    + content.getStudent().getParent().getUser().getLastName();
             GetStudentResponse student = GetStudentResponse.builder()
-                    .id(content.getUserRegisterJoinSemester().getStudent().getId())
-                    .username(content.getUserRegisterJoinSemester().getStudent().getUsername())
-                    .email(content.getUserRegisterJoinSemester().getStudent().getEmail())
-                    .firstName(content.getUserRegisterJoinSemester().getStudent().getFirstName())
-                    .lastName(content.getUserRegisterJoinSemester().getStudent().getLastName())
-                    .dateOfBirth(content.getUserRegisterJoinSemester().getStudent().getDateOfBirth())
-                    .profile_image_url(content.getUserRegisterJoinSemester().getStudent().getProfileImageUrl())
-                    .sex(content.getUserRegisterJoinSemester().getStudent().getSex())
-                    .phone(content.getUserRegisterJoinSemester().getStudent().getPhone())
-                    .address(content.getUserRegisterJoinSemester().getStudent().getAddress())
+                    .id(content.getStudent().getId())
+                    .username(content.getStudent().getUser().getUsername())
+                    .email(content.getStudent().getUser().getEmail())
+                    .firstName(content.getStudent().getUser().getFirstName())
+                    .lastName(content.getStudent().getUser().getLastName())
+                    .profile_image_url(content.getStudent().getUser().getProfileImageUrl())
+                    .sex(content.getStudent().getUser().getSex())
+                    .phone(content.getStudent().getPhone())
+                    .address(content.getStudent().getUser().getAddress())
                     .parent(parent_namex)
                     .parents(parent_idx)
-                    .createTime(content.getUserRegisterJoinSemester().getStudent().getCreateTime())
+                    .createTime(content.getStudent().getUser().getCreateTime())
                     .build();
             listStudents.add(student);
         });
@@ -2221,7 +2327,7 @@ public class ClassesServiceImpl implements ClassesService {
 
         return GetClassResponse.builder()
                 .id(classes.getId())
-                .user_register_teach_semester(classes.getUserRegisterTeachSemester().getId())
+                .semester_class_id(classes.getSemesterClass().getId())
                 .security_code(classes.getSecurity_code())
                 .name(classes.getName())
                 .create_time(classes.getCreate_time())
@@ -2231,31 +2337,31 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public Long createClass(CreateClassRequest createClassRequest) {
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                .findById(createClassRequest.getUser_register_teach_semester());
-        UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.teacher_teach_semester.not_found");
+        Optional<Teacher> teacherOpt = teacherRepository
+                .findById(createClassRequest.getTeacher_id());
+        Teacher teacher = teacherOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.teacher.not_found");
         });
 
-        List<UserRegisterJoinSemester> validUserRegisterSemesters = new ArrayList<>();
-        createClassRequest.getUser_register_join_semester().forEach(user_register_join_semester_id -> {
-            userRegisterJoinSemesterRepository.findById(user_register_join_semester_id).<Runnable>map(
-                    user_register_join_semester -> () -> validUserRegisterSemesters.add(user_register_join_semester))
+        Optional<SemesterClass> semesterClassOpt = semesterClassRepository.findById1(createClassRequest.getSemester_class_id());
+        SemesterClass semester_class = semesterClassOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.SemesterClass.not_found");
+        });
+
+        List<Student> students = new ArrayList<>();
+        createClassRequest.getStudent_ids().forEach(student_id -> {
+            studentRepository.findById(student_id).<Runnable>map(
+                    student -> () -> students.add(student))
                     .orElseThrow(() -> {
-                        throw new EntityNotFoundException(String.format("exception.user_register_join_semester.invalid",
-                                user_register_join_semester_id));
+                        throw new EntityNotFoundException(String.format("exception.student.invalid",
+                                student_id));
                     })
                     .run();
-        });
-
-        Optional<User> userOpt = userRepository.findById1(createClassRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        });      
 
         Classes savedClass = Classes.builder()
-                .user(user)
-                .userRegisterTeachSemester(teacherTeachSemester)
+                .semesterClass(semester_class)
+                .teacher(teacher)
                 .security_code(createClassRequest.getSecurity_code())
                 .name(createClassRequest.getName())
                 .link_meeting("https://meet.jit.si/" + createClassRequest.getSecurity_code())
@@ -2268,9 +2374,14 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public Long removeClassById(Long id) {
         Optional<Classes> classOpt = classRepository.findById1(id);
-        classOpt.orElseThrow(() -> {
+        Classes classx = classOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
+
+        LocalDateTime time_now = LocalDateTime.now();
+        if (time_now.isBefore(classx.getSemesterClass().getSemester().getEnd_time())) {
+            throw new ArtAgeNotDeleteException("exception.Classes.not_delete");
+        }
 
         classRepository.deleteById(id);
         return id;
@@ -2283,23 +2394,7 @@ public class ClassesServiceImpl implements ClassesService {
             throw new EntityNotFoundException("exception.Class.not_found");
         });
 
-        Optional<UserRegisterTeachSemester> teacherTeachSemesterOpt = userRegisterTeachSemesterRepository
-                .findById(createClassRequest.getUser_register_teach_semester());
-        UserRegisterTeachSemester teacherTeachSemester = teacherTeachSemesterOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.teacher_teach_semester.not_found");
-        });
-
-        Optional<User> userOpt = userRepository.findById1(createClassRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
-
         updatedClass.setName(createClassRequest.getName());
-        updatedClass.setSecurity_code(createClassRequest.getSecurity_code());
-        updatedClass.setLink_meeting("https://meet.jit.si/" + createClassRequest.getSecurity_code());
-        updatedClass.setUser(user);
-        updatedClass.setUserRegisterTeachSemester(teacherTeachSemester);
-
         return updatedClass.getId();
     }
 }

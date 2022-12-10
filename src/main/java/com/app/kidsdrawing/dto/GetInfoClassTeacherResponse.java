@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetInfoClassTeacherResponse {
     private Long id;
-    private Long user_register_teach_semester;
+    private Long semester_class_id;
+    private Long teacher_id;
     private String security_code;
     private String name;
     private float review_star;

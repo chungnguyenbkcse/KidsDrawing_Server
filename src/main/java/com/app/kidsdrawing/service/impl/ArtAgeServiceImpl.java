@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +20,14 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateArtAgeRequest;
 import com.app.kidsdrawing.dto.GetArtAgeResponse;
 import com.app.kidsdrawing.entity.ArtAge;
+import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.entity.Contest;
 import com.app.kidsdrawing.exception.ArtAgeAlreadyCreateException;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtAgeRepository;
+import com.app.kidsdrawing.repository.ClassesRepository;
+import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.service.ArtAgeService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +38,8 @@ import lombok.RequiredArgsConstructor;
 public class ArtAgeServiceImpl implements ArtAgeService {
 
     private final ArtAgeRepository artAgeRepository;
+    private final ClassesRepository classRepository;
+    private final ContestRepository contestRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllArtAge(int page, int size) {
@@ -91,6 +99,22 @@ public class ArtAgeServiceImpl implements ArtAgeService {
             throw new EntityNotFoundException("exception.ArtAge.not_found");
         });
 
+        List<Classes> listClass = classRepository.findAllByArtAge(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.ArtAge_Classes.not_delete");
+            }
+        }
+
+        List<Contest> listContest = contestRepository.findByArtAgeId1(id);
+        for (int index = 0; index < listContest.size(); index++) {
+            if (time_now.isAfter(listContest.get(index).getStart_time()) && time_now.isBefore(listContest.get(index).getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.ArtAge_Contest.not_delete");
+            }
+        }
+
         artAgeRepository.deleteById(id);
         return id;
     }
@@ -101,6 +125,7 @@ public class ArtAgeServiceImpl implements ArtAgeService {
         ArtAge updatedArtAge = artAgeOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.ArtAge.not_found");
         });
+        
         updatedArtAge.setName(createArtAgeRequest.getName());
         updatedArtAge.setDescription(createArtAgeRequest.getDescription());
         artAgeRepository.save(updatedArtAge);

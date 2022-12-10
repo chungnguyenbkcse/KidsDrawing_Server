@@ -34,12 +34,8 @@ public class TutorialTemplatePage {
     private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "toturial_template_id", referencedColumnName = "id")
-    private TutorialTemplate tutorialTemplate;
-
-
-    @Column(name = "name", nullable = false)
-    private String name;
+    @JoinColumn(name = "section_template_id", referencedColumnName = "id")
+    private SectionTemplate sectionTemplate;
 
     @Column(name = "description")
     @Lob

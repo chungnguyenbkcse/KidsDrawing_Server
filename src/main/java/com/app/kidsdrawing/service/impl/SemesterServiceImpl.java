@@ -24,29 +24,30 @@ import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.Tutorial;
-import com.app.kidsdrawing.entity.TutorialPage;
-import com.app.kidsdrawing.entity.TutorialTemplate;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.UserAttendance;
+import com.app.kidsdrawing.entity.UserAttendanceKey;
+import com.app.kidsdrawing.entity.UserReadNotification;
+import com.app.kidsdrawing.entity.UserReadNotificationKey;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClassKey;
 import com.app.kidsdrawing.entity.Holiday;
+import com.app.kidsdrawing.entity.Notification;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.SectionTemplate;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassHasRegisterJoinSemesterClassRepository;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.HolidayRepository;
+import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
-import com.app.kidsdrawing.repository.TutorialPageRepository;
-import com.app.kidsdrawing.repository.TutorialRepository;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.service.SemesterService;
 
 import lombok.RequiredArgsConstructor;
@@ -58,14 +59,11 @@ public class SemesterServiceImpl implements SemesterService {
 
     private final SemesterRepository semesterRepository;
     private final ClassesRepository classRepository;
-    private final UserRepository userRepository;
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
     private final UserAttendanceRepository userAttendanceRepository;
-    //private final EmailService emailService;
-    //private final FCMService fcmService;
-    private final TutorialRepository tutorialRepository;
-    private final TutorialPageRepository tutorialPageRepository;
+    private final UserReadNotificationRepository uuserReadNotificationRepository;
+    private final NotificationRepository notificationRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
     //private static int counter = 0;
@@ -86,7 +84,7 @@ public class SemesterServiceImpl implements SemesterService {
                     .year(semester.getYear())
                     .create_time(semester.getCreate_time())
                     .update_time(semester.getUpdate_time())
-                    .creator_id(semester.getUser().getId())
+                    
                     .build();
             allSemesterResponses.add(semesterResponse);
         });
@@ -103,18 +101,37 @@ public class SemesterServiceImpl implements SemesterService {
         LocalDateTime now = LocalDateTime.now();
         pageSemester.forEach(semester -> {
             if (now.isBefore(semester.getStart_time())) {
-                GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
-                    .id(semester.getId())
-                    .name(semester.getName())
-                    .description(semester.getDescription())
-                    .start_time(semester.getStart_time())
-                    .end_time(semester.getEnd_time())
-                    .number(semester.getNumber())
-                    .year(semester.getYear())
-                    .create_time(semester.getCreate_time())
-                    .update_time(semester.getUpdate_time())
-                    .build();
-                allSemesterResponses.add(semesterResponse);
+                int total_class = classRepository.findAllBySemester(semester.getId()).size();
+                if (total_class > 0) {
+                    GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
+                        .id(semester.getId())
+                        .name(semester.getName())
+                        .checked_genaration(true)
+                        .description(semester.getDescription())
+                        .start_time(semester.getStart_time())
+                        .end_time(semester.getEnd_time())
+                        .number(semester.getNumber())
+                        .year(semester.getYear())
+                        .create_time(semester.getCreate_time())
+                        .update_time(semester.getUpdate_time())
+                        .build();
+                    allSemesterResponses.add(semesterResponse);
+                }
+                else {
+                    GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
+                        .id(semester.getId())
+                        .name(semester.getName())
+                        .checked_genaration(false)
+                        .description(semester.getDescription())
+                        .start_time(semester.getStart_time())
+                        .end_time(semester.getEnd_time())
+                        .number(semester.getNumber())
+                        .year(semester.getYear())
+                        .create_time(semester.getCreate_time())
+                        .update_time(semester.getUpdate_time())
+                        .build();
+                    allSemesterResponses.add(semesterResponse);
+                }
             }
         });
 
@@ -279,11 +296,6 @@ public class SemesterServiceImpl implements SemesterService {
             holidayRepository.save(saveHoliday);
         }); 
 
-        Optional <User> userOpt = userRepository.findByUsername1("admin");
-        User creator = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user_creator.not_found");
-        }); 
-
         // Danh sách học sinh đăng kí học
         // Danh sách giáo viên đăng kí dạy
         check_count = 0;
@@ -295,11 +307,11 @@ public class SemesterServiceImpl implements SemesterService {
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
             Set<UserRegisterTeachSemester> allUserRegisterTeachSemesters = semester_class.getUserRegisterTeachSemesters();
 
-            Map<UserRegisterTeachSemester, Integer> list_total_register_of_teacher = new HashMap<>();
+            Map<Teacher, Integer> list_total_register_of_teacher = new HashMap<>();
 
             allUserRegisterTeachSemesters.forEach(teacher_register_teach_semester -> {
                 List<Classes> allClassForTeacherAndSemester = classRepository.findAllByTeacherAndSemester(teacher_register_teach_semester.getTeacher().getId(), id);
-                list_total_register_of_teacher.put(teacher_register_teach_semester, allClassForTeacherAndSemester.size());
+                list_total_register_of_teacher.put(teacher_register_teach_semester.getTeacher(), allClassForTeacherAndSemester.size());
             });
 
             sortByValue(list_total_register_of_teacher);
@@ -336,8 +348,8 @@ public class SemesterServiceImpl implements SemesterService {
                         String key = getSaltString();
                         System.out.println("Lop thu: " + String.valueOf(i));
                         Classes savedClass = Classes.builder()
-                            .user(creator)
-                            .userRegisterTeachSemester(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i))
+                            .teacher(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i))
+                            .semesterClass(semester_class)
                             .security_code(key)
                             .name(semester_class.getName() + "-" +  String.valueOf(number) + " thuộc học kì " + String.valueOf(semester.getNumber()) + " năm học " + String.valueOf(semester.getYear()))
                             .build();
@@ -345,14 +357,64 @@ public class SemesterServiceImpl implements SemesterService {
 
                         savedClass.setLink_meeting("https://jitsi.kidsdrawing.site/" + savedClass.getId().toString());
                         classRepository.save(savedClass);
+
+                        Notification savedNotification3 = Notification.builder()
+                            .name("Xếp lớp thành công!")
+                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí dạy lớp mở theo kì " + semester_class.getName() +   " của bạn được xếp lớp thành công!\n Chân thành cảm ơn!")
+                            .build();
+                        notificationRepository.save(savedNotification3);
+
+                        UserReadNotificationKey idxz = new UserReadNotificationKey(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getId(), savedNotification3.getId());
+            
+                        UserReadNotification savedUserReadNotification3 = UserReadNotification.builder()
+                                .id(idxz)
+                                .notification(savedNotification3)
+                                .user(new ArrayList<>(list_total_register_of_teacher.keySet()).get(i).getUser())
+                                .is_read(false)
+                                .build();
+                        uuserReadNotificationRepository.save(savedUserReadNotification3);
     
                         validUserRegisterSemesters.forEach(user_register_semester -> {
+                            
+
+                            Notification savedNotification1 = Notification.builder()
+                                .name("Xếp lớp thành công!")
+                                .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + user_register_semester.getSemesterClass().getCourse().getName() +   " của tài khoản con của bạn " + user_register_semester.getStudent().getUser().getUsername() + " được xếp lớp thành công!\n Chân thành cảm ơn!")
+                                .build();
+                            notificationRepository.save(savedNotification1);
+
+                            Notification savedNotification = Notification.builder()
+                                .name("Xếp lớp không thành công!")
+                                .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + new ArrayList<UserRegisterJoinSemester>(listUserRegisterJoinSemesters).get(0).getSemesterClass().getCourse().getName() +   " của bạn không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                                .build();
+                            notificationRepository.save(savedNotification);
+
+                            UserReadNotificationKey idxy = new UserReadNotificationKey(user_register_semester.getStudent().getId(), savedNotification.getId());
+            
+                            UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                                    .id(idxy)
+                                    .notification(savedNotification)
+                                    .user(user_register_semester.getStudent().getUser())
+                                    .is_read(false)
+                                    .build();
+                            uuserReadNotificationRepository.save(savedUserReadNotification);
+
+                            UserReadNotificationKey idxx = new UserReadNotificationKey(user_register_semester.getStudent().getParent().getId(), savedNotification1.getId());
+                            
+                            UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
+                                    .id(idxx)
+                                    .notification(savedNotification1)
+                                    .user(user_register_semester.getStudent().getParent().getUser())
+                                    .is_read(false)
+                                    .build();
+                            uuserReadNotificationRepository.save(savedUserReadNotification1);
+
                             ClassHasRegisterJoinSemesterClassKey idx = new ClassHasRegisterJoinSemesterClassKey(savedClass.getId(),user_register_semester.getId());
                             
                             ClassHasRegisterJoinSemesterClass savedClassHasRegisterJoinSemesterClass = ClassHasRegisterJoinSemesterClass.builder()
                                 .id(idx)
                                 .classes(savedClass)
-                                .userRegisterJoinSemester(user_register_semester)
+                                .student(user_register_semester.getStudent())
                                 .review_star(-1)
                                 .build();
                             classHasRegisterJoinSemesterClassRepository.save(savedClassHasRegisterJoinSemesterClass);
@@ -367,35 +429,19 @@ public class SemesterServiceImpl implements SemesterService {
                                 .name(section_template.getName())
                                 .number(section_template.getNumber())
                                 .teaching_form(section_template.getTeaching_form())
+                                .status("")
                                 .build();
                             sectionRepository.save(savedSection);
     
                             validUserRegisterSemesters.forEach(user_register_semester -> {
+                                UserAttendanceKey idxx = new UserAttendanceKey(savedSection.getId(), user_register_semester.getStudent().getId());
                                 UserAttendance savedUserAttendance = UserAttendance.builder() 
+                                    .id(idxx)
                                     .section(savedSection)
                                     .student(user_register_semester.getStudent())
                                     .status(false)
                                     .build();
                                 userAttendanceRepository.save(savedUserAttendance);
-                            });
-                            
-                            Tutorial savedTutorial = Tutorial.builder()
-                                .section(savedSection)
-                                .creator(creator)
-                                .name("Giáo trình " + section_template.getName())
-                                .build();
-                            tutorialRepository.save(savedTutorial);
-
-                            TutorialTemplate tutorialTemplate = section_template.getTutorialTemplate();
-
-                            tutorialTemplate.getTutorialTemplatePages().forEach(tutorial_page -> {
-                                TutorialPage savedTutorialPage = TutorialPage.builder()
-                                    .tutorial(savedTutorial)
-                                    .name(tutorial_page.getName())
-                                    .description(tutorial_page.getDescription())
-                                    .number(tutorial_page.getNumber())
-                                    .build();
-                                tutorialPageRepository.save(savedTutorialPage);
                             });
                         });
                     }
@@ -403,6 +449,60 @@ public class SemesterServiceImpl implements SemesterService {
                         
                     }
                 } 
+            } else {
+                if (allUserRegisterTeachSemesters.size() > 0) {
+                    allUserRegisterTeachSemesters.forEach(ele -> {
+                        Notification savedNotification = Notification.builder()
+                            .name("Xếp lớp không thành công!")
+                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí dạy lớp mở theo kì " + ele.getSemesterClass().getName() +   " của bạn không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                            .build();
+                        notificationRepository.save(savedNotification);
+                        UserReadNotificationKey idx = new UserReadNotificationKey(ele.getTeacher().getId(), savedNotification.getId());
+            
+                        UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                                .id(idx)
+                                .notification(savedNotification)
+                                .user(ele.getTeacher().getUser())
+                                .is_read(false)
+                                .build();
+                        uuserReadNotificationRepository.save(savedUserReadNotification);
+                    });
+                }
+                if (listUserRegisterJoinSemesters.size() > 0) {
+                    Notification savedNotification = Notification.builder()
+                        .name("Xếp lớp không thành công!")
+                        .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + new ArrayList<UserRegisterJoinSemester>(listUserRegisterJoinSemesters).get(0).getSemesterClass().getCourse().getName() +   " của bạn không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                        .build();
+                    notificationRepository.save(savedNotification);
+                    listUserRegisterJoinSemesters.forEach(ele -> {
+                        Notification savedNotification1 = Notification.builder()
+                            .name("Xếp lớp không thành công!")
+                            .description("Xin chào bạn!.\n Chúng tôi xin thông báo đăng kí khóa học " + ele.getSemesterClass().getCourse().getName() +   " của tài khoản con của bạn " + ele.getStudent().getUser().getUsername() + " không được xếp lớp thành công! Rất mong bạn thông cảm.\n Chân thành cảm ơn!")
+                            .build();
+                        notificationRepository.save(savedNotification1);
+
+                        UserReadNotificationKey idx = new UserReadNotificationKey(ele.getStudent().getId(), savedNotification.getId());
+            
+                        UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                                .id(idx)
+                                .notification(savedNotification)
+                                .user(ele.getStudent().getUser())
+                                .is_read(false)
+                                .build();
+                        uuserReadNotificationRepository.save(savedUserReadNotification);
+
+                        UserReadNotificationKey idxx = new UserReadNotificationKey(ele.getStudent().getParent().getId(), savedNotification1.getId());
+            
+                        UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
+                                .id(idxx)
+                                .notification(savedNotification1)
+                                .user(ele.getStudent().getParent().getUser())
+                                .is_read(false)
+                                .build();
+                        uuserReadNotificationRepository.save(savedUserReadNotification1);
+                    });
+                }
+                
             } 
             check_count ++; 
             System.out.println("Loop: " + String.valueOf(check_count));
@@ -441,16 +541,13 @@ public class SemesterServiceImpl implements SemesterService {
                 .year(semester.getYear())
                 .create_time(semester.getCreate_time())
                 .update_time(semester.getUpdate_time())
-                .creator_id(semester.getUser().getId())
+                
                 .build();
     }
 
     @Override
     public Long createSemester(CreateSemesterRequest createSemesterRequest) {
-        Optional<User> userOpt = userRepository.findById1(createSemesterRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         Semester savedSemester = Semester.builder()
                 .name(createSemesterRequest.getName())
@@ -459,7 +556,6 @@ public class SemesterServiceImpl implements SemesterService {
                 .year(createSemesterRequest.getYear())
                 .start_time(createSemesterRequest.getStart_time())
                 .end_time(createSemesterRequest.getStart_time().plusMonths(3))
-                .user(user)
                 .build();
         semesterRepository.save(savedSemester);
 
@@ -473,6 +569,15 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
+        List<Classes> listClass = classRepository.findAllBySemester(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.Course_Classes.not_delete");
+            }
+        }
+
         semesterRepository.deleteById(id);
         return id;
     }
@@ -484,10 +589,7 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById1(createSemesterRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         updatedSemester.setName(createSemesterRequest.getName());
         updatedSemester.setDescription(createSemesterRequest.getDescription());
@@ -495,7 +597,6 @@ public class SemesterServiceImpl implements SemesterService {
         updatedSemester.setYear(createSemesterRequest.getYear());
         updatedSemester.setStart_time(createSemesterRequest.getStart_time());
         updatedSemester.setEnd_time(createSemesterRequest.getStart_time().plusMonths(3));
-        updatedSemester.setUser(user);
         semesterRepository.save(updatedSemester);
 
         return updatedSemester.getId();

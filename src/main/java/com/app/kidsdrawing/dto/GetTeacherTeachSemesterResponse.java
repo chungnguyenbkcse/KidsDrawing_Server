@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class GetTeacherTeachSemesterResponse {
     private Long id;
     private Long teacher_id;
-    private Long reviewer_id;
+    
     private Long semester_classes_id;
     private Boolean status;
     private LocalDateTime time;

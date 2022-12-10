@@ -50,6 +50,9 @@ public class Section {
     @Column(name = "teaching_form")
     private Boolean teaching_form;
 
+    @Column(name = "status")
+    private String status;
+
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp
@@ -70,11 +73,8 @@ public class Section {
     private Set<Exercise> exercises;
 
     @OneToMany(mappedBy="section")
-    private Set<UserRegisterTutorial> userRegisterTutorials;
+    private Set<TutorialPage> tutorial_pages;
 
     @OneToMany(mappedBy="section")
     private Set<UserAttendance> userAttendances;
-
-    /* @OneToOne(mappedBy="section", fetch = FetchType.LAZY)
-    private Tutorial tutorial; */
 }

@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetTutorialTemplatePageResponse {
     private Long id;
-    private Long tutorial_template_id;
-    private String name;
+    private Long section_template_id;
     private String description;
     private Integer number; 
 }

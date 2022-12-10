@@ -17,11 +17,12 @@ import com.app.kidsdrawing.dto.CreateUserAttendanceRequest;
 import com.app.kidsdrawing.dto.GetCheckUserAttendanceResponse;
 import com.app.kidsdrawing.dto.GetUserAttendanceResponse;
 import com.app.kidsdrawing.entity.UserAttendance;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.UserAttendanceKey;
 import com.app.kidsdrawing.entity.Section;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
-import com.app.kidsdrawing.repository.UserRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.service.UserAttendanceService;
 
@@ -34,7 +35,7 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
     
     private final UserAttendanceRepository userAttendanceRepository;
     private final SectionRepository sectionRepository;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllUserAttendance() {
@@ -42,15 +43,14 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         List<UserAttendance> listUserAttendance = userAttendanceRepository.findAll();
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
-                .id(content.getId())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
-                .course_id(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getId())
-                .course_name(content.getSection().getClasses().getUserRegisterTeachSemester().getSemesterClass().getCourse().getName())
-                .email(content.getStudent().getEmail())
+                .course_id(content.getSection().getClasses().getSemesterClass().getCourse().getId())
+                .course_name(content.getSection().getClasses().getSemesterClass().getCourse().getName())
+                .email(content.getStudent().getUser().getEmail())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -69,13 +69,12 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         List<UserAttendance> listUserAttendance = userAttendanceRepository.findBySectionId2(id);
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
-                .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -86,6 +85,22 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         Map<String, Object> response = new HashMap<>();
         response.put("UserAttendance", allUserAttendanceResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public GetCheckUserAttendanceResponse checkUserAttendanceBySectionAndParent(Long section_id, Long parent) {
+        List<UserAttendance> userAttendanceOpt = userAttendanceRepository.findBySectionIdAndParentId(section_id, parent);
+        for (int i = 0; i < userAttendanceOpt.size(); i++) {
+            if (userAttendanceOpt.get(i).getStatus() == true) {
+                return GetCheckUserAttendanceResponse.builder()
+                .status(true)
+                .build();
+            }
+        }
+
+        return GetCheckUserAttendanceResponse.builder()
+                .status(false)
+                .build();
     }
 
     @Override
@@ -106,13 +121,12 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         List<UserAttendance> listUserAttendance = userAttendanceRepository.findByStudentId2(id);
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
-                .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -132,13 +146,12 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         List<UserAttendance> listUserAttendance = userAttendanceRepository.findByClassIdAndStudentId(classes_id, student_id);
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
-                .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -157,13 +170,12 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
         List<UserAttendance> listUserAttendance = userAttendanceRepository.findByClassId(classes_id);
         listUserAttendance.forEach(content -> {
             GetUserAttendanceResponse userAttendanceResponse = GetUserAttendanceResponse.builder()
-                .id(content.getId())
                 .section_number(content.getSection().getNumber())
-                .email(content.getStudent().getEmail())
+                .email(content.getStudent().getUser().getEmail())
                 .section_id(content.getSection().getId())
                 .student_id(content.getStudent().getId())
                 .section_name(content.getSection().getName())
-                .student_name(content.getStudent().getFirstName() + " " + content.getStudent().getLastName())
+                .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .create_time(content.getCreateTime())
                 .update_time(content.getUpdateTime())
                 .status(content.getStatus())
@@ -187,36 +199,12 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         }
         return GetUserAttendanceResponse.builder()
-            .id(userAttendance.getId())
             .section_number(userAttendance.getSection().getNumber())
-            .email(userAttendance.getStudent().getEmail())
+            .email(userAttendance.getStudent().getUser().getEmail())
             .section_id(userAttendance.getSection().getId())
             .student_id(userAttendance.getStudent().getId())
             .section_name(userAttendance.getSection().getName())
-            .student_name(userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
-            .create_time(userAttendance.getCreateTime())
-            .update_time(userAttendance.getUpdateTime())
-            .status(userAttendance.getStatus())
-            .build();
-    }
-
-
-
-    @Override
-    public GetUserAttendanceResponse getUserAttendanceById(Long id) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById2(id);
-        UserAttendance userAttendance = userAttendanceOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.UserAttendance.not_found");
-        });
-
-        return GetUserAttendanceResponse.builder()
-            .id(userAttendance.getId())
-            .section_number(userAttendance.getSection().getNumber())
-            .email(userAttendance.getStudent().getEmail())
-            .section_id(userAttendance.getSection().getId())
-            .student_id(userAttendance.getStudent().getId())
-            .section_name(userAttendance.getSection().getName())
-            .student_name(userAttendance.getStudent().getFirstName() + " " + userAttendance.getStudent().getLastName())
+            .student_name(userAttendance.getStudent().getUser().getUsername() + " - " + userAttendance.getStudent().getUser().getFirstName() + " " + userAttendance.getStudent().getUser().getLastName())
             .create_time(userAttendance.getCreateTime())
             .update_time(userAttendance.getUpdateTime())
             .status(userAttendance.getStatus())
@@ -231,36 +219,28 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById1(createUserAttendanceRequest.getStudent_id());
-        User student = userOpt.orElseThrow(() -> {
+        Optional <Student> userOpt = studentRepository.findById1(createUserAttendanceRequest.getStudent_id());
+        Student student = userOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.user_creator.not_found");
         });
+
+        UserAttendanceKey id = new UserAttendanceKey(student.getId(),section.getId());
         
         UserAttendance savedUserAttendance = UserAttendance.builder()
+                .id(id)
                 .section(section)
                 .student(student)
                 .status(createUserAttendanceRequest.getStatus())
                 .build();
         userAttendanceRepository.save(savedUserAttendance);
 
-        return savedUserAttendance.getId();
+        return savedUserAttendance.getStudent().getId();
     }
 
-    
-    @Override
-    public Long removeUserAttendanceById(Long id) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById1(id);
-        userAttendanceOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.UserAttendance.not_found");
-        });
-
-        userAttendanceRepository.deleteById(id);
-        return id;
-    }
 
     @Override
-    public Long updateUserAttendanceById(Long id, CreateUserAttendanceRequest createUserAttendanceRequest) {
-        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findById1(id);
+    public Long updateUserAttendanceById(CreateUserAttendanceRequest createUserAttendanceRequest) {
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findBySectionIdAndStudentId(createUserAttendanceRequest.getSection_id(), createUserAttendanceRequest.getStudent_id());
         UserAttendance updatedUserAttendance = userAttendanceOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
@@ -270,27 +250,26 @@ public class UserAttendanceServiceImpl implements UserAttendanceService{
             throw new EntityNotFoundException("exception.section.not_found");
         });
 
-        Optional <User> userOpt = userRepository.findById1(createUserAttendanceRequest.getStudent_id());
-        User student = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.student.not_found");
+        Optional <Student> userOpt = studentRepository.findById1(createUserAttendanceRequest.getStudent_id());
+        Student student = userOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.user_creator.not_found");
         });
 
         updatedUserAttendance.setStatus(createUserAttendanceRequest.getStatus());
         updatedUserAttendance.setSection(section);
         updatedUserAttendance.setStudent(student);
 
-        return updatedUserAttendance.getId();
+        return updatedUserAttendance.getStudent().getId();
     }
 
     @Override
     public Long updateUserAttendanceBySectionAndStudent(Long section_id, Long student_id) {
-        List<UserAttendance> userAttendanceOpt = userAttendanceRepository.findAll();
-        System.out.print(userAttendanceOpt.size());
-        userAttendanceOpt.forEach(ele -> {
-            if (ele.getStudent().getId().compareTo(student_id) == 0 && ele.getSection().getId().compareTo(section_id) == 0){
-                ele.setStatus(true);
-            }
+        Optional<UserAttendance> userAttendanceOpt = userAttendanceRepository.findBySectionIdAndStudentId(section_id, student_id);
+        UserAttendance updatedUserAttendance = userAttendanceOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.UserAttendance.not_found");
         });
+
+        updatedUserAttendance.setStatus(true);
 
         return section_id;
     }

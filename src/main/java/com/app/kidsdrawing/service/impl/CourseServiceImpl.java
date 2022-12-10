@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -32,9 +32,10 @@ import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Course;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.SemesterClass;
-import com.app.kidsdrawing.entity.User;
+import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.UserRegisterJoinSemester;
 import com.app.kidsdrawing.entity.UserRegisterTeachSemester;
+import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.CourseAlreadyCreateException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ArtAgeRepository;
@@ -45,9 +46,9 @@ import com.app.kidsdrawing.repository.CourseRepository;
 import com.app.kidsdrawing.repository.ScheduleRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
+import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
-import com.app.kidsdrawing.repository.UserRepository;
 import com.app.kidsdrawing.service.CourseService;
 
 import lombok.RequiredArgsConstructor;
@@ -58,11 +59,11 @@ import lombok.RequiredArgsConstructor;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
     private final ArtAgeRepository artAgeRepository;
     private final ArtTypeRepository artTypeRepository;
     private final ArtLevelRepository artLevelRepository;
     private final ClassesRepository classRepository;
+    private final StudentRepository studentRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final SemesterClassRepository semesterClassRepository;
@@ -85,7 +86,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
@@ -183,7 +184,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
@@ -239,7 +240,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -264,17 +265,17 @@ public class CourseServiceImpl implements CourseService {
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByPayerId2(id);
         System.out.println(userRegisterJoinSemesters.size());
         List<Course> listCourseRegisted = new ArrayList<>();
-        Map<String, Set<User>> res = new HashMap<>();
+        Map<String, Set<Student>> res = new HashMap<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
             if (user_register_join_semester.getStatus().equals("Completed")){
                 listCourseRegisted.add(user_register_join_semester.getSemesterClass().getCourse());
                 if (res.containsKey(user_register_join_semester.getSemesterClass().getCourse().getName()) == false) {
-                    Set<User> users = new HashSet<>();
+                    Set<Student> users = new HashSet<>();
                     users.add(user_register_join_semester.getStudent());
                     res.put(user_register_join_semester.getSemesterClass().getCourse().getName(), users);
                 }
                 else {
-                    Set<User> users = res.get(user_register_join_semester.getSemesterClass().getCourse().getName());
+                    Set<Student> users = res.get(user_register_join_semester.getSemesterClass().getCourse().getName());
                     users.add(user_register_join_semester.getStudent());
                     res.replace(user_register_join_semester.getSemesterClass().getCourse().getName(), users);
                 }
@@ -292,15 +293,19 @@ public class CourseServiceImpl implements CourseService {
             }
         });
 
-        List<Course> allCourses = courseRepository.findAll1();
+        List<Course> allCourses = courseRepository.findAll5();
         allCourses.forEach(course -> {
             if (listCourseRegisted.contains(course) == false) {
                 total = 0;
-                total_register = userRegisterJoinSemesterRepository.findByCourse(course.getId()).size();
+                total_register = 0;
 
                 Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
 
                 allSemesterClass.forEach(semester_course -> {
+                    total_register += semester_course.getUserRegisterJoinSemesters()
+                    .stream()
+                    .filter(c -> c.getStatus().equals("Completed"))
+                    .collect(Collectors.toList()).size();
                     if (semesterNexts.contains(semester_course.getSemester())){
                         total ++;
                     }
@@ -312,7 +317,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
@@ -330,21 +335,24 @@ public class CourseServiceImpl implements CourseService {
             }
             else {
                 total = 0;
+                total_register = 0;
                 Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
 
                 allSemesterClass.forEach(semester_course -> {
+                    total_register += semester_course.getUserRegisterJoinSemesters().stream()
+                    .filter(c -> c.getStatus().equals("Completed"))
+                    .collect(Collectors.toList()).size();
                     if (semesterNexts.contains(semester_course.getSemester())){
                         total ++;
                     }
                 });
 
                 
-                total_register = userRegisterJoinSemesterRepository.findByCourse(course.getId()).size();
                 Set<String> student_names = new HashSet<>();
                 Set<Long> student_ids = new HashSet<>();
                 if (res.containsKey(course.getName())){
                     res.get(course.getName()).forEach(ele -> {
-                        student_names.add(ele.getUsername());
+                        student_names.add(ele.getUser().getUsername() + " " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName());
                         student_ids.add(ele.getId());
                     });
                 }
@@ -356,7 +364,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_type_id(course.getArtTypes().getId())
                     .art_level_id(course.getArtLevels().getId())
@@ -414,7 +422,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -443,7 +451,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -473,7 +481,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -493,13 +501,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllCourseByParentId(Long id) {
         List<GetCourseParentResponse> allCourseRegistedResponses = new ArrayList<>();
-        List<User> pageUser = userRepository.findByParentId3(id);
+        List<Student> pageUser = studentRepository.findByParentId3(id);
         List<Course> listCourseRegistered = new ArrayList<>();
         List<GetCourseParentResponse> listCourseNotRegistered = new ArrayList<>();
         List<Course> allCourse = courseRepository.findAll1();
 
         pageUser.forEach(student -> {
-            student.getUserRegisterJoinSemesters2().forEach(course -> {
+            student.getUserRegisterJoinSemesters().forEach(course -> {
                 if (course.getStatus().equals("Completed")) {
                     listCourseRegistered.add(course.getSemesterClass().getCourse());
                     GetCourseParentResponse courseResponse = GetCourseParentResponse.builder()
@@ -509,7 +517,7 @@ public class CourseServiceImpl implements CourseService {
                         .num_of_section(course.getSemesterClass().getCourse().getNum_of_section())
                         .image_url(course.getSemesterClass().getCourse().getImage_url())
                         .price(course.getSemesterClass().getCourse().getPrice())
-                        .is_enabled(course.getSemesterClass().getCourse().getIs_enabled())
+                        
                         .art_age_id(course.getSemesterClass().getCourse().getArtAges().getId())
                         .art_age_name(course.getSemesterClass().getCourse().getArtAges().getName())
                         .art_type_id(course.getSemesterClass().getCourse().getArtTypes().getId())
@@ -520,7 +528,7 @@ public class CourseServiceImpl implements CourseService {
                         .create_time(course.getSemesterClass().getCourse().getCreate_time())
                         .update_time(course.getSemesterClass().getCourse().getUpdate_time())
                         .student_id(student.getId())
-                        .student_name(student.getFirstName() + " " + student.getLastName())
+                        .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                         .build();
                     allCourseRegistedResponses.add(courseResponse);
                 }
@@ -537,7 +545,7 @@ public class CourseServiceImpl implements CourseService {
                         .num_of_section(course.getNum_of_section())
                         .image_url(course.getImage_url())
                         .price(course.getPrice())
-                        .is_enabled(course.getIs_enabled())
+                        
                         .art_age_id(course.getArtAges().getId())
                         .art_age_name(course.getArtAges().getName())
                         .art_type_id(course.getArtTypes().getId())
@@ -548,7 +556,7 @@ public class CourseServiceImpl implements CourseService {
                         .create_time(course.getCreate_time())
                         .update_time(course.getUpdate_time())
                         .student_id(student.getId())
-                        .student_name(student.getFirstName() + " " + student.getLastName())
+                        .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName() + " " + student.getUser().getLastName())
                         .build();
                     listCourseNotRegistered.add(courseResponse);
                 }
@@ -577,7 +585,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(user_register_join_semester.getSemesterClass().getCourse().getNum_of_section())
                     .image_url(user_register_join_semester.getSemesterClass().getCourse().getImage_url())
                     .price(user_register_join_semester.getSemesterClass().getCourse().getPrice())
-                    .is_enabled(user_register_join_semester.getSemesterClass().getCourse().getIs_enabled())
+                    
                     .art_age_id(user_register_join_semester.getSemesterClass().getCourse().getArtAges().getId())
                     .art_age_name(user_register_join_semester.getSemesterClass().getCourse().getArtAges().getName())
                     .art_type_id(user_register_join_semester.getSemesterClass().getCourse().getArtTypes().getId())
@@ -600,7 +608,7 @@ public class CourseServiceImpl implements CourseService {
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
-                    .is_enabled(course.getIs_enabled())
+                    
                     .art_age_id(course.getArtAges().getId())
                     .art_age_name(course.getArtAges().getName())
                     .art_type_id(course.getArtTypes().getId())
@@ -681,15 +689,12 @@ public class CourseServiceImpl implements CourseService {
         List<Classes> allClassResponses = new ArrayList<>();
         List<Classes> listClass = classRepository.findAll();
 
-        // Danh sach dang ki giao vien duoc xep lop
-        List<UserRegisterTeachSemester> allTeacherRegisterSuccessfullTeachSemesterResponses = new ArrayList<>();
         // Danh sach khoa hoc theo ki giao vien chua dang ki
         List<SemesterClass> allRegisterSuccessfullSemesterClass = new ArrayList<>();
         // Danh sach dang ki nhung khong duoc xep lop
         listClass.forEach(ele -> {
-            if (allTeacherTeachSemesterResponses.contains(ele.getUserRegisterTeachSemester())){
-                allTeacherRegisterSuccessfullTeachSemesterResponses.add(ele.getUserRegisterTeachSemester());
-                allRegisterSuccessfullSemesterClass.add(ele.getUserRegisterTeachSemester().getSemesterClass());
+            if (ele.getTeacher().getId() == id){
+                allRegisterSuccessfullSemesterClass.add(ele.getSemesterClass());
                 allClassResponses.add(ele);
             }
         });
@@ -785,7 +790,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -809,7 +814,7 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(course.getNum_of_section())
                 .image_url(course.getImage_url())
                 .price(course.getPrice())
-                .is_enabled(course.getIs_enabled())
+                
                 .art_age_id(course.getArtAges().getId())
                 .art_type_id(course.getArtTypes().getId())
                 .art_level_id(course.getArtLevels().getId())
@@ -825,10 +830,7 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseAlreadyCreateException("exception.course.course_taken");
         }
 
-        Optional<User> userOpt = userRepository.findById1(createCourseRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createCourseRequest.getArt_age_id());
         ArtAge artAge = artAgeOpt.orElseThrow(() -> {
@@ -852,8 +854,8 @@ public class CourseServiceImpl implements CourseService {
                 .num_of_section(createCourseRequest.getNum_of_section())
                 .image_url(createCourseRequest.getImage_url())
                 .price(createCourseRequest.getPrice())
-                .is_enabled(createCourseRequest.getIs_enabled())
-                .user(user)
+                
+                
                 .artAges(artAge)
                 .artTypes(artType)
                 .artLevels(artLevel)
@@ -869,6 +871,16 @@ public class CourseServiceImpl implements CourseService {
         courseOpt.orElseThrow(() -> {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
+
+        List<Classes> listClass = classRepository.findAllByCourse(id);
+        LocalDateTime time_now = LocalDateTime.now();
+
+        for (int i = 0; i < listClass.size(); i++) {
+            if (time_now.isBefore(listClass.get(i).getSemesterClass().getSemester().getEnd_time())) {
+                throw new ArtAgeNotDeleteException("exception.Course_Classes.not_delete");
+            }
+        }
+
         courseRepository.deleteById(id);
         return id;
     }
@@ -880,10 +892,7 @@ public class CourseServiceImpl implements CourseService {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
 
-        Optional<User> userOpt = userRepository.findById1(createCourseRequest.getCreator_id());
-        User user = userOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.user.not_found");
-        });
+        
 
         Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createCourseRequest.getArt_age_id());
         ArtAge artAge = artAgeOpt.orElseThrow(() -> {
@@ -904,7 +913,6 @@ public class CourseServiceImpl implements CourseService {
         updatedCourse.setNum_of_section(createCourseRequest.getNum_of_section());
         updatedCourse.setImage_url(createCourseRequest.getImage_url());
         updatedCourse.setPrice(createCourseRequest.getPrice());
-        updatedCourse.setUser(user);
         updatedCourse.setArtAges(artAge);
         updatedCourse.setArtTypes(artType);
         updatedCourse.setArtLevels(artLevel);

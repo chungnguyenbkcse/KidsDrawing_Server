@@ -48,6 +48,9 @@ public class SemesterClass {
     @OneToMany(mappedBy="semesterClass")
     private Set<Schedule> schedules;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     @OneToMany(mappedBy="semesterClass")
     private Set<UserRegisterTeachSemester> userRegisterTeachSemesters;
 
@@ -62,4 +65,8 @@ public class SemesterClass {
 
     @Column(name = "registration_expiration_time")
     private LocalDateTime registration_expiration_time;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 }

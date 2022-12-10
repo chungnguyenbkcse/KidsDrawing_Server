@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +65,12 @@ public class UserAttendanceController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/section-parent-check/{section_id}/{parent_id}")
+    public ResponseEntity<GetCheckUserAttendanceResponse> checkUserAttendanceBySectionAndParent(@PathVariable("section_id") Long section_id, @PathVariable("parent_id") Long parent_id) {
+        return ResponseEntity.ok().body(tutorialTemplate.checkUserAttendanceBySectionAndParent(section_id, parent_id));
+    }
+
+    @CrossOrigin
     @PutMapping(value = "/section-student/{section_id}/{student_id}")
     public ResponseEntity<GetUserAttendanceResponse> putUserAttendanceBySectionAndStudent(@PathVariable("section_id") Long section_id, @PathVariable("student_id") Long student_id) {
         Long tutorialPageId = tutorialTemplate.updateUserAttendanceBySectionAndStudent(section_id, student_id);
@@ -91,23 +96,8 @@ public class UserAttendanceController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateUserAttendance(@PathVariable Long id, @RequestBody CreateUserAttendanceRequest createUserAttendanceRequest) {
-        Long tutorialPageId = tutorialTemplate.updateUserAttendanceById(id,createUserAttendanceRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-                .buildAndExpand(tutorialPageId).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @CrossOrigin
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<GetUserAttendanceResponse> getUserAttendanceById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(tutorialTemplate.getUserAttendanceById(id));
-    }
-
-    @CrossOrigin
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteUserAttendanceById(@PathVariable Long id) {
-        Long tutorialPageId = tutorialTemplate.removeUserAttendanceById(id);
+    public ResponseEntity<String> updateUserAttendance(@RequestBody CreateUserAttendanceRequest createUserAttendanceRequest) {
+        Long tutorialPageId = tutorialTemplate.updateUserAttendanceById(createUserAttendanceRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(tutorialPageId).toUri();
         return ResponseEntity.created(location).build();

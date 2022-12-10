@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetUserRegisterTutorialResponse {
     private Long id;
-    private Long creator_id;
+    
     private Long section_id;
     private int section_number;
     private String class_name;

@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,7 +30,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "classes")
 public class Classes {
@@ -40,12 +39,16 @@ public class Classes {
     private Long  id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "semester_class_id", referencedColumnName = "id")
+    private SemesterClass semesterClass;
 
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_register_teach_semester_id", referencedColumnName = "id")
-    private UserRegisterTeachSemester userRegisterTeachSemester;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private Teacher teacher;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private Admin admin;
 
     @Column(name = "security_code", nullable = false, unique = true)
     private String security_code;
@@ -55,6 +58,9 @@ public class Classes {
 
     @Column(name = "link_meeting")
     private String link_meeting;
+
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @Builder.Default()
     @Column(name = "create_time")
@@ -68,12 +74,6 @@ public class Classes {
 
     @OneToMany(mappedBy="classes")
     private Set<Section> sections;
-
-    @OneToMany(mappedBy="classes")
-    private Set<TeacherLeave> teacherLeaves;
-
-    @OneToMany(mappedBy="classes")
-    private Set<StudentLeave> studentLeaves;
 
     @OneToMany(mappedBy="classes")
     private Set<ClassHasRegisterJoinSemesterClass> classHasRegisterJoinSemesterClasses;
