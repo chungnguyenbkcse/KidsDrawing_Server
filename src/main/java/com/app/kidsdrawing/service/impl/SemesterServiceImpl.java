@@ -1,8 +1,10 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.app.kidsdrawing.dto.CreateHolidayRequest;
 import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.entity.Semester;
@@ -73,10 +74,17 @@ public class SemesterServiceImpl implements SemesterService {
     public ResponseEntity<Map<String, Object>> getAllSemester() {
         List<GetSemesterResponse> allSemesterResponses = new ArrayList<>();
         List<Semester> pageSemester = semesterRepository.findAll();
+
         pageSemester.forEach(semester -> {
+            List<Holiday> pageHoliday = holidayRepository.findBySemesterId(semester.getId());
+            List<LocalDate> holidayTime = new ArrayList<>();
+            pageHoliday.forEach(holiday -> {
+                holidayTime.add(holiday.getDay());
+            });
             GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
                     .id(semester.getId())
                     .name(semester.getName())
+                    .holiday(new HashSet<>(holidayTime))
                     .description(semester.getDescription())
                     .start_time(semester.getStart_time())
                     .end_time(semester.getEnd_time())
@@ -102,12 +110,19 @@ public class SemesterServiceImpl implements SemesterService {
         pageSemester.forEach(semester -> {
             if (now.isBefore(semester.getStart_time())) {
                 int total_class = classRepository.findAllBySemester(semester.getId()).size();
+                List<Holiday> pageHoliday = holidayRepository.findBySemesterId(semester.getId());
+                List<LocalDate> holidayTime = new ArrayList<>();
+                pageHoliday.forEach(holiday -> {
+                    holidayTime.add(holiday.getDay());
+                });
                 if (total_class > 0) {
+                    
                     GetSemesterResponse semesterResponse = GetSemesterResponse.builder()
                         .id(semester.getId())
                         .name(semester.getName())
                         .checked_genaration(true)
                         .description(semester.getDescription())
+                        .holiday(new HashSet<>(holidayTime))
                         .start_time(semester.getStart_time())
                         .end_time(semester.getEnd_time())
                         .number(semester.getNumber())
@@ -125,6 +140,7 @@ public class SemesterServiceImpl implements SemesterService {
                         .description(semester.getDescription())
                         .start_time(semester.getStart_time())
                         .end_time(semester.getEnd_time())
+                        .holiday(new HashSet<>(holidayTime))
                         .number(semester.getNumber())
                         .year(semester.getYear())
                         .create_time(semester.getCreate_time())
@@ -277,7 +293,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public Long setClassForSemester(Long id, int partion, int min, int max, CreateHolidayRequest createHolidayResquest) {
+    public Long setClassForSemester(Long id, int partion, int min, int max) {
         // Lấy học kì
         Optional<Semester> semesterOpt = semesterRepository.findById3(id);
         Semester semester = semesterOpt.orElseThrow(() -> {
@@ -287,14 +303,6 @@ public class SemesterServiceImpl implements SemesterService {
         Set<SemesterClass> allSemesterClassBySemester = semester.getSemesterClass();
 
         System.out.println("Total semester class in semester: " + String.valueOf(allSemesterClassBySemester.size()));
-        
-        createHolidayResquest.getTime().forEach(holiday -> {
-            Holiday saveHoliday = Holiday.builder()
-                .day(holiday)
-                .semester(semester)
-                .build();
-            holidayRepository.save(saveHoliday);
-        }); 
 
         // Danh sách học sinh đăng kí học
         // Danh sách giáo viên đăng kí dạy
@@ -531,6 +539,12 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
+        List<Holiday> pageHoliday = holidayRepository.findBySemesterId(semester.getId());
+        List<LocalDate> holidayTime = new ArrayList<>();
+        pageHoliday.forEach(holiday -> {
+            holidayTime.add(holiday.getDay());
+        });
+
         return GetSemesterResponse.builder()
                 .id(semester.getId())
                 .name(semester.getName())
@@ -541,14 +555,13 @@ public class SemesterServiceImpl implements SemesterService {
                 .year(semester.getYear())
                 .create_time(semester.getCreate_time())
                 .update_time(semester.getUpdate_time())
-                
+                .holiday(new HashSet<>(holidayTime))
                 .build();
     }
 
     @Override
     public Long createSemester(CreateSemesterRequest createSemesterRequest) {
         
-
         Semester savedSemester = Semester.builder()
                 .name(createSemesterRequest.getName())
                 .description(createSemesterRequest.getDescription())
@@ -558,6 +571,14 @@ public class SemesterServiceImpl implements SemesterService {
                 .end_time(createSemesterRequest.getStart_time().plusMonths(3))
                 .build();
         semesterRepository.save(savedSemester);
+
+        createSemesterRequest.getTime().forEach(holiday -> {
+            Holiday saveHoliday = Holiday.builder()
+                .day(holiday)
+                .semester(savedSemester)
+                .build();
+            holidayRepository.save(saveHoliday);
+        });
 
         return savedSemester.getId();
     }
@@ -589,7 +610,21 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        
+        List<Holiday> pageHoliday = holidayRepository.findBySemesterId(id);
+        List<LocalDate> holidayTime = new ArrayList<>();
+        pageHoliday.forEach(holiday -> {
+            holidayTime.add(holiday.getDay());
+        });
+
+        holidayRepository.deleteAll(pageHoliday);
+
+        createSemesterRequest.getTime().forEach(holiday -> {
+            Holiday saveHoliday = Holiday.builder()
+                .day(holiday)
+                .semester(updatedSemester)
+                .build();
+            holidayRepository.save(saveHoliday);
+        });
 
         updatedSemester.setName(createSemesterRequest.getName());
         updatedSemester.setDescription(createSemesterRequest.getDescription());

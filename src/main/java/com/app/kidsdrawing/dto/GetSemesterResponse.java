@@ -1,7 +1,9 @@
 package com.app.kidsdrawing.dto;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +24,7 @@ public class GetSemesterResponse {
     private Integer year;
     private LocalDateTime start_time;
     private LocalDateTime end_time;
-    
+    private Set<LocalDate> holiday;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }
