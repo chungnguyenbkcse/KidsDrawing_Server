@@ -3,6 +3,7 @@ package com.app.kidsdrawing.service.impl;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,8 @@ import com.app.kidsdrawing.dto.GetSemesterClassResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassStudentResponse;
 import com.app.kidsdrawing.dto.GetSemesterClassTeacherNewResponse;
 import com.app.kidsdrawing.entity.Course;
+import com.app.kidsdrawing.entity.Holiday;
+import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.Semester;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.SemesterClass;
@@ -34,6 +37,8 @@ import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.exception.SemesterClassAlreadyCreateException;
 import com.app.kidsdrawing.repository.CourseRepository;
+import com.app.kidsdrawing.repository.HolidayRepository;
+import com.app.kidsdrawing.repository.LessonTimeRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
@@ -51,12 +56,16 @@ public class SemesterClassServiceImpl implements SemesterClassService {
     private final SemesterClassRepository semesterClassRepository;
     private final SemesterRepository semesterRepository;
     private final CourseRepository courseRepository;
+    private final HolidayRepository holidayRepository;
     private final StudentRepository studentRepository;
+    private final LessonTimeRepository lessonTimeRepository;
     private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
     private final ClassesRepository classRepository;
     private static String schedule = "";
     private static int total_register = 0;
+    private static int total_section_count = 0;
+    private static int week_count = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSemesterClass1() {
@@ -722,6 +731,110 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             throw new SemesterClassAlreadyCreateException("exception.semester_name.time_error");
         }
 
+        List<Holiday> pageHoliday = holidayRepository.findBySemesterId(semester.getId());
+        List<LocalDate> holidayTime = new ArrayList<>();
+        pageHoliday.forEach(holiday -> {
+            holidayTime.add(holiday.getDay());
+        });
+
+        List<Map<String, List<List<LocalDateTime>>>> allCalendarForSemesterClass = new ArrayList<>();
+        Integer total_section = course.getNum_of_section();
+        System.out.printf("total_section: %d\n", total_section);
+        System.out.printf("total_number_week: %d\n", createSemesterClassRequest.getDate_of_weeks().size());
+        int total_week = total_section / createSemesterClassRequest.getDate_of_weeks().size();
+        if (total_section % createSemesterClassRequest.getDate_of_weeks().size() != 0) {
+            total_week++;
+        }
+
+        System.out.printf("total_week: %d\n", total_week);
+        total_section_count = 0;
+        LocalDateTime start_time = semester.getStart_time();
+        week_count = 0;
+        while (total_section_count < total_section) {
+            List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
+            if (createSemesterClassRequest.getDate_of_weeks().size() > 1) {
+                for (int idx = 0; idx < createSemesterClassRequest.getDate_of_weeks().size(); idx++) {
+                    Integer dayOfWeek = createSemesterClassRequest.getDate_of_weeks().get(idx);
+
+                    Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(createSemesterClassRequest.getLesson_time_ids().get(idx));
+                    LessonTime lessonTime = lessonTimeOpt.orElseThrow(() -> {
+                        throw new EntityNotFoundException("exception.LessonTime.not_found");
+                    });
+
+                    LocalTime start_lessontime = lessonTime.getStart_time();
+                    LocalTime end_lessontime = lessonTime.getEnd_time();
+                    // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                    System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                    List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    if (total_section_count < total_section) {
+                        LocalDate start_date = start_time.toLocalDate();
+                        if (holidayTime.contains(start_date) == false) {
+                            lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                            lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                            total_section_count++;
+                            System.out.print(start_time.plusMinutes(45).toString());
+                        }
+                    }
+                    lesson_time_in_week.add(lesson_time_in_day);
+                }
+            } else {
+                for (int idx = 0; idx < createSemesterClassRequest.getDate_of_weeks().size(); idx++) {
+                    Integer dayOfWeek = createSemesterClassRequest.getDate_of_weeks().get(idx);
+
+                    Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(createSemesterClassRequest.getLesson_time_ids().get(idx));
+                    LessonTime lessonTime = lessonTimeOpt.orElseThrow(() -> {
+                        throw new EntityNotFoundException("exception.LessonTime.not_found");
+                    });
+
+                    LocalTime start_lessontime = lessonTime.getStart_time();
+                    LocalTime end_lessontime = lessonTime.getEnd_time();
+                    // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                    System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                    List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    if (total_section_count < total_section) {
+                        LocalDate start_date = start_time.toLocalDate();
+                        if (holidayTime.contains(start_date) == false) {
+                            lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                            lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                            total_section_count++;
+                            System.out.print(start_time.plusMinutes(45).toString());
+                        }
+                    }
+                    lesson_time_in_week.add(lesson_time_in_day);
+                }
+            }
+            Map<String, List<List<LocalDateTime>>> schedule_in_week = new HashMap<>();
+            String name = "week_" + week_count;
+            schedule_in_week.put(name, lesson_time_in_week);
+            allCalendarForSemesterClass.add(schedule_in_week);
+            // start_time = start_time.plusWeeks(1);
+            week_count++;
+        }
+
+        System.out.print(start_time.plusMinutes(45).toString());
+
+        if (start_time.plusMinutes(45).isAfter(semester.getEnd_time())) {
+            throw new EntityNotFoundException("exception.time.out_range");
+        }
+
+        
+
         SemesterClass savedSemesterClass = SemesterClass.builder()
                 .semester(semester)
                 .course(course)
@@ -790,6 +903,169 @@ public class SemesterClassServiceImpl implements SemesterClassService {
             if (semesterClassRepository.existsByName(createSemesterClassRequest.getName())) {
                 throw new SemesterClassAlreadyCreateException("exception.semester_name.semester_class_taken");
             }
+        }
+
+        List<Holiday> pageHoliday = holidayRepository.findBySemesterId(semester.getId());
+        List<LocalDate> holidayTime = new ArrayList<>();
+        pageHoliday.forEach(holiday -> {
+            holidayTime.add(holiday.getDay());
+        });
+
+        List<Map<String, List<List<LocalDateTime>>>> allCalendarForSemesterClass = new ArrayList<>();
+        Integer total_section = course.getNum_of_section();
+        System.out.printf("total_section: %d\n", total_section);
+        System.out.printf("total_number_week: %d\n", createSemesterClassRequest.getDate_of_weeks().size());
+        int total_week = total_section / createSemesterClassRequest.getDate_of_weeks().size();
+        if (total_section % createSemesterClassRequest.getDate_of_weeks().size() != 0) {
+            total_week++;
+        }
+
+        System.out.printf("total_week: %d\n", total_week);
+        total_section_count = 0;
+        LocalDateTime start_time = semester.getStart_time();
+        week_count = 0;
+        while (total_section_count < total_section) {
+            List<List<LocalDateTime>> lesson_time_in_week = new ArrayList<>();
+            if (createSemesterClassRequest.getDate_of_weeks().size() > 1) {
+                for (int idx = 0; idx < createSemesterClassRequest.getDate_of_weeks().size(); idx++) {
+                    Integer dayOfWeek = createSemesterClassRequest.getDate_of_weeks().get(idx);
+
+                    Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(createSemesterClassRequest.getLesson_time_ids().get(idx));
+                    LessonTime lessonTime = lessonTimeOpt.orElseThrow(() -> {
+                        throw new EntityNotFoundException("exception.LessonTime.not_found");
+                    });
+
+                    LocalTime start_lessontime = lessonTime.getStart_time();
+                    LocalTime end_lessontime = lessonTime.getEnd_time();
+                    // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                    System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                    List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                    if (dayOfWeek == 2) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    } else if (dayOfWeek == 3) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 4) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 5) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 6) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else if (dayOfWeek == 7) {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    else {
+                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
+
+                            start_time = start_time.plusDays(1);
+                        }
+                    }
+
+                    if (total_section_count < total_section) {
+                        LocalDate start_date = start_time.toLocalDate();
+                        if (holidayTime.contains(start_date) == false) {
+                            lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                            lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                            total_section_count++;
+                        }
+                    }
+                    lesson_time_in_week.add(lesson_time_in_day);
+                }
+            } else {
+                for (int idx = 0; idx < createSemesterClassRequest.getDate_of_weeks().size(); idx++) {
+                    Integer dayOfWeek = createSemesterClassRequest.getDate_of_weeks().get(idx);
+
+                    Optional<LessonTime> lessonTimeOpt = lessonTimeRepository.findById(createSemesterClassRequest.getLesson_time_ids().get(idx));
+                    LessonTime lessonTime = lessonTimeOpt.orElseThrow(() -> {
+                        throw new EntityNotFoundException("exception.LessonTime.not_found");
+                    });
+
+                    LocalTime start_lessontime = lessonTime.getStart_time();
+                    LocalTime end_lessontime = lessonTime.getEnd_time();
+                    // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
+                    System.out.printf("Day_of_week: %d\n", dayOfWeek);
+                    List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
+                    if (total_section_count > 0) {
+                        if (dayOfWeek == 2) {
+                            start_time = start_time.plusDays(7);
+
+                        } else if (dayOfWeek == 3) {
+                            start_time = start_time.plusDays(7);
+                        }
+
+                        else if (dayOfWeek == 4) {
+
+                            start_time = start_time.plusDays(7);
+                        }
+
+                        else if (dayOfWeek == 5) {
+
+                            start_time = start_time.plusDays(7);
+                        }
+
+                        else if (dayOfWeek == 6) {
+
+                            start_time = start_time.plusDays(7);
+                        }
+
+                        else if (dayOfWeek == 7) {
+
+                            start_time = start_time.plusDays(7);
+                        }
+
+                        else {
+
+                            start_time = start_time.plusDays(7);
+                        }
+                    }
+
+                    if (total_section_count < total_section) {
+                        LocalDate start_date = start_time.toLocalDate();
+                        if (holidayTime.contains(start_date) == false) {
+                            lesson_time_in_day.add(start_lessontime.atDate(start_date));
+                            lesson_time_in_day.add(end_lessontime.atDate(start_date));
+                            total_section_count++;
+                        }
+                    }
+                    lesson_time_in_week.add(lesson_time_in_day);
+                }
+            }
+            Map<String, List<List<LocalDateTime>>> schedule_in_week = new HashMap<>();
+            String name = "week_" + week_count;
+            schedule_in_week.put(name, lesson_time_in_week);
+            allCalendarForSemesterClass.add(schedule_in_week);
+            // start_time = start_time.plusWeeks(1);
+            week_count++;
+        }
+
+        System.out.print(start_time.plusMinutes(45).toString());
+
+        if (start_time.plusMinutes(45).isAfter(semester.getEnd_time())) {
+            throw new EntityNotFoundException("exception.time.out_range");
         }
 
         updatedSemesterClass.setSemester(semester);

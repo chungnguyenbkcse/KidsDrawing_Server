@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "12345678aA@"
+    "password": "123"
 }
 
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
@@ -21,9 +21,13 @@ Authorization: Bearer {{admin_access_token}}
 Content-Type: application/json
 
 {
-    "semester_id": 3,
+    "semester_id": 5,
     "course_id": 1,
-    "name": "Lớp mầm chì màu"
+    "name": "Lớp mầm chì màu nâng cao 1",
+    "date_of_weeks": [2],
+    "lesson_time_ids": [1],
+    "registration_time": "2022-12-12T12:59:11.332",
+    "registration_expiration_time": "2023-01-12T12:59:11.332"
 }
 
 ### CREATE LESSON TIME ACTION ###
