@@ -57,6 +57,9 @@ public class Section {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "time_approved")
+    private LocalDateTime time_approved;
+
     @Builder.Default()
     @Column(name = "create_time")
     @CreationTimestamp
