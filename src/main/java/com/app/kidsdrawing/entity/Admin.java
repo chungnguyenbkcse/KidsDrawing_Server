@@ -61,4 +61,10 @@ public class Admin {
 
     @Column(name = "phone")
     private String phone;
+
+    @OneToMany(mappedBy="admin")
+    private Set<TeacherRegisterQualification> teacherRegisterQualifications;
+
+    @OneToMany(mappedBy="admin")
+    private Set<Section> sections;
 }

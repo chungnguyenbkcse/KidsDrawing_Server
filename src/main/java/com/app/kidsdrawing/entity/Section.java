@@ -41,6 +41,10 @@ public class Section {
     @JoinColumn(name = "classes_id", referencedColumnName = "id")
     private Classes classes;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "approver_id", referencedColumnName = "id")
+    private Admin admin;
+
     @Column(name = "name", nullable = false)
     private String name;
 
