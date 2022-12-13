@@ -92,4 +92,4 @@ GET  {{rest}}/exercises/section-student/2/21
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/exercises/section-parent/62/12/2
+GET  {{rest}}/exercises/section-parent/2/12

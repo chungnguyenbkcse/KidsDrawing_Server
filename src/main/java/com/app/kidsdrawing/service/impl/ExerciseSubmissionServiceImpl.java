@@ -225,6 +225,64 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionBySectionAndParent(Long section_id, Long parent_id) {
+        List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
+        List<GetExerciseSubmissionResponse> exerciseGradeResponses = new ArrayList<>();
+        
+        List<Student> allStudent = studentRepository.findByParentId(parent_id);
+        allStudent.forEach(student -> {
+                List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository
+                .findAllExerciseSubmissionBySectionAndStudent(section_id, student.getId());
+        System.out.print(listExerciseSubmission.size());
+                listExerciseSubmission.forEach(content -> {
+                    if (content.getScore() != null) {
+                        GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                                .exercise_id(content.getExercise().getId())
+                                .student_id(content.getStudent().getId())
+                                .image_url(content.getImage_url())
+                                .exercise_deadline(content.getExercise().getDeadline())
+                                .create_time(content.getCreate_time())
+                                .update_time(content.getUpdate_time())
+                                .score(content.getScore())
+                                .feedback(content.getFeedback())
+                                .time(content.getTime())
+                                .exercise_description(content.getExercise().getDescription())
+                                .exercise_name(content.getExercise().getName())
+                                .student_name(content.getStudent().getUser().getUsername() + " - "
+                                        + content.getStudent().getUser().getFirstName() + " "
+                                        + content.getStudent().getUser().getLastName())
+                                .build();
+                        exerciseGradeResponses.add(exerciseSubmissionResponse);
+                    } else {
+                        GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                
+                                .exercise_id(content.getExercise().getId())
+                                .student_id(content.getStudent().getId())
+                                .score(content.getScore())
+                                .feedback(content.getFeedback())
+                                .time(content.getTime())
+                                .exercise_deadline(content.getExercise().getDeadline())
+                                .exercise_description(content.getExercise().getDescription())
+                                .exercise_name(content.getExercise().getName())
+                                .student_name(content.getStudent().getUser().getUsername() + " - "
+                                        + content.getStudent().getUser().getFirstName() + " "
+                                        + content.getStudent().getUser().getLastName())
+                                .image_url(content.getImage_url())
+                                .create_time(content.getCreate_time())
+                                .update_time(content.getUpdate_time())
+                                .build();
+                        exerciseResponses.add(exerciseSubmissionResponse);
+                    }
+                });
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("exercise_not_graded", exerciseResponses);
+        response.put("exercise_graded", exerciseGradeResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionBySectionAndStudent(Long section_id,
             Long student_id) {
         List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();

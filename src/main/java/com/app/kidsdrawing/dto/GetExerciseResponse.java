@@ -1,7 +1,6 @@
 package com.app.kidsdrawing.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +19,8 @@ public class GetExerciseResponse {
     private String teacher_name;
     private String section_name;
     private String name;
-    private List<Long> student_ids;
-    private List<String> student_names;
+    private Long student_id;
+    private String student_name;
     private String description;
     private LocalDateTime deadline;
     private LocalDateTime time_submit;

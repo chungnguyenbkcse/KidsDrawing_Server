@@ -86,6 +86,11 @@ GET  {{rest}}/exercise-submission/section-student/2/21
 ### GET CONTEST ACTION ###
 # @name get_contest
 
+GET  {{rest}}/exercise-submission/section-parent/2/12
+
+### GET CONTEST ACTION ###
+# @name get_contest
+
 GET  {{rest}}/exercise-submission/exercise-student/1/21
 
 ### GET CONTEST ACTION ###
