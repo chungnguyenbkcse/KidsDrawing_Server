@@ -23,7 +23,7 @@ public interface ClassesRepository extends JpaRepository <Classes, Long>{
     @Query("UPDATE Classes e SET e.deleted = true WHERE e.id = ?1")
     void deleteById(Long id);
     
-    @Query("FROM Classes c  JOIN FETCH c.teacher te JOIN FETCH te.user WHERE (c.deleted = FALSE OR c.deleted IS NULL)")
+    @Query("SELECT DISTINCT c FROM Classes c JOIN FETCH c.classHasRegisterJoinSemesterClasses crj  JOIN FETCH c.teacher te JOIN FETCH te.user JOIN FETCH c.semesterClass sc JOIN FETCH sc.course JOIN FETCH sc.semester WHERE (c.deleted = FALSE OR c.deleted IS NULL)")
     List<Classes> findAll();
 
     @Query("SELECT DISTINCT c1 FROM Classes c1  JOIN FETCH c1.teacher te JOIN FETCH te.user JOIN FETCH c1.semesterClass sc JOIN FETCH sc.schedules sch JOIN FETCH sch.lessonTime JOIN FETCH sc.semester s LEFT JOIN FETCH s.holidays JOIN FETCH c1.teacher JOIN FETCH sc.course c JOIN FETCH c.artLevels JOIN FETCH c.artTypes JOIN FETCH c.artAges WHERE (c1.deleted = FALSE OR c1.deleted IS NULL)")
