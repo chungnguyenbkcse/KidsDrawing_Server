@@ -73,11 +73,13 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         LocalDateTime time_now = LocalDateTime.now();
         pageSemesterClass.forEach(semesterClass -> {
+            List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId1(semesterClass.getId());
             if (time_now.isBefore(semesterClass.getRegistration_time())) {
                 GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                     .id(semesterClass.getId())
                     .name(semesterClass.getName())
                     .is_new(true)
+                    .total_register(userRegisterJoinSemesters.size())
                     .semester_id(semesterClass.getSemester().getId())
                     .semester_name(semesterClass.getSemester().getName())
                     .course_id(semesterClass.getCourse().getId())
@@ -93,6 +95,7 @@ public class SemesterClassServiceImpl implements SemesterClassService {
                     .id(semesterClass.getId())
                     .name(semesterClass.getName())
                     .is_new(false)
+                    .total_register(userRegisterJoinSemesters.size())
                     .semester_id(semesterClass.getSemester().getId())
                     .semester_name(semesterClass.getSemester().getName())
                     .course_id(semesterClass.getCourse().getId())
@@ -116,9 +119,11 @@ public class SemesterClassServiceImpl implements SemesterClassService {
         List<GetSemesterClassResponse> allSemesterClassResponses = new ArrayList<>();
         List<SemesterClass> pageSemesterClass = semesterClassRepository.findAll();
         pageSemesterClass.forEach(semesterClass -> {
+            List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId1(semesterClass.getId());
             GetSemesterClassResponse semesterClassResponse = GetSemesterClassResponse.builder()
                     .id(semesterClass.getId())
                     .name(semesterClass.getName())
+                    .total_register(userRegisterJoinSemesters.size())
                     .semester_id(semesterClass.getSemester().getId())
                     .semester_name(semesterClass.getSemester().getName())
                     .course_id(semesterClass.getCourse().getId())
