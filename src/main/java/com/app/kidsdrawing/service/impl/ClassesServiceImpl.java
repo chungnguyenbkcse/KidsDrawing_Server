@@ -95,6 +95,7 @@ public class ClassesServiceImpl implements ClassesService {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
                     .semester_class_id(content.getSemesterClass().getId())
+                    .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
                     .course_id(content.getSemesterClass().getCourse().getId())
                     .course_name(content.getSemesterClass().getCourse().getName())
                     .semester_id(content.getSemesterClass().getSemester().getId())
