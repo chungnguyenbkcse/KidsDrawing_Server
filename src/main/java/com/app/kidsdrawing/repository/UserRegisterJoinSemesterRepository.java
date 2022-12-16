@@ -24,7 +24,7 @@ public interface UserRegisterJoinSemesterRepository extends JpaRepository <UserR
     @Query("SELECT DISTINCT e FROM UserRegisterJoinSemester e JOIN FETCH e.student  st JOIN FETCH st.user JOIN FETCH st.parent pa JOIN FETCH pa.user JOIN FETCH e.semesterClass sc JOIN FETCH sc.course WHERE e.status = 'Completed' AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.time")
     List<UserRegisterJoinSemester> findAll3();
 
-    @Query("SELECT SUM(e.price) FROM UserRegisterJoinSemester e  WHERE e.status = 'Completed' AND (e.deleted = FALSE OR e.deleted IS NULL)  ORDER BY e.time")
+    @Query("SELECT SUM(e.price) FROM UserRegisterJoinSemester e  WHERE e.status = 'Completed' AND (e.deleted = FALSE OR e.deleted IS NULL)")
     Float findAll2();
 
     @Query(
