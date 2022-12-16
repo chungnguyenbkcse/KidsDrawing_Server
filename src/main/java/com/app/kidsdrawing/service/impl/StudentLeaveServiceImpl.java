@@ -16,15 +16,20 @@ import org.springframework.stereotype.Service;
 import com.app.kidsdrawing.dto.CreateReviewStudentLeaveRequest;
 import com.app.kidsdrawing.dto.CreateStudentLeaveRequest;
 import com.app.kidsdrawing.dto.GetStudentLeaveResponse;
+import com.app.kidsdrawing.entity.Notification;
 import com.app.kidsdrawing.entity.Section;
 import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.StudentLeave;
 import com.app.kidsdrawing.entity.StudentLeaveKey;
+import com.app.kidsdrawing.entity.UserReadNotification;
+import com.app.kidsdrawing.entity.UserReadNotificationKey;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
+import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
 import com.app.kidsdrawing.repository.StudentLeaveRepository;
 import com.app.kidsdrawing.repository.StudentRepository;
+import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.service.StudentLeaveService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +42,8 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
     private final StudentLeaveRepository studentLeaveRepository;
     private final SectionRepository sectionRepository;
     private final StudentRepository studentRepository;
+    private final NotificationRepository notificationRepository;
+    private final UserReadNotificationRepository uuserReadNotificationRepository;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllStudentLeave() {
@@ -417,6 +424,38 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
 
 
         studentLeave.setStatus(createReviewStudentLeaveRequest.getStatus());
+
+        Notification savedNotification = Notification.builder()
+            .name("Trạng thái yêu cầu nghỉ học")
+            .description("Chào bạn!\n Hệ thống thong yêu cầu nghỉ học buổi \"" + studentLeave.getSection().getNumber() + "\" đã được điều chỉnh trạng thái bới giáo viên!\n Vui lòng vào lớp để xem chi tiết trạng thái!")
+            .build();
+        notificationRepository.save(savedNotification);
+
+        UserReadNotificationKey id = new UserReadNotificationKey(studentLeave.getStudent().getUser().getId(), savedNotification.getId());
+        
+        UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                .id(id)
+                .notification(savedNotification)
+                .user(studentLeave.getStudent().getUser())
+                .is_read(false)
+                .build();
+        uuserReadNotificationRepository.save(savedUserReadNotification);
+
+        Notification savedNotification1 = Notification.builder()
+            .name("Điểm bài tập")
+            .description("Chào bạn!\n Hệ thống thong yêu cầu nghỉ của học sinh \"" + studentLeave.getStudent().getUser().getUsername() + " - " + studentLeave.getStudent().getUser().getFirstName() + " " + studentLeave.getStudent().getUser().getLastName() + "\" cho buổi học \"" + studentLeave.getSection().getNumber() + "\" đã được chỉnh trạng thái!\n Vui lòng vào lớp học để xem chi tiết trạng thái!")
+            .build();
+        notificationRepository.save(savedNotification1);
+
+        UserReadNotificationKey id1 = new UserReadNotificationKey(studentLeave.getStudent().getParent().getUser().getId(), savedNotification1.getId());
+        
+        UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
+                .id(id1)
+                .notification(savedNotification1)
+                .user(studentLeave.getStudent().getParent().getUser())
+                .is_read(false)
+                .build();
+        uuserReadNotificationRepository.save(savedUserReadNotification1);
 
         return studentLeave.getStudent().getId();
     }
