@@ -95,7 +95,7 @@ public class UserAttendanceController {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/{id}")
+    @PutMapping
     public ResponseEntity<String> updateUserAttendance(@RequestBody CreateUserAttendanceRequest createUserAttendanceRequest) {
         Long tutorialPageId = tutorialTemplate.updateUserAttendanceById(createUserAttendanceRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")

@@ -41,6 +41,10 @@ public class Section {
     @JoinColumn(name = "classes_id", referencedColumnName = "id")
     private Classes classes;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "approver_id", referencedColumnName = "id")
+    private Admin admin;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -52,6 +56,9 @@ public class Section {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "time_approved")
+    private LocalDateTime time_approved;
 
     @Builder.Default()
     @Column(name = "create_time")

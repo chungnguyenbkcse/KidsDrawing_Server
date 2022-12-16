@@ -19,7 +19,10 @@ import com.app.kidsdrawing.dto.GetExerciseSubmissionResponse;
 import com.app.kidsdrawing.dto.GetFinalScoreForStudentResponse;
 import com.app.kidsdrawing.entity.ExerciseSubmission;
 import com.app.kidsdrawing.entity.ExerciseSubmissionKey;
+import com.app.kidsdrawing.entity.Notification;
 import com.app.kidsdrawing.entity.Student;
+import com.app.kidsdrawing.entity.UserReadNotification;
+import com.app.kidsdrawing.entity.UserReadNotificationKey;
 import com.app.kidsdrawing.entity.Classes;
 import com.app.kidsdrawing.entity.Exercise;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
@@ -27,7 +30,9 @@ import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.ExerciseRepository;
 import com.app.kidsdrawing.repository.ExerciseSubmissionRepository;
+import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.StudentRepository;
+import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.service.ExerciseSubmissionService;
 
 import lombok.RequiredArgsConstructor;
@@ -41,6 +46,9 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
     private final ExerciseRepository exerciseRepository;
     private final StudentRepository studentRepository;
     private final ClassesRepository classRepository;
+    private final NotificationRepository notificationRepository;
+    private final UserReadNotificationRepository uuserReadNotificationRepository;
+    
     private static float exam = 0;
 
     @Override
@@ -216,6 +224,64 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
                         .build();
                 exerciseResponses.add(exerciseSubmissionResponse);
             }
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("exercise_not_graded", exerciseResponses);
+        response.put("exercise_graded", exerciseGradeResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllExerciseSubmissionBySectionAndParent(Long section_id, Long parent_id) {
+        List<GetExerciseSubmissionResponse> exerciseResponses = new ArrayList<>();
+        List<GetExerciseSubmissionResponse> exerciseGradeResponses = new ArrayList<>();
+        
+        List<Student> allStudent = studentRepository.findByParentId(parent_id);
+        allStudent.forEach(student -> {
+                List<ExerciseSubmission> listExerciseSubmission = exerciseSubmissionRepository
+                .findAllExerciseSubmissionBySectionAndStudent(section_id, student.getId());
+        System.out.print(listExerciseSubmission.size());
+                listExerciseSubmission.forEach(content -> {
+                    if (content.getScore() != null) {
+                        GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                                .exercise_id(content.getExercise().getId())
+                                .student_id(content.getStudent().getId())
+                                .image_url(content.getImage_url())
+                                .exercise_deadline(content.getExercise().getDeadline())
+                                .create_time(content.getCreate_time())
+                                .update_time(content.getUpdate_time())
+                                .score(content.getScore())
+                                .feedback(content.getFeedback())
+                                .time(content.getTime())
+                                .exercise_description(content.getExercise().getDescription())
+                                .exercise_name(content.getExercise().getName())
+                                .student_name(content.getStudent().getUser().getUsername() + " - "
+                                        + content.getStudent().getUser().getFirstName() + " "
+                                        + content.getStudent().getUser().getLastName())
+                                .build();
+                        exerciseGradeResponses.add(exerciseSubmissionResponse);
+                    } else {
+                        GetExerciseSubmissionResponse exerciseSubmissionResponse = GetExerciseSubmissionResponse.builder()
+                
+                                .exercise_id(content.getExercise().getId())
+                                .student_id(content.getStudent().getId())
+                                .score(content.getScore())
+                                .feedback(content.getFeedback())
+                                .time(content.getTime())
+                                .exercise_deadline(content.getExercise().getDeadline())
+                                .exercise_description(content.getExercise().getDescription())
+                                .exercise_name(content.getExercise().getName())
+                                .student_name(content.getStudent().getUser().getUsername() + " - "
+                                        + content.getStudent().getUser().getFirstName() + " "
+                                        + content.getStudent().getUser().getLastName())
+                                .image_url(content.getImage_url())
+                                .create_time(content.getCreate_time())
+                                .update_time(content.getUpdate_time())
+                                .build();
+                        exerciseResponses.add(exerciseSubmissionResponse);
+                    }
+                });
         });
 
         Map<String, Object> response = new HashMap<>();
@@ -627,6 +693,38 @@ public class ExerciseSubmissionServiceImpl implements ExerciseSubmissionService 
 
         updatedExerciseSubmission.setScore(createExerciseSubmissionRequest.getScore());
         updatedExerciseSubmission.setFeedback(createExerciseSubmissionRequest.getFeedback());
+
+        Notification savedNotification = Notification.builder()
+            .name("Điểm bài tập")
+            .description("Chào bạn!\n Hệ thống thong báo bài nộp của bạn cho bài tập \"" + updatedExerciseSubmission.getExercise().getName() + "\" đã được chấm!\n Vui lòng vào bài tập để xem kết quả!")
+            .build();
+        notificationRepository.save(savedNotification);
+
+        UserReadNotificationKey id = new UserReadNotificationKey(updatedExerciseSubmission.getStudent().getUser().getId(), savedNotification.getId());
+        
+        UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                .id(id)
+                .notification(savedNotification)
+                .user(updatedExerciseSubmission.getStudent().getUser())
+                .is_read(false)
+                .build();
+        uuserReadNotificationRepository.save(savedUserReadNotification);
+
+        Notification savedNotification1 = Notification.builder()
+            .name("Điểm bài tập")
+            .description("Chào bạn!\n Hệ thống thong báo bài nộp của tài khoản con \"" + updatedExerciseSubmission.getStudent().getUser().getUsername() + " - " + updatedExerciseSubmission.getStudent().getUser().getFirstName() + " " + updatedExerciseSubmission.getStudent().getUser().getLastName() + "\" cho bài tập \"" + updatedExerciseSubmission.getExercise().getName() + "\" đã được chấm!\n Vui lòng vào bài tập để xem kết quả!")
+            .build();
+        notificationRepository.save(savedNotification1);
+
+        UserReadNotificationKey id1 = new UserReadNotificationKey(updatedExerciseSubmission.getStudent().getParent().getUser().getId(), savedNotification1.getId());
+        
+        UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
+                .id(id1)
+                .notification(savedNotification1)
+                .user(updatedExerciseSubmission.getStudent().getParent().getUser())
+                .is_read(false)
+                .build();
+        uuserReadNotificationRepository.save(savedUserReadNotification1);
 
         return updatedExerciseSubmission.getStudent().getId();
     }

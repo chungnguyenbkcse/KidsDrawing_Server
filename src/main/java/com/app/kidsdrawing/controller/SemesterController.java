@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.app.kidsdrawing.dto.CreateHolidayRequest;
 import com.app.kidsdrawing.dto.CreateSemesterRequest;
 import com.app.kidsdrawing.dto.GetSemesterResponse;
 import com.app.kidsdrawing.service.SemesterService;
@@ -41,8 +40,8 @@ public class SemesterController {
 
     @CrossOrigin
     @PostMapping(value = "/schedule-class/{id}")
-    public ResponseEntity<String> createClassBySemester(@PathVariable Long id, @RequestBody CreateHolidayRequest createHolidayResquest) {
-        Long semesterId = semesterService.setClassForSemester(id, 6, 5, 8, createHolidayResquest);
+    public ResponseEntity<String> createClassBySemester(@PathVariable Long id) {
+        Long semesterId = semesterService.setClassForSemester(id, 6, 5, 8);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{semesterId}")
                 .buildAndExpand(semesterId).toUri();
         return ResponseEntity.created(location).build();

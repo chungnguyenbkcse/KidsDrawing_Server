@@ -79,4 +79,4 @@ Content-Type: application/json
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/semester/next
+GET  {{rest}}/semester

@@ -18,15 +18,20 @@ import com.app.kidsdrawing.dto.CreateContestSubmissionRequest;
 import com.app.kidsdrawing.dto.GetContestSubmissionResponse;
 import com.app.kidsdrawing.entity.ContestSubmission;
 import com.app.kidsdrawing.entity.ContestSubmissionKey;
+import com.app.kidsdrawing.entity.Notification;
 import com.app.kidsdrawing.entity.Student;
 import com.app.kidsdrawing.entity.UserGradeContest;
+import com.app.kidsdrawing.entity.UserReadNotification;
+import com.app.kidsdrawing.entity.UserReadNotificationKey;
 import com.app.kidsdrawing.entity.Contest;
 import com.app.kidsdrawing.exception.ArtAgeNotDeleteException;
 import com.app.kidsdrawing.exception.EntityNotFoundException;
 import com.app.kidsdrawing.repository.ContestRepository;
 import com.app.kidsdrawing.repository.ContestSubmissionRepository;
+import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.repository.UserGradeContestRepository;
+import com.app.kidsdrawing.repository.UserReadNotificationRepository;
 import com.app.kidsdrawing.service.ContestSubmissionService;
 
 import lombok.RequiredArgsConstructor;
@@ -40,6 +45,9 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     private final ContestRepository contestRepository;
     private final StudentRepository studentRepository;
     private final UserGradeContestRepository userGradeContestRepository;
+    private final NotificationRepository notificationRepository;
+    private final UserReadNotificationRepository uuserReadNotificationRepository;
+    
     private static int count = 0;
 
 
@@ -459,6 +467,38 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         updatedContestSubmission.setScore(createContestSubmissionRequest.getScore());
         updatedContestSubmission.setFeedback(createContestSubmissionRequest.getFeedback());
         updatedContestSubmission.setTime(time_now);
+
+        Notification savedNotification = Notification.builder()
+            .name("Điểm cuộc thi")
+            .description("Chào bạn!\n Hệ thống thong báo bài nộp của bạn cho cuộc thi \"" + updatedContestSubmission.getContest().getName() + "\" đã được chấm!\n Vui lòng vào cuộc thi để xem kết quả!")
+            .build();
+        notificationRepository.save(savedNotification);
+
+        UserReadNotificationKey id = new UserReadNotificationKey(updatedContestSubmission.getStudent().getUser().getId(), savedNotification.getId());
+        
+        UserReadNotification savedUserReadNotification = UserReadNotification.builder()
+                .id(id)
+                .notification(savedNotification)
+                .user(updatedContestSubmission.getStudent().getUser())
+                .is_read(false)
+                .build();
+        uuserReadNotificationRepository.save(savedUserReadNotification);
+
+        Notification savedNotification1 = Notification.builder()
+            .name("Điểm cuộc thi")
+            .description("Chào bạn!\n Hệ thống thong báo bài nộp của tài khoản con \"" + updatedContestSubmission.getStudent().getUser().getUsername() + " - " + updatedContestSubmission.getStudent().getUser().getFirstName() + " " + updatedContestSubmission.getStudent().getUser().getLastName() + "\" cho cuộc thi \"" + updatedContestSubmission.getContest().getName() + "\" đã được chấm!\n Vui lòng vào cuộc thi để xem kết quả!")
+            .build();
+        notificationRepository.save(savedNotification1);
+
+        UserReadNotificationKey id1 = new UserReadNotificationKey(updatedContestSubmission.getStudent().getParent().getUser().getId(), savedNotification1.getId());
+        
+        UserReadNotification savedUserReadNotification1 = UserReadNotification.builder()
+                .id(id1)
+                .notification(savedNotification1)
+                .user(updatedContestSubmission.getStudent().getParent().getUser())
+                .is_read(false)
+                .build();
+        uuserReadNotificationRepository.save(savedUserReadNotification1);
 
         return updatedContestSubmission.getStudent().getId();
     }

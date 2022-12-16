@@ -51,7 +51,7 @@ public interface ContestRepository extends JpaRepository <Contest, Long>{
     @Query("SELECT COUNT(c.id) FROM Contest c WHERE (c.deleted = FALSE OR c.deleted IS NULL)")
     int findAll2();
 
-    @Query("SELECT DISTINCT c FROM Contest c JOIN FETCH c.userRegisterJoinContests ur JOIN FETCH ur.student st WHERE st.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Contest c JOIN FETCH c.userRegisterJoinContests ur JOIN FETCH ur.student st JOIN FETCH st.user WHERE st.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
     List<Contest> findAll3(Long student_id);
 
     @Query("FROM Contest c WHERE c.id = ?1 AND (c.deleted = FALSE OR c.deleted IS NULL)")

@@ -403,6 +403,77 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new EntityNotFoundException("exception.user.not_found");
         });
 
+        if (user.getAuthorization().equals("STUDENT")) {
+            Optional<Student> studentOpt = studentRepository.findById(id);
+            Student student = studentOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.student.not_found");
+            });
+            return GetUserInfoResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .status(user.getStatus())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .sex(user.getSex())
+                .address(user.getAddress())
+                .parents(student.getParent().getId())
+                .phone(student.getPhone())
+                .parent_name(student.getParent().getUser().getUsername() + " - " + student.getParent().getUser().getFirstName() + " " + student.getParent().getUser().getLastName())
+                .profile_image_url(user.getProfileImageUrl())
+                .createTime(user.getCreateTime())
+                .build();
+        }
+        else if (user.getAuthorization().equals("PARENT") ) {
+            Optional<Parent> parentOpt = parentRepository.findById(id);
+            Parent parent = parentOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.parent.not_found");
+            });
+
+            List<Student> students = studentRepository.findByParentId(parent.getId());
+            List<Long> student_ids = new ArrayList<>();
+            List<String> student_names = new ArrayList<>();
+            students.forEach(ele -> {
+                student_ids.add(ele.getId());
+                student_names.add(ele.getUser().getUsername() + " - " + ele.getUser().getFirstName() + " " + ele.getUser().getLastName());
+            });
+            return GetUserInfoResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .status(user.getStatus())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .sex(user.getSex())
+                .address(user.getAddress())
+                .phone(parent.getPhone())
+                .student_ids(student_ids)
+                .student_names(student_names)
+                .profile_image_url(user.getProfileImageUrl())
+                .createTime(user.getCreateTime())
+                .build();
+        }
+
+        else if (user.getAuthorization().equals("TEACHER")) {
+            Optional<Teacher> teacherOpt = teacherRepository.findById(id);
+            Teacher teacher = teacherOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.teacher.not_found");
+            });
+            return GetUserInfoResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .status(user.getStatus())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .sex(user.getSex())
+                .address(user.getAddress())
+                .phone(teacher.getPhone())
+                .profile_image_url(user.getProfileImageUrl())
+                .createTime(user.getCreateTime())
+                .build();
+        }
+
         return GetUserInfoResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())

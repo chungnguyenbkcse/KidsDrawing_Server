@@ -907,13 +907,13 @@ Content-Type: application/json
 ###
 
 # @name get_all_user_by_student
-GET {{rest}}/user/teacher
+GET {{rest}}/user/student
 Authorization: Bearer {{student_access_token}}
 
 ###
 
 # @name get_all_user_by_student
-GET {{rest}}/user/24
+GET {{rest}}/user/12
 Authorization: Bearer {{student_access_token}}
 
 ###

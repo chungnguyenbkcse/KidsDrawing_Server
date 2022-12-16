@@ -69,7 +69,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<Student> listChilds = studentRepository.findByParentId(parent_id);
         listChilds.forEach(student -> {
             List<Exercise> allExerciseByClassAndStudent = exerciseRepository
-                    .findAllExerciseByClassAndStudent(classes_id, student.getId());
+                    .findAllExerciseByClass(classes_id);
             List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository
                     .findAllExerciseSubmissionByClassAndStudent(classes_id, student.getId());
 
@@ -126,7 +126,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> exerciseResponses = new ArrayList<>();
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
 
-        List<Exercise> allExerciseByClassAndStudent = exerciseRepository.findAllExerciseByClassAndStudent(classes_id, student_id);
+        List<Exercise> allExerciseByClassAndStudent = exerciseRepository.findAllExerciseByClass(classes_id);
         List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(classes_id, student_id);
 
         System.out.print(allExerciseByClassAndStudent.size());
@@ -236,8 +236,6 @@ public class ExerciseServiceImpl implements ExerciseService{
                         .section_id(ele.getSection().getId())
                         .section_name(ele.getSection().getName())
                         .name(ele.getName())
-                        .student_ids(student_ids)
-                        .student_names(student_names)
                         .exercise_submission_id(ele.getId())
                         .description(ele.getDescription())
                         .deadline(ele.getDeadline())
@@ -264,7 +262,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
         List<GetExerciseResponse> exerciseSubmittedNotGradeResponses = new ArrayList<>();
 
-        List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySectionAndStudent(section_id, student_id);
+        List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySection1(section_id);
         List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndStudent(section_id, student_id);
 
         List<Exercise> allExerciseSubmiss = new ArrayList<>();
@@ -328,6 +326,91 @@ public class ExerciseServiceImpl implements ExerciseService{
         });
 
         
+        Map<String, Object> response = new HashMap<>();
+        response.put("exercise_not_submit", exerciseResponses);
+        response.put("exercise_submitted_not_grade", exerciseSubmittedResponses);
+        response.put("exercise_submitted_graded", exerciseSubmittedNotGradeResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllExerciseBySectionAndParent1(Long section_id, Long parent_id) {
+        List<GetExerciseResponse> exerciseResponses = new ArrayList<>();
+        List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
+        List<GetExerciseResponse> exerciseSubmittedNotGradeResponses = new ArrayList<>();
+
+        List<Student> allStudent = studentRepository.findByParentId(parent_id);
+        allStudent.forEach(student -> {
+            List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySection1(section_id);
+            List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndStudent(section_id, student.getId());
+
+            List<Exercise> allExerciseSubmiss = new ArrayList<>();
+            List<Exercise> allExerciseGradeSubmiss = new ArrayList<>();
+            exerciseSubmissions.forEach(ele -> {
+                allExerciseSubmiss.add(ele.getExercise());
+                if (ele.getScore() != null) {
+                    allExerciseGradeSubmiss.add(ele.getExercise());
+                }
+            });
+
+            listExerciseForSectionAndStuent.forEach(ele -> {
+                if (allExerciseSubmiss.contains(ele) == false){
+                    GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                        .id(ele.getId())
+                        .section_id(ele.getSection().getId())
+                        .section_name(ele.getSection().getName())
+                        .name(ele.getName())
+                        .student_id(student.getId())
+                        .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName()+ " " + student.getUser().getLastName())
+                        .exercise_submission_id(ele.getId())
+                        .description(ele.getDescription())
+                        .deadline(ele.getDeadline())
+                        .create_time(ele.getCreate_time())
+                        .update_time(ele.getUpdate_time())
+                        .time_submit(ele.getUpdate_time())
+                        .build();
+                    exerciseResponses.add(exerciseResponse);
+                }
+                else {
+                    if (allExerciseGradeSubmiss.contains(ele) == false){
+                        GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                        .id(ele.getId())
+                        .section_id(ele.getSection().getId())
+                        .section_name(ele.getSection().getName())
+                        .name(ele.getName())
+                        .student_id(student.getId())
+                        .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName()+ " " + student.getUser().getLastName())
+                        .exercise_submission_id(ele.getId())
+                        .description(ele.getDescription())
+                        .deadline(ele.getDeadline())
+                        .create_time(ele.getCreate_time())
+                        .update_time(ele.getUpdate_time())
+                        .time_submit(ele.getUpdate_time())
+                        .build();
+                    exerciseSubmittedResponses.add(exerciseResponse);
+                    }
+                    else {
+                        GetExerciseResponse exerciseResponse = GetExerciseResponse.builder()
+                        .id(ele.getId())
+                        .section_id(ele.getSection().getId())
+                        .section_name(ele.getSection().getName())
+                        .name(ele.getName())
+                        .student_id(student.getId())
+                        .student_name(student.getUser().getUsername() + " - " + student.getUser().getFirstName()+ " " + student.getUser().getLastName())
+                        .exercise_submission_id(ele.getId())
+                        .description(ele.getDescription())
+                        .deadline(ele.getDeadline())
+                        .create_time(ele.getCreate_time())
+                        .update_time(ele.getUpdate_time())
+                        .time_submit(ele.getUpdate_time())
+                        .build();
+                        exerciseSubmittedNotGradeResponses.add(exerciseResponse);
+                    }
+
+                }
+            });
+        });
+
         Map<String, Object> response = new HashMap<>();
         response.put("exercise_not_submit", exerciseResponses);
         response.put("exercise_submitted_not_grade", exerciseSubmittedResponses);

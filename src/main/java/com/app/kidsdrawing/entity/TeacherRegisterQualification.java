@@ -47,6 +47,10 @@ public class TeacherRegisterQualification {
     private Teacher teacher;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "approver_id", referencedColumnName = "id")
+    private Admin admin;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 

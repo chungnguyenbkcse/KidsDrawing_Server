@@ -67,7 +67,7 @@ GET  {{rest}}/section
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/section/class/7
+GET  {{rest}}/section/class/2
 
 
 ### GET CONTEST ACTION ###
@@ -79,14 +79,14 @@ GET  {{rest}}/section/class-teacher/2
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/section/class-student/7/22
+GET  {{rest}}/section/class-student/2/21
 
 
 
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/section/class-parent/7/12/2
+GET  {{rest}}/section/class-parent/2/12/2
 
 
 ### GET CONTEST ACTION ###

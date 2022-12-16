@@ -28,8 +28,8 @@ public interface HolidayRepository extends JpaRepository <Holiday, Long>{
     @Query("FROM Holiday e JOIN FETCH e.semester WHERE e.id = ?1")
     Optional<Holiday> findById2(Long id);
 
-    @Query("SELECT DISTINCT e FROM Holiday e JOIN FETCH e.semester s WHERE s.id = ?1")
-    Optional<Holiday> findBySemesterId(Long id);
+    @Query("SELECT DISTINCT e FROM Holiday e JOIN FETCH e.semester s WHERE s.id = ?1 AND (s.deleted = FALSE OR s.deleted IS NULL)")
+    List<Holiday> findBySemesterId(Long id);
 
     @Query("SELECT COUNT(e.id) = 1 FROM Holiday e WHERE e.id = ?1")
     boolean existsById(Long id);

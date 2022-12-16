@@ -1,6 +1,5 @@
 package com.app.kidsdrawing.service.impl;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -96,6 +95,12 @@ public class ClassesServiceImpl implements ClassesService {
             GetClassResponse classResponse = GetClassResponse.builder()
                     .id(content.getId())
                     .semester_class_id(content.getSemesterClass().getId())
+                    .teacher_name(content.getTeacher().getUser().getUsername() + " - " + content.getTeacher().getUser().getFirstName() + " " + content.getTeacher().getUser().getLastName())
+                    .course_id(content.getSemesterClass().getCourse().getId())
+                    .course_name(content.getSemesterClass().getCourse().getName())
+                    .semester_id(content.getSemesterClass().getSemester().getId())
+                    .semester_name(content.getSemesterClass().getSemester().getName())
+                    .total_student(content.getClassHasRegisterJoinSemesterClasses().size())
                     .security_code(content.getSecurity_code())
                     .name(content.getName())
                     .create_time(content.getCreate_time())
@@ -905,47 +910,10 @@ public class ClassesServiceImpl implements ClassesService {
                             // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                             System.out.printf("Day_of_week: %d\n", dayOfWeek);
                             List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                            if (dayOfWeek == 2) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                                    start_time = start_time.plusDays(1);
-                                }
-                            } else if (dayOfWeek == 3) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-        
-                            else if (dayOfWeek == 4) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-        
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-        
-                            else if (dayOfWeek == 5) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-        
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-        
-                            else if (dayOfWeek == 6) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-        
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-        
-                            else if (dayOfWeek == 7) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-        
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-        
-                            else {
-                                while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-        
+                            if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                                start_time = start_time.plusDays(7);
+                            } else {
+                                while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
                                     start_time = start_time.plusDays(1);
                                 }
                             }
@@ -968,37 +936,11 @@ public class ClassesServiceImpl implements ClassesService {
                             // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                             System.out.printf("Day_of_week: %d\n", dayOfWeek);
                             List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                            if (total_section_count > 0) {
-                                if (dayOfWeek == 2) {
-                                    start_time = start_time.plusDays(7);
-        
-                                } else if (dayOfWeek == 3) {
-                                    start_time = start_time.plusDays(7);
-                                }
-        
-                                else if (dayOfWeek == 4) {
-        
-                                    start_time = start_time.plusDays(7);
-                                }
-        
-                                else if (dayOfWeek == 5) {
-        
-                                    start_time = start_time.plusDays(7);
-                                }
-        
-                                else if (dayOfWeek == 6) {
-        
-                                    start_time = start_time.plusDays(7);
-                                }
-        
-                                else if (dayOfWeek == 7) {
-        
-                                    start_time = start_time.plusDays(7);
-                                }
-        
-                                else {
-        
-                                    start_time = start_time.plusDays(7);
+                            if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                                start_time = start_time.plusDays(7);
+                            } else {
+                                while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                                    start_time = start_time.plusDays(1);
                                 }
                             }
         
@@ -1072,47 +1014,10 @@ public class ClassesServiceImpl implements ClassesService {
                     // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                     System.out.printf("Day_of_week: %d\n", dayOfWeek);
                     List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                    if (dayOfWeek == 2) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    } else if (dayOfWeek == 3) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 4) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 5) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 6) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 7) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
                             start_time = start_time.plusDays(1);
                         }
                     }
@@ -1135,37 +1040,11 @@ public class ClassesServiceImpl implements ClassesService {
                     // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                     System.out.printf("Day_of_week: %d\n", dayOfWeek);
                     List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                    if (total_section_count > 0) {
-                        if (dayOfWeek == 2) {
-                            start_time = start_time.plusDays(7);
-
-                        } else if (dayOfWeek == 3) {
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 4) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 5) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 6) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 7) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else {
-
-                            start_time = start_time.plusDays(7);
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                            start_time = start_time.plusDays(1);
                         }
                     }
 
@@ -1246,47 +1125,10 @@ public class ClassesServiceImpl implements ClassesService {
                     // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                     System.out.printf("Day_of_week: %d\n", dayOfWeek);
                     List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                    if (dayOfWeek == 2) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    } else if (dayOfWeek == 3) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 4) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 5) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 6) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 7) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
                             start_time = start_time.plusDays(1);
                         }
                     }
@@ -1309,37 +1151,11 @@ public class ClassesServiceImpl implements ClassesService {
                     // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                     System.out.printf("Day_of_week: %d\n", dayOfWeek);
                     List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                    if (total_section_count > 0) {
-                        if (dayOfWeek == 2) {
-                            start_time = start_time.plusDays(7);
-
-                        } else if (dayOfWeek == 3) {
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 4) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 5) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 6) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 7) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else {
-
-                            start_time = start_time.plusDays(7);
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                            start_time = start_time.plusDays(1);
                         }
                     }
 
@@ -1416,47 +1232,10 @@ public class ClassesServiceImpl implements ClassesService {
                     Integer dayOfWeek = dayOfWeeks.get(idx);
                     LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
                     LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
-                    if (dayOfWeek == 2) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    } else if (dayOfWeek == 3) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 4) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 5) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 6) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 7) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
                             start_time = start_time.plusDays(1);
                         }
                     }
@@ -1481,37 +1260,11 @@ public class ClassesServiceImpl implements ClassesService {
                     Integer dayOfWeek = dayOfWeeks.get(idx);
                     LocalTime start_lessontime = lessonTimeResponses.get(idx).getStart_time();
                     LocalTime end_lessontime = lessonTimeResponses.get(idx).getEnd_time();
-                    if (total_section_count > 0) {
-                        if (dayOfWeek == 2) {
-                            start_time = start_time.plusDays(7);
-
-                        } else if (dayOfWeek == 3) {
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 4) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 5) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 6) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 7) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else {
-
-                            start_time = start_time.plusDays(7);
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                            start_time = start_time.plusDays(1);
                         }
                     }
 
@@ -1595,47 +1348,10 @@ public class ClassesServiceImpl implements ClassesService {
                             // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                             System.out.printf("Day_of_week: %d\n", dayOfWeek);
                             List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                            if (dayOfWeek == 2) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                                    start_time = start_time.plusDays(1);
-                                }
-                            } else if (dayOfWeek == 3) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-
-                            else if (dayOfWeek == 4) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-
-                            else if (dayOfWeek == 5) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-
-                            else if (dayOfWeek == 6) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-
-                            else if (dayOfWeek == 7) {
-                                while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-
-                                    start_time = start_time.plusDays(1);
-                                }
-                            }
-
-                            else {
-                                while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
+                            if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                                start_time = start_time.plusDays(7);
+                            } else {
+                                while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
                                     start_time = start_time.plusDays(1);
                                 }
                             }
@@ -1658,37 +1374,11 @@ public class ClassesServiceImpl implements ClassesService {
                             // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                             System.out.printf("Day_of_week: %d\n", dayOfWeek);
                             List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                            if (total_section_count > 0) {
-                                if (dayOfWeek == 2) {
-                                    start_time = start_time.plusDays(7);
-
-                                } else if (dayOfWeek == 3) {
-                                    start_time = start_time.plusDays(7);
-                                }
-
-                                else if (dayOfWeek == 4) {
-
-                                    start_time = start_time.plusDays(7);
-                                }
-
-                                else if (dayOfWeek == 5) {
-
-                                    start_time = start_time.plusDays(7);
-                                }
-
-                                else if (dayOfWeek == 6) {
-
-                                    start_time = start_time.plusDays(7);
-                                }
-
-                                else if (dayOfWeek == 7) {
-
-                                    start_time = start_time.plusDays(7);
-                                }
-
-                                else {
-
-                                    start_time = start_time.plusDays(7);
+                            if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                                start_time = start_time.plusDays(7);
+                            } else {
+                                while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                                    start_time = start_time.plusDays(1);
                                 }
                             }
 
@@ -1782,47 +1472,10 @@ public class ClassesServiceImpl implements ClassesService {
                                 // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                                 System.out.printf("Day_of_week: %d\n", dayOfWeek);
                                 List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                                if (dayOfWeek == 2) {
-                                    while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                                        start_time = start_time.plusDays(1);
-                                    }
-                                } else if (dayOfWeek == 3) {
-                                    while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                                        start_time = start_time.plusDays(1);
-                                    }
-                                }
-
-                                else if (dayOfWeek == 4) {
-                                    while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-
-                                        start_time = start_time.plusDays(1);
-                                    }
-                                }
-
-                                else if (dayOfWeek == 5) {
-                                    while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-
-                                        start_time = start_time.plusDays(1);
-                                    }
-                                }
-
-                                else if (dayOfWeek == 6) {
-                                    while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-
-                                        start_time = start_time.plusDays(1);
-                                    }
-                                }
-
-                                else if (dayOfWeek == 7) {
-                                    while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-
-                                        start_time = start_time.plusDays(1);
-                                    }
-                                }
-
-                                else {
-                                    while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
+                                if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                                    start_time = start_time.plusDays(7);
+                                } else {
+                                    while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
                                         start_time = start_time.plusDays(1);
                                     }
                                 }
@@ -1845,37 +1498,11 @@ public class ClassesServiceImpl implements ClassesService {
                                 // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                                 System.out.printf("Day_of_week: %d\n", dayOfWeek);
                                 List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                                if (total_section_count > 0) {
-                                    if (dayOfWeek == 2) {
-                                        start_time = start_time.plusDays(7);
-
-                                    } else if (dayOfWeek == 3) {
-                                        start_time = start_time.plusDays(7);
-                                    }
-
-                                    else if (dayOfWeek == 4) {
-
-                                        start_time = start_time.plusDays(7);
-                                    }
-
-                                    else if (dayOfWeek == 5) {
-
-                                        start_time = start_time.plusDays(7);
-                                    }
-
-                                    else if (dayOfWeek == 6) {
-
-                                        start_time = start_time.plusDays(7);
-                                    }
-
-                                    else if (dayOfWeek == 7) {
-
-                                        start_time = start_time.plusDays(7);
-                                    }
-
-                                    else {
-
-                                        start_time = start_time.plusDays(7);
+                                if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                                    start_time = start_time.plusDays(7);
+                                } else {
+                                    while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                                        start_time = start_time.plusDays(1);
                                     }
                                 }
 
@@ -2088,47 +1715,10 @@ public class ClassesServiceImpl implements ClassesService {
                     // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                     System.out.printf("Day_of_week: %d\n", dayOfWeek);
                     List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                    if (dayOfWeek == 2) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    } else if (dayOfWeek == 3) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 4) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 5) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 6) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 7) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
                             start_time = start_time.plusDays(1);
                         }
                     }
@@ -2151,37 +1741,11 @@ public class ClassesServiceImpl implements ClassesService {
                     // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                     System.out.printf("Day_of_week: %d\n", dayOfWeek);
                     List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                    if (total_section_count > 0) {
-                        if (dayOfWeek == 2) {
-                            start_time = start_time.plusDays(7);
-
-                        } else if (dayOfWeek == 3) {
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 4) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 5) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 6) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 7) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else {
-
-                            start_time = start_time.plusDays(7);
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                            start_time = start_time.plusDays(1);
                         }
                     }
 
