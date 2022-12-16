@@ -48,7 +48,6 @@ public class SectionServiceImpl implements SectionService{
     private final TutorialTemplatePageRepository tutorialTemplatePageRepository;
     private final SectionTemplateRepository sectionTemplateRepository;
     private final TutorialPageRepository tutorialPageRepository;
-    private static Integer total = 0;
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllSection() {
@@ -175,18 +174,11 @@ public class SectionServiceImpl implements SectionService{
         List<Section> listSection = sectionRepository.findByClassesId(class_id);
         listSection.forEach(content -> {
             if (content.getClasses().getId().compareTo(class_id) == 0){
-                List<Exercise> allExercises = exerciseRepository.findAllExerciseBySection2(content.getId());
+                List<Exercise> allExercises = exerciseRepository.findAllExerciseBySection1(content.getId());
+                List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndParent(content.getId(), parent_id);
                 System.out.print("Buổi số: " + content.getNumber());
                 System.out.print(allExercises.size());
-                total = 0;
-                allExercises.forEach(ele -> {
-                    for (int i = 0; i < new ArrayList<>(ele.getExerciseSubmissions()).size(); i++) {
-                        if (new ArrayList<>(ele.getExerciseSubmissions()).get(i).getStudent().getParent().getId() == parent_id) {
-                            total += 1;
-                            break;
-                        }
-                    }
-                });
+        
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
@@ -194,7 +186,7 @@ public class SectionServiceImpl implements SectionService{
                     .status(content.getStatus())
                     .teacher_name(content.getClasses().getTeacher().getUser().getUsername() + " - " + content.getClasses().getTeacher().getUser().getFirstName() + " " + content.getClasses().getTeacher().getUser().getLastName())
                     .number(content.getNumber())
-                    .total_exercise_not_submit(allExercises.size() * total_child_in_class - total)
+                    .total_exercise_not_submit(allExercises.size() * total_child_in_class - exerciseSubmissions.size())
                     .teach_form(content.getTeaching_form())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -215,17 +207,11 @@ public class SectionServiceImpl implements SectionService{
         listSection.forEach(content -> {
             if (content.getClasses().getId().compareTo(class_id) == 0){
                 List<Exercise> allExercises = exerciseRepository.findAllExerciseBySection1(content.getId());
-                System.out.print("Buổi số: " + content.getNumber());
-                System.out.print(allExercises.size());
-                total = 0;
-                allExercises.forEach(ele -> {
-                    for (int i = 0; i < new ArrayList<>(ele.getExerciseSubmissions()).size(); i++) {
-                        if (new ArrayList<>(ele.getExerciseSubmissions()).get(i).getStudent().getId() == student_id) {
-                            total += 1;
-                            break;
-                        }
-                    }
-                });
+                List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndStudent1(content.getId(), student_id);
+                System.out.print("Section number: " + content.getNumber() + "\n");
+                System.out.print("Total exercise: " + allExercises.size() + "\n");
+                System.out.print("Total exercise: " + exerciseSubmissions.size() + "\n");
+                
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                     .id(content.getId())
                     .classes_id(content.getClasses().getId())
@@ -233,7 +219,7 @@ public class SectionServiceImpl implements SectionService{
                     .status(content.getStatus())
                     .teacher_name(content.getClasses().getTeacher().getUser().getUsername() + " - " + content.getClasses().getTeacher().getUser().getFirstName() + " " + content.getClasses().getTeacher().getUser().getLastName())
                     .number(content.getNumber())
-                    .total_exercise_not_submit(allExercises.size() - total)
+                    .total_exercise_not_submit(allExercises.size() - exerciseSubmissions.size())
                     .teach_form(content.getTeaching_form())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())

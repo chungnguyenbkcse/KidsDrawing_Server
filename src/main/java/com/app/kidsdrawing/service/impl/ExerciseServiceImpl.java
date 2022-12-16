@@ -69,7 +69,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<Student> listChilds = studentRepository.findByParentId(parent_id);
         listChilds.forEach(student -> {
             List<Exercise> allExerciseByClassAndStudent = exerciseRepository
-                    .findAllExerciseByClassAndStudent(classes_id, student.getId());
+                    .findAllExerciseByClass(classes_id);
             List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository
                     .findAllExerciseSubmissionByClassAndStudent(classes_id, student.getId());
 
@@ -126,7 +126,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> exerciseResponses = new ArrayList<>();
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
 
-        List<Exercise> allExerciseByClassAndStudent = exerciseRepository.findAllExerciseByClassAndStudent(classes_id, student_id);
+        List<Exercise> allExerciseByClassAndStudent = exerciseRepository.findAllExerciseByClass(classes_id);
         List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionByClassAndStudent(classes_id, student_id);
 
         System.out.print(allExerciseByClassAndStudent.size());
@@ -262,7 +262,7 @@ public class ExerciseServiceImpl implements ExerciseService{
         List<GetExerciseResponse> exerciseSubmittedResponses = new ArrayList<>();
         List<GetExerciseResponse> exerciseSubmittedNotGradeResponses = new ArrayList<>();
 
-        List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySectionAndStudent(section_id, student_id);
+        List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySection1(section_id);
         List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndStudent(section_id, student_id);
 
         List<Exercise> allExerciseSubmiss = new ArrayList<>();
@@ -341,7 +341,7 @@ public class ExerciseServiceImpl implements ExerciseService{
 
         List<Student> allStudent = studentRepository.findByParentId(parent_id);
         allStudent.forEach(student -> {
-            List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySectionAndStudent(section_id, student.getId());
+            List<Exercise> listExerciseForSectionAndStuent = exerciseRepository.findAllExerciseBySection1(section_id);
             List<ExerciseSubmission> exerciseSubmissions = exerciseSubmissionRepository.findAllExerciseSubmissionBySectionAndStudent(section_id, student.getId());
 
             List<Exercise> allExerciseSubmiss = new ArrayList<>();
