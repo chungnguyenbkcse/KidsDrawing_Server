@@ -1,6 +1,5 @@
 package com.app.kidsdrawing.service.impl;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -71,13 +70,6 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
         List<LocalDateTime> res = new ArrayList<>();
         Integer total_section = semesterCouse.getCourse().getNum_of_section();
-        System.out.printf("total_section: %d\n", total_section);
-        System.out.printf("total_number_week: %d\n", semesterCouse.getSchedules().size());
-        int total_week = total_section / semesterCouse.getSchedules().size();
-        if (total_section % semesterCouse.getSchedules().size() != 0) {
-            total_week++;
-        }
-        System.out.printf("total_week: %d\n", total_week);
         total_section_count = 0;
         LocalDateTime start_time = semesterCouse.getSemester().getStart_time();
         while (total_section_count < total_section) {
@@ -90,47 +82,10 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                     // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                     System.out.printf("Day_of_week: %d\n", dayOfWeek);
                     List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                    if (dayOfWeek == 2) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.MONDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    } else if (dayOfWeek == 3) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.TUESDAY) {
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 4) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.WEDNESDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 5) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.THURSDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 6) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.FRIDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else if (dayOfWeek == 7) {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SATURDAY) {
-
-                            start_time = start_time.plusDays(1);
-                        }
-                    }
-
-                    else {
-                        while (start_time.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
                             start_time = start_time.plusDays(1);
                         }
                     }
@@ -141,10 +96,9 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                             lesson_time_in_day.add(start_lessontime.atDate(start_date));
                             lesson_time_in_day.add(end_lessontime.atDate(start_date));
                             total_section_count++;
-                        }
-
-                        if (total_section_count == section_number - 1) {
-                            return lesson_time_in_day;
+                            if (total_section_count == section_number) {
+                                return lesson_time_in_day;
+                            }
                         }
                     }
                     lesson_time_in_week.add(lesson_time_in_day);
@@ -157,37 +111,11 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                     // LocalDateTime end_time = semester.getStart_time().plusWeeks(total_week);
                     System.out.printf("Day_of_week: %d\n", dayOfWeek);
                     List<LocalDateTime> lesson_time_in_day = new ArrayList<>();
-                    if (total_section_count > 0) {
-                        if (dayOfWeek == 2) {
-                            start_time = start_time.plusDays(7);
-
-                        } else if (dayOfWeek == 3) {
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 4) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 5) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 6) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else if (dayOfWeek == 7) {
-
-                            start_time = start_time.plusDays(7);
-                        }
-
-                        else {
-
-                            start_time = start_time.plusDays(7);
+                    if (dayOfWeek - 1 == start_time.getDayOfWeek().getValue()) {
+                        start_time = start_time.plusDays(7);
+                    } else {
+                        while (start_time.getDayOfWeek().getValue() != dayOfWeek - 1) {
+                            start_time = start_time.plusDays(1);
                         }
                     }
 
@@ -196,10 +124,6 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                         if (list_holiday.contains(start_date) == false) {
                             lesson_time_in_day.add(start_lessontime.atDate(start_date));
                             lesson_time_in_day.add(end_lessontime.atDate(start_date));
-
-                            if (total_section_count == section_number - 1) {
-                                return lesson_time_in_day;
-                            }
                             total_section_count++;
                         }
                     }
