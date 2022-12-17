@@ -17,31 +17,31 @@ public interface ContestSubmissionRepository extends JpaRepository <ContestSubmi
     @Query("SELECT count(c.id) = 1 FROM ContestSubmission c WHERE c.id = ?1 ")
     boolean existsById(Long id);
 
-    @Query("SELECT DISTINCT c  FROM ContestSubmission c  JOIN FETCH c.contest co WHERE co.id = ?1  ORDER BY c.create_time")
+    @Query("SELECT DISTINCT c  FROM ContestSubmission c  JOIN FETCH c.contest co WHERE co.id = ?1 AND (co.deleted = FALSE OR co.deleted IS NULL) ORDER BY c.create_time")
     List<ContestSubmission> findByContestId1(Long id);
 
-    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.contest  co JOIN FETCH c.student st JOIN FETCH st.user JOIN FETCH st.parent WHERE co.id = ?1  ORDER BY c.create_time")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.contest  co JOIN FETCH c.student st JOIN FETCH st.user stu JOIN FETCH st.parent pa JOIN FETCH pa.user WHERE co.id = ?1 AND (co.deleted = FALSE OR co.deleted IS NULL)  ORDER BY c.create_time")
     List<ContestSubmission> findByContestId2(Long id);
 
-    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.contest  co WHERE co.id = ?1  ORDER BY c.create_time")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.contest  co WHERE co.id = ?1 AND (co.deleted = FALSE OR co.deleted IS NULL) ORDER BY c.create_time")
     List<ContestSubmission> findByContestId3(Long id);
 
-    @Query("SELECT DISTINCT c FROM ContestSubmission c JOIN FETCH c.contest  co JOIN FETCH c.student st JOIN FETCH st.user JOIN FETCH st.parent WHERE co.id = ?1 AND st.id = ?2  ORDER BY c.create_time")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c JOIN FETCH c.contest  co JOIN FETCH c.student st JOIN FETCH st.user stu JOIN FETCH st.parent pa JOIN FETCH pa.user WHERE co.id = ?1 AND st.id = ?2 AND (co.deleted = FALSE OR co.deleted IS NULL) ORDER BY c.create_time")
     Optional<ContestSubmission> findByContestAndStudent(Long contest_id, Long student_id);
 
-    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student s JOIN FETCH s.user JOIN FETCH s.parent WHERE s.id = ?1  ORDER BY c.create_time")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student s JOIN FETCH s.user JOIN FETCH s.parent pa JOIN FETCH pa.user WHERE s.id = ?1  ORDER BY c.create_time")
     List<ContestSubmission> findByStudentId1(Long id);
 
-    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student  s JOIN FETCH s.user JOIN FETCH s.parent  WHERE s.id = ?1  ORDER BY c.create_time")
+    @Query("SELECT DISTINCT c FROM ContestSubmission c  JOIN FETCH c.student  s JOIN FETCH s.user JOIN FETCH s.parent pa JOIN FETCH pa.user WHERE s.id = ?1  ORDER BY c.create_time")
     List<ContestSubmission> findByStudentId2(Long id);
 
-    @Query("FROM ContestSubmission c  JOIN FETCH c.student st JOIN FETCH st.user JOIN FETCH st.parent JOIN FETCH c.contest ORDER BY c.create_time")
+    @Query("FROM ContestSubmission c  JOIN FETCH c.student st JOIN FETCH st.user stu JOIN FETCH st.parent pa JOIN FETCH pa.user JOIN FETCH c.contest co WHERE (co.deleted = FALSE OR co.deleted IS NULL) ORDER BY c.create_time")
     List<ContestSubmission> findAll();
 
     @Query("FROM ContestSubmission c WHERE c.id = ?1 ")
     Optional<ContestSubmission> findById1(Long id);
 
-    @Query("FROM ContestSubmission c JOIN FETCH c.student st JOIN FETCH st.user JOIN FETCH st.parent JOIN FETCH c.contest WHERE c.id = ?1 ")
+    @Query("FROM ContestSubmission c JOIN FETCH c.student st JOIN FETCH st.user stu JOIN FETCH st.parent pa JOIN FETCH pa.user JOIN FETCH c.contest co WHERE c.id = ?1 AND (co.deleted = FALSE OR co.deleted IS NULL)")
     Optional<ContestSubmission> findById2(Long id);
 
     @Modifying

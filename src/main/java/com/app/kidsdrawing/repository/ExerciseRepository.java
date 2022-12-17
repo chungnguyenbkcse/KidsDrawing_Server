@@ -18,7 +18,7 @@ public interface ExerciseRepository extends JpaRepository <Exercise, Long>{
     @Query("SELECT e FROM Exercise e JOIN FETCH e.section  WHERE (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<Exercise> findAll();
 
-    @Query("SELECT DISTINCT e FROM Exercise e  JOIN FETCH e.section se JOIN FETCH se.classes cl WHERE cl.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM Exercise e  JOIN FETCH e.section se JOIN FETCH se.classes cl WHERE cl.id = ?1 AND (cl.deleted = FALSE OR cl.deleted IS NULL) AND (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<Exercise> findAllExerciseByClass(Long class_id);
 
     @Query("SELECT DISTINCT e FROM Exercise e JOIN FETCH e.section se WHERE se.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL)   ORDER BY e.id")

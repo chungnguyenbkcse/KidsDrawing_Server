@@ -32,7 +32,7 @@ public interface TutorialTemplatePageRepository extends JpaRepository <TutorialT
     @Query("SELECT DISTINCT e FROM TutorialTemplatePage e JOIN FETCH e.sectionTemplate tp WHERE tp.id = ?1 ORDER BY e.id")
     List<TutorialTemplatePage> findBySectionTemplateId(Long id);
 
-    @Query("SELECT DISTINCT e FROM TutorialTemplatePage e JOIN FETCH e.sectionTemplate tp JOIN FETCH tp.course co WHERE co.id = ?1 AND tp.number = ?2 ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM TutorialTemplatePage e JOIN FETCH e.sectionTemplate tp JOIN FETCH tp.course co WHERE co.id = ?1 AND (co.deleted = FALSE OR co.deleted IS NULL) AND tp.number = ?2 ORDER BY e.id")
     List<TutorialTemplatePage> findByCourseIdAndNumber(Long id, Integer number);
     
     boolean existsById(Long id);
