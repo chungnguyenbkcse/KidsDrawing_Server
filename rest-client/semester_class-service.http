@@ -75,7 +75,7 @@ GET {{rest}}/semester-class/new
 ### GET ART TYPE ACTION ###
 # @name get_all_art_type
 
-GET {{rest}}/semester-class/student-course/22/1
+GET {{rest}}/semester-class/student-course/21/1
 
 
 ### GET ART TYPE ACTION ###

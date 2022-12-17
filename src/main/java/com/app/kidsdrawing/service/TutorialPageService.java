@@ -11,6 +11,7 @@ import com.app.kidsdrawing.dto.GetTutorialPageResponse;
 public interface TutorialPageService {
     ResponseEntity<Map<String, Object>> getAllTutorialPage();
     ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionId(Long id);
+    ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionNotApproveNow(Long id);
     ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionIdNotApproved(Long id);
     GetTutorialPageResponse checkTutorialPageBySectionId(Long id);
     ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionId(Long id);

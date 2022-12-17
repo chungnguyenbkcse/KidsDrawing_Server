@@ -55,6 +55,30 @@ public class TutorialPageServiceImpl implements TutorialPageService{
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getAllTutorialPageBySectionNotApproveNow(Long id) {
+        Optional<Section> sectionOpt = sectionRepository.findById7(id);
+        Section section = sectionOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.Section.not_found");
+        });
+
+        List<TutorialPage> tutorialPages = tutorialPageRepository.findBySection(section.getId());
+
+        List<GetTutorialPageResponse> allTutorialPageResponses = new ArrayList<>();
+        tutorialPages.forEach(content -> {
+            GetTutorialPageResponse tutorialPageResponse = GetTutorialPageResponse.builder()
+                .id(content.getId())
+                .description(content.getDescription())
+                .number(content.getNumber())
+                .build();
+            allTutorialPageResponses.add(tutorialPageResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("TutorialPage", allTutorialPageResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getAllTutorialTemplatePageBySectionId(Long id) {
         Optional<Section> sectionOpt = sectionRepository.findById7(id);
         Section section = sectionOpt.orElseThrow(() -> {
