@@ -67,8 +67,13 @@ GET  {{rest}}/tutorial-page/section-check/4
 
 GET  {{rest}}/tutorial-page/section-not-approve/4
 
+### GET CONTEST ACTION ###
+# @name get_contest
+
+GET  {{rest}}/tutorial-page/section-not-approve-now/3
+
 
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/tutorial-page/section/4
+GET  {{rest}}/tutorial-page/section/3

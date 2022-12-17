@@ -47,6 +47,12 @@ public class TutorialPageController {
         return ResponseEntity.ok().body(tutorialPageService.getAllTutorialPageBySectionIdNotApproved(id));
     }
 
+    @CrossOrigin
+    @GetMapping(value = "/section-not-approve-now/{id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllTutorialPageBySectionNotApproveNow(@PathVariable Long id) {
+        return ResponseEntity.ok().body(tutorialPageService.getAllTutorialPageBySectionNotApproveNow(id));
+    }
+
 
     @CrossOrigin
     @GetMapping(value = "/section-check/{id}")
