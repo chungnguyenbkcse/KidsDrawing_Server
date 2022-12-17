@@ -17,7 +17,7 @@ public interface SemesterRepository extends JpaRepository <Semester, Long>{
     @Query("SELECT e FROM Semester e WHERE (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
     List<Semester> findAll();
 
-    @Query("SELECT DISTINCT e FROM Semester e JOIN FETCH e.semesterClass sc WHERE (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id")
+    @Query("SELECT DISTINCT e FROM Semester e JOIN FETCH e.semesterClass sc WHERE (e.deleted = FALSE OR e.deleted IS NULL) AND (sc.deleted = FALSE OR sc.deleted IS NULL) ORDER BY e.id")
     List<Semester> findAll1();
 
     @Query(
@@ -32,7 +32,7 @@ public interface SemesterRepository extends JpaRepository <Semester, Long>{
     @Query("FROM Semester e WHERE e.id = ?1 AND (e.deleted = FALSE OR e.deleted IS NULL)")
     Optional<Semester> findById1(Long id);
 
-    @Query("SELECT DISTINCT se FROM Semester se JOIN FETCH se.semesterClass sc JOIN FETCH sc.userRegisterJoinSemesters urj JOIN FETCH sc.userRegisterTeachSemesters urt JOIN FETCH urt.teacher WHERE se.id = ?1 AND urj.status = 'Completed' AND (urj.deleted = FALSE OR urj.deleted IS NULL) AND (se.deleted = FALSE OR se.deleted IS NULL) ORDER BY urj.id")
+    @Query("SELECT DISTINCT se FROM Semester se JOIN FETCH se.semesterClass sc JOIN FETCH sc.userRegisterJoinSemesters urj JOIN FETCH sc.userRegisterTeachSemesters urt JOIN FETCH urt.teacher te JOIN FETCH te.user WHERE se.id = ?1 AND urj.status = 'Completed' AND (urj.deleted = FALSE OR urj.deleted IS NULL) AND (se.deleted = FALSE OR se.deleted IS NULL) AND (sc.deleted = FALSE OR sc.deleted IS NULL) ORDER BY urj.id")
     Optional<Semester> findById3(Long id);
     
     boolean existsById(Long id);
