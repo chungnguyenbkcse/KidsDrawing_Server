@@ -346,7 +346,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
 
-        if (teacherLEeave.getStatus().equals("Approved") || teacherLEeave.getStatus().equals("Not approved")) {
+        if (teacherLEeave.getStatus().equals("Approved")) {
             throw new ArtAgeNotDeleteException("exception.TeacherLeave.not_delete");
         }
 

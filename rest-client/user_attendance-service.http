@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
     "username": "teacher-1",
-    "password": "12345678aA@"
+    "password": "123"
 }
 
 @rest = {{$dotenv HOST}}/{{$dotenv API}}
@@ -71,7 +71,8 @@ Authorization: Bearer {{admin_access_token}}
 ### GET CONTEST ACTION ###
 # @name get_contest
 
-GET  {{rest}}/user-attendance/section-student/71/22
+PUT  {{rest}}/user-attendance/section-student/5/21
+Authorization: Bearer {{admin_access_token}}
 
 
 ### GET CONTEST ACTION ###

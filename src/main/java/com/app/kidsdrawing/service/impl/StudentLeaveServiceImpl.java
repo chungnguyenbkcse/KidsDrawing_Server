@@ -390,7 +390,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             throw new EntityNotFoundException("exception.StudentLeave.not_found");
         });
 
-        if (studentLeave.getStatus().equals("Approved") || studentLeave.getStatus().equals("Not approved")) {
+        if (studentLeave.getStatus().equals("Approved")) {
             throw new ArtAgeNotDeleteException("exception.StudentLeave.not_delete");
         }
 
