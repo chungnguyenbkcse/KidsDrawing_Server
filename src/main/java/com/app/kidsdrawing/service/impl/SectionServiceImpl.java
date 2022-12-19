@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +57,7 @@ public class SectionServiceImpl implements SectionService{
         listSection.forEach(content -> {
             GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                 .id(content.getId())
+                .time_approved(content.getTime_approved())
                 .classes_id(content.getClasses().getId())
                 .name(content.getName())
                 .status(content.getStatus())
@@ -84,6 +86,7 @@ public class SectionServiceImpl implements SectionService{
             if (content.getStatus().equals("Not approve now")) {
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                     .id(content.getId())
+                    .time_approved(content.getTime_approved())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
                     .class_name(content.getClasses().getName())
@@ -100,6 +103,7 @@ public class SectionServiceImpl implements SectionService{
             else if (content.getStatus().equals("Not approved")) {
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                     .id(content.getId())
+                    .time_approved(content.getTime_approved())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
                     .class_name(content.getClasses().getName())
@@ -116,6 +120,7 @@ public class SectionServiceImpl implements SectionService{
             else if (content.getStatus().equals("Approved")) {
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                     .id(content.getId())
+                    .time_approved(content.getTime_approved())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
                     .class_name(content.getClasses().getName())
@@ -148,8 +153,10 @@ public class SectionServiceImpl implements SectionService{
             if (content.getClasses().getId().compareTo(id) == 0){
                 GetSectionTeacherResponse sectionResponse = GetSectionTeacherResponse.builder()
                     .id(content.getId())
+                    .time_approved(content.getTime_approved())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
+                    .time_approved(content.getTime_approved())
                     .status(content.getStatus())
                     .total_exercise_submission(allExerciseSubmissions.size())
                     .total_user_grade_exercise_submission(exerciseSubmissionGrade.size())
@@ -181,6 +188,7 @@ public class SectionServiceImpl implements SectionService{
         
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                     .id(content.getId())
+                    .time_approved(content.getTime_approved())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
                     .status(content.getStatus())
@@ -214,6 +222,7 @@ public class SectionServiceImpl implements SectionService{
                 
                 GetSectionStudentResponse sectionResponse = GetSectionStudentResponse.builder()
                     .id(content.getId())
+                    .time_approved(content.getTime_approved())
                     .classes_id(content.getClasses().getId())
                     .name(content.getName())
                     .status(content.getStatus())
@@ -244,6 +253,7 @@ public class SectionServiceImpl implements SectionService{
             .id(section.getId())
             .classes_id(section.getClasses().getId())
             .name(section.getName())
+            .time_approved(section.getTime_approved())
             .status(section.getStatus())
             .teacher_name(section.getClasses().getTeacher().getUser().getUsername() + " - " + section.getClasses().getTeacher().getUser().getFirstName() + " " + section.getClasses().getTeacher().getUser().getLastName())
             .number(section.getNumber())
@@ -361,6 +371,7 @@ public class SectionServiceImpl implements SectionService{
         });
 
         updatedSection.setStatus(createSectionRequest.getStatus());
+        updatedSection.setTime_approved(LocalDateTime.now());
 
         return updatedSection.getId();
     }

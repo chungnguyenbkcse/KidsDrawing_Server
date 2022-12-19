@@ -474,6 +474,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .build();
         }
 
+        Optional<Admin> adminOpt = adminRepository.findById(id);
+        Admin admin = adminOpt.orElseThrow(() -> {
+            throw new EntityNotFoundException("exception.admin.not_found");
+        });
         return GetUserInfoResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
@@ -482,6 +486,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .sex(user.getSex())
+                .phone(admin.getPhone())
                 .address(user.getAddress())
                 .profile_image_url(user.getProfileImageUrl())
                 .createTime(user.getCreateTime())
@@ -708,6 +713,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setAddress(createUserRequest.getAddress());
             user.setProfileImageUrl(createUserRequest.getProfile_image_url());
             user.setSex(createUserRequest.getSex());
+
+            if (user.getAuthorization().equals("ADMIN")) {
+                Optional<Admin> adminOpt = adminRepository.findById(id);
+                Admin admin = adminOpt.orElseThrow(() -> {
+                    throw new EntityNotFoundException("exception.admin.not_found");
+                });
+
+                admin.setPhone(createUserRequest.getPhone());
+            }
+            else if (user.getAuthorization().equals("TEACHER")) {
+                Optional<Teacher> teacherOpt = teacherRepository.findById(id);
+                Teacher teacher = teacherOpt.orElseThrow(() -> {
+                    throw new EntityNotFoundException("exception.teacher.not_found");
+                });
+                teacher.setPhone(createUserRequest.getPhone());
+            }
+            else if (user.getAuthorization().equals("PARENT")) {
+                Optional<Parent> parentOpt = parentRepository.findById(id);
+                Parent parent = parentOpt.orElseThrow(() -> {
+                    throw new EntityNotFoundException("exception.parent.not_found");
+                });
+                parent.setPhone(createUserRequest.getPhone());
+            }
+            else {
+                Optional<Student> studentOpt = studentRepository.findById(id);
+                Student student = studentOpt.orElseThrow(() -> {
+                    throw new EntityNotFoundException("exception.student.not_found");
+                });
+                student.setPhone(createUserRequest.getPhone());
+            }
     
             userRepository.save(user);
         }

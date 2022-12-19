@@ -25,6 +25,7 @@ public class GetTeacherLeaveResponse {
     private String substitute_teacher_name;
     private String description;
     private String status;
+    private LocalDateTime time_approved;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }
