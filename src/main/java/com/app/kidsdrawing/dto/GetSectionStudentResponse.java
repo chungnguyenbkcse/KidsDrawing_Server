@@ -24,6 +24,7 @@ public class GetSectionStudentResponse {
     private int total_exercise_not_submit;
     private String message;
     private Boolean teach_form;
+    private LocalDateTime time_approved;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

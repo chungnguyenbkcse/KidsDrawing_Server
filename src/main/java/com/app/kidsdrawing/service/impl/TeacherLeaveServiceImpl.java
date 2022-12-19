@@ -143,6 +143,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
             GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
                 .id(content.getId())
+                .time_approved(content.getTime_approved())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
@@ -180,7 +181,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 
                 .start_time(time.get(0))
                 .end_time(time.get(1))
-                
+                .time_approved(content.getTime_approved())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
@@ -216,7 +217,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
                 
                 .start_time(time.get(0))
                 .end_time(time.get(1))
-                
+                .time_approved(content.getTime_approved())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
@@ -246,7 +247,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             List<LocalDateTime> time = getScheduleDetailOfClass(content.getSection().getClasses(), content.getSection().getNumber());
                 GetTeacherLeaveResponse TeacherLeaveResponse = GetTeacherLeaveResponse.builder()
                     .id(content.getId())
-        
+                    .time_approved(content.getTime_approved())
                     .section_id(content.getSection().getId())
                     .start_time(time.get(0))
                     .end_time(time.get(1))
@@ -281,7 +282,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
         return GetTeacherLeaveResponse.builder()
             .id(teacherLeave.getId())
-            
+            .time_approved(teacherLeave.getTime_approved())
             .section_id(teacherLeave.getSection().getId())
             .start_time(time.get(0))
             .end_time(time.get(1))
@@ -323,7 +324,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
         return GetTeacherLeaveResponse.builder()
         .id(savedTeacherLeave.getId())
-    
+        .time_approved(savedTeacherLeave.getTime_approved())
         .section_id(savedTeacherLeave.getSection().getId())
         .section_name(savedTeacherLeave.getSection().getName())
         .classes_id(savedTeacherLeave.getSection().getClasses().getId())
@@ -398,6 +399,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         else if (updatedTeacherLeave.getStatus().equals("Admin approved")) {
             if (createReviewTeacherLeaveRequest.getStatus().equals("Teacher approved")) {
                 updatedTeacherLeave.setStatus("Approved");
+                updatedTeacherLeave.setTime_approved(LocalDateTime.now());
                 teacherLeaveRepository.save(updatedTeacherLeave);
             }
             else {
@@ -412,7 +414,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
 
         return GetTeacherLeaveResponse.builder()
         .id(updatedTeacherLeave.getId())
-        
+        .time_approved(updatedTeacherLeave.getTime_approved())
         .section_id(updatedTeacherLeave.getSection().getId())
         .section_name(updatedTeacherLeave.getSection().getName())
         .classes_id(updatedTeacherLeave.getSection().getClasses().getId())

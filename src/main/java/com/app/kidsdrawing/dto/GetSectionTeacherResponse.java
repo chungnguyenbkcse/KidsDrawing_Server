@@ -24,6 +24,7 @@ public class GetSectionTeacherResponse {
     private String message;
     private String status;
     private Boolean teach_form;
+    private LocalDateTime time_approved;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
 }

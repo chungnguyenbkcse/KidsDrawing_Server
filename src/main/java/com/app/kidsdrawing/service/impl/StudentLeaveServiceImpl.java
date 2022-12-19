@@ -1,5 +1,6 @@
 package com.app.kidsdrawing.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 .student_id(content.getStudent().getId())
                 .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                 .section_id(content.getSection().getId())
+                .time_approved(content.getTime_approved())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
                 .classes_id(content.getSection().getClasses().getId())
@@ -83,6 +85,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getUser().getUsername() + " - " +content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
                     .section_id(content.getSection().getId())
+                    .time_approved(content.getTime_approved())
                     .section_number(content.getSection().getNumber())
                     .section_name(content.getSection().getName())
                     .classes_id(content.getSection().getClasses().getId())
@@ -104,6 +107,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     .classes_id(content.getSection().getClasses().getId())
                     .class_name(content.getSection().getClasses().getName())
                     .status(content.getStatus())
+                    .time_approved(content.getTime_approved())
                     .description(content.getDescription())
                     .create_time(content.getCreate_time())
                     .update_time(content.getUpdate_time())
@@ -114,7 +118,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
-                    
+                    .time_approved(content.getTime_approved())
                     .section_id(content.getSection().getId())
                     .section_number(content.getSection().getNumber())
                     .section_name(content.getSection().getName())
@@ -149,7 +153,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                         .student_id(content.getStudent().getId())
                         .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
-                        
+                        .time_approved(content.getTime_approved())
                         .section_id(content.getSection().getId())
                         .section_number(content.getSection().getNumber())
                         .section_name(content.getSection().getName())
@@ -172,6 +176,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                         .classes_id(content.getSection().getClasses().getId())
                         .class_name(content.getSection().getClasses().getName())
                         .status(content.getStatus())
+                        .time_approved(content.getTime_approved())
                         .description(content.getDescription())
                         .create_time(content.getCreate_time())
                         .update_time(content.getUpdate_time())
@@ -182,7 +187,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                     GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                         .student_id(content.getStudent().getId())
                         .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
-             
+                        .time_approved(content.getTime_approved())
                         .section_id(content.getSection().getId())
                         .section_number(content.getSection().getNumber())
                         .section_name(content.getSection().getName())
@@ -212,7 +217,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                     .student_id(content.getStudent().getId())
                     .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
-                    
+                    .time_approved(content.getTime_approved())
                     .section_id(content.getSection().getId())
                     .section_number(content.getSection().getNumber())
                     .section_name(content.getSection().getName())
@@ -239,7 +244,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                 .student_id(content.getStudent().getId())
                 .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
-                
+                .time_approved(content.getTime_approved())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
@@ -269,7 +274,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
                 GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                         .student_id(content.getStudent().getId())
                         .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
-                        
+                        .time_approved(content.getTime_approved())
                         .section_id(content.getSection().getId())
                         .section_number(content.getSection().getNumber())
                         .section_name(content.getSection().getName())
@@ -296,7 +301,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             GetStudentLeaveResponse StudentLeaveResponse = GetStudentLeaveResponse.builder()
                 .student_id(content.getStudent().getId())
                 .student_name(content.getStudent().getUser().getUsername() + " - " + content.getStudent().getUser().getFirstName() + " " + content.getStudent().getUser().getLastName())
-                
+                .time_approved(content.getTime_approved())
                 .section_id(content.getSection().getId())
                 .section_number(content.getSection().getNumber())
                 .section_name(content.getSection().getName())
@@ -332,6 +337,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
             .classes_id(studentLeave.getSection().getClasses().getId())
             .class_name(studentLeave.getSection().getClasses().getName())
             .status(studentLeave.getStatus())
+            .time_approved(studentLeave.getTime_approved())
             .description(studentLeave.getDescription())
             .create_time(studentLeave.getCreate_time())
             .update_time(studentLeave.getUpdate_time())
@@ -424,6 +430,7 @@ public class StudentLeaveServiceImpl implements StudentLeaveService{
 
 
         studentLeave.setStatus(createReviewStudentLeaveRequest.getStatus());
+        studentLeave.setTime_approved(LocalDateTime.now());
 
         Notification savedNotification = Notification.builder()
             .name("Trạng thái yêu cầu nghỉ học")

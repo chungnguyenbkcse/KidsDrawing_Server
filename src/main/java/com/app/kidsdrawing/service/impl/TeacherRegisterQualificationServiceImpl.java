@@ -48,6 +48,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                 if (ele.getStatus().equals("Approved")){
                     GetTeacherRegisterQuanlificationTeacherResponse teacherRegisterQuanlificationTeacherResponse = GetTeacherRegisterQuanlificationTeacherResponse.builder()
                         .id(ele.getId())
+                        .time_approved(ele.getTime_approved())
                         .teacher_id(ele.getTeacher().getId())
                         .teacher_name(ele.getTeacher().getUser().getUsername() + " - " + ele.getTeacher().getUser().getFirstName() + " " + ele.getTeacher().getUser().getLastName())
                         .course_id(ele.getCourse().getId())
@@ -62,7 +63,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
                         .teacher_name(ele.getTeacher().getUser().getUsername() + " - " + ele.getTeacher().getUser().getFirstName() + " " + ele.getTeacher().getUser().getLastName())
-                        
+                        .time_approved(ele.getTime_approved())
                         .course_id(ele.getCourse().getId())
                         .course_name(ele.getCourse().getName())
                         .degree_photo_url(ele.getDegree_photo_url())
@@ -75,7 +76,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                         .id(ele.getId())
                         .teacher_id(ele.getTeacher().getId())
                         .teacher_name(ele.getTeacher().getUser().getUsername() + " - " + ele.getTeacher().getUser().getFirstName() + " " + ele.getTeacher().getUser().getLastName())
-                        
+                        .time_approved(ele.getTime_approved())
                         .course_id(ele.getCourse().getId())
                         .course_name(ele.getCourse().getName())
                         .degree_photo_url(ele.getDegree_photo_url())
@@ -100,7 +101,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
             GetTeacherRegisterQualificationResponse teacherRegisterQualificationResponse = GetTeacherRegisterQualificationResponse.builder()
                 .id(content.getId())
                 .teacher_id(content.getTeacher().getId())
-                
+                .time_approved(content.getTime_approved())
                 .course_id(content.getCourse().getId())
                 .degree_photo_url(content.getDegree_photo_url())
                 .status(content.getStatus())
@@ -123,6 +124,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
                     .id(content.getId())
                     .teacher_id(content.getTeacher().getId())
                     .course_id(content.getCourse().getId())
+                    .time_approved(content.getTime_approved())
                     .degree_photo_url(content.getDegree_photo_url())
                     .status(content.getStatus())
                     .build();
@@ -145,7 +147,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         return GetTeacherRegisterQualificationResponse.builder()
                 .id(teacherRegisterQualification.getId())
                 .teacher_id(teacherRegisterQualification.getTeacher().getId())
-                
+                .time_approved(teacherRegisterQualification.getTime_approved())
                 .course_id(teacherRegisterQualification.getCourse().getId())
                 .degree_photo_url(teacherRegisterQualification.getDegree_photo_url())
                 .status(teacherRegisterQualification.getStatus())
