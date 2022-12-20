@@ -32,6 +32,7 @@ import com.app.kidsdrawing.dto.GetStudentResponse;
 import com.app.kidsdrawing.dto.GetUserResponse;
 import com.app.kidsdrawing.entity.Teacher;
 import com.app.kidsdrawing.entity.Classes;
+import com.app.kidsdrawing.entity.Holiday;
 import com.app.kidsdrawing.entity.ClassHasRegisterJoinSemesterClass;
 import com.app.kidsdrawing.entity.LessonTime;
 import com.app.kidsdrawing.entity.SemesterClass;
@@ -44,6 +45,7 @@ import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.StudentRepository;
 import com.app.kidsdrawing.service.ClassesService;
+import com.app.kidsdrawing.repository.HolidayRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,6 +57,7 @@ public class ClassesServiceImpl implements ClassesService {
     private final ClassesRepository classRepository;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
+    private final HolidayRepository holidayRepository;
     private final SemesterClassRepository semesterClassRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
@@ -884,7 +887,8 @@ public class ClassesServiceImpl implements ClassesService {
                 Collections.sort(dayOfWeeks);
         
                 List<LocalDate> list_holiday = new ArrayList<>();
-                semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+                List<Holiday> allHoliday = holidayRepository.findBySemesterId(semesterCouse.getSemester().getId());
+                allHoliday.forEach(holiday -> {
                     list_holiday.add(holiday.getDay());
                 });
         
@@ -988,7 +992,8 @@ public class ClassesServiceImpl implements ClassesService {
         Collections.sort(dayOfWeeks);
 
         List<LocalDate> list_holiday = new ArrayList<>();
-        semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+        List<Holiday> allHoliday = holidayRepository.findBySemesterId(semesterCouse.getSemester().getId());
+        allHoliday.forEach(holiday -> {
             list_holiday.add(holiday.getDay());
         });
 
@@ -1099,7 +1104,8 @@ public class ClassesServiceImpl implements ClassesService {
         });
 
         List<LocalDate> list_holiday = new ArrayList<>();
-        semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+        List<Holiday> allHoliday = holidayRepository.findBySemesterId(semesterCouse.getSemester().getId());
+        allHoliday.forEach(holiday -> {
             list_holiday.add(holiday.getDay());
         });
 
@@ -1212,7 +1218,8 @@ public class ClassesServiceImpl implements ClassesService {
         });
 
         List<LocalDate> list_holiday = new ArrayList<>();
-        semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+        List<Holiday> allHoliday = holidayRepository.findBySemesterId(semesterCouse.getSemester().getId());
+        allHoliday.forEach(holiday -> {
             list_holiday.add(holiday.getDay());
         });
 
@@ -1322,7 +1329,8 @@ public class ClassesServiceImpl implements ClassesService {
                 });
 
                 List<LocalDate> list_holiday = new ArrayList<>();
-                class_has_join_semester_class.getClasses().getSemesterClass().getSemester().getHolidays().forEach(holiday -> {
+                List<Holiday> allHolidays = holidayRepository.findBySemesterId(class_has_join_semester_class.getClasses().getSemesterClass().getSemester().getId());
+                allHolidays.forEach(holiday -> {
                     list_holiday.add(holiday.getDay());
                 });
 
@@ -1446,7 +1454,8 @@ public class ClassesServiceImpl implements ClassesService {
                     });
 
                     List<LocalDate> list_holiday = new ArrayList<>();
-                    class_has_register_join_semester_class.getClasses().getSemesterClass().getSemester().getHolidays().forEach(holiday -> {
+                    List<Holiday> allHoliday = holidayRepository.findBySemesterId(class_has_register_join_semester_class.getClasses().getSemesterClass().getSemester().getId());
+                    allHoliday.forEach(holiday -> {
                         list_holiday.add(holiday.getDay());
                     });
 
@@ -1689,7 +1698,8 @@ public class ClassesServiceImpl implements ClassesService {
         Collections.sort(dayOfWeeks);
 
         List<LocalDate> list_holiday = new ArrayList<>();
-        semesterCouse.getSemester().getHolidays().forEach(holiday -> {
+        List<Holiday> allHoliday = holidayRepository.findBySemesterId(semesterCouse.getSemester().getId());
+        allHoliday.forEach(holiday -> {
             list_holiday.add(holiday.getDay());
         });
 

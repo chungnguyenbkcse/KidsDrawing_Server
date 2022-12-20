@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 
 import javax.transaction.Transactional;
@@ -89,7 +88,7 @@ public class ContestServiceImpl implements ContestService {
             });
 
             total = 0;
-            Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
+            List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId1(contest.getId());
             List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId1(contest.getId());
             listContestSubmissionByContest.forEach(contest_submission -> {
                 if (contest_submission.getScore() != null) {
@@ -216,7 +215,7 @@ public class ContestServiceImpl implements ContestService {
         List<Contest> pageContest = contestRepository.findAll1();
         pageContest.forEach(contest -> {
             total = 0;
-            Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
+            List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId1(contest.getId());
             List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId1(contest.getId());
             listContestSubmissionByContest.forEach(contest_submission -> {
                 if (contest_submission.getScore() != null) {
@@ -319,7 +318,7 @@ public class ContestServiceImpl implements ContestService {
         pageContest.getContent().forEach(contest -> {
             if (contest.getArtTypes().getId().compareTo(id) == 0) {
                 total = 0;
-                Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
+                List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId1(contest.getId());
                 List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId1(contest.getId());
                 listContestSubmissionByContest.forEach(contest_submission -> {
                     if (contest_submission.getScore() != null) {
@@ -373,7 +372,7 @@ public class ContestServiceImpl implements ContestService {
         listRegisterJoinContest.forEach(ele -> {
             total = 0;
             allContestForStudent.add(ele.getContest());
-            Set<UserRegisterJoinContest> listUserRegisterContestByContest = ele.getContest().getUserRegisterJoinContests();
+            List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId1(ele.getContest().getId());
             List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId1(ele.getContest().getId());
             listContestSubmissionByContest.forEach(contest_submission -> {
                 if (contest_submission.getScore() != null) {
@@ -573,13 +572,13 @@ public class ContestServiceImpl implements ContestService {
         List<Student> pageUser = studentRepository.findByParentId(parent_id);
 
         pageUser.forEach(student -> {
-            Set<UserRegisterJoinContest> listRegisterJoinContest = student.getUserRegisterJoinContests();
+            List<UserRegisterJoinContest> listRegisterJoinContest = userRegisterJoinContestRepository.findByStudentId1(student.getId());
             List<Contest> allContestForParent = new ArrayList<>();
 
             listRegisterJoinContest.forEach(ele -> {
                 total = 0;
                 allContestForParent.add(ele.getContest());
-                Set<UserRegisterJoinContest> listUserRegisterContestByContest = ele.getContest().getUserRegisterJoinContests();
+                List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId1(ele.getContest().getId());
                 List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId1(ele.getContest().getId());
                 listContestSubmissionByContest.forEach(contest_submission -> {
                     if (contest_submission.getScore() != null) {
@@ -719,8 +718,8 @@ public class ContestServiceImpl implements ContestService {
         });
 
         total = 0;
-        Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
-        Set<ContestSubmission> listContestSubmissionByContest = contest.getContestSubmissions();
+        List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId1(contest.getId());
+        List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId1(contest.getId());
         listContestSubmissionByContest.forEach(contest_submission -> {
             if (contest_submission.getScore() != null) {
                 total = total + 1;
@@ -756,7 +755,7 @@ public class ContestServiceImpl implements ContestService {
         });
 
         total = 0;
-        Set<UserRegisterJoinContest> listUserRegisterContestByContest = contest.getUserRegisterJoinContests();
+        List<UserRegisterJoinContest> listUserRegisterContestByContest = userRegisterJoinContestRepository.findByContestId1(contest.getId());
         List<ContestSubmission> listContestSubmissionByContest = contestSubmissionRepository.findByContestId1(id);
 
         Boolean check_gen = checkGenerationContestSubmissionForTeacher(contest.getId());
