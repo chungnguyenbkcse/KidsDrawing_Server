@@ -151,7 +151,7 @@ public class CourseServiceImpl implements CourseService {
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByStudentId2(id);
         List<Course> listCourseRegisted = new ArrayList<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
-            if (user_register_join_semester.getStatus() == "Completed") {
+            if (user_register_join_semester.getStatus() == "Completed" && (user_register_join_semester.getDeleted() ==  false ||  user_register_join_semester.getDeleted() == null )) {
                 listCourseRegisted.add(user_register_join_semester.getSemesterClass().getCourse());
             }
         });
@@ -304,7 +304,7 @@ public class CourseServiceImpl implements CourseService {
                 allSemesterClass.forEach(semester_course -> {
                     total_register += semester_course.getUserRegisterJoinSemesters()
                     .stream()
-                    .filter(c -> c.getStatus().equals("Completed"))
+                    .filter(c -> c.getStatus().equals("Completed") && (c.getDeleted() == false || c.getDeleted() == null))
                     .collect(Collectors.toList()).size();
                     if (semesterNexts.contains(semester_course.getSemester())){
                         total ++;
@@ -340,7 +340,7 @@ public class CourseServiceImpl implements CourseService {
 
                 allSemesterClass.forEach(semester_course -> {
                     total_register += semester_course.getUserRegisterJoinSemesters().stream()
-                    .filter(c -> c.getStatus().equals("Completed"))
+                    .filter(c -> c.getStatus().equals("Completed") && (c.getDeleted() == false || c.getDeleted() == null))
                     .collect(Collectors.toList()).size();
                     if (semesterNexts.contains(semester_course.getSemester())){
                         total ++;

@@ -24,16 +24,16 @@ public interface CourseRepository extends JpaRepository <Course, Long>{
     @Query("SELECT c FROM Course c JOIN FETCH c.artAges ag JOIN FETCH c.artLevels al JOIN FETCH c.artTypes at WHERE (c.deleted = FALSE OR c.deleted IS NULL) AND (at.deleted = FALSE OR at.deleted IS NULL) AND (ag.deleted = FALSE OR ag.deleted IS NULL) AND (al.deleted = FALSE OR al.deleted IS NULL) ORDER BY c.id")
     List<Course> findAll();
 
-    @Query("SELECT DISTINCT c FROM Course c LEFT JOIN FETCH c.semesterClasses sc LEFT JOIN FETCH sc.semester s JOIN FETCH c.artAges ag JOIN FETCH c.artLevels al JOIN FETCH c.artTypes at WHERE (c.deleted = FALSE OR c.deleted IS NULL) AND (at.deleted = FALSE OR at.deleted IS NULL) AND (ag.deleted = FALSE OR ag.deleted IS NULL) AND (al.deleted = FALSE OR al.deleted IS NULL) AND (sc.deleted = FALSE OR sc.deleted IS NULL) AND (s.deleted = FALSE OR s.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Course c   JOIN FETCH c.artAges ag JOIN FETCH c.artLevels al JOIN FETCH c.artTypes at WHERE (c.deleted = FALSE OR c.deleted IS NULL) AND (at.deleted = FALSE OR at.deleted IS NULL) AND (ag.deleted = FALSE OR ag.deleted IS NULL) AND (al.deleted = FALSE OR al.deleted IS NULL) ORDER BY c.id")
     List<Course> findAll1();
 
     @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.artAges ag JOIN FETCH c.artLevels al JOIN FETCH c.artTypes at WHERE (c.deleted = FALSE OR c.deleted IS NULL) AND (at.deleted = FALSE OR at.deleted IS NULL) AND (ag.deleted = FALSE OR ag.deleted IS NULL) AND (al.deleted = FALSE OR al.deleted IS NULL) ORDER BY c.id")
     List<Course> findAll3();
 
-    @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.semesterClasses sc JOIN FETCH sc.userRegisterJoinSemesters ur WHERE ur.status = 'Completed' AND (ur.deleted = FALSE OR ur.deleted IS NULL) AND (c.deleted = FALSE OR c.deleted IS NULL) AND (sc.deleted = FALSE OR sc.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.semesterClasses sc JOIN FETCH sc.userRegisterJoinSemesters ur WHERE ur.status = 'Completed' AND (c.deleted = FALSE OR c.deleted IS NULL) AND (sc.deleted = FALSE OR sc.deleted IS NULL) ORDER BY c.id")
     List<Course> findAll4();
 
-    @Query("SELECT DISTINCT c FROM Course c LEFT JOIN FETCH c.semesterClasses sc LEFT JOIN FETCH sc.semester s JOIN FETCH c.artAges ag JOIN FETCH c.artLevels al JOIN FETCH c.artTypes at LEFT JOIN FETCH sc.userRegisterJoinSemesters ur WHERE (ur.deleted = FALSE OR ur.deleted IS NULL) AND (c.deleted = FALSE OR c.deleted IS NULL) AND (at.deleted = FALSE OR at.deleted IS NULL) AND (ag.deleted = FALSE OR ag.deleted IS NULL) AND (al.deleted = FALSE OR al.deleted IS NULL) AND (sc.deleted = FALSE OR sc.deleted IS NULL) AND (s.deleted = FALSE OR s.deleted IS NULL) ORDER BY c.id")
+    @Query("SELECT DISTINCT c FROM Course c  JOIN FETCH c.artAges ag JOIN FETCH c.artLevels al JOIN FETCH c.artTypes at  WHERE (c.deleted = FALSE OR c.deleted IS NULL) AND (at.deleted = FALSE OR at.deleted IS NULL) AND (ag.deleted = FALSE OR ag.deleted IS NULL) AND (al.deleted = FALSE OR al.deleted IS NULL) ORDER BY c.id")
     List<Course> findAll5();
 
     @Query("SELECT DISTINCT c FROM Course c JOIN FETCH c.teacherRegisterQualifications tr JOIN FETCH tr.teacher te JOIN FETCH te.user WHERE te.id != ?1 AND tr.status = 'Approved' AND (c.deleted = FALSE OR c.deleted IS NULL) ORDER BY c.id")
