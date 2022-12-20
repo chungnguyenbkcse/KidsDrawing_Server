@@ -622,30 +622,41 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        List<Holiday> pageHoliday = holidayRepository.findBySemesterId(id);
-        List<LocalDate> holidayTime = new ArrayList<>();
-        pageHoliday.forEach(holiday -> {
-            holidayTime.add(holiday.getDay());
-        });
-
-        holidayRepository.deleteAll(pageHoliday);
-
-        createSemesterRequest.getTime().forEach(holiday -> {
-            Holiday saveHoliday = Holiday.builder()
-                .day(holiday)
-                .semester(updatedSemester)
-                .build();
-            holidayRepository.save(saveHoliday);
-        });
-
-        updatedSemester.setName(createSemesterRequest.getName());
-        updatedSemester.setDescription(createSemesterRequest.getDescription());
-        updatedSemester.setNumber(createSemesterRequest.getNumber());
-        updatedSemester.setYear(createSemesterRequest.getYear());
-        updatedSemester.setStart_time(createSemesterRequest.getStart_time());
-        updatedSemester.setEnd_time(createSemesterRequest.getStart_time().plusMonths(3));
-        semesterRepository.save(updatedSemester);
-
-        return updatedSemester.getId();
+        List<SemesterClass> semesterClasses = semesterClassRepository.findBySemesterId1(id);
+        if (semesterClasses.size() > 0) {
+            updatedSemester.setName(createSemesterRequest.getName());
+            updatedSemester.setDescription(createSemesterRequest.getDescription());
+            updatedSemester.setNumber(createSemesterRequest.getNumber());
+            updatedSemester.setYear(createSemesterRequest.getYear());
+            semesterRepository.save(updatedSemester);
+            return updatedSemester.getId();
+        }
+        else {
+            List<Holiday> pageHoliday = holidayRepository.findBySemesterId(id);
+            List<LocalDate> holidayTime = new ArrayList<>();
+            pageHoliday.forEach(holiday -> {
+                holidayTime.add(holiday.getDay());
+            });
+    
+            holidayRepository.deleteAll(pageHoliday);
+    
+            createSemesterRequest.getTime().forEach(holiday -> {
+                Holiday saveHoliday = Holiday.builder()
+                    .day(holiday)
+                    .semester(updatedSemester)
+                    .build();
+                holidayRepository.save(saveHoliday);
+            });
+    
+            updatedSemester.setName(createSemesterRequest.getName());
+            updatedSemester.setDescription(createSemesterRequest.getDescription());
+            updatedSemester.setNumber(createSemesterRequest.getNumber());
+            updatedSemester.setYear(createSemesterRequest.getYear());
+            updatedSemester.setStart_time(createSemesterRequest.getStart_time());
+            updatedSemester.setEnd_time(createSemesterRequest.getStart_time().plusMonths(3));
+            semesterRepository.save(updatedSemester);
+    
+            return updatedSemester.getId();
+        }
     }
 }

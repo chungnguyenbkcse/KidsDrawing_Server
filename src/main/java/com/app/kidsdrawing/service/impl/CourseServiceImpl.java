@@ -895,32 +895,59 @@ public class CourseServiceImpl implements CourseService {
             throw new EntityNotFoundException("exception.Course.not_found");
         });
 
+        List<SemesterClass> semesterClasses = semesterClassRepository.findBySemesterId1(id);
+        if (semesterClasses.size() > 0) {
+            Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createCourseRequest.getArt_age_id());
+            ArtAge artAge = artAgeOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.ArtAge.not_found");
+            });
         
-
-        Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createCourseRequest.getArt_age_id());
-        ArtAge artAge = artAgeOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.ArtAge.not_found");
-        });
-
-        Optional<ArtType> artTypeOpt = artTypeRepository.findById(createCourseRequest.getArt_type_id());
-        ArtType artType = artTypeOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.ArtType.not_found");
-        });
-
-        Optional<ArtLevel> artLevelOpt = artLevelRepository.findById(createCourseRequest.getArt_level_id());
-        ArtLevel artLevel = artLevelOpt.orElseThrow(() -> {
-            throw new EntityNotFoundException("exception.ArtLevel.not_found");
-        });
-        updatedCourse.setName(createCourseRequest.getName());
-        updatedCourse.setDescription(createCourseRequest.getDescription());
-        updatedCourse.setNum_of_section(createCourseRequest.getNum_of_section());
-        updatedCourse.setImage_url(createCourseRequest.getImage_url());
-        updatedCourse.setPrice(createCourseRequest.getPrice());
-        updatedCourse.setArtAges(artAge);
-        updatedCourse.setArtTypes(artType);
-        updatedCourse.setArtLevels(artLevel);
-        courseRepository.save(updatedCourse);
-
-        return updatedCourse.getId();
+            Optional<ArtType> artTypeOpt = artTypeRepository.findById(createCourseRequest.getArt_type_id());
+            ArtType artType = artTypeOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.ArtType.not_found");
+            });
+        
+            Optional<ArtLevel> artLevelOpt = artLevelRepository.findById(createCourseRequest.getArt_level_id());
+            ArtLevel artLevel = artLevelOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.ArtLevel.not_found");
+            });
+            updatedCourse.setName(createCourseRequest.getName());
+            updatedCourse.setDescription(createCourseRequest.getDescription());
+            updatedCourse.setImage_url(createCourseRequest.getImage_url());
+            updatedCourse.setPrice(createCourseRequest.getPrice());
+            updatedCourse.setArtAges(artAge);
+            updatedCourse.setArtTypes(artType);
+            updatedCourse.setArtLevels(artLevel);
+            courseRepository.save(updatedCourse);
+        
+            return updatedCourse.getId();
+        }
+        else {
+            Optional<ArtAge> artAgeOpt = artAgeRepository.findById(createCourseRequest.getArt_age_id());
+            ArtAge artAge = artAgeOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.ArtAge.not_found");
+            });
+    
+            Optional<ArtType> artTypeOpt = artTypeRepository.findById(createCourseRequest.getArt_type_id());
+            ArtType artType = artTypeOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.ArtType.not_found");
+            });
+    
+            Optional<ArtLevel> artLevelOpt = artLevelRepository.findById(createCourseRequest.getArt_level_id());
+            ArtLevel artLevel = artLevelOpt.orElseThrow(() -> {
+                throw new EntityNotFoundException("exception.ArtLevel.not_found");
+            });
+            updatedCourse.setName(createCourseRequest.getName());
+            updatedCourse.setDescription(createCourseRequest.getDescription());
+            updatedCourse.setNum_of_section(createCourseRequest.getNum_of_section());
+            updatedCourse.setImage_url(createCourseRequest.getImage_url());
+            updatedCourse.setPrice(createCourseRequest.getPrice());
+            updatedCourse.setArtAges(artAge);
+            updatedCourse.setArtTypes(artType);
+            updatedCourse.setArtLevels(artLevel);
+            courseRepository.save(updatedCourse);
+    
+            return updatedCourse.getId();
+        }
     }
 }
