@@ -151,7 +151,7 @@ public class CourseServiceImpl implements CourseService {
         List<UserRegisterJoinSemester> userRegisterJoinSemesters = userRegisterJoinSemesterRepository.findByStudentId2(id);
         List<Course> listCourseRegisted = new ArrayList<>();
         userRegisterJoinSemesters.forEach(user_register_join_semester -> {
-            if (user_register_join_semester.getStatus() == "Completed" && (user_register_join_semester.getDeleted() ==  false ||  user_register_join_semester.getDeleted() == null )) {
+            if (user_register_join_semester.getStatus() == "Completed") {
                 listCourseRegisted.add(user_register_join_semester.getSemesterClass().getCourse());
             }
         });
@@ -170,7 +170,7 @@ public class CourseServiceImpl implements CourseService {
             if (listCourseRegisted.contains(course) == false) {
                 total = 0;
                 total_register = userRegisterJoinSemesterRepository.findByCourse(course.getId()).size();
-                Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
+                List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId1(course.getId());
 
                 allSemesterClass.forEach(semester_course -> {
                     if (semesterNexts.contains(semester_course.getSemester())){
@@ -223,7 +223,7 @@ public class CourseServiceImpl implements CourseService {
             total = 0;
             teacher_register_total = userRegisterTeachSemesterRepository.findByCourseId(course.getId()).size();
             if (course.getSemesterClasses().size() > 0){
-                Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
+                List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId1(course.getId());
                 allSemesterClass.forEach(semester_course -> {
                     if (time_now.isBefore(semester_course.getRegistration_time())){
                         total ++;
@@ -299,12 +299,13 @@ public class CourseServiceImpl implements CourseService {
                 total = 0;
                 total_register = 0;
 
-                Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
+                List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId1(course.getId());
 
                 allSemesterClass.forEach(semester_course -> {
-                    total_register += semester_course.getUserRegisterJoinSemesters()
+                    List<UserRegisterJoinSemester> userRegisterJoinSemesterAlls = userRegisterJoinSemesterRepository.findBySemesterClassId1(semester_course.getId());
+                    total_register += userRegisterJoinSemesterAlls
                     .stream()
-                    .filter(c -> c.getStatus().equals("Completed") && (c.getDeleted() == false || c.getDeleted() == null))
+                    .filter(c -> c.getStatus().equals("Completed"))
                     .collect(Collectors.toList()).size();
                     if (semesterNexts.contains(semester_course.getSemester())){
                         total ++;
@@ -313,7 +314,7 @@ public class CourseServiceImpl implements CourseService {
                 GetCourseParentNewResponse courseResponse = GetCourseParentNewResponse.builder()
                     .id(course.getId())
                     .name(course.getName())
-                    .description(course.getDescription())
+                    .description("")
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
@@ -336,11 +337,13 @@ public class CourseServiceImpl implements CourseService {
             else {
                 total = 0;
                 total_register = 0;
-                Set<SemesterClass> allSemesterClass = course.getSemesterClasses();
+                List<SemesterClass> allSemesterClass = semesterClassRepository.findByCourseId1(course.getId());
 
                 allSemesterClass.forEach(semester_course -> {
-                    total_register += semester_course.getUserRegisterJoinSemesters().stream()
-                    .filter(c -> c.getStatus().equals("Completed") && (c.getDeleted() == false || c.getDeleted() == null))
+                    List<UserRegisterJoinSemester> userRegisterJoinSemesterAlls = userRegisterJoinSemesterRepository.findBySemesterClassId1(semester_course.getId());
+                    total_register += userRegisterJoinSemesterAlls
+                    .stream()
+                    .filter(c -> c.getStatus().equals("Completed"))
                     .collect(Collectors.toList()).size();
                     if (semesterNexts.contains(semester_course.getSemester())){
                         total ++;
@@ -360,7 +363,7 @@ public class CourseServiceImpl implements CourseService {
                 GetCourseParentNewResponse courseResponse = GetCourseParentNewResponse.builder()
                     .id(course.getId())
                     .name(course.getName())
-                    .description(course.getDescription())
+                    .description("")
                     .num_of_section(course.getNum_of_section())
                     .image_url(course.getImage_url())
                     .price(course.getPrice())
