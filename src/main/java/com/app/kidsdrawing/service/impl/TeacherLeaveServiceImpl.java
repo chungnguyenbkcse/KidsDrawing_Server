@@ -389,6 +389,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         if (updatedTeacherLeave.getStatus().equals("Teacher approved")) {
             if (createReviewTeacherLeaveRequest.getStatus().equals("Admin approved")) {
                 updatedTeacherLeave.setStatus("Approved");
+                updatedTeacherLeave.setTime_approved(LocalDateTime.now());
                 teacherLeaveRepository.save(updatedTeacherLeave);
             }
             else {
