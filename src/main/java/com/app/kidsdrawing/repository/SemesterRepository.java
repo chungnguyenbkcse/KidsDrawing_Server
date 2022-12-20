@@ -23,7 +23,7 @@ public interface SemesterRepository extends JpaRepository <Semester, Long>{
     @Query("SELECT e FROM Semester e WHERE (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.end_time DESC")
     List<Semester> findAll2();
 
-    @Query("SELECT e FROM Semester e WHERE (e.deleted = FALSE OR e.deleted IS NULL) WHERE e.id != ?1 ORDER BY e.end_time DESC")
+    @Query("SELECT e FROM Semester e WHERE (e.deleted = FALSE OR e.deleted IS NULL) AND e.id != ?1 ORDER BY e.end_time DESC")
     List<Semester> findAll3(Long id);
 
     @Query(
