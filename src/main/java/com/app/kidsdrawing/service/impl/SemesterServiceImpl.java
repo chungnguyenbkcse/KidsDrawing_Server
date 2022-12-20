@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -46,9 +45,13 @@ import com.app.kidsdrawing.repository.ClassesRepository;
 import com.app.kidsdrawing.repository.HolidayRepository;
 import com.app.kidsdrawing.repository.NotificationRepository;
 import com.app.kidsdrawing.repository.SectionRepository;
+import com.app.kidsdrawing.repository.SectionTemplateRepository;
+import com.app.kidsdrawing.repository.SemesterClassRepository;
 import com.app.kidsdrawing.repository.SemesterRepository;
 import com.app.kidsdrawing.repository.UserAttendanceRepository;
 import com.app.kidsdrawing.repository.UserReadNotificationRepository;
+import com.app.kidsdrawing.repository.UserRegisterJoinSemesterRepository;
+import com.app.kidsdrawing.repository.UserRegisterTeachSemesterRepository;
 import com.app.kidsdrawing.service.SemesterService;
 
 import lombok.RequiredArgsConstructor;
@@ -59,12 +62,16 @@ import lombok.RequiredArgsConstructor;
 public class SemesterServiceImpl implements SemesterService {
 
     private final SemesterRepository semesterRepository;
+    private final SemesterClassRepository semesterClassRepository;
     private final ClassesRepository classRepository;
     private final SectionRepository sectionRepository;
     private final HolidayRepository holidayRepository;
     private final UserAttendanceRepository userAttendanceRepository;
     private final UserReadNotificationRepository uuserReadNotificationRepository;
     private final NotificationRepository notificationRepository;
+    private final SectionTemplateRepository sectionTemplateRepository;
+    private final UserRegisterJoinSemesterRepository userRegisterJoinSemesterRepository;
+    private final UserRegisterTeachSemesterRepository userRegisterTeachSemesterRepository;
     private final ClassHasRegisterJoinSemesterClassRepository classHasRegisterJoinSemesterClassRepository;
 
     //private static int counter = 0;
@@ -305,7 +312,7 @@ public class SemesterServiceImpl implements SemesterService {
             throw new EntityNotFoundException("exception.Semester.not_found");
         });
 
-        Set<SemesterClass> allSemesterClassBySemester = semester.getSemesterClass();
+        List<SemesterClass> allSemesterClassBySemester = semesterClassRepository.findBySemesterId1(semester.getId());
 
         System.out.println("Total semester class in semester: " + String.valueOf(allSemesterClassBySemester.size()));
 
@@ -315,10 +322,10 @@ public class SemesterServiceImpl implements SemesterService {
         number = 1;
         allSemesterClassBySemester.forEach(semester_class -> {
             // Danh sách học sinh đăng kí 1 khóa học trong 1 học kì
-            Set<UserRegisterJoinSemester> listUserRegisterJoinSemesters = semester_class.getUserRegisterJoinSemesters();
+            List<UserRegisterJoinSemester> listUserRegisterJoinSemesters = userRegisterJoinSemesterRepository.findBySemesterClassId1(semester_class.getId());
 
             // Danh sách giáo viên đăng kí dạy 1 khóa học trong 1 học kì
-            Set<UserRegisterTeachSemester> allUserRegisterTeachSemesters = semester_class.getUserRegisterTeachSemesters();
+            List<UserRegisterTeachSemester> allUserRegisterTeachSemesters = userRegisterTeachSemesterRepository.findBySemesterClassId1(semester_class.getId());
 
             Map<Teacher, Integer> list_total_register_of_teacher = new HashMap<>();
 
@@ -435,7 +442,7 @@ public class SemesterServiceImpl implements SemesterService {
                         number ++;
                         //listClassOfSemesterClass.add(savedClass);
     
-                        Set<SectionTemplate> sectionTemplateOpt = semester_class.getCourse().getSectionTemplates();
+                        List<SectionTemplate> sectionTemplateOpt = sectionTemplateRepository.findByCourseId1(semester_class.getCourse().getId());
                         sectionTemplateOpt.forEach(section_template -> {
                             Section savedSection = Section.builder()
                                 .classes(savedClass)
