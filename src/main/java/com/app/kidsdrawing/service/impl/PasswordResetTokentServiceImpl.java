@@ -77,7 +77,7 @@ public class PasswordResetTokentServiceImpl implements PasswordResetTokentServic
 
     @Override
     public SimpleMailMessage constructResetTokenEmail(String token, User user) {
-        String url = "http://localhost:8080/api/v1/password-reset-token/user/changePassword/" + token;
+        String url = "https://ec2-54-254-161-3.ap-southeast-1.compute.amazonaws.com/api/v1/password-reset-token/user/changePassword/" + token;
         String message = "Hello \n Bạn có yêu cầu reset password\n. Click vào đường link bên dưới: \n";
         return constructEmail("Reset Password", message + " \r\n" + url, user);
     }
