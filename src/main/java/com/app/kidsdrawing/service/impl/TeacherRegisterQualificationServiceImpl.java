@@ -208,6 +208,7 @@ public class TeacherRegisterQualificationServiceImpl implements TeacherRegisterQ
         
         updatedTeacherRegisterQualification.setCourse(course);
         updatedTeacherRegisterQualification.setTeacher(teacher);
+        updatedTeacherRegisterQualification.setStatus(createTeacherRegisterQualificationRequest.getStatus());
         updatedTeacherRegisterQualification.setDegree_photo_url(createTeacherRegisterQualificationRequest.getDegree_photo_url());
         teacherRegisterQualificationRepository.save(updatedTeacherRegisterQualification);
 

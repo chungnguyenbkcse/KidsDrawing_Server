@@ -19,6 +19,7 @@ public class GetInfoClassTeacherResponse {
     private float review_star;
     private String link_url;
     private Long course_id;
+    private String status;
     private String course_name;
     private Long semster_class_id;
     private int total_student;

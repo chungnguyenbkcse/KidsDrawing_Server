@@ -42,7 +42,7 @@ public interface UserAttendanceRepository extends JpaRepository <UserAttendance,
     @Query("SELECT DISTINCT e  FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH st.user stu JOIN FETCH e.section WHERE st.id = ?1 ORDER BY e.id")
     List<UserAttendance> findByStudentId2(Long id);
 
-    @Query("SELECT DISTINCT e FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH st.user stu JOIN FETCH e.section se WHERE se.id = ?1 AND st.id = ?2 ORDER BY e.id")
+    @Query("FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH e.section se WHERE se.id = ?1 AND st.id = ?2")
     Optional<UserAttendance> findBySectionIdAndStudentId(Long section_id, Long student_id);
 
     @Query("SELECT DISTINCT e FROM UserAttendance e JOIN FETCH e.student st JOIN FETCH st.user stu JOIN FETCH st.parent pa  JOIN FETCH pa.user JOIN FETCH e.section se WHERE se.id = ?1 AND pa.id = ?2 ORDER BY e.id")

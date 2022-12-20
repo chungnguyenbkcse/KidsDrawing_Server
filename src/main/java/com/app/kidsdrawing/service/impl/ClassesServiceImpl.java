@@ -318,8 +318,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getListClassByTeacherId(Long id) {
-        List<GetInfoClassTeacherResponse> allInfoClassTeacherDoingResponses = new ArrayList<>();
-        List<GetInfoClassTeacherResponse> allInfoClassTeacherDoneResponses = new ArrayList<>();
+        List<GetInfoClassTeacherResponse> allInfoClassTeacherResponses = new ArrayList<>();
         List<Classes> listClass = classRepository.findAllByTeacher(id);
         LocalDateTime time_now = LocalDateTime.now();
         listClass.forEach(ele -> {
@@ -363,8 +362,9 @@ public class ClassesServiceImpl implements ClassesService {
                         .art_level_name(ele.getSemesterClass().getCourse()
                                 .getArtLevels().getName())
                         .schedule(schedule)
+                        .status("DOING")
                         .build();
-                allInfoClassTeacherDoingResponses.add(infoClassTeacherResponse);
+                allInfoClassTeacherResponses.add(infoClassTeacherResponse);
             }
 
             else {
@@ -389,15 +389,15 @@ public class ClassesServiceImpl implements ClassesService {
                         .art_level_name(ele.getSemesterClass().getCourse()
                                 .getArtLevels().getName())
                         .schedule(schedule)
+                        .status("DONE")
                         .review_star(getReviewStarForClass(ele.getId()))
                         .build();
-                allInfoClassTeacherDoneResponses.add(infoClassTeacherResponse);
+                        allInfoClassTeacherResponses.add(infoClassTeacherResponse);
 
             }
         });
         Map<String, Object> response = new HashMap<>();
-        response.put("classes_doing", allInfoClassTeacherDoingResponses);
-        response.put("classes_done", allInfoClassTeacherDoneResponses);
+        response.put("classes", allInfoClassTeacherResponses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

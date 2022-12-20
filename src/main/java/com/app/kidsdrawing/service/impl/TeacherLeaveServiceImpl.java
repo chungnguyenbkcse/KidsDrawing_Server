@@ -346,7 +346,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
             throw new EntityNotFoundException("exception.TeacherLeave.not_found");
         });
 
-        if (teacherLEeave.getStatus().equals("Approved") || teacherLEeave.getStatus().equals("Not approved")) {
+        if (teacherLEeave.getStatus().equals("Approved")) {
             throw new ArtAgeNotDeleteException("exception.TeacherLeave.not_delete");
         }
 
@@ -389,6 +389,7 @@ public class TeacherLeaveServiceImpl implements TeacherLeaveService{
         if (updatedTeacherLeave.getStatus().equals("Teacher approved")) {
             if (createReviewTeacherLeaveRequest.getStatus().equals("Admin approved")) {
                 updatedTeacherLeave.setStatus("Approved");
+                updatedTeacherLeave.setTime_approved(LocalDateTime.now());
                 teacherLeaveRepository.save(updatedTeacherLeave);
             }
             else {

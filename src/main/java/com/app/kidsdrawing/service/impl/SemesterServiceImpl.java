@@ -257,20 +257,25 @@ public class SemesterServiceImpl implements SemesterService {
         if (partitions.get(partitions.size() - 1).size() < partitionSizeMin) {
             item_1 = partitions.get(partitions.size()-1);
             res = partitions.subList(0, partitions.size()-1);
-            for (int i = 0; i < res.size(); i++) {
-                if (res.get(0).size() + 1 <= partitionSizeMax && idx < item_1.size()) {
-                    List<Integer> item_2 = new ArrayList<>();
-                    item_2.addAll(res.get(0));
-                    item_2.add(item_1.get(idx));
-                    res.remove(0);
-                    res.add(item_2);
-                    idx ++;
-                }
-
-                if (res.get(0).size() + 1 > partitionSizeMax && idx < item_1.size()) {
-                    res.add(item_1.subList(idx, item_1.size()));
-                    break;
-                }
+            while(idx < item_1.size()) {
+                for (int i = 0; i < res.size(); i++) {
+                    if (res.get(0).size() + 1 <= partitionSizeMax && idx < item_1.size()) {
+                        List<Integer> item_2 = new ArrayList<>();
+                        item_2.addAll(res.get(0));
+                        item_2.add(item_1.get(idx));
+                        res.remove(0);
+                        res.add(item_2);
+                        idx ++;
+                    }
+    
+                    if (res.get(0).size() + 1 > partitionSizeMax && idx < item_1.size()) {
+                        res.add(item_1.subList(idx, item_1.size()));
+                        idx = item_1.size();
+                        break;
+                    }
+                    //System.out.println(res);
+    
+                } 
             }       
         }
         else {
