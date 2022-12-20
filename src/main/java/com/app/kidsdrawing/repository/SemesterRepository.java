@@ -20,6 +20,12 @@ public interface SemesterRepository extends JpaRepository <Semester, Long>{
     @Query("SELECT DISTINCT e FROM Semester e JOIN FETCH e.semesterClass sc WHERE (e.deleted = FALSE OR e.deleted IS NULL) AND (sc.deleted = FALSE OR sc.deleted IS NULL) ORDER BY e.id")
     List<Semester> findAll1();
 
+    @Query("SELECT e FROM Semester e WHERE (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.end_time DESC")
+    List<Semester> findAll2();
+
+    @Query("SELECT e FROM Semester e WHERE (e.deleted = FALSE OR e.deleted IS NULL) WHERE e.id != ?1 ORDER BY e.end_time DESC")
+    List<Semester> findAll3(Long id);
+
     @Query(
 		value = "SELECT e FROM Semester e WHERE (e.deleted = FALSE OR e.deleted IS NULL) ORDER BY e.id",
 		countQuery = "SELECT e FROM Semester e WHERE (e.deleted = FALSE OR e.deleted IS NULL)"
