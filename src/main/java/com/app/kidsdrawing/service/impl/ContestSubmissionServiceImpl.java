@@ -286,6 +286,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     if (contestSubmissions.get(y).getScore() != null) {
                         GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
                             .score(contestSubmissions.get(y).getScore())
+                            .avatar(contestSubmissions.get(y).getStudent().getUser().getProfileImageUrl())
                             .feedback(contestSubmissions.get(y).getFeedback())
                             .time(contestSubmissions.get(y).getTime())
                             .teacher_id(userGradeContests.get(index).getTeacher().getId())
@@ -303,6 +304,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     else {
                         GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
                             .score(contestSubmissions.get(y).getScore())
+                            .avatar(contestSubmissions.get(y).getStudent().getUser().getProfileImageUrl())
                             .feedback(contestSubmissions.get(y).getFeedback())
                             .time(contestSubmissions.get(y).getTime())
                             .teacher_name(userGradeContests.get(index).getTeacher().getUser().getUsername() + " - " + userGradeContests.get(index).getTeacher().getUser().getFirstName() + " " + userGradeContests.get(index).getTeacher().getUser().getLastName())
@@ -326,6 +328,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     if (contestSubmissions.get(y).getScore() != null) {
                         GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
                             .score(contestSubmissions.get(y).getScore())
+                            .avatar(contestSubmissions.get(y).getStudent().getUser().getProfileImageUrl())
                             .feedback(contestSubmissions.get(y).getFeedback())
                             .time(contestSubmissions.get(y).getTime())
                             .teacher_name(userGradeContests.get(index).getTeacher().getUser().getUsername() + " - " + userGradeContests.get(index).getTeacher().getUser().getFirstName() + " " + userGradeContests.get(index).getTeacher().getUser().getLastName())
@@ -343,6 +346,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                     else {
                         GetContestSubmissionResponse contestSubmissionResponse = GetContestSubmissionResponse.builder()
                             .score(contestSubmissions.get(y).getScore())
+                            .avatar(contestSubmissions.get(y).getStudent().getUser().getProfileImageUrl())
                             .feedback(contestSubmissions.get(y).getFeedback())
                             .time(contestSubmissions.get(y).getTime())
                             .teacher_id(userGradeContests.get(index).getTeacher().getId())
