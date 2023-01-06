@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetContestSubmissionResponse {
     private Long id;
+    private String avatar;
     private Long contest_id;
     private String student_name;
     private String contest_name;

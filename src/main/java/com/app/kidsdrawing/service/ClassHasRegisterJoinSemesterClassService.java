@@ -13,6 +13,7 @@ import com.app.kidsdrawing.dto.GetReviewStarForClassResponse;
 
 public interface ClassHasRegisterJoinSemesterClassService {
     ResponseEntity<Map<String, Object>> getAllClassHasRegisterJoinSemesterClass();
+    ResponseEntity<Map<String, Object>> getAllClassHasRegisterJoinSemesterClassByClass(Long class_id);
     GetReviewStarForClassResponse getReviewStarForClass(Long class_id);
     GetClassHasRegisterJoinSemesterClassResponse getClassHasRegisterJoinSemesterClassByClassesAndStudent(Long class_id, Long user_register_join_semester_id);
     Long createClassHasRegisterJoinSemesterClass(CreateClassHasRegisterJoinSemesterClassRequest createClassHasRegisterJoinSemesterClassRequest);

@@ -51,5 +51,10 @@ GET  {{rest}}/class-has-register-join-semester/1/22
 ### GET classes ACTION ###
 # @name get_classes
 
+GET  {{rest}}/class-has-register-join-semester/classes/5
+
+### GET classes ACTION ###
+# @name get_classes
+
 GET  {{rest}}/class-has-register-join-semester/review-star/1
 

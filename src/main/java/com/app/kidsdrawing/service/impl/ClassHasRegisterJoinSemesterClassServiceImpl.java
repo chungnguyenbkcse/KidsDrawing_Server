@@ -48,6 +48,26 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
             GetClassHasRegisterJoinSemesterClassResponse classHasRegisterJoinSemesterClassResponse = GetClassHasRegisterJoinSemesterClassResponse.builder()
                     .classes_id(class_has_register_join_semester_class.getClasses().getId())
                     .student_id(class_has_register_join_semester_class.getStudent().getId())
+                    .student_name(class_has_register_join_semester_class.getStudent().getUser().getUsername() + " - " + class_has_register_join_semester_class.getStudent().getUser().getFirstName() + " " + class_has_register_join_semester_class.getStudent().getUser().getLastName())
+                    .review_star(class_has_register_join_semester_class.getReview_star())
+                    .build();
+            allClassHasRegisterJoinSemesterClassResponses.add(classHasRegisterJoinSemesterClassResponse);
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("class_has_register_join_semester_classs", allClassHasRegisterJoinSemesterClassResponses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllClassHasRegisterJoinSemesterClassByClass(Long class_id) {
+        List<GetClassHasRegisterJoinSemesterClassResponse> allClassHasRegisterJoinSemesterClassResponses = new ArrayList<>();
+        List<ClassHasRegisterJoinSemesterClass> pageClassHasRegisterJoinSemesterClass = classHasRegisterJoinSemesterClassRepository.findByClassesId1(class_id);
+        pageClassHasRegisterJoinSemesterClass.forEach(class_has_register_join_semester_class -> {
+            GetClassHasRegisterJoinSemesterClassResponse classHasRegisterJoinSemesterClassResponse = GetClassHasRegisterJoinSemesterClassResponse.builder()
+                    .classes_id(class_has_register_join_semester_class.getClasses().getId())
+                    .student_id(class_has_register_join_semester_class.getStudent().getId())
+                    .student_name(class_has_register_join_semester_class.getStudent().getUser().getUsername() + " - " + class_has_register_join_semester_class.getStudent().getUser().getFirstName() + " " + class_has_register_join_semester_class.getStudent().getUser().getLastName())
                     .review_star(class_has_register_join_semester_class.getReview_star())
                     .build();
             allClassHasRegisterJoinSemesterClassResponses.add(classHasRegisterJoinSemesterClassResponse);
@@ -86,6 +106,7 @@ public class ClassHasRegisterJoinSemesterClassServiceImpl implements ClassHasReg
         return GetClassHasRegisterJoinSemesterClassResponse.builder()
         .classes_id(updatedClassHasRegisterJoinSemesterClass.getClasses().getId())
         .student_id(updatedClassHasRegisterJoinSemesterClass.getStudent().getId())
+        .student_name(updatedClassHasRegisterJoinSemesterClass.getStudent().getUser().getUsername() + " - " + updatedClassHasRegisterJoinSemesterClass.getStudent().getUser().getFirstName() + " " + updatedClassHasRegisterJoinSemesterClass.getStudent().getUser().getLastName())
         .review_star(updatedClassHasRegisterJoinSemesterClass.getReview_star())
         .student_feedback(updatedClassHasRegisterJoinSemesterClass.getStudent_feedback())
         .teacher_feedback(updatedClassHasRegisterJoinSemesterClass.getTeacher_feedback())

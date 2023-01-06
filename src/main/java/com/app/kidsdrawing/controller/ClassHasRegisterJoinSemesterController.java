@@ -1,7 +1,7 @@
 package com.app.kidsdrawing.controller;
 
 import java.net.URI;
-
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,6 +43,12 @@ public class ClassHasRegisterJoinSemesterController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .buildAndExpand(classId).toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin
+    @GetMapping(value="/classes/{class_id}")
+    public ResponseEntity<ResponseEntity<Map<String, Object>>> getAllClassHasRegisterJoinSemesterClassByClass(@PathVariable("class_id") Long class_id) {
+        return ResponseEntity.ok().body(classHasRegisterJoinSemesterClassService.getAllClassHasRegisterJoinSemesterClassByClass(class_id));
     }
 
     @CrossOrigin
